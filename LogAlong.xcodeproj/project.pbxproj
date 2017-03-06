@@ -13,6 +13,7 @@
 		019CCCF91E6C7D4B002EF989 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019CCCF81E6C7D4B002EF989 /* Assets.xcassets */; };
 		019CCCFC1E6C7D4B002EF989 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 019CCCFA1E6C7D4B002EF989 /* LaunchScreen.storyboard */; };
 		019CCD071E6C7D4B002EF989 /* LogAlongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD061E6C7D4B002EF989 /* LogAlongTests.swift */; };
+		019CCD121E6CF606002EF989 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD111E6CF606002EF989 /* MainTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		019CCD021E6C7D4B002EF989 /* LogAlongTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LogAlongTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		019CCD061E6C7D4B002EF989 /* LogAlongTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogAlongTests.swift; sourceTree = "<group>"; };
 		019CCD081E6C7D4B002EF989 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		019CCD111E6CF606002EF989 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				019CCCF11E6C7D4B002EF989 /* AppDelegate.swift */,
 				019CCCF31E6C7D4B002EF989 /* ViewController.swift */,
 				019CCCF51E6C7D4B002EF989 /* Main.storyboard */,
+				019CCD111E6CF606002EF989 /* MainTableViewController.swift */,
 				019CCCF81E6C7D4B002EF989 /* Assets.xcassets */,
 				019CCCFA1E6C7D4B002EF989 /* LaunchScreen.storyboard */,
 				019CCCFD1E6C7D4B002EF989 /* Info.plist */,
@@ -200,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				019CCCF41E6C7D4B002EF989 /* ViewController.swift in Sources */,
+				019CCD121E6CF606002EF989 /* MainTableViewController.swift in Sources */,
 				019CCCF21E6C7D4B002EF989 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
