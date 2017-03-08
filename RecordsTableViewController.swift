@@ -1,14 +1,14 @@
 //
-//  MainTableViewController.swift
+//  RecordsTableViewController.swift
 //  LogAlong
 //
-//  Created by Frank Gao on 3/5/17.
+//  Created by Frank Gao on 3/6/17.
 //  Copyright © 2017 Frank Gao. All rights reserved.
 //
 
 import UIKit
 
-class MainTableViewController: UITableViewController {
+class RecordsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

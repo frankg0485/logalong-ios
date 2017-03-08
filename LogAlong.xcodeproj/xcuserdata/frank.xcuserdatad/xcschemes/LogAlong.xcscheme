@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "019CCCED1E6C7D4B002EF989"
+               BlueprintIdentifier = "019CCD201E6DAF64002EF989"
                BuildableName = "LogAlong.app"
                BlueprintName = "LogAlong"
                ReferencedContainer = "container:LogAlong.xcodeproj">
@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "019CCD011E6C7D4B002EF989"
+               BlueprintIdentifier = "019CCD361E6DAF65002EF989"
                BuildableName = "LogAlongTests.xctest"
                BlueprintName = "LogAlongTests"
                ReferencedContainer = "container:LogAlong.xcodeproj">
@@ -42,7 +42,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "019CCCED1E6C7D4B002EF989"
+            BlueprintIdentifier = "019CCD201E6DAF64002EF989"
             BuildableName = "LogAlong.app"
             BlueprintName = "LogAlong"
             ReferencedContainer = "container:LogAlong.xcodeproj">
@@ -65,7 +65,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "019CCCED1E6C7D4B002EF989"
+            BlueprintIdentifier = "019CCD201E6DAF64002EF989"
             BuildableName = "LogAlong.app"
             BlueprintName = "LogAlong"
             ReferencedContainer = "container:LogAlong.xcodeproj">
@@ -84,7 +84,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "019CCCED1E6C7D4B002EF989"
+            BlueprintIdentifier = "019CCD201E6DAF64002EF989"
             BuildableName = "LogAlong.app"
             BlueprintName = "LogAlong"
             ReferencedContainer = "container:LogAlong.xcodeproj">

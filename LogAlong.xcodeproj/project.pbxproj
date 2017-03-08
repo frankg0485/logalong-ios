@@ -7,48 +7,56 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		019CCCF21E6C7D4B002EF989 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCCF11E6C7D4B002EF989 /* AppDelegate.swift */; };
-		019CCCF41E6C7D4B002EF989 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCCF31E6C7D4B002EF989 /* ViewController.swift */; };
-		019CCCF71E6C7D4B002EF989 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 019CCCF51E6C7D4B002EF989 /* Main.storyboard */; };
-		019CCCF91E6C7D4B002EF989 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019CCCF81E6C7D4B002EF989 /* Assets.xcassets */; };
-		019CCCFC1E6C7D4B002EF989 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 019CCCFA1E6C7D4B002EF989 /* LaunchScreen.storyboard */; };
-		019CCD071E6C7D4B002EF989 /* LogAlongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD061E6C7D4B002EF989 /* LogAlongTests.swift */; };
-		019CCD121E6CF606002EF989 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD111E6CF606002EF989 /* MainTableViewController.swift */; };
+		019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD241E6DAF64002EF989 /* AppDelegate.swift */; };
+		019CCD2C1E6DAF64002EF989 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 019CCD2A1E6DAF64002EF989 /* Main.storyboard */; };
+		019CCD2E1E6DAF64002EF989 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019CCD2D1E6DAF64002EF989 /* Assets.xcassets */; };
+		019CCD311E6DAF64002EF989 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 019CCD2F1E6DAF64002EF989 /* LaunchScreen.storyboard */; };
+		019CCD3C1E6DAF65002EF989 /* LogAlongTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD3B1E6DAF65002EF989 /* LogAlongTests.swift */; };
+		019CCD481E6DC719002EF989 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD471E6DC719002EF989 /* MainTableViewController.swift */; };
+		019CCD4A1E6DC72A002EF989 /* RecordsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD491E6DC72A002EF989 /* RecordsTableViewController.swift */; };
+		019CCD4C1E6DC735002EF989 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD4B1E6DC735002EF989 /* SettingsTableViewController.swift */; };
+		019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD4D1E6DC7C5002EF989 /* MainTableViewCell.swift */; };
+		019CCD501E6DC7D0002EF989 /* RecordsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */; };
+		019CCD521E6DC7DB002EF989 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD511E6DC7DB002EF989 /* SettingsTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		019CCD031E6C7D4B002EF989 /* PBXContainerItemProxy */ = {
+		019CCD381E6DAF65002EF989 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 019CCCE61E6C7D4B002EF989 /* Project object */;
+			containerPortal = 019CCD191E6DAF64002EF989 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 019CCCED1E6C7D4B002EF989;
+			remoteGlobalIDString = 019CCD201E6DAF64002EF989;
 			remoteInfo = LogAlong;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		019CCCEE1E6C7D4B002EF989 /* LogAlong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogAlong.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		019CCCF11E6C7D4B002EF989 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		019CCCF31E6C7D4B002EF989 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		019CCCF61E6C7D4B002EF989 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		019CCCF81E6C7D4B002EF989 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		019CCCFB1E6C7D4B002EF989 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		019CCCFD1E6C7D4B002EF989 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		019CCD021E6C7D4B002EF989 /* LogAlongTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LogAlongTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		019CCD061E6C7D4B002EF989 /* LogAlongTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogAlongTests.swift; sourceTree = "<group>"; };
-		019CCD081E6C7D4B002EF989 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		019CCD111E6CF606002EF989 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
+		019CCD211E6DAF64002EF989 /* LogAlong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogAlong.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		019CCD241E6DAF64002EF989 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		019CCD2B1E6DAF64002EF989 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		019CCD2D1E6DAF64002EF989 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		019CCD301E6DAF64002EF989 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		019CCD321E6DAF64002EF989 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		019CCD371E6DAF65002EF989 /* LogAlongTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LogAlongTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		019CCD3B1E6DAF65002EF989 /* LogAlongTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogAlongTests.swift; sourceTree = "<group>"; };
+		019CCD3D1E6DAF65002EF989 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		019CCD471E6DC719002EF989 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainTableViewController.swift; path = ../MainTableViewController.swift; sourceTree = "<group>"; };
+		019CCD491E6DC72A002EF989 /* RecordsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecordsTableViewController.swift; path = ../RecordsTableViewController.swift; sourceTree = "<group>"; };
+		019CCD4B1E6DC735002EF989 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsTableViewController.swift; path = ../SettingsTableViewController.swift; sourceTree = "<group>"; };
+		019CCD4D1E6DC7C5002EF989 /* MainTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
+		019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordsTableViewCell.swift; sourceTree = "<group>"; };
+		019CCD511E6DC7DB002EF989 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		019CCCEB1E6C7D4B002EF989 /* Frameworks */ = {
+		019CCD1E1E6DAF64002EF989 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		019CCCFF1E6C7D4B002EF989 /* Frameworks */ = {
+		019CCD341E6DAF65002EF989 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -58,43 +66,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		019CCCE51E6C7D4B002EF989 = {
+		019CCD181E6DAF64002EF989 = {
 			isa = PBXGroup;
 			children = (
-				019CCCF01E6C7D4B002EF989 /* LogAlong */,
-				019CCD051E6C7D4B002EF989 /* LogAlongTests */,
-				019CCCEF1E6C7D4B002EF989 /* Products */,
+				019CCD231E6DAF64002EF989 /* LogAlong */,
+				019CCD3A1E6DAF65002EF989 /* LogAlongTests */,
+				019CCD221E6DAF64002EF989 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		019CCCEF1E6C7D4B002EF989 /* Products */ = {
+		019CCD221E6DAF64002EF989 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				019CCCEE1E6C7D4B002EF989 /* LogAlong.app */,
-				019CCD021E6C7D4B002EF989 /* LogAlongTests.xctest */,
+				019CCD211E6DAF64002EF989 /* LogAlong.app */,
+				019CCD371E6DAF65002EF989 /* LogAlongTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		019CCCF01E6C7D4B002EF989 /* LogAlong */ = {
+		019CCD231E6DAF64002EF989 /* LogAlong */ = {
 			isa = PBXGroup;
 			children = (
-				019CCCF11E6C7D4B002EF989 /* AppDelegate.swift */,
-				019CCCF31E6C7D4B002EF989 /* ViewController.swift */,
-				019CCCF51E6C7D4B002EF989 /* Main.storyboard */,
-				019CCD111E6CF606002EF989 /* MainTableViewController.swift */,
-				019CCCF81E6C7D4B002EF989 /* Assets.xcassets */,
-				019CCCFA1E6C7D4B002EF989 /* LaunchScreen.storyboard */,
-				019CCCFD1E6C7D4B002EF989 /* Info.plist */,
+				019CCD241E6DAF64002EF989 /* AppDelegate.swift */,
+				019CCD2A1E6DAF64002EF989 /* Main.storyboard */,
+				019CCD471E6DC719002EF989 /* MainTableViewController.swift */,
+				019CCD491E6DC72A002EF989 /* RecordsTableViewController.swift */,
+				019CCD4B1E6DC735002EF989 /* SettingsTableViewController.swift */,
+				019CCD4D1E6DC7C5002EF989 /* MainTableViewCell.swift */,
+				019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */,
+				019CCD511E6DC7DB002EF989 /* SettingsTableViewCell.swift */,
+				019CCD2D1E6DAF64002EF989 /* Assets.xcassets */,
+				019CCD2F1E6DAF64002EF989 /* LaunchScreen.storyboard */,
+				019CCD321E6DAF64002EF989 /* Info.plist */,
 			);
 			path = LogAlong;
 			sourceTree = "<group>";
 		};
-		019CCD051E6C7D4B002EF989 /* LogAlongTests */ = {
+		019CCD3A1E6DAF65002EF989 /* LogAlongTests */ = {
 			isa = PBXGroup;
 			children = (
-				019CCD061E6C7D4B002EF989 /* LogAlongTests.swift */,
-				019CCD081E6C7D4B002EF989 /* Info.plist */,
+				019CCD3B1E6DAF65002EF989 /* LogAlongTests.swift */,
+				019CCD3D1E6DAF65002EF989 /* Info.plist */,
 			);
 			path = LogAlongTests;
 			sourceTree = "<group>";
@@ -102,13 +114,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		019CCCED1E6C7D4B002EF989 /* LogAlong */ = {
+		019CCD201E6DAF64002EF989 /* LogAlong */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 019CCD0B1E6C7D4B002EF989 /* Build configuration list for PBXNativeTarget "LogAlong" */;
+			buildConfigurationList = 019CCD401E6DAF65002EF989 /* Build configuration list for PBXNativeTarget "LogAlong" */;
 			buildPhases = (
-				019CCCEA1E6C7D4B002EF989 /* Sources */,
-				019CCCEB1E6C7D4B002EF989 /* Frameworks */,
-				019CCCEC1E6C7D4B002EF989 /* Resources */,
+				019CCD1D1E6DAF64002EF989 /* Sources */,
+				019CCD1E1E6DAF64002EF989 /* Frameworks */,
+				019CCD1F1E6DAF64002EF989 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -116,49 +128,49 @@
 			);
 			name = LogAlong;
 			productName = LogAlong;
-			productReference = 019CCCEE1E6C7D4B002EF989 /* LogAlong.app */;
+			productReference = 019CCD211E6DAF64002EF989 /* LogAlong.app */;
 			productType = "com.apple.product-type.application";
 		};
-		019CCD011E6C7D4B002EF989 /* LogAlongTests */ = {
+		019CCD361E6DAF65002EF989 /* LogAlongTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 019CCD0E1E6C7D4B002EF989 /* Build configuration list for PBXNativeTarget "LogAlongTests" */;
+			buildConfigurationList = 019CCD431E6DAF65002EF989 /* Build configuration list for PBXNativeTarget "LogAlongTests" */;
 			buildPhases = (
-				019CCCFE1E6C7D4B002EF989 /* Sources */,
-				019CCCFF1E6C7D4B002EF989 /* Frameworks */,
-				019CCD001E6C7D4B002EF989 /* Resources */,
+				019CCD331E6DAF65002EF989 /* Sources */,
+				019CCD341E6DAF65002EF989 /* Frameworks */,
+				019CCD351E6DAF65002EF989 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				019CCD041E6C7D4B002EF989 /* PBXTargetDependency */,
+				019CCD391E6DAF65002EF989 /* PBXTargetDependency */,
 			);
 			name = LogAlongTests;
 			productName = LogAlongTests;
-			productReference = 019CCD021E6C7D4B002EF989 /* LogAlongTests.xctest */;
+			productReference = 019CCD371E6DAF65002EF989 /* LogAlongTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		019CCCE61E6C7D4B002EF989 /* Project object */ = {
+		019CCD191E6DAF64002EF989 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Frank Gao";
 				TargetAttributes = {
-					019CCCED1E6C7D4B002EF989 = {
+					019CCD201E6DAF64002EF989 = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
 					};
-					019CCD011E6C7D4B002EF989 = {
+					019CCD361E6DAF65002EF989 = {
 						CreatedOnToolsVersion = 8.2.1;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 019CCCED1E6C7D4B002EF989;
+						TestTargetID = 019CCD201E6DAF64002EF989;
 					};
 				};
 			};
-			buildConfigurationList = 019CCCE91E6C7D4B002EF989 /* Build configuration list for PBXProject "LogAlong" */;
+			buildConfigurationList = 019CCD1C1E6DAF64002EF989 /* Build configuration list for PBXProject "LogAlong" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -166,29 +178,29 @@
 				en,
 				Base,
 			);
-			mainGroup = 019CCCE51E6C7D4B002EF989;
-			productRefGroup = 019CCCEF1E6C7D4B002EF989 /* Products */;
+			mainGroup = 019CCD181E6DAF64002EF989;
+			productRefGroup = 019CCD221E6DAF64002EF989 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				019CCCED1E6C7D4B002EF989 /* LogAlong */,
-				019CCD011E6C7D4B002EF989 /* LogAlongTests */,
+				019CCD201E6DAF64002EF989 /* LogAlong */,
+				019CCD361E6DAF65002EF989 /* LogAlongTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		019CCCEC1E6C7D4B002EF989 /* Resources */ = {
+		019CCD1F1E6DAF64002EF989 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				019CCCFC1E6C7D4B002EF989 /* LaunchScreen.storyboard in Resources */,
-				019CCCF91E6C7D4B002EF989 /* Assets.xcassets in Resources */,
-				019CCCF71E6C7D4B002EF989 /* Main.storyboard in Resources */,
+				019CCD311E6DAF64002EF989 /* LaunchScreen.storyboard in Resources */,
+				019CCD2E1E6DAF64002EF989 /* Assets.xcassets in Resources */,
+				019CCD2C1E6DAF64002EF989 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		019CCD001E6C7D4B002EF989 /* Resources */ = {
+		019CCD351E6DAF65002EF989 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -198,47 +210,51 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		019CCCEA1E6C7D4B002EF989 /* Sources */ = {
+		019CCD1D1E6DAF64002EF989 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				019CCCF41E6C7D4B002EF989 /* ViewController.swift in Sources */,
-				019CCD121E6CF606002EF989 /* MainTableViewController.swift in Sources */,
-				019CCCF21E6C7D4B002EF989 /* AppDelegate.swift in Sources */,
+				019CCD501E6DC7D0002EF989 /* RecordsTableViewCell.swift in Sources */,
+				019CCD4C1E6DC735002EF989 /* SettingsTableViewController.swift in Sources */,
+				019CCD4A1E6DC72A002EF989 /* RecordsTableViewController.swift in Sources */,
+				019CCD481E6DC719002EF989 /* MainTableViewController.swift in Sources */,
+				019CCD521E6DC7DB002EF989 /* SettingsTableViewCell.swift in Sources */,
+				019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */,
+				019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		019CCCFE1E6C7D4B002EF989 /* Sources */ = {
+		019CCD331E6DAF65002EF989 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				019CCD071E6C7D4B002EF989 /* LogAlongTests.swift in Sources */,
+				019CCD3C1E6DAF65002EF989 /* LogAlongTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		019CCD041E6C7D4B002EF989 /* PBXTargetDependency */ = {
+		019CCD391E6DAF65002EF989 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 019CCCED1E6C7D4B002EF989 /* LogAlong */;
-			targetProxy = 019CCD031E6C7D4B002EF989 /* PBXContainerItemProxy */;
+			target = 019CCD201E6DAF64002EF989 /* LogAlong */;
+			targetProxy = 019CCD381E6DAF65002EF989 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		019CCCF51E6C7D4B002EF989 /* Main.storyboard */ = {
+		019CCD2A1E6DAF64002EF989 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				019CCCF61E6C7D4B002EF989 /* Base */,
+				019CCD2B1E6DAF64002EF989 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		019CCCFA1E6C7D4B002EF989 /* LaunchScreen.storyboard */ = {
+		019CCD2F1E6DAF64002EF989 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				019CCCFB1E6C7D4B002EF989 /* Base */,
+				019CCD301E6DAF64002EF989 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -246,7 +262,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		019CCD091E6C7D4B002EF989 /* Debug */ = {
+		019CCD3E1E6DAF65002EF989 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -296,7 +312,7 @@
 			};
 			name = Debug;
 		};
-		019CCD0A1E6C7D4B002EF989 /* Release */ = {
+		019CCD3F1E6DAF65002EF989 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -339,7 +355,7 @@
 			};
 			name = Release;
 		};
-		019CCD0C1E6C7D4B002EF989 /* Debug */ = {
+		019CCD411E6DAF65002EF989 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -351,7 +367,7 @@
 			};
 			name = Debug;
 		};
-		019CCD0D1E6C7D4B002EF989 /* Release */ = {
+		019CCD421E6DAF65002EF989 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -363,7 +379,7 @@
 			};
 			name = Release;
 		};
-		019CCD0F1E6C7D4B002EF989 /* Debug */ = {
+		019CCD441E6DAF65002EF989 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -377,7 +393,7 @@
 			};
 			name = Debug;
 		};
-		019CCD101E6C7D4B002EF989 /* Release */ = {
+		019CCD451E6DAF65002EF989 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
@@ -394,32 +410,32 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		019CCCE91E6C7D4B002EF989 /* Build configuration list for PBXProject "LogAlong" */ = {
+		019CCD1C1E6DAF64002EF989 /* Build configuration list for PBXProject "LogAlong" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				019CCD091E6C7D4B002EF989 /* Debug */,
-				019CCD0A1E6C7D4B002EF989 /* Release */,
+				019CCD3E1E6DAF65002EF989 /* Debug */,
+				019CCD3F1E6DAF65002EF989 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		019CCD0B1E6C7D4B002EF989 /* Build configuration list for PBXNativeTarget "LogAlong" */ = {
+		019CCD401E6DAF65002EF989 /* Build configuration list for PBXNativeTarget "LogAlong" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				019CCD0C1E6C7D4B002EF989 /* Debug */,
-				019CCD0D1E6C7D4B002EF989 /* Release */,
+				019CCD411E6DAF65002EF989 /* Debug */,
+				019CCD421E6DAF65002EF989 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
-		019CCD0E1E6C7D4B002EF989 /* Build configuration list for PBXNativeTarget "LogAlongTests" */ = {
+		019CCD431E6DAF65002EF989 /* Build configuration list for PBXNativeTarget "LogAlongTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				019CCD0F1E6C7D4B002EF989 /* Debug */,
-				019CCD101E6C7D4B002EF989 /* Release */,
+				019CCD441E6DAF65002EF989 /* Debug */,
+				019CCD451E6DAF65002EF989 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 019CCCE61E6C7D4B002EF989 /* Project object */;
+	rootObject = 019CCD191E6DAF64002EF989 /* Project object */;
 }
