@@ -20,7 +20,7 @@ class Record {
     
     init?(category: String?, amount: Int, account: String, payee: String?, notes: String?) {
         
-        guard let !account.isEmpty else {
+        guard !account.isEmpty else {
             return nil
         }
         

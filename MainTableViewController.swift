@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainTableViewController: UITableViewController {
+class MainTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +37,7 @@ class MainTableViewController: UITableViewController {
         return 0
     }
 
+    
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
@@ -82,14 +83,40 @@ class MainTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "testPopOver" {
+            
+            let popoverViewController = segue.destination
+            
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+            
+            popoverViewController.popoverPresentationController!.delegate = self
+        }
     }
-    */
+    
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
 
+    
+/*    @IBAction func addPressed(_ sender: UIBarButtonItem) {
+        
+        let tableViewController = UITableViewController()
+        tableViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+        tableViewController.preferredContentSize = CGSize(width: 400, height: 400)
+        
+        present(tableViewController, animated: true, completion: nil)
+        
+        let popoverPresentationController = tableViewController.popoverPresentationController
+        popoverPresentationController?.sourceView = sender
+        popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sender.frame.size.width, height: sender.frame.size.height)
+        
+    }*/
+    
 }
