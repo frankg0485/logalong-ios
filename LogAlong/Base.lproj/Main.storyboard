@@ -180,10 +180,10 @@
             </objects>
             <point key="canvasLocation" x="1682" y="438"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Select Account Table View Controller-->
         <scene sceneID="pfP-Uh-8m5">
             <objects>
-                <tableViewController id="MGq-NC-xd1" sceneMemberID="viewController">
+                <tableViewController id="MGq-NC-xd1" customClass="SelectAccountTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Eyn-1S-Bdz">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -192,6 +192,9 @@
                             <rect key="frame" x="0.0" y="72" width="300" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="OK"/>
+                            <connections>
+                                <action selector="okButtonPressed:" destination="MGq-NC-xd1" eventType="touchUpInside" id="xF0-7h-wOB"/>
+                            </connections>
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="GrZ-hR-8AH" style="IBUITableViewCellStyleDefault" id="AWC-C2-Y3V">
@@ -220,6 +223,9 @@
                     <value key="contentSizeForViewInPopover" type="size" width="300" height="600"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="300" height="600"/>
+                    <connections>
+                        <outlet property="okButton" destination="HWz-e5-hi2" id="chn-NC-3S2"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v9P-fR-aVg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -525,10 +531,10 @@
             </objects>
             <point key="canvasLocation" x="1695" y="-268"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Select Tag Table View Controller-->
         <scene sceneID="Ke1-Wl-4MW">
             <objects>
-                <tableViewController id="DjR-YM-QOM" sceneMemberID="viewController">
+                <tableViewController id="DjR-YM-QOM" customClass="SelectTagTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="pPe-dV-YFx">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -537,6 +543,9 @@
                             <rect key="frame" x="0.0" y="72" width="300" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="OK"/>
+                            <connections>
+                                <action selector="okButtonPressed:" destination="DjR-YM-QOM" eventType="touchUpInside" id="BTa-fY-xax"/>
+                            </connections>
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="m8c-PE-54Q" style="IBUITableViewCellStyleDefault" id="IFj-HS-WVI">
@@ -565,15 +574,18 @@
                     <value key="contentSizeForViewInPopover" type="size" width="300" height="600"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="300" height="600"/>
+                    <connections>
+                        <outlet property="okButton" destination="bF2-dH-tb9" id="cIs-m9-lGu"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3v4-z9-l4r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1623" y="1361"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Select Payee Table View Controller-->
         <scene sceneID="Gqj-os-rtZ">
             <objects>
-                <tableViewController id="ApN-dP-0eg" sceneMemberID="viewController">
+                <tableViewController id="ApN-dP-0eg" customClass="SelectPayeeTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="BYG-j6-YBE">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -582,6 +594,9 @@
                             <rect key="frame" x="0.0" y="72" width="300" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="OK"/>
+                            <connections>
+                                <action selector="okButtonPressed:" destination="ApN-dP-0eg" eventType="touchUpInside" id="iXW-i5-qbu"/>
+                            </connections>
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="HnB-HR-XDH" style="IBUITableViewCellStyleDefault" id="Zby-LF-FHM">
@@ -610,15 +625,18 @@
                     <value key="contentSizeForViewInPopover" type="size" width="300" height="600"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="300" height="600"/>
+                    <connections>
+                        <outlet property="okButton" destination="3PW-fr-gWO" id="t7h-Th-DuH"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eoZ-Vi-0hb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="857" y="1361"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Select Category Table View Controller-->
         <scene sceneID="42G-y6-wpT">
             <objects>
-                <tableViewController id="cLH-mK-c18" sceneMemberID="viewController">
+                <tableViewController id="cLH-mK-c18" customClass="SelectCategoryTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="tqp-UT-Hzl">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -627,6 +645,9 @@
                             <rect key="frame" x="0.0" y="72" width="300" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="OK"/>
+                            <connections>
+                                <action selector="okButtonPressed:" destination="cLH-mK-c18" eventType="touchUpInside" id="WNh-as-tW7"/>
+                            </connections>
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="vgQ-yP-EsP" style="IBUITableViewCellStyleDefault" id="pkI-rf-ULa">
@@ -655,6 +676,9 @@
                     <value key="contentSizeForViewInPopover" type="size" width="300" height="600"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="300" height="600"/>
+                    <connections>
+                        <outlet property="okButton" destination="bio-qd-rhQ" id="vHJ-nO-3y0"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JYz-G3-D20" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

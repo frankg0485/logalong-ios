@@ -11,6 +11,10 @@
 		0128AE481EC4829B007A999B /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE471EC4829B007A999B /* AccountsTableViewController.swift */; };
 		0128AE4A1EC482B8007A999B /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE491EC482B8007A999B /* CategoryTableViewController.swift */; };
 		0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */; };
+		0128AE4E1EC7BBFE007A999B /* SelectAccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE4D1EC7BBFE007A999B /* SelectAccountTableViewController.swift */; };
+		0128AE501EC7BD8A007A999B /* SelectCategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE4F1EC7BD8A007A999B /* SelectCategoryTableViewController.swift */; };
+		0128AE521EC7BD98007A999B /* SelectPayeeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */; };
+		0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */; };
 		019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD241E6DAF64002EF989 /* AppDelegate.swift */; };
 		019CCD2C1E6DAF64002EF989 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 019CCD2A1E6DAF64002EF989 /* Main.storyboard */; };
 		019CCD2E1E6DAF64002EF989 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019CCD2D1E6DAF64002EF989 /* Assets.xcassets */; };
@@ -40,6 +44,10 @@
 		0128AE471EC4829B007A999B /* AccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		0128AE491EC482B8007A999B /* CategoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewController.swift; sourceTree = "<group>"; };
+		0128AE4D1EC7BBFE007A999B /* SelectAccountTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAccountTableViewController.swift; sourceTree = "<group>"; };
+		0128AE4F1EC7BD8A007A999B /* SelectCategoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCategoryTableViewController.swift; sourceTree = "<group>"; };
+		0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPayeeTableViewController.swift; sourceTree = "<group>"; };
+		0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTagTableViewController.swift; sourceTree = "<group>"; };
 		019CCD211E6DAF64002EF989 /* LogAlong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogAlong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		019CCD241E6DAF64002EF989 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		019CCD2B1E6DAF64002EF989 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -99,6 +107,10 @@
 			children = (
 				019CCD241E6DAF64002EF989 /* AppDelegate.swift */,
 				019CCD2A1E6DAF64002EF989 /* Main.storyboard */,
+				0128AE4F1EC7BD8A007A999B /* SelectCategoryTableViewController.swift */,
+				0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */,
+				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
+				0128AE4D1EC7BBFE007A999B /* SelectAccountTableViewController.swift */,
 				0128AE491EC482B8007A999B /* CategoryTableViewController.swift */,
 				0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */,
 				0128AE471EC4829B007A999B /* AccountsTableViewController.swift */,
@@ -229,18 +241,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */,
 				019CCD501E6DC7D0002EF989 /* RecordsTableViewCell.swift in Sources */,
 				019CCD4C1E6DC735002EF989 /* SettingsTableViewController.swift in Sources */,
 				019CCD4A1E6DC72A002EF989 /* RecordsTableViewController.swift in Sources */,
+				0128AE521EC7BD98007A999B /* SelectPayeeTableViewController.swift in Sources */,
 				019CCD481E6DC719002EF989 /* MainTableViewController.swift in Sources */,
 				0128AE4A1EC482B8007A999B /* CategoryTableViewController.swift in Sources */,
 				019CCD521E6DC7DB002EF989 /* SettingsTableViewCell.swift in Sources */,
 				0128AE461EABD042007A999B /* AddTableViewController.swift in Sources */,
+				0128AE501EC7BD8A007A999B /* SelectCategoryTableViewController.swift in Sources */,
 				019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */,
 				0128AE481EC4829B007A999B /* AccountsTableViewController.swift in Sources */,
 				019CCD541E748042002EF989 /* Record.swift in Sources */,
 				0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */,
 				019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */,
+				0128AE4E1EC7BBFE007A999B /* SelectAccountTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
