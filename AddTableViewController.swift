@@ -87,7 +87,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "Accounts") || (segue.identifier == "Categories") || (segue.identifier == "Payees") || (segue.identifier == "Tags") {
+        if (segue.identifier == "ChooseAccount") || (segue.identifier == "ChooseCategory") || (segue.identifier == "ChoosePayee") || (segue.identifier == "ChooseTag") {
             
             let popoverViewController = segue.destination
             

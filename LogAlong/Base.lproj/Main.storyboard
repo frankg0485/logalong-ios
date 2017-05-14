@@ -185,11 +185,11 @@
             <objects>
                 <tableViewController id="MGq-NC-xd1" customClass="SelectAccountTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Eyn-1S-Bdz">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="550"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HWz-e5-hi2">
-                            <rect key="frame" x="0.0" y="72" width="300" height="44"/>
+                            <rect key="frame" x="0.0" y="72" width="400" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="OK"/>
                             <connections>
@@ -198,14 +198,14 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="GrZ-hR-8AH" style="IBUITableViewCellStyleDefault" id="AWC-C2-Y3V">
-                                <rect key="frame" x="0.0" y="28" width="300" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="400" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AWC-C2-Y3V" id="RoG-mi-KjD">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GrZ-hR-8AH">
-                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <rect key="frame" x="15" y="0.0" width="370" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -220,16 +220,16 @@
                             <outlet property="delegate" destination="MGq-NC-xd1" id="dlY-5E-EEn"/>
                         </connections>
                     </tableView>
-                    <value key="contentSizeForViewInPopover" type="size" width="300" height="600"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="550"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="300" height="600"/>
+                    <size key="freeformSize" width="400" height="550"/>
                     <connections>
                         <outlet property="okButton" destination="HWz-e5-hi2" id="chn-NC-3S2"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v9P-fR-aVg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-590" y="1360"/>
+            <point key="canvasLocation" x="-291" y="1233"/>
         </scene>
         <!--Records-->
         <scene sceneID="smz-Ao-bi7">
@@ -536,11 +536,11 @@
             <objects>
                 <tableViewController id="DjR-YM-QOM" customClass="SelectTagTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="pPe-dV-YFx">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="550"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bF2-dH-tb9">
-                            <rect key="frame" x="0.0" y="72" width="300" height="44"/>
+                            <rect key="frame" x="0.0" y="72" width="400" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="OK"/>
                             <connections>
@@ -549,14 +549,14 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="m8c-PE-54Q" style="IBUITableViewCellStyleDefault" id="IFj-HS-WVI">
-                                <rect key="frame" x="0.0" y="28" width="300" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="400" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IFj-HS-WVI" id="Ow8-t9-oj9">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="m8c-PE-54Q">
-                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <rect key="frame" x="15" y="0.0" width="370" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -571,27 +571,27 @@
                             <outlet property="delegate" destination="DjR-YM-QOM" id="Ty9-g8-dfu"/>
                         </connections>
                     </tableView>
-                    <value key="contentSizeForViewInPopover" type="size" width="300" height="600"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="550"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="300" height="600"/>
+                    <size key="freeformSize" width="400" height="550"/>
                     <connections>
                         <outlet property="okButton" destination="bF2-dH-tb9" id="cIs-m9-lGu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3v4-z9-l4r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1623" y="1361"/>
+            <point key="canvasLocation" x="1853" y="1232"/>
         </scene>
         <!--Select Payee Table View Controller-->
         <scene sceneID="Gqj-os-rtZ">
             <objects>
                 <tableViewController id="ApN-dP-0eg" customClass="SelectPayeeTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="BYG-j6-YBE">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="550"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3PW-fr-gWO">
-                            <rect key="frame" x="0.0" y="72" width="300" height="44"/>
+                            <rect key="frame" x="0.0" y="72" width="400" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="OK"/>
                             <connections>
@@ -600,14 +600,14 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="HnB-HR-XDH" style="IBUITableViewCellStyleDefault" id="Zby-LF-FHM">
-                                <rect key="frame" x="0.0" y="28" width="300" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="400" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zby-LF-FHM" id="KRN-0I-pKX">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HnB-HR-XDH">
-                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <rect key="frame" x="15" y="0.0" width="370" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -622,27 +622,27 @@
                             <outlet property="delegate" destination="ApN-dP-0eg" id="cCd-Xf-d7y"/>
                         </connections>
                     </tableView>
-                    <value key="contentSizeForViewInPopover" type="size" width="300" height="600"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="550"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="300" height="600"/>
+                    <size key="freeformSize" width="400" height="550"/>
                     <connections>
                         <outlet property="okButton" destination="3PW-fr-gWO" id="t7h-Th-DuH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eoZ-Vi-0hb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="857" y="1361"/>
+            <point key="canvasLocation" x="1085" y="1234"/>
         </scene>
         <!--Select Category Table View Controller-->
         <scene sceneID="42G-y6-wpT">
             <objects>
                 <tableViewController id="cLH-mK-c18" customClass="SelectCategoryTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="tqp-UT-Hzl">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="550"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bio-qd-rhQ">
-                            <rect key="frame" x="0.0" y="72" width="300" height="44"/>
+                            <rect key="frame" x="0.0" y="72" width="400" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal" title="OK"/>
                             <connections>
@@ -651,14 +651,14 @@
                         </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="vgQ-yP-EsP" style="IBUITableViewCellStyleDefault" id="pkI-rf-ULa">
-                                <rect key="frame" x="0.0" y="28" width="300" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="400" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pkI-rf-ULa" id="Pvx-Gz-RGP">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="400" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vgQ-yP-EsP">
-                                            <rect key="frame" x="15" y="0.0" width="270" height="43"/>
+                                            <rect key="frame" x="15" y="0.0" width="370" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -673,21 +673,21 @@
                             <outlet property="delegate" destination="cLH-mK-c18" id="xjd-OZ-ML6"/>
                         </connections>
                     </tableView>
-                    <value key="contentSizeForViewInPopover" type="size" width="300" height="600"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="550"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="300" height="600"/>
+                    <size key="freeformSize" width="400" height="550"/>
                     <connections>
                         <outlet property="okButton" destination="bio-qd-rhQ" id="vHJ-nO-3y0"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JYz-G3-D20" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="110" y="1361"/>
+            <point key="canvasLocation" x="410" y="1233"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Add Table View Controller-->
         <scene sceneID="iXq-J6-Nvp">
             <objects>
-                <tableViewController id="58n-ox-X6M" sceneMemberID="viewController">
+                <tableViewController id="58n-ox-X6M" customClass="AddTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="MS3-l5-TwK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -726,7 +726,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="MGq-NC-xd1" kind="show" id="Ix2-bt-EAD"/>
+                                            <segue destination="MGq-NC-xd1" kind="popoverPresentation" identifier="ChooseAccount" popoverAnchorView="TKC-bZ-1ir" id="Ix2-bt-EAD">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="4nh-vD-VJb" style="IBUITableViewCellStyleDefault" id="dy9-hV-10k">
@@ -746,7 +748,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="cLH-mK-c18" kind="show" id="e07-YG-Arp"/>
+                                            <segue destination="cLH-mK-c18" kind="popoverPresentation" identifier="ChooseCategory" popoverAnchorView="dy9-hV-10k" id="e07-YG-Arp">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="HoC-zQ-kve" style="IBUITableViewCellStyleDefault" id="QJJ-vA-D3J">
@@ -766,7 +770,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="ApN-dP-0eg" kind="show" id="QI8-1J-Klx"/>
+                                            <segue destination="ApN-dP-0eg" kind="popoverPresentation" identifier="ChoosePayee" popoverAnchorView="QJJ-vA-D3J" id="QI8-1J-Klx">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Sdp-KF-VDv" style="IBUITableViewCellStyleDefault" id="49v-rs-auF">
@@ -786,7 +792,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="DjR-YM-QOM" kind="show" id="5D0-gu-lfK"/>
+                                            <segue destination="DjR-YM-QOM" kind="popoverPresentation" identifier="ChooseTag" popoverAnchorView="49v-rs-auF" id="5D0-gu-lfK">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
