@@ -12,10 +12,6 @@ class SelectAccountTableViewController: UITableViewController {
 
     @IBOutlet weak var okButton: UIButton!
     
-    
-    
-    
-    
     var accounts: [String] = ["Cash", "Checking", "Credit: Discover", "Credit: Master", "Credit: Visa"]
     
     override func viewDidLoad() {
@@ -52,6 +48,8 @@ class SelectAccountTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         okButton.isEnabled = true
+        
+        print(accounts[indexPath.row])
     }
 
     /*

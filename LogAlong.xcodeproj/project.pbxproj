@@ -107,10 +107,10 @@
 			children = (
 				019CCD241E6DAF64002EF989 /* AppDelegate.swift */,
 				019CCD2A1E6DAF64002EF989 /* Main.storyboard */,
+				0128AE4D1EC7BBFE007A999B /* SelectAccountTableViewController.swift */,
 				0128AE4F1EC7BD8A007A999B /* SelectCategoryTableViewController.swift */,
 				0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */,
 				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
-				0128AE4D1EC7BBFE007A999B /* SelectAccountTableViewController.swift */,
 				0128AE491EC482B8007A999B /* CategoryTableViewController.swift */,
 				0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */,
 				0128AE471EC4829B007A999B /* AccountsTableViewController.swift */,
