@@ -11,9 +11,17 @@ import UIKit
 class SelectAccountTableViewController: UITableViewController {
 
     @IBOutlet weak var okButton: UIButton!
+    
+    
+    
+    
+    
+    var accounts: [String] = ["Cash", "Checking", "Credit: Discover", "Credit: Master", "Credit: Visa"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        okButton.isEnabled = false
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -31,7 +39,7 @@ class SelectAccountTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+/*    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 0
     }
@@ -39,6 +47,11 @@ class SelectAccountTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 0
+    }
+*/
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        okButton.isEnabled = true
     }
 
     /*
