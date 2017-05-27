@@ -1,45 +1,35 @@
 //
-//  SelectCategoryTableViewController.swift
+//  ProtocolTableViewController.swift
 //  LogAlong
 //
-//  Created by Frank Gao on 5/13/17.
+//  Created by Frank Gao on 5/27/17.
 //  Copyright © 2017 Frank Gao. All rights reserved.
 //
 
 import UIKit
 
-
-class SelectCategoryTableViewController: ProtocolTableViewController {
-
-    @IBOutlet weak var okButton: UIButton!
-    var myIndexPath: Int = 0
-
-    weak var delegate: TableViewControllerDelegate?
+protocol TableViewControllerDelegate: class {
+   func passIntToLabel(_ caller: UITableViewController, myInt: Int)
+}
+class ProtocolTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        okButton.isEnabled = false
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-        
+
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-    
-    @IBAction func okButtonPressed(_ sender: UIButton) {
-        
-        delegate?.passIntToLabel(self, myInt: myIndexPath)
-        
-        self.dismiss(animated: true, completion: nil)
-    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
     // MARK: - Table view data source
-    
+
 /*    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 0
@@ -48,14 +38,8 @@ class SelectCategoryTableViewController: ProtocolTableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 0
-    }*/
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        okButton.isEnabled = true
-        myIndexPath = indexPath.row
-
     }
-    
+*/
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
@@ -100,7 +84,6 @@ class SelectCategoryTableViewController: ProtocolTableViewController {
         return true
     }
     */
-
 
     /*
     // MARK: - Navigation

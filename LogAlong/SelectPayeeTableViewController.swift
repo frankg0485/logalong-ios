@@ -8,16 +8,13 @@
 
 import UIKit
 
-protocol SelectPayeeTableViewControllerDelegate: class {
-    func payeePassIntToLabel(_ myInt: Int)
-}
 
-class SelectPayeeTableViewController: UITableViewController {
+class SelectPayeeTableViewController: ProtocolTableViewController {
     
     @IBOutlet weak var okButton: UIButton!
     var myIndexPath: Int = 0
 
-    weak var delegate: SelectPayeeTableViewControllerDelegate?
+    weak var delegate: TableViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +28,7 @@ class SelectPayeeTableViewController: UITableViewController {
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
         
-        delegate?.payeePassIntToLabel(myIndexPath)
+        delegate?.passIntToLabel(self, myInt: myIndexPath)
         
         dismiss(animated: true, completion: nil)
     }

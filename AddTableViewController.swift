@@ -10,7 +10,7 @@ import UIKit
 
 var accounts: [String] = ["Cash", "Checking", "Credit: Discover", "Credit: Master", "Credit: Visa"]
 
-class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, SelectAccountTableViewControllerDelegate, SelectCategoryTableViewControllerDelegate, SelectPayeeTableViewControllerDelegate, SelectTagTableViewControllerDelegate {
+class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TableViewControllerDelegate {
     
     @IBOutlet weak var accountLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
@@ -33,22 +33,20 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         // Dispose of any resources that can be recreated.
     }
     
-    func accountPassIntToLabel(_ myInt: Int) {
+    func passIntToLabel(_ caller: UITableViewController, myInt: Int) {
+        if let _ = caller as? SelectAccountTableViewController {
+            accountLabel.text = accounts[myInt]
+            
+        } else if let _ = caller as? SelectCategoryTableViewController {
+            categoryLabel.text = "\(myInt)"
+            
+        } else if let _ = caller as? SelectPayeeTableViewController {
+            payeeLabel.text = "\(myInt)"
+            
+        } else {
+            tagLabel.text = "\(myInt)"
+        }
         
-        //        print("MYIIIIIIINTTT: \(myInt)")
-        accountLabel.text = accounts[myInt]
-    }
-    
-    func categoryPassIntToLabel(_ myInt: Int) {
-        categoryLabel.text = "\(myInt)"
-    }
-    
-    func payeePassIntToLabel(_ myInt: Int) {
-        payeeLabel.text = "\(myInt)"
-    }
-    
-    func tagPassIntToLabel(_ myInt: Int) {
-        tagLabel.text = "\(myInt)"
     }
     
     
