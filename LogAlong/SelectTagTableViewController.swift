@@ -8,9 +8,17 @@
 
 import UIKit
 
+protocol SelectTagTableViewControllerDelegate: class {
+    func tagPassIntToLabel(_ myInt: Int)
+}
+
 class SelectTagTableViewController: UITableViewController {
     
     @IBOutlet weak var okButton: UIButton!
+    
+    weak var delegate: SelectTagTableViewControllerDelegate?
+
+    var myIndexPath: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +32,9 @@ class SelectTagTableViewController: UITableViewController {
     
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
+        
+        delegate?.tagPassIntToLabel(myIndexPath)
+        
         dismiss(animated: true, completion: nil)
     }
     
@@ -31,7 +42,7 @@ class SelectTagTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
 
     /* override func numberOfSections(in tableView: UITableView) -> Int {
@@ -46,6 +57,7 @@ class SelectTagTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         okButton.isEnabled = true
+        myIndexPath = indexPath.row
     }
 
     /*

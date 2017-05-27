@@ -9,15 +9,15 @@
 import UIKit
 
 protocol SelectAccountTableViewControllerDelegate: class {
-    func passIntToLabel(_ myInt: Int)
+    func accountPassIntToLabel(_ myInt: Int)
 }
 
 class SelectAccountTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     
     @IBOutlet weak var okButton: UIButton!
     var myIndexPath: Int = 0
+    
     weak var delegate: SelectAccountTableViewControllerDelegate?
-//var accounts: [String] = ["Cash", "Checking", "Credit: Discover", "Credit: Master", "Credit: Visa"]
     
     
     override func viewDidLoad() {
@@ -33,7 +33,7 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
         
-        delegate?.passIntToLabel(myIndexPath)
+        delegate?.accountPassIntToLabel(myIndexPath)
         
         self.dismiss(animated: true, completion: nil)
  /*       let myVC = storyboard?.instantiateViewController(withIdentifier: "testID") as! AddTableViewController

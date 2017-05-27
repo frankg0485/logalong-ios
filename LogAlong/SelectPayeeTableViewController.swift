@@ -8,10 +8,17 @@
 
 import UIKit
 
+protocol SelectPayeeTableViewControllerDelegate: class {
+    func payeePassIntToLabel(_ myInt: Int)
+}
+
 class SelectPayeeTableViewController: UITableViewController {
     
     @IBOutlet weak var okButton: UIButton!
-    
+    var myIndexPath: Int = 0
+
+    weak var delegate: SelectPayeeTableViewControllerDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         okButton.isEnabled = false
@@ -23,6 +30,9 @@ class SelectPayeeTableViewController: UITableViewController {
     }
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
+        
+        delegate?.payeePassIntToLabel(myIndexPath)
+        
         dismiss(animated: true, completion: nil)
     }
     override func didReceiveMemoryWarning() {
@@ -44,6 +54,8 @@ class SelectPayeeTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         okButton.isEnabled = true
+        myIndexPath = indexPath.row
+
     }
     
     /*
@@ -90,6 +102,7 @@ class SelectPayeeTableViewController: UITableViewController {
         return true
     }
     */
+
 
     /*
     // MARK: - Navigation

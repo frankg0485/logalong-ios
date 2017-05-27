@@ -8,32 +8,41 @@
 
 import UIKit
 
+protocol SelectCategoryTableViewControllerDelegate: class {
+    func categoryPassIntToLabel(_ myInt: Int)
+}
+
 class SelectCategoryTableViewController: UITableViewController {
 
     @IBOutlet weak var okButton: UIButton!
-    
-    
+    var myIndexPath: Int = 0
+
+    weak var delegate: SelectCategoryTableViewControllerDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         okButton.isEnabled = false
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-
+    
     @IBAction func okButtonPressed(_ sender: UIButton) {
-                dismiss(animated: true, completion: nil)
+        
+        delegate?.categoryPassIntToLabel(myIndexPath)
+        
+        self.dismiss(animated: true, completion: nil)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
+    
 /*    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 0
@@ -46,6 +55,8 @@ class SelectCategoryTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         okButton.isEnabled = true
+        myIndexPath = indexPath.row
+
     }
     
     /*
@@ -92,6 +103,7 @@ class SelectCategoryTableViewController: UITableViewController {
         return true
     }
     */
+
 
     /*
     // MARK: - Navigation

@@ -8,16 +8,20 @@
 
 import UIKit
 
+var accounts: [String] = ["Cash", "Checking", "Credit: Discover", "Credit: Master", "Credit: Visa"]
 
-
-class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, SelectAccountTableViewControllerDelegate {
+class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, SelectAccountTableViewControllerDelegate, SelectCategoryTableViewControllerDelegate, SelectPayeeTableViewControllerDelegate, SelectTagTableViewControllerDelegate {
     
     @IBOutlet weak var accountLabel: UILabel!
+    @IBOutlet weak var categoryLabel: UILabel!
+    @IBOutlet weak var payeeLabel: UILabel!
+    @IBOutlet weak var tagLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        // Uncomment the following line to preserve selection between presentations
+        // Uncomment the/ following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -29,11 +33,25 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         // Dispose of any resources that can be recreated.
     }
     
-    func passIntToLabel(_ myInt: Int) {
+    func accountPassIntToLabel(_ myInt: Int) {
         
-//        print("MYIIIIIIINTTT: \(myInt)")
-        accountLabel.text = "\(myInt)"
+        //        print("MYIIIIIIINTTT: \(myInt)")
+        accountLabel.text = accounts[myInt]
     }
+    
+    func categoryPassIntToLabel(_ myInt: Int) {
+        categoryLabel.text = "\(myInt)"
+    }
+    
+    func payeePassIntToLabel(_ myInt: Int) {
+        payeeLabel.text = "\(myInt)"
+    }
+    
+    func tagPassIntToLabel(_ myInt: Int) {
+        tagLabel.text = "\(myInt)"
+    }
+    
+    
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
@@ -108,12 +126,22 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
             
             popoverViewController.popoverPresentationController!.delegate = self
+            
         }
         
-            let SelectAccountTableViewController = segue.destination as! SelectAccountTableViewController
+        if let secondViewController = segue.destination as? SelectAccountTableViewController {
             
-            SelectAccountTableViewController.delegate = self
-
+            secondViewController.delegate = self
+        } else if let secondViewController = segue.destination as? SelectCategoryTableViewController {
+            secondViewController.delegate = self
+            
+        }  else if let secondViewController = segue.destination as? SelectPayeeTableViewController {
+            secondViewController.delegate = self
+            
+        }  else if let secondViewController = segue.destination as? SelectTagTableViewController {
+            secondViewController.delegate = self
+        }
+        
     }
     
     
