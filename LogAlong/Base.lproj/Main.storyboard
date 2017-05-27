@@ -947,7 +947,7 @@
         <!--Add Table View Controller-->
         <scene sceneID="iXq-J6-Nvp">
             <objects>
-                <tableViewController id="58n-ox-X6M" customClass="AddTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="testID" id="58n-ox-X6M" customClass="AddTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="MS3-l5-TwK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1065,11 +1065,20 @@
                             <outlet property="delegate" destination="58n-ox-X6M" id="3Od-D7-0Ze"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="hqw-Ja-TNB"/>
+                    <navigationItem key="navigationItem" id="hqw-Ja-TNB">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="g9I-2g-6C9">
+                            <connections>
+                                <action selector="cancel:" destination="58n-ox-X6M" id="V3u-Wm-qyh"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="accountLabel" destination="wP7-mJ-e3p" id="CBF-f1-2sc"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rPl-CG-lRW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="857" y="438"/>
+            <point key="canvasLocation" x="945" y="438"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BEj-6B-Mf1">
