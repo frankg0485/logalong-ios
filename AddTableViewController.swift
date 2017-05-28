@@ -9,7 +9,9 @@
 import UIKit
 
 var accounts: [String] = ["Cash", "Checking", "Credit: Discover", "Credit: Master", "Credit: Visa"]
-
+var categories: [String] = ["Grocery", "Kids", "Eat Out", "Fuel", "Kids: Piano"]
+var payees: [String] = ["Costco", "Walmart", "Chipotle", "Panera", "Biaggis"]
+var tags: [String] = ["Market America", "2014 Summer", "2015 Summer", "2016 Summer", "2017 Summer"]
 class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TableViewControllerDelegate {
     
     @IBOutlet weak var accountLabel: UILabel!
@@ -38,13 +40,13 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             accountLabel.text = accounts[myInt]
             
         } else if let _ = caller as? SelectCategoryTableViewController {
-            categoryLabel.text = "\(myInt)"
+            categoryLabel.text = categories[myInt]
             
         } else if let _ = caller as? SelectPayeeTableViewController {
-            payeeLabel.text = "\(myInt)"
+            payeeLabel.text = payees[myInt]
             
         } else {
-            tagLabel.text = "\(myInt)"
+            tagLabel.text = tags[myInt]
         }
         
     }
