@@ -8,11 +8,13 @@
 
 import UIKit
 
-class SelectAmountViewController: UIViewController {
+class SelectAmountViewController: UIViewController, UITextFieldDelegate {
 
+    @IBOutlet weak var amountTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        amountTextField.delegate = self
         // Do any additional setup after loading the view.
     }
 
@@ -21,7 +23,18 @@ class SelectAmountViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if (textField.text?.isEmpty == true) {
+            return false
+        } else {
+            textField.resignFirstResponder()
+            return true
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        dismiss(animated: true, completion: nil)
+    }
     /*
     // MARK: - Navigation
 
