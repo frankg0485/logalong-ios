@@ -12,8 +12,9 @@ var accounts: [String] = ["Cash", "Checking", "Credit: Discover", "Credit: Maste
 var categories: [String] = ["Grocery", "Kids", "Eat Out", "Fuel", "Kids: Piano"]
 var payees: [String] = ["Costco", "Walmart", "Chipotle", "Panera", "Biaggis"]
 var tags: [String] = ["Market America", "2014 Summer", "2015 Summer", "2016 Summer", "2017 Summer"]
-class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TableViewControllerDelegate {
+class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TableViewControllerDelegate, FViewControllerDelegate {
     
+    @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var accountLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var payeeLabel: UILabel!
@@ -51,6 +52,11 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         
     }
     
+    func passIntBack(_ caller: UIViewController, myInt: Int) {
+        if let _ = caller as? SelectAmountViewController {
+            amountLabel.text = String(myInt)
+        }
+    }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
@@ -139,6 +145,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             secondViewController.delegate = self
             
         }  else if let secondViewController = segue.destination as? SelectTagTableViewController {
+            secondViewController.delegate = self
+        }  else if let secondViewController = segue.destination as? SelectAmountViewController {
             secondViewController.delegate = self
         }
         

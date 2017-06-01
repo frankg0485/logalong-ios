@@ -11,6 +11,8 @@ import UIKit
 class SelectAmountViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var amountTextField: UITextField!
+    weak var delegate: FViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,6 +35,7 @@ class SelectAmountViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+        delegate?.passIntBack(self, myInt: Int(textField.text!)!)
         dismiss(animated: true, completion: nil)
     }
     /*

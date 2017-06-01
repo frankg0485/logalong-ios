@@ -1078,6 +1078,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="accountLabel" destination="wP7-mJ-e3p" id="CBF-f1-2sc"/>
+                        <outlet property="amountLabel" destination="rgy-MU-fRh" id="BzA-id-kmT"/>
                         <outlet property="categoryLabel" destination="4nh-vD-VJb" id="E6Z-ni-aXi"/>
                         <outlet property="payeeLabel" destination="HoC-zQ-kve" id="iOw-IL-PvQ"/>
                         <outlet property="tagLabel" destination="Sdp-KF-VDv" id="OMN-t0-ycM"/>
