@@ -9,12 +9,12 @@
 import UIKit
 
 
-class SelectAccountTableViewController: ProtocolTableViewController {
+class SelectAccountTableViewController: UITableViewController {
     
     @IBOutlet weak var okButton: UIButton!
     var myIndexPath: Int = 0
     
-    weak var delegate: TableViewControllerDelegate?
+    weak var delegate: FViewControllerDelegate?
     
     
     override func viewDidLoad() {
@@ -30,7 +30,7 @@ class SelectAccountTableViewController: ProtocolTableViewController {
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
         
-        delegate?.passIntToLabel(self, myInt: myIndexPath)
+        delegate?.passIntBack(self, myInt: myIndexPath)
         
         self.dismiss(animated: true, completion: nil)
  /*       let myVC = storyboard?.instantiateViewController(withIdentifier: "testID") as! AddTableViewController

@@ -15,7 +15,6 @@
 		0128AE501EC7BD8A007A999B /* SelectCategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE4F1EC7BD8A007A999B /* SelectCategoryTableViewController.swift */; };
 		0128AE521EC7BD98007A999B /* SelectPayeeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */; };
 		0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */; };
-		0128AE561EDA3029007A999B /* ProtocolTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE551EDA3029007A999B /* ProtocolTableViewController.swift */; };
 		014893CF1EDE6106005E3C94 /* SelectAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */; };
 		014893D31EDFA368005E3C94 /* ProtocolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D21EDFA368005E3C94 /* ProtocolViewController.swift */; };
 		019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD241E6DAF64002EF989 /* AppDelegate.swift */; };
@@ -51,7 +50,6 @@
 		0128AE4F1EC7BD8A007A999B /* SelectCategoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCategoryTableViewController.swift; sourceTree = "<group>"; };
 		0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPayeeTableViewController.swift; sourceTree = "<group>"; };
 		0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTagTableViewController.swift; sourceTree = "<group>"; };
-		0128AE551EDA3029007A999B /* ProtocolTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolTableViewController.swift; sourceTree = "<group>"; };
 		014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAmountViewController.swift; sourceTree = "<group>"; };
 		014893D21EDFA368005E3C94 /* ProtocolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolViewController.swift; sourceTree = "<group>"; };
 		019CCD211E6DAF64002EF989 /* LogAlong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogAlong.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,7 +118,6 @@
 				0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */,
 				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
 				0128AE491EC482B8007A999B /* CategoryTableViewController.swift */,
-				0128AE551EDA3029007A999B /* ProtocolTableViewController.swift */,
 				0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */,
 				0128AE471EC4829B007A999B /* AccountsTableViewController.swift */,
 				019CCD531E748042002EF989 /* Record.swift */,
@@ -268,7 +265,6 @@
 				0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */,
 				019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */,
 				0128AE4E1EC7BBFE007A999B /* SelectAccountTableViewController.swift in Sources */,
-				0128AE561EDA3029007A999B /* ProtocolTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

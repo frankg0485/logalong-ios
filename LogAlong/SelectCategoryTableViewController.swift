@@ -9,12 +9,12 @@
 import UIKit
 
 
-class SelectCategoryTableViewController: ProtocolTableViewController {
+class SelectCategoryTableViewController: UITableViewController {
 
     @IBOutlet weak var okButton: UIButton!
     var myIndexPath: Int = 0
 
-    weak var delegate: TableViewControllerDelegate?
+    weak var delegate: FViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +29,7 @@ class SelectCategoryTableViewController: ProtocolTableViewController {
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
         
-        delegate?.passIntToLabel(self, myInt: myIndexPath)
+        delegate?.passIntBack(self, myInt: myIndexPath)
         
         self.dismiss(animated: true, completion: nil)
     }

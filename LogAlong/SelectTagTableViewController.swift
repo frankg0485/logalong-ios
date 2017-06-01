@@ -9,11 +9,11 @@
 import UIKit
 
 
-class SelectTagTableViewController: ProtocolTableViewController {
+class SelectTagTableViewController: UITableViewController {
     
     @IBOutlet weak var okButton: UIButton!
     
-    weak var delegate: TableViewControllerDelegate?
+    weak var delegate: FViewControllerDelegate?
 
     var myIndexPath: Int = 0
     
@@ -30,7 +30,7 @@ class SelectTagTableViewController: ProtocolTableViewController {
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
         
-        delegate?.passIntToLabel(self, myInt: myIndexPath)
+        delegate?.passIntBack(self, myInt: myIndexPath)
         
         dismiss(animated: true, completion: nil)
     }

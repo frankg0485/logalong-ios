@@ -12,7 +12,7 @@ var accounts: [String] = ["Cash", "Checking", "Credit: Discover", "Credit: Maste
 var categories: [String] = ["Grocery", "Kids", "Eat Out", "Fuel", "Kids: Piano"]
 var payees: [String] = ["Costco", "Walmart", "Chipotle", "Panera", "Biaggis"]
 var tags: [String] = ["Market America", "2014 Summer", "2015 Summer", "2016 Summer", "2017 Summer"]
-class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, TableViewControllerDelegate, FViewControllerDelegate {
+class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FViewControllerDelegate {
     
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var accountLabel: UILabel!
@@ -36,8 +36,11 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         // Dispose of any resources that can be recreated.
     }
     
-    func passIntToLabel(_ caller: UITableViewController, myInt: Int) {
-        if let _ = caller as? SelectAccountTableViewController {
+    
+    func passIntBack(_ caller: UIViewController, myInt: Int) {
+        if let _ = caller as? SelectAmountViewController {
+            amountLabel.text = String(myInt)
+        } else if let _ = caller as? SelectAccountTableViewController {
             accountLabel.text = accounts[myInt]
             
         } else if let _ = caller as? SelectCategoryTableViewController {
@@ -48,13 +51,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             
         } else {
             tagLabel.text = tags[myInt]
-        }
-        
-    }
-    
-    func passIntBack(_ caller: UIViewController, myInt: Int) {
-        if let _ = caller as? SelectAmountViewController {
-            amountLabel.text = String(myInt)
         }
     }
     
