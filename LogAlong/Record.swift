@@ -24,6 +24,9 @@ class Record {
             return nil
         }
         
+        guard !(amount == 0) else {
+            return nil
+        }
         self.category = category ?? ""
         self.amount = amount
         self.account = account

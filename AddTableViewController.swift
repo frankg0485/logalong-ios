@@ -20,6 +20,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     @IBOutlet weak var payeeLabel: UILabel!
     @IBOutlet weak var tagLabel: UILabel!
     
+    weak var delegate: FTabControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +59,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         dismiss(animated: true, completion: nil)
     }
     
+
     
     // MARK: - Table view data source
     
@@ -121,7 +123,11 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "ChooseAccount") || (segue.identifier == "ChooseCategory") || (segue.identifier == "ChoosePayee") || (segue.identifier == "ChooseTag") || (segue.identifier == "ChooseAmount") {
+        if (segue.identifier == "ChooseAccount")
+            || (segue.identifier == "ChooseCategory")
+            || (segue.identifier == "ChoosePayee")
+            || (segue.identifier == "ChooseTag")
+            || (segue.identifier == "ChooseAmount") {
             
             let popoverViewController = segue.destination
             
@@ -144,8 +150,11 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             secondViewController.delegate = self
         }  else if let secondViewController = segue.destination as? SelectAmountViewController {
             secondViewController.delegate = self
+        }  else if let secondViewController = segue.destination as? MainTabViewController {
+            self.delegate = secondViewController
+            delegate?.setTabControllerIndex(1)
+
         }
-        
     }
     
     
