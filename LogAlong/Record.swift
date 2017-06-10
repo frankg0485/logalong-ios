@@ -14,11 +14,12 @@ class Record {
     var amount: Int
     var account: String
     var payee: String?
+    var tag: String?
     var notes: String?
     
     
     
-    init?(category: String?, amount: Int, account: String, payee: String?, notes: String?) {
+    init?(category: String?, amount: Int, account: String, payee: String?, tag: String?, notes: String?) {
         
         guard !account.isEmpty else {
             return nil
@@ -31,6 +32,7 @@ class Record {
         self.amount = amount
         self.account = account
         self.payee = payee ?? ""
+        self.tag = tag ?? ""
         self.notes = notes ?? ""
         
         

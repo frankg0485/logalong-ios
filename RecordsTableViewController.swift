@@ -10,9 +10,12 @@ import UIKit
 
 class RecordsTableViewController: UITableViewController {
 
+    var records = [Record]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        loadSampleRecords()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -28,24 +31,36 @@ class RecordsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return records.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        
+        let cellIdentifier = "RecordsTableViewCell"
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? RecordsTableViewCell else {
+            fatalError("The dequeued cell is not an instance of RecordsTableViewCell.")
 
-        // Configure the cell...
+        }
 
+        let record = records[indexPath.row]
+
+        cell.accountLabel.text = record.account
+        cell.categoryLabel.text = record.category
+        cell.payeelabel.text = record.payee
+        cell.tagLabel.text = record.tag
+        cell.amountLabel.text = String(record.amount)
+
+        
+        
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -91,5 +106,22 @@ class RecordsTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    private func loadSampleRecords() {
+        guard let record1 = Record(category: "Kids: Piano", amount: 54, account: "Credit: Discover", payee: "Costco", tag: "Market America", notes: nil) else {
+            fatalError("Unable to instantiate meal1")
+
+        }
+        
+        guard let record2 = Record(category: "Eat Out", amount: 100, account: "Credit: Master", payee: "Chipotle", tag: "2016 Summer", notes: nil) else {
+            fatalError("Unable to instantiate meal2")
+        }
+        
+        guard let record3 = Record(category: "Grocery", amount: 68, account: "Cash", payee: "Walmart", tag: "2017 Summer", notes: nil) else {
+            fatalError("Unable to instantiate meal3")
+        }
+        
+        records += [record1, record2, record3]
+    }
 
 }
