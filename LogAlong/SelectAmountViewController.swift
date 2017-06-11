@@ -17,6 +17,7 @@ class SelectAmountViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         amountTextField.delegate = self
+        amountTextField.keyboardType = .numbersAndPunctuation
         // Do any additional setup after loading the view.
     }
 

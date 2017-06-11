@@ -28,9 +28,10 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         notesTextField.delegate = self
-        updateSaveButtonState()
-        // Uncomment the/ following line to preserve selection between presentations
+        saveButton.isEnabled = false
+        // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -66,6 +67,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         } else {
             tagLabel.text = tags[myInt]
         }
+        
+        updateSaveButtonState()
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
@@ -191,7 +194,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     private func updateSaveButtonState() {
         // Disable the Save button if the text field is empty.
         
-        if (amountLabel.text?.isEmpty == true) || (accountLabel.text?.isEmpty == true) {
+        if (amountLabel.text == "Label") || (accountLabel.text == "Choose Account") {
             saveButton.isEnabled = false
         } else {
             saveButton.isEnabled = true
