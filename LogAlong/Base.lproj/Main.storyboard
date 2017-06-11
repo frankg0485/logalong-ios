@@ -97,7 +97,7 @@
             </objects>
             <point key="canvasLocation" x="-836" y="916"/>
         </scene>
-        <!--Main Table View Controller-->
+        <!--Your Accounts-->
         <scene sceneID="SmX-Oo-tgp">
             <objects>
                 <tableViewController id="Elb-XN-YoE" customClass="MainTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
@@ -137,7 +137,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="YYe-gS-I2Q">
+                    <navigationItem key="navigationItem" title="Your Accounts" id="YYe-gS-I2Q">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="cY7-e3-psk">
                             <connections>
                                 <segue destination="Fhp-gV-GDC" kind="popoverPresentation" identifier="TypeOfAddition" popoverAnchorBarButtonItem="cY7-e3-psk" id="t3I-q3-RnC">
@@ -275,11 +275,11 @@
             </objects>
             <point key="canvasLocation" x="-291" y="1233"/>
         </scene>
-        <!--Records-->
+        <!--Your Records-->
         <scene sceneID="smz-Ao-bi7">
             <objects>
                 <tableViewController id="qSe-lV-ENf" customClass="RecordsTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="fic-xq-8UM">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" id="fic-xq-8UM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -299,7 +299,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4R-i0-7Qo">
-                                            <rect key="frame" x="0.0" y="37" width="150" height="22"/>
+                                            <rect key="frame" x="0.0" y="69" width="150" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -313,14 +313,21 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xan-Lp-NXg">
-                                            <rect key="frame" x="166" y="39" width="151" height="21"/>
+                                            <rect key="frame" x="166" y="69" width="151" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="       $" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RiS-Ym-BOM">
+                                            <rect key="frame" x="281" y="39" width="42" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HbL-dC-Cu0">
-                                            <rect key="frame" x="325" y="28" width="42" height="21"/>
+                                            <rect key="frame" x="325" y="39" width="42" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -342,13 +349,13 @@
                             <outlet property="delegate" destination="qSe-lV-ENf" id="awt-7s-BZP"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Records" id="iCj-8J-uql"/>
+                    <navigationItem key="navigationItem" title="Your Records" id="PoS-uv-BJt"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Fg-Md-CTt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="944.79999999999995" y="-268.51574212893553"/>
+            <point key="canvasLocation" x="1884" y="-268.51574212893553"/>
         </scene>
-        <!--Settings Table View Controller-->
+        <!--Settings-->
         <scene sceneID="Tmp-pD-n17">
             <objects>
                 <tableViewController id="nq2-YO-mOB" customClass="SettingsTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
@@ -499,11 +506,11 @@
                             <outlet property="delegate" destination="nq2-YO-mOB" id="mzD-l3-pl1"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="CkH-M5-WXI"/>
+                    <navigationItem key="navigationItem" title="Settings" id="CkH-M5-WXI"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M8D-0O-pn8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2478" y="-269"/>
+            <point key="canvasLocation" x="3416.8000000000002" y="-269.41529235382313"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="Ffv-Ch-WTu">
@@ -531,7 +538,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q7X-FA-5lz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3308" y="-725"/>
+            <point key="canvasLocation" x="4247.1999999999998" y="-725.48725637181417"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="3Zy-YS-Ngd">
@@ -559,7 +566,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecE-wb-B6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3308" y="12"/>
+            <point key="canvasLocation" x="4247.1999999999998" y="11.244377811094454"/>
         </scene>
         <!--Main Tab View Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -573,7 +580,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="HgB-XM-zJ5" kind="relationship" relationship="viewControllers" id="E5X-Oc-AYk"/>
-                        <segue destination="qSe-lV-ENf" kind="relationship" relationship="viewControllers" id="k8Q-2L-F3g"/>
+                        <segue destination="VCO-jN-beA" kind="relationship" relationship="viewControllers" id="k8Q-2L-F3g"/>
                         <segue destination="MqR-NU-7lk" kind="relationship" relationship="viewControllers" id="Z5W-fZ-Uqj"/>
                     </connections>
                 </tabBarController>
@@ -617,7 +624,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f0A-9N-IOq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1695" y="-268"/>
+            <point key="canvasLocation" x="2632.8000000000002" y="-268.51574212893553"/>
         </scene>
         <!--Select Tag Table View Controller-->
         <scene sceneID="Ke1-Wl-4MW">
@@ -988,7 +995,7 @@
             </objects>
             <point key="canvasLocation" x="410" y="1233"/>
         </scene>
-        <!--Add Table View Controller-->
+        <!--New Record-->
         <scene sceneID="iXq-J6-Nvp">
             <objects>
                 <tableViewController storyboardIdentifier="testID" id="58n-ox-X6M" customClass="AddTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
@@ -1113,7 +1120,7 @@
                             <outlet property="delegate" destination="58n-ox-X6M" id="3Od-D7-0Ze"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="hqw-Ja-TNB">
+                    <navigationItem key="navigationItem" title="New Record" id="hqw-Ja-TNB">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="g9I-2g-6C9">
                             <connections>
                                 <action selector="cancel:" destination="58n-ox-X6M" id="V3u-Wm-qyh"/>
@@ -1121,7 +1128,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="GtD-UE-CSO">
                             <connections>
-                                <segue destination="49e-Tb-3d3" kind="presentation" identifier="GoBackToTabs" id="GHj-Y5-99O"/>
+                                <segue destination="ZTN-hO-UNK" kind="unwind" unwindAction="unwindToRecordListWithSender:" id="Trd-b9-rKT"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1129,11 +1136,14 @@
                         <outlet property="accountLabel" destination="wP7-mJ-e3p" id="CBF-f1-2sc"/>
                         <outlet property="amountLabel" destination="rgy-MU-fRh" id="BzA-id-kmT"/>
                         <outlet property="categoryLabel" destination="4nh-vD-VJb" id="E6Z-ni-aXi"/>
+                        <outlet property="notesTextField" destination="zvf-zc-gRp" id="ulh-QQ-Gzk"/>
                         <outlet property="payeeLabel" destination="HoC-zQ-kve" id="iOw-IL-PvQ"/>
+                        <outlet property="saveButton" destination="GtD-UE-CSO" id="bxz-xt-CpW"/>
                         <outlet property="tagLabel" destination="Sdp-KF-VDv" id="OMN-t0-ycM"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rPl-CG-lRW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="ZTN-hO-UNK" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="EZ5-LZ-Ncy">
                     <connections>
                         <segue destination="nSG-e5-vYq" kind="popoverPresentation" identifier="ChooseAmount" popoverAnchorView="rgy-MU-fRh" id="l5v-7v-yD6">
@@ -1200,6 +1210,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jjB-DM-5Dj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="12" y="438"/>
+        </scene>
+        <!--Records-->
+        <scene sceneID="IsN-qw-1kE">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="VCO-jN-beA" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Records" id="iCj-8J-uql"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="VZl-Uz-Mgn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="qSe-lV-ENf" kind="relationship" relationship="rootViewController" id="BAE-we-ynd"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nAe-09-WRX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="944.79999999999995" y="-268.51574212893553"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

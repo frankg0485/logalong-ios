@@ -7,24 +7,29 @@
 //
 
 import UIKit
+import os.log
 
 var accounts: [String] = ["Cash", "Checking", "Credit: Discover", "Credit: Master", "Credit: Visa"]
 var categories: [String] = ["Grocery", "Kids", "Eat Out", "Fuel", "Kids: Piano"]
 var payees: [String] = ["Costco", "Walmart", "Chipotle", "Panera", "Biaggis"]
 var tags: [String] = ["Market America", "2014 Summer", "2015 Summer", "2016 Summer", "2017 Summer"]
-class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FViewControllerDelegate {
+class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, FViewControllerDelegate {
     
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var accountLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var payeeLabel: UILabel!
     @IBOutlet weak var tagLabel: UILabel!
+        @IBOutlet weak var saveButton: UIBarButtonItem!
     
-    weak var delegate: FTabControllerDelegate?
+    @IBOutlet weak var notesTextField: UITextField!
+    
+    var record: Record?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        notesTextField.delegate = self
+        updateSaveButtonState()
         // Uncomment the/ following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -37,6 +42,14 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         // Dispose of any resources that can be recreated.
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        updateSaveButtonState()
+    }
     
     func passIntBack(_ caller: UIViewController, myInt: Int) {
         if let _ = caller as? SelectAmountViewController {
@@ -150,10 +163,20 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             secondViewController.delegate = self
         }  else if let secondViewController = segue.destination as? SelectAmountViewController {
             secondViewController.delegate = self
-        }  else if let secondViewController = segue.destination as? MainTabViewController {
-            self.delegate = secondViewController
-            delegate?.setTabControllerIndex(1)
-
+        }  else {
+            guard let button = sender as? UIBarButtonItem, button === saveButton else {
+                os_log("The save button was not pressed, cancelling", log: OSLog.default, type: .debug)
+                return
+            }
+            
+            let amount = Int(amountLabel.text!)!
+            let account = accountLabel.text
+            let category = categoryLabel.text
+            let payee = payeeLabel.text
+            let tag = tagLabel.text
+            let notes = notesTextField.text
+            
+            record = Record(category: category, amount: amount, account: account!, payee: payee, tag: tag, notes: notes)
         }
     }
     
@@ -165,5 +188,13 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return UIModalPresentationStyle.none
     }
     
-    
+    private func updateSaveButtonState() {
+        // Disable the Save button if the text field is empty.
+        
+        if (amountLabel.text?.isEmpty == true) || (accountLabel.text?.isEmpty == true) {
+            saveButton.isEnabled = false
+        } else {
+            saveButton.isEnabled = true
+        }
+    }
 }

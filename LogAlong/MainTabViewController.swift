@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainTabViewController: UITabBarController, FTabControllerDelegate {
+class MainTabViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,11 +21,9 @@ class MainTabViewController: UITabBarController, FTabControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func setTabControllerIndex(_ myIndex: Int) {
-        self.selectedIndex = myIndex
-    }
 
-    
+
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

@@ -28,6 +28,17 @@ class RecordsTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? AddTableViewController, let record = sourceViewController.record {
+            
+            // Add a new record.
+            let newIndexPath = IndexPath(row: records.count, section: 0)
+            
+            records.append(record)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+    }
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {

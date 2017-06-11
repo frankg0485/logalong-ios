@@ -12,6 +12,4 @@ protocol FViewControllerDelegate: class {
     func passIntBack(_ caller: UIViewController, myInt: Int)
 }
 
-protocol FTabControllerDelegate: class {
-    func setTabControllerIndex(_ myIndex: Int)
-}
+
