@@ -30,7 +30,18 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         super.viewDidLoad()
         
         notesTextField.delegate = self
-        saveButton.isEnabled = false
+        
+        if let record = record {
+            amountLabel.text = String(record.amount)
+            accountLabel.text = record.account
+            categoryLabel.text = record.category ?? "Category Not Specified"
+            payeeLabel.text = record.payee ?? "Payee Not Specified"
+            tagLabel.text = record.tag ?? "Tag Not Specified"
+            notesTextField.text = record.notes
+        }
+        
+        updateSaveButtonState()
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
         
@@ -46,10 +57,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        updateSaveButtonState()
     }
     
     func passIntBack(_ caller: UIViewController, myInt: Int) {
@@ -72,7 +79,17 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        let isPresentingInAddRecordMode = presentingViewController is UINavigationController
+        
+        if isPresentingInAddRecordMode {
+            dismiss(animated: true, completion: nil)
+        }
+        else if let owningNavigationController = navigationController {
+            owningNavigationController.popViewController(animated: true)
+        }
+        else {
+            fatalError("The RecordViewController is not inside a navigation controller.")
+        }
     }
     
 

@@ -341,6 +341,7 @@
                                     <outlet property="categoryLabel" destination="o4R-i0-7Qo" id="g04-H4-k9M"/>
                                     <outlet property="payeelabel" destination="BcV-DC-glF" id="sgs-bb-Bkp"/>
                                     <outlet property="tagLabel" destination="xan-Lp-NXg" id="mEd-0K-ZO8"/>
+                                    <segue destination="58n-ox-X6M" kind="show" identifier="ShowDetail" id="LxV-3D-kaH"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -353,7 +354,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Fg-Md-CTt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1884" y="-268.51574212893553"/>
+            <point key="canvasLocation" x="1854" y="-269"/>
         </scene>
         <!--Settings-->
         <scene sceneID="Tmp-pD-n17">
@@ -1232,6 +1233,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="LxV-3D-kaH"/>
         <segue reference="CJ7-Kj-Djb"/>
     </inferredMetricsTieBreakers>
 </document>

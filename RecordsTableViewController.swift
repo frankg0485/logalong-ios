@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 class RecordsTableViewController: UITableViewController {
 
@@ -16,31 +17,40 @@ class RecordsTableViewController: UITableViewController {
         super.viewDidLoad()
 
         loadSampleRecords()
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? AddTableViewController, let record = sourceViewController.record {
             
-            // Add a new record.
-            let newIndexPath = IndexPath(row: records.count, section: 0)
-            
-            records.append(record)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                // Update an existing meal.
+                records[selectedIndexPath.row] = record
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            } else {
+                // Add a new record.
+                let newIndexPath = IndexPath(row: records.count, section: 0)
+                
+                records.append(record)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+                
+                _ = navigationController?.popViewController(animated: true)
+            }
         }
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -108,15 +118,36 @@ class RecordsTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        super.prepare(for: segue, sender: sender)
+        
+        switch(segue.identifier ?? "") {
+            
+        case "ShowDetail":
+            guard let recordDetailViewController = segue.destination as? AddTableViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            
+            guard let selectedRecordCell = sender as? RecordsTableViewCell else {
+                fatalError("Unexpected sender: \(sender)")
+            }
+            
+            guard let indexPath = tableView.indexPath(for: selectedRecordCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+            
+            let selectedRecord = records[indexPath.row]
+            recordDetailViewController.record = selectedRecord
+            
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+        }
     }
-    */
+ 
     
     private func loadSampleRecords() {
         guard let record1 = Record(category: "Kids: Piano", amount: 54, account: "Credit: Discover", payee: "Costco", tag: "Market America", notes: nil) else {
