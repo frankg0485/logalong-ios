@@ -79,13 +79,14 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        let isPresentingInAddRecordMode = presentingViewController is UINavigationController
-        
-        if isPresentingInAddRecordMode {
+
+        if presentingViewController is NewAdditionTableViewController {
             dismiss(animated: true, completion: nil)
+            print("In addrecord mode")
         }
         else if let owningNavigationController = navigationController {
             owningNavigationController.popViewController(animated: true)
+            print (" in editing mode")
         }
         else {
             fatalError("The RecordViewController is not inside a navigation controller.")
