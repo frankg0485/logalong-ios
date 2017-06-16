@@ -59,20 +59,20 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return true
     }
     
-    func passIntBack(_ caller: UIViewController, myInt: Int) {
+    func passIntBack(_ caller: UIViewController, myInt: Float) {
         if let _ = caller as? SelectAmountViewController {
             amountLabel.text = String(myInt)
         } else if let _ = caller as? SelectAccountTableViewController {
-            accountLabel.text = accounts[myInt]
+            accountLabel.text = accounts[Int(myInt)]
             
         } else if let _ = caller as? SelectCategoryTableViewController {
-            categoryLabel.text = categories[myInt]
+            categoryLabel.text = categories[Int(myInt)]
             
         } else if let _ = caller as? SelectPayeeTableViewController {
-            payeeLabel.text = payees[myInt]
+            payeeLabel.text = payees[Int(myInt)]
             
         } else {
-            tagLabel.text = tags[myInt]
+            tagLabel.text = tags[Int(myInt)]
         }
         
         updateSaveButtonState()
@@ -190,7 +190,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 return
             }
             
-            let amount = Int(amountLabel.text!)!
+            let amount = Float(amountLabel.text!)!
             let account = accountLabel.text
             let category = categoryLabel.text
             let payee = payeeLabel.text

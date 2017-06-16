@@ -28,7 +28,7 @@ class SelectPayeeTableViewController: UITableViewController {
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
         
-        delegate?.passIntBack(self, myInt: myIndexPath)
+        delegate?.passIntBack(self, myInt: Float(myIndexPath))
         
         dismiss(animated: true, completion: nil)
     }

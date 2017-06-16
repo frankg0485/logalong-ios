@@ -36,7 +36,7 @@ class SelectAmountViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        delegate?.passIntBack(self, myInt: Int(textField.text!)!)
+        delegate?.passIntBack(self, myInt: Float(textField.text!)!)
         dismiss(animated: true, completion: nil)
     }
     /*
