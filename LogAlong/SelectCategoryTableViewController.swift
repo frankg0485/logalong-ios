@@ -29,7 +29,7 @@ class SelectCategoryTableViewController: UITableViewController {
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
         
-        delegate?.passIntBack(self, myInt: Float(myIndexPath))
+        delegate?.passIntBack(self, myInt: Double(myIndexPath))
         
         self.dismiss(animated: true, completion: nil)
     }

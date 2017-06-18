@@ -48,7 +48,7 @@ class SelectAmountViewController: UIViewController {
             return
         }
 
-        delegate?.passIntBack(self, myInt: Float(amountTextField.text!)!)
+        delegate?.passIntBack(self, myInt: Double(amountTextField.text!)!)
         dismiss(animated: true, completion: nil)
     }
     
@@ -78,7 +78,7 @@ class SelectAmountViewController: UIViewController {
                 op = text
                 isFirstNumber = false
                 hasOp = true
-                amountTextField.text = "\(currentText) \(op) "
+                amountTextField.text = "\(currentText)\(op)"
                 
                 addButton.isEnabled = false
                 subtractButton.isEnabled = false
@@ -97,17 +97,29 @@ class SelectAmountViewController: UIViewController {
                     return
                 }
                 
+                let lastChar = amountTextField.text?.characters.last
                 let truncated = amountTextField.text?.substring(to: (amountTextField.text?.index(before: (amountTextField.text?.endIndex)!))!)
                 
                 amountTextField.text = truncated
                 
-                if (firstNumberText != "") {
-                    
-                } else if (secondNumberText != "") {
-                    secondNumberText = String(Int(secondNumberText)! % 10)
+                
+                if (lastChar == "+") || (lastChar == "-") || (lastChar == "/") || (lastChar == "*") {
+                    op = ""
+                    hasOp = false
+                    addButton.isEnabled = true
+                    subtractButton.isEnabled = true
+                    multiplyButton.isEnabled = true
+                    divideButton.isEnabled = true
+                } else {
+                    if (firstNumberText != "") {
+                        print(firstNumberText)
+                        firstNumberText = firstNumberText.substring(to: (firstNumberText.index(before: (firstNumberText.endIndex))))
+                    } else if (secondNumberText != "") {
+                        secondNumberText = secondNumberText.substring(to: (secondNumberText.index(before: (secondNumberText.endIndex))))
+                    }
                 }
-
-                case "CLEAR":
+                break
+            case "CLEAR":
                 firstNumberText = ""
                 secondNumberText = ""
                 hasOp = false

@@ -59,7 +59,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return true
     }
     
-    func passIntBack(_ caller: UIViewController, myInt: Float) {
+    func passIntBack(_ caller: UIViewController, myInt: Double) {
         if let _ = caller as? SelectAmountViewController {
             amountLabel.text = String(myInt)
         } else if let _ = caller as? SelectAccountTableViewController {
