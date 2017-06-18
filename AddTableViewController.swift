@@ -212,7 +212,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     private func updateSaveButtonState() {
         // Disable the Save button if the text field is empty.
         
-        if (amountLabel.text == "Label") || (accountLabel.text == "Choose Account") {
+        if (amountLabel.text == "Label") || (amountLabel.text == "0.0") || (accountLabel.text == "Choose Account") {
             saveButton.isEnabled = false
         } else {
             saveButton.isEnabled = true

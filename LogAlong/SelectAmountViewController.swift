@@ -8,10 +8,18 @@
 
 import UIKit
 
-class SelectAmountViewController: UIViewController, UITextFieldDelegate {
+class SelectAmountViewController: UIViewController {
 
     @IBOutlet weak var amountTextField: UITextField!
     weak var delegate: FViewControllerDelegate?
+    
+    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var subtractButton: UIButton!
+    @IBOutlet weak var multiplyButton: UIButton!
+    @IBOutlet weak var divideButton: UIButton!
+    
+    
+    
     
     var firstNumberText = ""
     var secondNumberText = ""
@@ -23,8 +31,10 @@ class SelectAmountViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        amountTextField.delegate = self
-        amountTextField.keyboardType = .numbersAndPunctuation
+        addButton.isEnabled = false
+        subtractButton.isEnabled = false
+        multiplyButton.isEnabled = false
+        divideButton.isEnabled = false
         // Do any additional setup after loading the view.
     }
 
@@ -45,24 +55,22 @@ class SelectAmountViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func handleButtonPress(_ sender: UIButton) {
         
-        if canClear {
-            amountTextField.text = ""
-            canClear = false
-            noNumber = true
-        }
+
         var currentText = amountTextField.text!
+        if (currentText == "0") {
+            currentText = ""
+        }
+        
         let textLabel = sender.titleLabel?.text
         if let text = textLabel {
             switch text {
             case "+", "*", "/", "-":
                 if hasOp {
-                    if (secondNumberText == "") {
-                        return
-                    }
-                    
                     let result = calculate()
                     firstNumberText = String(result)
                     currentText = String(result)
+                    
+
                 } else if noNumber {
                     return
                 }
@@ -71,13 +79,18 @@ class SelectAmountViewController: UIViewController, UITextFieldDelegate {
                 isFirstNumber = false
                 hasOp = true
                 amountTextField.text = "\(currentText) \(op) "
+                
+                addButton.isEnabled = false
+                subtractButton.isEnabled = false
+                multiplyButton.isEnabled = false
+                divideButton.isEnabled = false
                 break
             case "=":
                 isFirstNumber = true
                 hasOp = false
-                canClear = true
                 let result = calculate()
                 amountTextField.text = "\(result)"
+                firstNumberText = "\(result)"
                 break
             case "DEL":
                 if (amountTextField.text == "") {
@@ -95,12 +108,12 @@ class SelectAmountViewController: UIViewController, UITextFieldDelegate {
                 }
 
                 case "CLEAR":
-                amountTextField.text = ""
                 firstNumberText = ""
                 secondNumberText = ""
                 hasOp = false
                 noNumber = true
                 isFirstNumber = true
+                amountTextField.text = "0"
                 break
             default:
                 if isFirstNumber {
@@ -111,6 +124,10 @@ class SelectAmountViewController: UIViewController, UITextFieldDelegate {
                 
                 amountTextField.text = "\(currentText)\(text)"
                 noNumber = false
+                addButton.isEnabled = true
+                subtractButton.isEnabled = true
+                multiplyButton.isEnabled = true
+                divideButton.isEnabled = true
                 break
             }
         }

@@ -1530,7 +1530,11 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="550"/>
                     <connections>
+                        <outlet property="addButton" destination="6Rm-yS-YLi" id="Mwb-re-dox"/>
                         <outlet property="amountTextField" destination="hjf-WB-WLU" id="G8b-dX-Xug"/>
+                        <outlet property="divideButton" destination="HEf-Er-QT8" id="ck9-bU-Zec"/>
+                        <outlet property="multiplyButton" destination="hlE-dm-L8M" id="OiM-Nm-xyY"/>
+                        <outlet property="subtractButton" destination="RY7-W1-YAl" id="4Uq-2E-3KP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qEm-aR-PSV" userLabel="First Responder" sceneMemberID="firstResponder"/>
