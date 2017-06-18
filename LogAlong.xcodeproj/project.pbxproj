@@ -43,6 +43,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		01B5EB491EF4AE62001EF3F7 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0128AE451EABD042007A999B /* AddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddTableViewController.swift; path = ../AddTableViewController.swift; sourceTree = "<group>"; };
 		0128AE471EC4829B007A999B /* AccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +173,7 @@
 				019CCD1D1E6DAF64002EF989 /* Sources */,
 				019CCD1E1E6DAF64002EF989 /* Frameworks */,
 				019CCD1F1E6DAF64002EF989 /* Resources */,
+				01B5EB491EF4AE62001EF3F7 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);

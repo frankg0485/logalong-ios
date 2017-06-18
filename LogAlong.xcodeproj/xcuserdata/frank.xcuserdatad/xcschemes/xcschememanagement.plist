@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Calculator.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>LogAlong.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -18,6 +23,21 @@
 			<true/>
 		</dict>
 		<key>019CCD361E6DAF65002EF989</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>01B5EB3D1EF4AE62001EF3F7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>01B5EB4D1EF4AEC6001EF3F7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>01B5EB5C1EF4AF28001EF3F7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
