@@ -18,6 +18,7 @@ class SelectAmountViewController: UIViewController {
     @IBOutlet weak var multiplyButton: UIButton!
     @IBOutlet weak var divideButton: UIButton!
     
+    @IBOutlet weak var decimalPointButton: UIButton!
     
     
     
@@ -27,10 +28,11 @@ class SelectAmountViewController: UIViewController {
     var isFirstNumber = true
     var hasOp = false
     var canClear = true
-    var noNumber = true
+    var equalsClicked = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        amountTextField.text = "0"
         addButton.isEnabled = false
         subtractButton.isEnabled = false
         multiplyButton.isEnabled = false
@@ -71,7 +73,7 @@ class SelectAmountViewController: UIViewController {
                     currentText = String(result)
                     
 
-                } else if noNumber {
+                } else if (amountTextField.text?.isEmpty)! {
                     return
                 }
                 
@@ -91,6 +93,7 @@ class SelectAmountViewController: UIViewController {
                 let result = calculate()
                 amountTextField.text = "\(result)"
                 firstNumberText = "\(result)"
+                equalsClicked = true
                 break
             case "DEL":
                 if (amountTextField.text == "") {
@@ -104,7 +107,6 @@ class SelectAmountViewController: UIViewController {
                 
                 
                 if (lastChar == "+") || (lastChar == "-") || (lastChar == "/") || (lastChar == "*") {
-                    op = ""
                     hasOp = false
                     addButton.isEnabled = true
                     subtractButton.isEnabled = true
@@ -112,7 +114,6 @@ class SelectAmountViewController: UIViewController {
                     divideButton.isEnabled = true
                 } else {
                     if (firstNumberText != "") {
-                        print(firstNumberText)
                         firstNumberText = firstNumberText.substring(to: (firstNumberText.index(before: (firstNumberText.endIndex))))
                     } else if (secondNumberText != "") {
                         secondNumberText = secondNumberText.substring(to: (secondNumberText.index(before: (secondNumberText.endIndex))))
@@ -123,23 +124,42 @@ class SelectAmountViewController: UIViewController {
                 firstNumberText = ""
                 secondNumberText = ""
                 hasOp = false
-                noNumber = true
                 isFirstNumber = true
                 amountTextField.text = "0"
                 break
             default:
+                
+                
+                
                 if isFirstNumber {
+                    if (equalsClicked) {
+                        firstNumberText = "\(text)"
+                        equalsClicked = false
+                        amountTextField.text = "\(text)"
+                        return
+                    }
+                    
                     firstNumberText = "\(firstNumberText)\(text)"
                 } else {
-                    secondNumberText = "\(secondNumberText)\(text)"
+                secondNumberText = "\(secondNumberText)\(text)"
+            }
+            
+            amountTextField.text = "\(currentText)\(text)"
+                
+                if (text == ".") {
+                    decimalPointButton.isEnabled = false
+                    addButton.isEnabled = false
+                    subtractButton.isEnabled = false
+                    multiplyButton.isEnabled = false
+                    divideButton.isEnabled = false
+                } else {
+                    decimalPointButton.isEnabled = true
+                    addButton.isEnabled = true
+                    subtractButton.isEnabled = true
+                    multiplyButton.isEnabled = true
+                    divideButton.isEnabled = true
                 }
                 
-                amountTextField.text = "\(currentText)\(text)"
-                noNumber = false
-                addButton.isEnabled = true
-                subtractButton.isEnabled = true
-                multiplyButton.isEnabled = true
-                divideButton.isEnabled = true
                 break
             }
         }

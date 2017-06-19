@@ -54,6 +54,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         // Dispose of any resources that can be recreated.
     }
     
+    func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
+        return false
+    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -169,6 +172,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             
             popoverViewController.popoverPresentationController!.delegate = self
             
+            
         }
         
         if let secondViewController = segue.destination as? SelectAccountTableViewController {
@@ -209,6 +213,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return UIModalPresentationStyle.none
     }
     
+
     private func updateSaveButtonState() {
         // Disable the Save button if the text field is empty.
         
