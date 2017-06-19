@@ -86,6 +86,8 @@ class SelectAmountViewController: UIViewController {
                 subtractButton.isEnabled = false
                 multiplyButton.isEnabled = false
                 divideButton.isEnabled = false
+                
+                equalsClicked = false
                 break
             case "=":
                 isFirstNumber = true
@@ -100,6 +102,8 @@ class SelectAmountViewController: UIViewController {
                     return
                 }
                 
+                equalsClicked = false
+                
                 let lastChar = amountTextField.text?.characters.last
                 let truncated = amountTextField.text?.substring(to: (amountTextField.text?.index(before: (amountTextField.text?.endIndex)!))!)
                 
@@ -108,20 +112,21 @@ class SelectAmountViewController: UIViewController {
                 
                 if (lastChar == "+") || (lastChar == "-") || (lastChar == "/") || (lastChar == "*") {
                     hasOp = false
+                    isFirstNumber = true
                     addButton.isEnabled = true
                     subtractButton.isEnabled = true
                     multiplyButton.isEnabled = true
                     divideButton.isEnabled = true
                 } else {
-                    if (firstNumberText != "") {
+                    if (firstNumberText != "") && (secondNumberText == "") {
                         firstNumberText = firstNumberText.substring(to: (firstNumberText.index(before: (firstNumberText.endIndex))))
-                    } else if (secondNumberText != "") {
+                    } else if (secondNumberText != "") && (firstNumberText != ""){
                         secondNumberText = secondNumberText.substring(to: (secondNumberText.index(before: (secondNumberText.endIndex))))
                     }
                 }
                 break
             case "CLEAR":
-                firstNumberText = ""
+                firstNumberText = "0"
                 secondNumberText = ""
                 hasOp = false
                 isFirstNumber = true
