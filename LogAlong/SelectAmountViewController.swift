@@ -27,16 +27,13 @@ class SelectAmountViewController: UIViewController {
     var op = ""
     var isFirstNumber = true
     var hasOp = false
-    var canClear = true
     var equalsClicked = false
+    var decimalPointClicked = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         amountTextField.text = "0"
-        addButton.isEnabled = false
-        subtractButton.isEnabled = false
-        multiplyButton.isEnabled = false
-        divideButton.isEnabled = false
+        disableOrEnableOperationButtons(state: false)
         // Do any additional setup after loading the view.
     }
 
@@ -78,24 +75,27 @@ class SelectAmountViewController: UIViewController {
                 }
                 
                 op = text
-                isFirstNumber = false
-                hasOp = true
+                
+                changeHasOpAndIsFirstNumberState(hasOpState: true, isFirstNumberState: false)
+                
+                decimalPointClicked = false
+                decimalPointButton.isEnabled = true
                 amountTextField.text = "\(currentText)\(op)"
                 
-                addButton.isEnabled = false
-                subtractButton.isEnabled = false
-                multiplyButton.isEnabled = false
-                divideButton.isEnabled = false
+                disableOrEnableOperationButtons(state: false)
+
                 
                 equalsClicked = false
                 break
             case "=":
-                isFirstNumber = true
-                hasOp = false
+                changeHasOpAndIsFirstNumberState(hasOpState: false, isFirstNumberState: true)
+                
                 let result = calculate()
                 amountTextField.text = "\(result)"
                 firstNumberText = "\(result)"
+                
                 equalsClicked = true
+                decimalPointButton.isEnabled = true
                 break
             case "DEL":
                 if (amountTextField.text == "") {
@@ -105,31 +105,39 @@ class SelectAmountViewController: UIViewController {
                 equalsClicked = false
                 
                 let lastChar = amountTextField.text?.characters.last
-                let truncated = amountTextField.text?.substring(to: (amountTextField.text?.index(before: (amountTextField.text?.endIndex)!))!)
                 
-                amountTextField.text = truncated
+                amountTextField.text = deleteChar(inputStr: amountTextField.text!)
                 
                 
                 if (lastChar == "+") || (lastChar == "-") || (lastChar == "/") || (lastChar == "*") {
-                    hasOp = false
-                    isFirstNumber = true
-                    addButton.isEnabled = true
-                    subtractButton.isEnabled = true
-                    multiplyButton.isEnabled = true
-                    divideButton.isEnabled = true
+                    changeHasOpAndIsFirstNumberState(hasOpState: false, isFirstNumberState: true)
+                    disableOrEnableOperationButtons(state: true)
+                    
                 } else {
                     if (firstNumberText != "") && (secondNumberText == "") {
-                        firstNumberText = firstNumberText.substring(to: (firstNumberText.index(before: (firstNumberText.endIndex))))
+                        
+                        if (lastChar == ".") {
+                            decimalPointClicked = false
+                            decimalPointButton.isEnabled = true
+                        }
+                        
+                        firstNumberText = deleteChar(inputStr: firstNumberText)
+                        
                     } else if (secondNumberText != "") && (firstNumberText != ""){
-                        secondNumberText = secondNumberText.substring(to: (secondNumberText.index(before: (secondNumberText.endIndex))))
+                        
+                        if (lastChar == ".") {
+                            decimalPointClicked = true
+                        }
+                        secondNumberText = deleteChar(inputStr: secondNumberText)
                     }
                 }
                 break
             case "CLEAR":
                 firstNumberText = "0"
                 secondNumberText = ""
-                hasOp = false
-                isFirstNumber = true
+                
+                changeHasOpAndIsFirstNumberState(hasOpState: false, isFirstNumberState: true)
+                
                 amountTextField.text = "0"
                 break
             default:
@@ -141,35 +149,66 @@ class SelectAmountViewController: UIViewController {
                         firstNumberText = "\(text)"
                         equalsClicked = false
                         amountTextField.text = "\(text)"
+                        checkAndChangeStateOfDecimalPoint(textInput: text)
                         return
+                    }
+                    
+                    checkAndChangeStateOfDecimalPoint(textInput: text)
+                    
+                    if (decimalPointClicked) && (text != ".") {
+                        disableOrEnableOperationButtons(state: true)
+                        
                     }
                     
                     firstNumberText = "\(firstNumberText)\(text)"
                 } else {
-                secondNumberText = "\(secondNumberText)\(text)"
-            }
-            
-            amountTextField.text = "\(currentText)\(text)"
-                
-                if (text == ".") {
-                    decimalPointButton.isEnabled = false
-                    addButton.isEnabled = false
-                    subtractButton.isEnabled = false
-                    multiplyButton.isEnabled = false
-                    divideButton.isEnabled = false
-                } else {
-                    decimalPointButton.isEnabled = true
-                    addButton.isEnabled = true
-                    subtractButton.isEnabled = true
-                    multiplyButton.isEnabled = true
-                    divideButton.isEnabled = true
+                    secondNumberText = "\(secondNumberText)\(text)"
+                    
+                    checkAndChangeStateOfDecimalPoint(textInput: text)
+                    
+                    if (decimalPointClicked) && (text != ".") {
+                        disableOrEnableOperationButtons(state: true)
+
+                    }
                 }
+                
+                amountTextField.text = "\(currentText)\(text)"
+                
                 
                 break
             }
         }
     }
     
+    func disableOrEnableOperationButtons(state: Bool) {
+        addButton.isEnabled = state
+        subtractButton.isEnabled = state
+        multiplyButton.isEnabled = state
+        divideButton.isEnabled = state
+    }
+    
+    func changeHasOpAndIsFirstNumberState(hasOpState: Bool, isFirstNumberState: Bool) {
+        hasOp = hasOpState
+        isFirstNumber = isFirstNumberState
+    }
+    
+    func checkAndChangeStateOfDecimalPoint(textInput: String) {
+        if (textInput == ".") {
+            decimalPointClicked = true
+        }
+        
+        if (decimalPointClicked) {
+            decimalPointButton.isEnabled = false
+            
+        } else {
+            decimalPointButton.isEnabled = true
+        }
+    }
+    
+    func deleteChar(inputStr: String) -> String {
+        return inputStr.substring(to: (inputStr.index(before: (inputStr.endIndex))))
+        
+    }
     
     func calculate() -> Double {
         if (firstNumberText == "") {
