@@ -20,20 +20,24 @@ class SelectAmountViewController: UIViewController {
     
     @IBOutlet weak var decimalPointButton: UIButton!
     
+    enum CalculatorState {
+        case COLLECT_FIRST_NUMBER
+        case COLLECT_SECOND_NUMBER
+    }
+
+    var state = CalculatorState.COLLECT_FIRST_NUMBER
     
+    var newText: String = ""
+    var firstNumberText: String = ""
+    var secondNumberText: String = ""
+    var operation: String = ""
     
-    var firstNumberText = ""
-    var secondNumberText = ""
-    var op = ""
-    var isFirstNumber = true
-    var hasOp = false
-    var equalsClicked = false
-    var decimalPointClicked = false
+    var firstDecimalButtonClicked: Bool = false
+    var secondDecimalButtonClicked: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         amountTextField.text = "0"
-        disableOrEnableOperationButtons(state: false)
         // Do any additional setup after loading the view.
     }
 
@@ -54,155 +58,163 @@ class SelectAmountViewController: UIViewController {
     
     @IBAction func handleButtonPress(_ sender: UIButton) {
         
-
-        var currentText = amountTextField.text!
-        if (currentText == "0") {
-            currentText = ""
-        }
+        newText = (sender.titleLabel?.text)!
         
-        let textLabel = sender.titleLabel?.text
-        if let text = textLabel {
-            switch text {
-            case "+", "*", "/", "-":
-                if hasOp {
-                    let result = calculate()
-                    firstNumberText = String(result)
-                    currentText = String(result)
-                    
-
-                } else if (amountTextField.text?.isEmpty)! {
-                    return
-                }
-                
-                op = text
-                
-                changeHasOpAndIsFirstNumberState(hasOpState: true, isFirstNumberState: false)
-                
-                decimalPointClicked = false
-                decimalPointButton.isEnabled = true
-                amountTextField.text = "\(currentText)\(op)"
-                
-                disableOrEnableOperationButtons(state: false)
-
-                
-                equalsClicked = false
-                break
-            case "=":
-                changeHasOpAndIsFirstNumberState(hasOpState: false, isFirstNumberState: true)
-                
-                let result = calculate()
-                amountTextField.text = "\(result)"
-                firstNumberText = "\(result)"
-                
-                equalsClicked = true
-                decimalPointButton.isEnabled = true
-                break
+        switch state {
+        case .COLLECT_FIRST_NUMBER:
+            
+            switch newText {
             case "DEL":
+                
                 if (amountTextField.text == "") {
                     return
                 }
+                let lastChar = amountTextField.text?.characters.last
                 
-                equalsClicked = false
+                amountTextField.text = deleteChar(inputStr: amountTextField.text!)
+                
+                if (lastChar == ".") {
+                    firstDecimalButtonClicked = false
+                    decimalPointButton.isEnabled = true
+
+                }
+                
+                firstNumberText = deleteChar(inputStr: firstNumberText)
+                
+                break
+                
+            case "CLEAR":
+                amountTextField.text = ""
+                
+                firstNumberText = ""
+                firstDecimalButtonClicked = false
+                decimalPointButton.isEnabled = true
+                
+                disableOrEnableOperationButtons(state: false)
+                break
+                
+            case "+", "-", "*", "/":
+                operation = newText
+                amountTextField.text = amountTextField.text! + newText
+                
+                disableOrEnableOperationButtons(state: false)
+                decimalPointButton.isEnabled = true
+                state = .COLLECT_SECOND_NUMBER
+                break
+                
+            case "=":
+                return
+                
+            default:
+                firstNumberText = addDigitToNumber(oldNumberText: firstNumberText)
+                
+                if (newText == ".") {
+                    firstDecimalButtonClicked = true
+                    decimalPointButton.isEnabled = false
+                    disableOrEnableOperationButtons(state: false)
+                } else {
+                   disableOrEnableOperationButtons(state: true)
+                }
+                
+                amountTextField.text = firstNumberText
+                break
+            }
+            
+            
+            break
+            
+        case .COLLECT_SECOND_NUMBER:
+            switch newText {
+            case "DEL":
                 
                 let lastChar = amountTextField.text?.characters.last
                 
                 amountTextField.text = deleteChar(inputStr: amountTextField.text!)
                 
-                
-                if (lastChar == "+") || (lastChar == "-") || (lastChar == "/") || (lastChar == "*") {
-                    changeHasOpAndIsFirstNumberState(hasOpState: false, isFirstNumberState: true)
-                    disableOrEnableOperationButtons(state: true)
+                if (lastChar == ".") {
+                    secondDecimalButtonClicked = false
+                    decimalPointButton.isEnabled = true
                     
-                } else {
-                    if (firstNumberText != "") && (secondNumberText == "") {
-                        
-                        if (lastChar == ".") {
-                            decimalPointClicked = false
-                            decimalPointButton.isEnabled = true
-                        }
-                        
-                        firstNumberText = deleteChar(inputStr: firstNumberText)
-                        
-                    } else if (secondNumberText != "") && (firstNumberText != ""){
-                        
-                        if (lastChar == ".") {
-                            decimalPointClicked = true
-                        }
-                        secondNumberText = deleteChar(inputStr: secondNumberText)
-                    }
+                } else if (lastChar == Character(operation)) {
+                    operation = ""
+                    secondNumberText = ""
+                    
+                    state = .COLLECT_FIRST_NUMBER
+                    return
                 }
+                
+                
+                secondNumberText = deleteChar(inputStr: secondNumberText)
+                
                 break
+                
             case "CLEAR":
-                firstNumberText = "0"
+                amountTextField.text = ""
+                
+                firstNumberText = ""
+                secondNumberText = ""
+                firstDecimalButtonClicked = false
+                secondDecimalButtonClicked = false
+                decimalPointButton.isEnabled = true
+                
+                disableOrEnableOperationButtons(state: false)
+                
+                state = .COLLECT_FIRST_NUMBER
+                return
+                
+            case "+", "-", "*", "/":
+                let result = calculate()
+                firstNumberText = String(result)
+                operation = newText
+                amountTextField.text = String(result) + newText
+                
+                break
+                
+            case "=":
+                let result = calculate()
+                amountTextField.text = String(result)
+                operation = ""
+                firstNumberText = String(result)
                 secondNumberText = ""
                 
-                changeHasOpAndIsFirstNumberState(hasOpState: false, isFirstNumberState: true)
-                
-                amountTextField.text = "0"
+                state = .COLLECT_FIRST_NUMBER
                 break
             default:
+                secondNumberText = addDigitToNumber(oldNumberText: secondNumberText)
                 
-                
-                
-                if isFirstNumber {
-                    if (equalsClicked) {
-                        firstNumberText = "\(text)"
-                        equalsClicked = false
-                        amountTextField.text = "\(text)"
-                        checkAndChangeStateOfDecimalPoint(textInput: text)
-                        return
-                    }
-                    
-                    checkAndChangeStateOfDecimalPoint(textInput: text)
-                    
-                    if (decimalPointClicked) && (text != ".") {
-                        disableOrEnableOperationButtons(state: true)
-                        
-                    }
-                    
-                    firstNumberText = "\(firstNumberText)\(text)"
+                if (newText == ".") {
+                    secondDecimalButtonClicked = true
+                    decimalPointButton.isEnabled = false
+                    disableOrEnableOperationButtons(state: false)
                 } else {
-                    secondNumberText = "\(secondNumberText)\(text)"
-                    
-                    checkAndChangeStateOfDecimalPoint(textInput: text)
-                    
-                    if (decimalPointClicked) && (text != ".") {
-                        disableOrEnableOperationButtons(state: true)
-
-                    }
+                    disableOrEnableOperationButtons(state: true)
                 }
                 
-                amountTextField.text = "\(currentText)\(text)"
-                
+                amountTextField.text = amountTextField.text! + newText
                 
                 break
             }
+            
+            
+            break
+            
+
+        
         }
+        
     }
     
+    func addDigitToNumber(oldNumberText: String) -> String {
+        let newNumberText: String = oldNumberText + newText
+        
+        return newNumberText
+    }
+
     func disableOrEnableOperationButtons(state: Bool) {
         addButton.isEnabled = state
         subtractButton.isEnabled = state
         multiplyButton.isEnabled = state
         divideButton.isEnabled = state
-    }
-    
-    func changeHasOpAndIsFirstNumberState(hasOpState: Bool, isFirstNumberState: Bool) {
-        hasOp = hasOpState
-        isFirstNumber = isFirstNumberState
-    }
-    
-    func checkAndChangeStateOfDecimalPoint(textInput: String) {
-        if (textInput == ".") {
-            decimalPointClicked = true
-        }
-        
-        if (decimalPointClicked) {
-            decimalPointButton.isEnabled = false
-            
-        } else {
-            decimalPointButton.isEnabled = true
-        }
     }
     
     func deleteChar(inputStr: String) -> String {
@@ -211,35 +223,27 @@ class SelectAmountViewController: UIViewController {
     }
     
     func calculate() -> Double {
-        if (firstNumberText == "") {
-            return 0
-        }
-        let firstNumber = Double(firstNumberText)!
-        if (secondNumberText == "") {
-            return firstNumber
-        }
-        let secondNumber = Double(secondNumberText)!
+        let firstNumber = Double(firstNumberText)
+        let secondNumber = Double(secondNumberText)
         
-        firstNumberText = ""
-        secondNumberText = ""
-        switch op {
+        switch operation {
         case "+":
-            return firstNumber + secondNumber
+            return firstNumber! + secondNumber!
+            
         case "-":
-            return firstNumber - secondNumber
+            return firstNumber! - secondNumber!
+            
         case "*":
-            return firstNumber * secondNumber
+            return firstNumber! * secondNumber!
+            
         case "/":
-            return firstNumber / secondNumber
+            return firstNumber! / secondNumber!
+            
         default:
             return 0
         }
-    }
         
-
-
-    
-
+    }
     /*
     // MARK: - Navigation
 
