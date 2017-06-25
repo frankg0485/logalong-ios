@@ -15,12 +15,12 @@ class RecordsTableViewCell: UITableViewCell {
     @IBOutlet weak var payeelabel: UILabel!
     @IBOutlet weak var tagLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

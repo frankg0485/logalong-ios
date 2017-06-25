@@ -8,17 +8,17 @@
 
 import UIKit
 class Record: NSObject, NSCoding {
-    
+
     var category: String?
     var amount: Float
     var account: String
     var payee: String?
     var tag: String?
     var notes: String?
-    
+
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     static let ArchiveURL = DocumentsDirectory.appendingPathComponent("records")
-    
+
     struct PropertyKey {
         static let amount = "amount"
         static let account = "account"
@@ -27,13 +27,13 @@ class Record: NSObject, NSCoding {
         static let tag = "tag"
         static let notes = "notes"
     }
-    
+
     init?(category: String?, amount: Float, account: String, payee: String?, tag: String?, notes: String?) {
-        
+
         guard !account.isEmpty else {
             return nil
         }
-        
+
         guard !(amount == 0) else {
             return nil
         }
@@ -43,10 +43,10 @@ class Record: NSObject, NSCoding {
         self.payee = payee ?? ""
         self.tag = tag ?? ""
         self.notes = notes ?? ""
-        
-        
+
+
     }
-    
+
     func encode(with aCoder: NSCoder) {
         aCoder.encode(amount, forKey: PropertyKey.amount)
         aCoder.encode(account, forKey: PropertyKey.account)
@@ -54,16 +54,16 @@ class Record: NSObject, NSCoding {
         aCoder.encode(payee, forKey: PropertyKey.payee)
         aCoder.encode(tag, forKey: PropertyKey.tag)
         aCoder.encode(notes, forKey: PropertyKey.notes)
-        
+
     }
-    
+
     required convenience init?(coder aDecoder: NSCoder) {
         let amount = aDecoder.decodeFloat(forKey: PropertyKey.amount)
         guard let account = aDecoder.decodeObject(forKey: PropertyKey.account) as? String else {
             print("ERROR")
             return nil
         }
-        
+
         guard let category = aDecoder.decodeObject(forKey: PropertyKey.category) as? String else {
             print("ERROR")
             return nil
