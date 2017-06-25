@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FViewControllerDelegate: class {
-    func passIntBack(_ caller: UIViewController, myInt: Double)
+    func passDoubleBack(_ caller: UIViewController, myDouble: Double)
 }
 
 

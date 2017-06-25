@@ -29,8 +29,7 @@ class SelectCategoryTableViewController: UITableViewController {
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
 
-        delegate?.passIntBack(self, myInt: Double(myIndexPath))
-
+delegate?.passDoubleBack(self, myDouble: Double(myIndexPath))
         self.dismiss(animated: true, completion: nil)
     }
     override func didReceiveMemoryWarning() {

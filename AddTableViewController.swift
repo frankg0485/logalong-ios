@@ -62,20 +62,20 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return true
     }
 
-    func passIntBack(_ caller: UIViewController, myInt: Double) {
+    func passDoubleBack(_ caller: UIViewController, myDouble: Double) {
         if let _ = caller as? SelectAmountViewController {
-            amountLabel.text = String(myInt)
+            amountLabel.text = String(format: "%.2lf", myDouble)
         } else if let _ = caller as? SelectAccountTableViewController {
-            accountLabel.text = accounts[Int(myInt)]
+            accountLabel.text = accounts[Int(myDouble)]
 
         } else if let _ = caller as? SelectCategoryTableViewController {
-            categoryLabel.text = categories[Int(myInt)]
+            categoryLabel.text = categories[Int(myDouble)]
 
         } else if let _ = caller as? SelectPayeeTableViewController {
-            payeeLabel.text = payees[Int(myInt)]
+            payeeLabel.text = payees[Int(myDouble)]
 
         } else {
-            tagLabel.text = tags[Int(myInt)]
+            tagLabel.text = tags[Int(myDouble)]
         }
 
         updateSaveButtonState()

@@ -28,8 +28,7 @@ class SelectPayeeTableViewController: UITableViewController {
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
 
-        delegate?.passIntBack(self, myInt: Double(myIndexPath))
-
+delegate?.passDoubleBack(self, myDouble: Double(myIndexPath))
         dismiss(animated: true, completion: nil)
     }
     override func didReceiveMemoryWarning() {

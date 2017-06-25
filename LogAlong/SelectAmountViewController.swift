@@ -51,7 +51,7 @@ class SelectAmountViewController: UIViewController {
             return
         }
 
-        delegate?.passIntBack(self, myInt: Double(amountTextField.text!)!)
+        delegate?.passDoubleBack(self, myDouble: Double(amountTextField.text!)!)
         dismiss(animated: true, completion: nil)
     }
 
@@ -165,9 +165,11 @@ class SelectAmountViewController: UIViewController {
             case "+", "-", "*", "/":
                 let result = calculate()
                 firstNumberText = String(result)
+                secondNumberText = ""
                 operation = newText
                 amountTextField.text = String(result) + newText
 
+                disableOrEnableOperationButtons(state: false)
                 break
 
             case "=":
