@@ -176,6 +176,9 @@ class SelectAmountViewController: UIViewController {
                 operation = ""
                 firstNumberText = String(result)
                 secondNumberText = ""
+                firstDecimalButtonClicked = true
+                secondDecimalButtonClicked = false
+                decimalPointButton.isEnabled = false
                 
                 state = .COLLECT_FIRST_NUMBER
                 break
