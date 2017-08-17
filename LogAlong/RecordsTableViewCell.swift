@@ -17,10 +17,6 @@ class RecordsTableViewCell: UITableViewCell {
     @IBOutlet weak var amountLabel: UILabel!
 
 
-
-
-
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

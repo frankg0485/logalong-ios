@@ -80,9 +80,54 @@ class RecordDB {
     }
 
 
+    func getAccounts() -> [String] {
+        var accounts = [String]()
+
+        do {
+
+            for account in try db!.prepare(self.accounts) {
+                accounts.append(account[aName])
+            }
+        } catch {
+            print("Select failed")
+        }
+        return accounts
+    }
+
+    func getCategories() -> [String] {
+        var accounts = [String]()
+
+        do {
+
+            for account in try db!.prepare(self.accounts) {
+                accounts.append(account[aName])
+            }
+        } catch {
+            print("Select failed")
+        }
+        return accounts
+    }
+
+    func addAccount(name: String) {
+        do {
+            let insert = accounts.insert(aName <- name)
+            let _ = try db!.run(insert)
+            
+        } catch {
+            print("Insert failed")
+        }
+    }
 
 
+    func addCategory(name: String) {
+        do {
+            let insert = categories.insert(cName <- name)
+            let _ = try db!.run(insert)
 
+        } catch {
+            print("Insert failed")
+        }
+    }
 
 
 

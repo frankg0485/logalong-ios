@@ -8,10 +8,13 @@
 
 import UIKit
 
-class AccountsTableViewController: UITableViewController {
+class AccountsTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
+
+    var accounts: [String?] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        accounts = RecordDB.instance.getAccounts()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -29,23 +32,29 @@ class AccountsTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return accounts.count
     }
 
-    /*
+
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cellIdentifier = "AccountCell"
 
-     // Configure the cell...
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AccountsTableViewCell else {
+            fatalError("The dequeued cell is not an instance of AccountsTableViewCell.")
+        }
 
-     return cell
+        let account = accounts[indexPath.row]
+
+        cell.nameLabel.text = account
+
+        return cell
      }
-     */
+
 
     /*
      // Override to support conditional editing of the table view.
@@ -82,14 +91,36 @@ class AccountsTableViewController: UITableViewController {
      }
      */
 
-    /*
+
      // MARK: - Navigation
 
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+        if (segue.identifier == "CreateAccount") {
+            let popoverViewController = segue.destination
 
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+
+            popoverViewController.popoverPresentationController!.delegate = self
+        }
+
+     }
+
+
+    @IBAction func unwindToAccountList(sender: UIStoryboardSegue) {
+
+        if let sourceViewController = sender.source as? CreateAccountViewController, let account = sourceViewController.account {
+
+            let newIndexPath = IndexPath(row: accounts.count, section: 0)
+            accounts.append(account)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+
+            RecordDB.instance.addAccount(name: account)
+
+        }
+        func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+            return UIModalPresentationStyle.none
+        }
+        
+    }
 }

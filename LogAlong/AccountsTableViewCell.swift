@@ -1,15 +1,17 @@
 //
-//  SettingsTableViewCell.swift
+//  AccountsTableViewCell.swift
 //  LogAlong
 //
-//  Created by Frank Gao on 3/6/17.
+//  Created by Frank Gao on 8/16/17.
 //  Copyright © 2017 Frank Gao. All rights reserved.
 //
 
 import UIKit
 
-class SettingsTableViewCell: UITableViewCell {
+class AccountsTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var nameLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
