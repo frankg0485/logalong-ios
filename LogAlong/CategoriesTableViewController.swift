@@ -1,5 +1,5 @@
 //
-//  CategoryTableViewController.swift
+//  CategoriesTableViewController.swift
 //  LogAlong
 //
 //  Created by Frank Gao on 5/11/17.
@@ -8,10 +8,13 @@
 
 import UIKit
 
-class CategoryTableViewController: UITableViewController {
+class CategoriesTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
 
+    var categories: [String?] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        categories = RecordDB.instance.getCategories()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -25,27 +28,36 @@ class CategoryTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func okButtonPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return categories.count
     }
 
-    /*
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-     // Configure the cell...
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellIdentifier = "CategoryCell"
 
-     return cell
-     }
-     */
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? CategoriesTableViewCell else {
+            fatalError("The dequeued cell is not an instance of CategoriesTableViewCell.")
+        }
+
+        let category = categories[indexPath.row]
+
+        cell.nameLabel.text = category
+
+        return cell
+    }
+
 
     /*
      // Override to support conditional editing of the table view.
@@ -82,14 +94,38 @@ class CategoryTableViewController: UITableViewController {
      }
      */
 
-    /*
-     // MARK: - Navigation
 
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "CreateCategory") {
+            let popoverViewController = segue.destination
+
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+
+            popoverViewController.popoverPresentationController!.delegate = self
+        }
+
+    }
+
+
+    @IBAction func unwindToCategoryList(sender: UIStoryboardSegue) {
+
+        if let sourceViewController = sender.source as? CreateCategoryViewController, let category = sourceViewController.category {
+
+            let newIndexPath = IndexPath(row: categories.count, section: 0)
+            accounts.append(category)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+
+            RecordDB.instance.addCategory(name: category)
+
+        }
+        func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+            return UIModalPresentationStyle.none
+        }
+        
+    }
+
 
 }
