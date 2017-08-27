@@ -9,8 +9,7 @@
 import UIKit
 import os.log
 
-var accounts: [String] = ["Cash", "Checking", "Credit: Discover", "Credit: Master", "Credit: Visa"]
-var categories: [String] = ["Grocery", "Kids", "Eat Out", "Fuel", "Kids: Piano"]
+
 var payees: [String] = ["Costco", "Walmart", "Chipotle", "Panera", "Biaggis"]
 var tags: [String] = ["Market America", "2014 Summer", "2015 Summer", "2016 Summer", "2017 Summer"]
 class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, FViewControllerDelegate {
@@ -69,7 +68,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             accountLabel.text = RecordDB.instance.searchAccounts(id: Int64(myDouble + 1))
 
         } else if let _ = caller as? SelectCategoryTableViewController {
-            categoryLabel.text = categories[Int(myDouble)]
+            categoryLabel.text = RecordDB.instance.searchCategories(id: Int64(myDouble + 1))
 
         } else if let _ = caller as? SelectPayeeTableViewController {
             payeeLabel.text = payees[Int(myDouble)]

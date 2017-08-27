@@ -118,7 +118,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
         if let sourceViewController = sender.source as? CreateCategoryViewController, let category = sourceViewController.category {
 
             let newIndexPath = IndexPath(row: categories.count, section: 0)
-            accounts.append(category)
+            categories.append(category)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
 
             RecordDB.instance.addCategory(name: category)

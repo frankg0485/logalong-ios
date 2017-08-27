@@ -95,17 +95,17 @@ class RecordDB {
     }
 
     func getCategories() -> [String] {
-        var accounts = [String]()
+        var categories = [String]()
 
         do {
 
-            for account in try db!.prepare(self.accounts) {
-                accounts.append(account[aName])
+            for category in try db!.prepare(self.categories) {
+                categories.append(category[cName])
             }
         } catch {
             print("Select failed")
         }
-        return accounts
+        return categories
     }
 
     func addAccount(name: String) {
@@ -143,7 +143,19 @@ class RecordDB {
         return account
     }
 
+    func searchCategories(id: Int64) -> String {
+        var category = ""
+        do {
+            for categoryEntry in try db!.prepare(self.categories.filter(cId == id)) {
+                category = categoryEntry.get(cName)
+            }
 
+        } catch {
+            fatalError()
+        }
+
+        return category
+    }
 
 
 }

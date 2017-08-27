@@ -16,8 +16,11 @@ class SelectCategoryTableViewController: UITableViewController {
 
     weak var delegate: FViewControllerDelegate?
 
+    var categories: [String?] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        categories = RecordDB.instance.getCategories()
 
         okButton.isEnabled = false
         // Uncomment the following line to preserve selection between presentations
@@ -28,8 +31,7 @@ class SelectCategoryTableViewController: UITableViewController {
     }
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
-
-delegate?.passDoubleBack(self, myDouble: Double(myIndexPath))
+        delegate?.passDoubleBack(self, myDouble: Double(myIndexPath))
         self.dismiss(animated: true, completion: nil)
     }
     override func didReceiveMemoryWarning() {
@@ -39,15 +41,15 @@ delegate?.passDoubleBack(self, myDouble: Double(myIndexPath))
 
     // MARK: - Table view data source
 
-    /*    override func numberOfSections(in tableView: UITableView) -> Int {
-     // #warning Incomplete implementation, return the number of sections
-     return 0
-     }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
 
-     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-     // #warning Incomplete implementation, return the number of rows
-     return 0
-     }*/
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return categories.count
+    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         okButton.isEnabled = true
@@ -55,15 +57,21 @@ delegate?.passDoubleBack(self, myDouble: Double(myIndexPath))
 
     }
 
-    /*
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-     // Configure the cell...
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellIdentifier = "ChooseCategoryCell"
 
-     return cell
-     }
-     */
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? SelectCategoryTableViewCell else {
+            fatalError("The dequeued cell is not an instance of SelectCategoryTableViewCell.")
+        }
+
+        let category = categories[indexPath.row]
+
+        cell.categoryNameLabel.text = category
+
+        return cell
+    }
+    
 
     /*
      // Override to support conditional editing of the table view.
