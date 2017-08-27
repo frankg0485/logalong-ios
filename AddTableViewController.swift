@@ -66,7 +66,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         if let _ = caller as? SelectAmountViewController {
             amountLabel.text = String(format: "%.2lf", myDouble)
         } else if let _ = caller as? SelectAccountTableViewController {
-            accountLabel.text = accounts[Int(myDouble)]
+            accountLabel.text = RecordDB.instance.searchAccounts(id: Int64(myDouble + 1))
 
         } else if let _ = caller as? SelectCategoryTableViewController {
             categoryLabel.text = categories[Int(myDouble)]

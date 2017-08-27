@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0103EF721F49BF2F0017DD80 /* CreateCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0103EF711F49BF2F0017DD80 /* CreateCategoryViewController.swift */; };
+		01253CF41F5318BE005B4D8C /* SelectAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01253CF31F5318BE005B4D8C /* SelectAccountTableViewCell.swift */; };
 		0128AE461EABD042007A999B /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE451EABD042007A999B /* AddTableViewController.swift */; };
 		0128AE481EC4829B007A999B /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE471EC4829B007A999B /* AccountsTableViewController.swift */; };
 		0128AE4A1EC482B8007A999B /* CategoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE491EC482B8007A999B /* CategoriesTableViewController.swift */; };
@@ -111,6 +112,7 @@
 
 /* Begin PBXFileReference section */
 		0103EF711F49BF2F0017DD80 /* CreateCategoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateCategoryViewController.swift; sourceTree = "<group>"; };
+		01253CF31F5318BE005B4D8C /* SelectAccountTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAccountTableViewCell.swift; sourceTree = "<group>"; };
 		0128AE451EABD042007A999B /* AddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddTableViewController.swift; path = ../AddTableViewController.swift; sourceTree = "<group>"; };
 		0128AE471EC4829B007A999B /* AccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		0128AE491EC482B8007A999B /* CategoriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewController.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				014893D21EDFA368005E3C94 /* ProtocolViewController.swift */,
 				014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */,
 				0128AE4D1EC7BBFE007A999B /* SelectAccountTableViewController.swift */,
+				01253CF31F5318BE005B4D8C /* SelectAccountTableViewCell.swift */,
 				0128AE4F1EC7BD8A007A999B /* SelectCategoryTableViewController.swift */,
 				0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */,
 				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
@@ -408,6 +411,7 @@
 				0103EF721F49BF2F0017DD80 /* CreateCategoryViewController.swift in Sources */,
 				0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */,
 				019CCD501E6DC7D0002EF989 /* RecordsTableViewCell.swift in Sources */,
+				01253CF41F5318BE005B4D8C /* SelectAccountTableViewCell.swift in Sources */,
 				013E34ED1F4366F900EF8972 /* RecordDB.swift in Sources */,
 				019CCD4A1E6DC72A002EF989 /* RecordsTableViewController.swift in Sources */,
 				0128AE521EC7BD98007A999B /* SelectPayeeTableViewController.swift in Sources */,

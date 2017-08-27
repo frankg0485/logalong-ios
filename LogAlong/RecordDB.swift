@@ -129,7 +129,19 @@ class RecordDB {
         }
     }
 
+    func searchAccounts(id: Int64) -> String {
+        var account = ""
+        do {
+            for accountEntry in try db!.prepare(self.accounts.filter(aId == id)) {
+                account = accountEntry.get(aName)
+            }
 
+        } catch {
+            fatalError()
+        }
+        
+        return account
+    }
 
 
 
