@@ -19,9 +19,9 @@ class RecordsTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = editButtonItem
 
         records = RecordDB.instance.getRecords()
-/*        if let savedRecords = loadRecords() {
-            records += savedRecords
-        }*/
+        /*        if let savedRecords = loadRecords() {
+         records += savedRecords
+         }*/
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -81,8 +81,8 @@ class RecordsTableViewController: UITableViewController {
 
         cell.accountLabel.text = record.account
         cell.categoryLabel.text = record.category
-/*        cell.payeelabel.text = record.payee
-        cell.tagLabel.text = record.tag*/
+        /*        cell.payeelabel.text = record.payee
+         cell.tagLabel.text = record.tag*/
         cell.amountLabel.text = String(record.amount)
 
 
@@ -105,7 +105,8 @@ class RecordsTableViewController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             records.remove(at: indexPath.row)
-            //saveRecords()
+            RecordDB.instance.removeRecord(id: indexPath.row + 1)
+
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -177,18 +178,18 @@ class RecordsTableViewController: UITableViewController {
      }
      */
 
-/*    private func saveRecords() {
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(records, toFile: Record.ArchiveURL.path)
-        if isSuccessfulSave {
-            os_log("Records successfully saved.", log: OSLog.default, type: .debug)
-        } else {
-            os_log("Failed to save records...", log: OSLog.default, type: .error)
-        }
-    }
-
-    private func loadRecords() -> [Record]?  {
-        return NSKeyedUnarchiver.unarchiveObject(withFile: Record.ArchiveURL.path) as? [Record]
-    }
-
-*/
+    /*    private func saveRecords() {
+     let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(records, toFile: Record.ArchiveURL.path)
+     if isSuccessfulSave {
+     os_log("Records successfully saved.", log: OSLog.default, type: .debug)
+     } else {
+     os_log("Failed to save records...", log: OSLog.default, type: .error)
+     }
+     }
+     
+     private func loadRecords() -> [Record]?  {
+     return NSKeyedUnarchiver.unarchiveObject(withFile: Record.ArchiveURL.path) as? [Record]
+     }
+     
+     */
 }

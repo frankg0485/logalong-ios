@@ -170,6 +170,14 @@ class RecordDB {
         }
     }
 
+    func removeRecord(id: Int64) {
+        do {
+            let delete = records.filter(rId == id).delete()
+            try db!.run(delete)
+        } catch {
+            
+        }
+    }
     func searchAccounts(id: Int64) -> String {
         var account = ""
         do {
