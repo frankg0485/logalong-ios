@@ -150,6 +150,15 @@ class RecordDB {
         }
     }
 
+    func removeCategory(id: Int64) {
+        do {
+            let delete = categories.filter(cId == id).delete()
+            try db!.run(delete)
+        } catch {
+
+        }
+    }
+
     func addRecord(catId: Int64, accId: Int64, amount: Double, timeInMilliseconds: Int64) {
         do {
             let insert = records.insert(accountId <- accId, categoryId <- catId, self.amount <- amount, time <- timeInMilliseconds, type <- 0)
