@@ -108,6 +108,19 @@ class RecordDB {
         return categories
     }
 
+    func getRecords() -> [Record] {
+        var records: [Record] = []
+
+        do {
+            for record in try db!.prepare(self.records) {
+                records.append(Record(category: searchCategories(id: record[categoryId]), amount: record[amount], account: searchAccounts(id: record[accountId]))!)
+            }
+        } catch {
+            print("Select failted")
+        }
+        return records
+    }
+
     func addAccount(name: String) {
         do {
             let insert = accounts.insert(aName <- name)
@@ -129,6 +142,17 @@ class RecordDB {
         }
     }
 
+    func addRecord(catId: Int64, accId: Int64, amount: Double) {
+        do {
+            let insert = records.insert(accountId <- accId, categoryId <- catId, self.amount <- amount, time <- 0, type <- 0)
+            let _ = try db!.run(insert)
+
+        } catch {
+            
+            print("Insert failed")
+        }
+    }
+
     func searchAccounts(id: Int64) -> String {
         var account = ""
         do {
@@ -141,6 +165,19 @@ class RecordDB {
         }
         
         return account
+    }
+
+    func searchAccountId(name: String) -> Int64 {
+        var id: Int64 = 0
+        do {
+            for account in try db!.prepare(self.accounts.filter(aName == name)) {
+                
+                id = account.get(aId)
+            }
+        } catch {
+            fatalError()
+        }
+        return id
     }
 
     func searchCategories(id: Int64) -> String {
@@ -157,5 +194,17 @@ class RecordDB {
         return category
     }
 
+    func searchCategoryId(name: String) -> Int64 {
+        var id: Int64 = 0
+        do {
+            for category in try db!.prepare(self.categories.filter(cName == name)) {
+
+                id = category.get(cId)
+            }
+        } catch {
+            fatalError()
+        }
+        return id
+    }
 
 }

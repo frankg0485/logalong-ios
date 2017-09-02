@@ -7,19 +7,19 @@
 //
 
 import UIKit
-class Record: NSObject, NSCoding {
+class Record {
 
     var category: String?
-    var amount: Float
+    var amount: Double
     var account: String
-    var payee: String?
+/*    var payee: String?
     var tag: String?
-    var notes: String?
+    var notes: String?*/
 
-    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("records")
+/*    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("records")*/
 
-    struct PropertyKey {
+/*    struct PropertyKey {
         static let amount = "amount"
         static let account = "account"
         static let category = "category"
@@ -27,8 +27,8 @@ class Record: NSObject, NSCoding {
         static let tag = "tag"
         static let notes = "notes"
     }
-
-    init?(category: String?, amount: Float, account: String, payee: String?, tag: String?, notes: String?) {
+*/
+    init?(category: String?, amount: Double, account: String/*payee: String?, tag: String?, notes: String?*/) {
 
         guard !account.isEmpty else {
             return nil
@@ -40,14 +40,14 @@ class Record: NSObject, NSCoding {
         self.category = category ?? ""
         self.amount = amount
         self.account = account
-        self.payee = payee ?? ""
+        /*self.payee = payee ?? ""
         self.tag = tag ?? ""
-        self.notes = notes ?? ""
+        self.notes = notes ?? ""*/
 
 
     }
 
-    func encode(with aCoder: NSCoder) {
+/*    func encode(with aCoder: NSCoder) {
         aCoder.encode(amount, forKey: PropertyKey.amount)
         aCoder.encode(account, forKey: PropertyKey.account)
         aCoder.encode(category, forKey: PropertyKey.category)
@@ -84,5 +84,5 @@ class Record: NSObject, NSCoding {
         self.init(category: category, amount: amount, account: account, payee: payee, tag: tag, notes: notes)
 
         
-    }
+    }*/
 }

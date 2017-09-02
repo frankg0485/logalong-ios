@@ -34,9 +34,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             amountLabel.text = String(record.amount)
             accountLabel.text = record.account
             categoryLabel.text = record.category ?? "Category Not Specified"
-            payeeLabel.text = record.payee ?? "Payee Not Specified"
+/*            payeeLabel.text = record.payee ?? "Payee Not Specified"
             tagLabel.text = record.tag ?? "Tag Not Specified"
-            notesTextField.text = record.notes
+            notesTextField.text = record.notes*/
         }
 
         updateSaveButtonState()
@@ -193,14 +193,14 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 return
             }
 
-            let amount = Float(amountLabel.text!)!
+            let amount = Double(amountLabel.text!)!
             let account = accountLabel.text
             let category = categoryLabel.text
-            let payee = payeeLabel.text
+            /*let payee = payeeLabel.text
             let tag = tagLabel.text
-            let notes = notesTextField.text
+            let notes = notesTextField.text*/
 
-            record = Record(category: category, amount: amount, account: account!, payee: payee, tag: tag, notes: notes)
+            record = Record(category: category, amount: amount, account: account!/*, payee: payee, tag: tag, notes: notes*/)
         }
     }
 
