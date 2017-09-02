@@ -11,7 +11,7 @@ import UIKit
 class CategoriesTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
 
     var categories: [String?] = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem
@@ -86,7 +86,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
-    
+
 
     /*
      // Override to support rearranging the table view.
@@ -128,13 +128,13 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
             tableView.insertRows(at: [newIndexPath], with: .automatic)
 
             RecordDB.instance.addCategory(name: category)
-
+            
         }
         func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
             return UIModalPresentationStyle.none
         }
         
     }
-
-
+    
+    
 }

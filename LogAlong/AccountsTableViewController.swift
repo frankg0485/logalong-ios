@@ -51,7 +51,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     }
 
 
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "AccountCell"
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? AccountsTableViewCell else {
@@ -63,7 +63,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         cell.nameLabel.text = account
 
         return cell
-     }
+    }
 
 
     /*
@@ -106,10 +106,10 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
      */
 
 
-     // MARK: - Navigation
+    // MARK: - Navigation
 
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "CreateAccount") {
             let popoverViewController = segue.destination
 
@@ -118,7 +118,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             popoverViewController.popoverPresentationController!.delegate = self
         }
 
-     }
+    }
 
 
     @IBAction func unwindToAccountList(sender: UIStoryboardSegue) {
@@ -130,7 +130,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             tableView.insertRows(at: [newIndexPath], with: .automatic)
 
             RecordDB.instance.addAccount(name: account)
-
+            
         }
         func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
             return UIModalPresentationStyle.none
