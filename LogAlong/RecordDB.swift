@@ -142,9 +142,9 @@ class RecordDB {
         }
     }
 
-    func addRecord(catId: Int64, accId: Int64, amount: Double) {
+    func addRecord(catId: Int64, accId: Int64, amount: Double, timeInMilliseconds: Int64) {
         do {
-            let insert = records.insert(accountId <- accId, categoryId <- catId, self.amount <- amount, time <- 0, type <- 0)
+            let insert = records.insert(accountId <- accId, categoryId <- catId, self.amount <- amount, time <- timeInMilliseconds, type <- 0)
             let _ = try db!.run(insert)
 
         } catch {

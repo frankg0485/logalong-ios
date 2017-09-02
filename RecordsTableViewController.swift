@@ -49,7 +49,7 @@ class RecordsTableViewController: UITableViewController {
                 records.append(record)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
 
-                RecordDB.instance.addRecord(catId: RecordDB.instance.searchCategoryId(name: record.category!), accId: RecordDB.instance.searchAccountId(name: record.account), amount: record.amount)
+                RecordDB.instance.addRecord(catId: RecordDB.instance.searchCategoryId(name: record.category!), accId: RecordDB.instance.searchAccountId(name: record.account), amount: record.amount, timeInMilliseconds: Int64(Date().timeIntervalSince1970.rounded()))
                 _ = navigationController?.popViewController(animated: true)
             }
 
