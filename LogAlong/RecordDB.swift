@@ -125,12 +125,20 @@ class RecordDB {
         do {
             let insert = accounts.insert(aName <- name)
             let _ = try db!.run(insert)
-            
+
         } catch {
             print("Insert failed")
         }
     }
 
+    func removeAccount(id: Int64) {
+        do {
+            let delete = accounts.filter(aId == id).delete()
+            try db!.run(delete)
+        } catch {
+
+        }
+    }
 
     func addCategory(name: String) {
         do {

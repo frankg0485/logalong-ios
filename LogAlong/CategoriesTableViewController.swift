@@ -31,7 +31,8 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
         return false
     }
-    @IBAction func okButtonPressed(_ sender: UIBarButtonItem) {
+
+    @IBAction func okButtonPressed(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
     // MARK: - Table view data source

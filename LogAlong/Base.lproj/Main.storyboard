@@ -454,6 +454,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cVj-0x-Kfq">
+                            <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="OK"/>
+                            <connections>
+                                <action selector="okButtonPressed:" destination="dsc-Ne-QOi" eventType="touchUpInside" id="4MG-cp-3iR"/>
+                            </connections>
+                        </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CategoryCell" id="cyy-am-G6Y" customClass="CategoriesTableViewCell" customModule="LogAlong" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -482,11 +490,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Manage Categories" id="G6l-vB-MPF">
-                        <barButtonItem key="leftBarButtonItem" title="OK" id="0Pg-qz-nMU">
-                            <connections>
-                                <action selector="okButtonPressed:" destination="dsc-Ne-QOi" id="JBe-VX-pZ2"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ain-qI-fsb">
                             <connections>
                                 <segue destination="gdE-2N-BNt" kind="popoverPresentation" identifier="CreateCategory" popoverAnchorBarButtonItem="ain-qI-fsb" id="Ypf-e1-WUW">
@@ -508,6 +511,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="oPc-Qx-NzH">
+                            <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="OK"/>
+                            <connections>
+                                <action selector="okButtonPressed:" destination="i53-PD-xbT" eventType="touchUpInside" id="G8Q-OJ-fFN"/>
+                            </connections>
+                        </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AccountCell" id="7ow-GY-leA" customClass="AccountsTableViewCell" customModule="LogAlong" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -537,11 +548,6 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Manage Accounts" id="5jk-BO-kXT">
-                        <barButtonItem key="leftBarButtonItem" title="OK" id="u1T-4N-d1V">
-                            <connections>
-                                <action selector="okButtonPressed:" destination="i53-PD-xbT" id="iOf-EF-TXr"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="jg2-Bm-Z9R">
                             <connections>
                                 <segue destination="3Vq-Ai-miU" kind="popoverPresentation" identifier="CreateAccount" popoverAnchorBarButtonItem="jg2-Bm-Z9R" id="ZvW-kO-GW1">
@@ -944,7 +950,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fXd-GT-gCK" id="4Tk-xl-CqX">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NAz-5j-EE1">
