@@ -118,7 +118,10 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
 
     }
 
-
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+    
     @IBAction func unwindToCategoryList(sender: UIStoryboardSegue) {
 
         if let sourceViewController = sender.source as? CreateCategoryViewController, let category = sourceViewController.category {
@@ -129,9 +132,6 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
 
             RecordDB.instance.addCategory(name: category)
             
-        }
-        func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-            return UIModalPresentationStyle.none
         }
         
     }

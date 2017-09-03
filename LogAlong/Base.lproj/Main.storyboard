@@ -538,6 +538,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="nameLabel" destination="uWC-bR-dAq" id="dpT-sn-39z"/>
+                                    <segue destination="3Vq-Ai-miU" kind="show" id="lrW-zI-bh1"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -623,7 +624,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vJq-Jc-41v" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="iji-rl-I52" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5241" y="773"/>
+            <point key="canvasLocation" x="6121" y="11"/>
         </scene>
         <!--Main Tab View Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -1666,7 +1667,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="CJ7-Kj-Djb"/>
+        <segue reference="ZvW-kO-GW1"/>
         <segue reference="LxV-3D-kaH"/>
+        <segue reference="CJ7-Kj-Djb"/>
     </inferredMetricsTieBreakers>
 </document>

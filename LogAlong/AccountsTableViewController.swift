@@ -120,6 +120,10 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
     }
 
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+
 
     @IBAction func unwindToAccountList(sender: UIStoryboardSegue) {
 
@@ -131,9 +135,6 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
             RecordDB.instance.addAccount(name: account)
             
-        }
-        func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-            return UIModalPresentationStyle.none
         }
         
     }
