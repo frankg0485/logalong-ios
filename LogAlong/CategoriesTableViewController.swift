@@ -108,12 +108,36 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "CreateCategory") {
+        switch (segue.identifier ?? "") {
+
+        case "ShowDetail":
+            guard let categoryDetailViewController = segue.destination as? CreateCategoryViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+
+            guard let selectedCategoryCell = sender as? CategoriesTableViewCell else {
+                fatalError("Unexpected sender: \(sender)")
+            }
+
+            guard let indexPath = tableView.indexPath(for: selectedCategoryCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+
+            let selectedCategory = categories[indexPath.row]
+            categoryDetailViewController.category = selectedCategory
+
+        case "CreateCategory":
+
             let popoverViewController = segue.destination
 
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
 
             popoverViewController.popoverPresentationController!.delegate = self
+
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+            
+            
         }
 
     }
@@ -124,14 +148,21 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
     
     @IBAction func unwindToCategoryList(sender: UIStoryboardSegue) {
 
+    
         if let sourceViewController = sender.source as? CreateCategoryViewController, let category = sourceViewController.category {
 
-            let newIndexPath = IndexPath(row: categories.count, section: 0)
-            categories.append(category)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                categories[selectedIndexPath.row] = category
+                RecordDB.instance.updateCategory(id: Int64(selectedIndexPath.row + 1), newName: category)
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            } else {
+                let newIndexPath = IndexPath(row: categories.count, section: 0)
+                categories.append(category)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
 
-            RecordDB.instance.addCategory(name: category)
-            
+                RecordDB.instance.addCategory(name: category)
+            }
+
         }
         
     }

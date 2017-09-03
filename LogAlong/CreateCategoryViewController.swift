@@ -20,6 +20,10 @@ class CreateCategoryViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         categoryNameTextField.delegate = self
 
+        if let category = category {
+            categoryNameTextField.text = category
+        }
+
         checkOkButtonState()
         // Do any additional setup after loading the view.
     }

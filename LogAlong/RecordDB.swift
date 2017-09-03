@@ -170,6 +170,17 @@ class RecordDB {
         }
     }
 
+    func updateCategory(id: Int64, newName: String) {
+        do {
+            let category = categories.filter(aId == id)
+            let update = category.update(cName <- newName)
+
+            try db!.run(update)
+        } catch {
+
+        }
+    }
+
     func addRecord(catId: Int64, accId: Int64, amount: Double, timeInMilliseconds: Int64) {
         do {
             let insert = records.insert(accountId <- accId, categoryId <- catId, self.amount <- amount, time <- timeInMilliseconds, type <- 0)
