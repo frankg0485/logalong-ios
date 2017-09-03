@@ -140,6 +140,17 @@ class RecordDB {
         }
     }
 
+    func updateAccount(id: Int64, newName: String) {
+        do {
+            let account = accounts.filter(aId == id)
+            let update = account.update(aName <- newName)
+
+            try db!.run(update)
+        } catch {
+
+        }
+    }
+
     func addCategory(name: String) {
         do {
             let insert = categories.insert(cName <- name)
@@ -165,7 +176,7 @@ class RecordDB {
             let _ = try db!.run(insert)
 
         } catch {
-            
+
             print("Insert failed")
         }
     }
@@ -175,9 +186,10 @@ class RecordDB {
             let delete = records.filter(rId == id).delete()
             try db!.run(delete)
         } catch {
-            
+
         }
     }
+
     func searchAccounts(id: Int64) -> String {
         var account = ""
         do {
@@ -188,7 +200,7 @@ class RecordDB {
         } catch {
             fatalError()
         }
-        
+
         return account
     }
 
@@ -196,7 +208,7 @@ class RecordDB {
         var id: Int64 = 0
         do {
             for account in try db!.prepare(self.accounts.filter(aName == name)) {
-                
+
                 id = account.get(aId)
             }
         } catch {
@@ -223,7 +235,7 @@ class RecordDB {
         var id: Int64 = 0
         do {
             for category in try db!.prepare(self.categories.filter(cName == name)) {
-
+                
                 id = category.get(cId)
             }
         } catch {
@@ -231,5 +243,5 @@ class RecordDB {
         }
         return id
     }
-
+    
 }

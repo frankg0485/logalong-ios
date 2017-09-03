@@ -10,7 +10,7 @@ import UIKit
 
 class CreateAccountViewController: UIViewController, UITextFieldDelegate {
 
-    var account: String? = ""
+    var account: String?
     
     @IBOutlet weak var accountNameTextField: UITextField!
 
@@ -19,6 +19,10 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         accountNameTextField.delegate = self
+
+        if let account = account {
+            accountNameTextField.text = account
+        }
 
         checkOkButtonState()
         // Do any additional setup after loading the view.

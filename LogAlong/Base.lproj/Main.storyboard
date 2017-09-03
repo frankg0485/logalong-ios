@@ -538,7 +538,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="nameLabel" destination="uWC-bR-dAq" id="dpT-sn-39z"/>
-                                    <segue destination="3Vq-Ai-miU" kind="show" id="lrW-zI-bh1"/>
+                                    <segue destination="3Vq-Ai-miU" kind="show" identifier="ShowDetail" id="lrW-zI-bh1"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -572,7 +572,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Tgl-gP-egp"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="t7E-Ll-wPP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="506"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Account Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jjc-Rl-3fB">
@@ -1667,7 +1667,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ZvW-kO-GW1"/>
+        <segue reference="lrW-zI-bh1"/>
         <segue reference="LxV-3D-kaH"/>
         <segue reference="CJ7-Kj-Djb"/>
     </inferredMetricsTieBreakers>

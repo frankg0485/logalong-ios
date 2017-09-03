@@ -110,14 +110,38 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "CreateAccount") {
+
+        switch (segue.identifier ?? "") {
+
+        case "ShowDetail":
+            guard let accountDetailViewController = segue.destination as? CreateAccountViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+
+            guard let selectedAccountCell = sender as? AccountsTableViewCell else {
+                fatalError("Unexpected sender: \(sender)")
+            }
+
+            guard let indexPath = tableView.indexPath(for: selectedAccountCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+
+            let selectedAccount = accounts[indexPath.row]
+            accountDetailViewController.account = selectedAccount
+
+        case "CreateAccount":
+
             let popoverViewController = segue.destination
 
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
 
             popoverViewController.popoverPresentationController!.delegate = self
-        }
 
+        default:
+            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+
+
+        }
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
@@ -129,13 +153,21 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         if let sourceViewController = sender.source as? CreateAccountViewController, let account = sourceViewController.account {
 
-            let newIndexPath = IndexPath(row: accounts.count, section: 0)
-            accounts.append(account)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
-
-            RecordDB.instance.addAccount(name: account)
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                accounts[selectedIndexPath.row] = account
+                RecordDB.instance.updateAccount(id: Int64(selectedIndexPath.row + 1), newName: account)
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            } else {
+                let newIndexPath = IndexPath(row: accounts.count, section: 0)
+                accounts.append(account)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+                
+                RecordDB.instance.addAccount(name: account)
+            }
             
         }
         
     }
+    
+    
 }
