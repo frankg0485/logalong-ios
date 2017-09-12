@@ -85,12 +85,13 @@ class RecordDB {
 
         do {
 
-            for account in try db!.prepare(self.accounts) {
+            for account in try db!.prepare(self.accounts.order(aName.asc)) {
                 accounts.append(account[aName])
             }
         } catch {
             print("Select failed")
         }
+
         return accounts
     }
 
@@ -99,12 +100,13 @@ class RecordDB {
 
         do {
 
-            for category in try db!.prepare(self.categories) {
+            for category in try db!.prepare(self.categories.order(cName.asc)) {
                 categories.append(category[cName])
             }
         } catch {
             print("Select failed")
         }
+        
         return categories
     }
 
@@ -113,7 +115,7 @@ class RecordDB {
 
         do {
             for record in try db!.prepare(self.records) {
-                records.append(Record(category: searchCategories(id: record[categoryId]), amount: record[amount], account: searchAccounts(id: record[accountId]))!)
+                records.append(Record(category: searchCategories(id: Int(record[categoryId])).name, amount: record[amount], account: searchAccounts(id: Int(record[accountId])).name)!)
             }
         } catch {
             print("Select failted")
@@ -201,58 +203,54 @@ class RecordDB {
         }
     }
 
-    func searchAccounts(id: Int64) -> String {
-        var account = ""
+    func updateRecord(id: Int64, newCategoryId: Int64, newAccountId: Int64, newAmount: Double, newTime: Int64, newType: Int) {
         do {
-            for accountEntry in try db!.prepare(self.accounts.filter(aId == id)) {
-                account = accountEntry.get(aName)
+            let record = records.filter(rId == id)
+            let update = record.update(accountId <- newAccountId, categoryId <- newCategoryId, amount <- newAmount, time <- newTime, type <- newType)
+
+            try db!.run(update)
+        } catch {
+
+        }
+    }
+    func searchAccounts(id: Int) -> Account {
+        var account: Account?
+        var accountIds: [Int64] = []
+        do {
+            for account in try db!.prepare(self.accounts.order(aName.asc)) {
+                accountIds.append(account.get(aId))
             }
 
-        } catch {
-            fatalError()
-        }
+            for accountEntry in try db!.prepare(self.accounts.filter(aId == accountIds[id])) {
+                account = Account(id: accountEntry[aId], name: accountEntry[aName])
 
-        return account
-    }
-
-    func searchAccountId(name: String) -> Int64 {
-        var id: Int64 = 0
-        do {
-            for account in try db!.prepare(self.accounts.filter(aName == name)) {
-
-                id = account.get(aId)
-            }
-        } catch {
-            fatalError()
-        }
-        return id
-    }
-
-    func searchCategories(id: Int64) -> String {
-        var category = ""
-        do {
-            for categoryEntry in try db!.prepare(self.categories.filter(cId == id)) {
-                category = categoryEntry.get(cName)
-            }
-
-        } catch {
-            fatalError()
-        }
-
-        return category
-    }
-
-    func searchCategoryId(name: String) -> Int64 {
-        var id: Int64 = 0
-        do {
-            for category in try db!.prepare(self.categories.filter(cName == name)) {
-                
-                id = category.get(cId)
             }
         } catch {
             fatalError()
         }
-        return id
+
+        return account!
     }
+
+
+    func searchCategories(id: Int) -> Category {
+        var category: Category?
+        var categoryIds: [Int64] = []
+        do {
+            for category in try db!.prepare(self.categories.order(cName.asc)) {
+                categoryIds.append(category.get(cId))
+            }
+
+            for categoryEntry in try db!.prepare(self.categories.filter(cId == categoryIds[id])) {
+            category = Category( id: categoryEntry[cId], name: categoryEntry[cName])
+
+            }
+        } catch {
+            fatalError()
+        }
+
+        return category!
+    }
+    
     
 }

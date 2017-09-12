@@ -38,9 +38,9 @@ class RecordsTableViewController: UITableViewController {
         if let sourceViewController = sender.source as? AddTableViewController, let record = sourceViewController.record {
 
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                // Update an existing meal.
+                // Update an existing record.
                 records[selectedIndexPath.row] = record
-
+                RecordDB.instance.updateRecord(id: Int64(selectedIndexPath.row + 1), newCategoryId: sourceViewController.categoryId, newAccountId: sourceViewController.categoryId, newAmount: record.amount, newTime: Int64(Date().timeIntervalSince1970.rounded()), newType: 0)
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
             } else {
                 // Add a new record.
@@ -49,7 +49,7 @@ class RecordsTableViewController: UITableViewController {
                 records.append(record)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
 
-                RecordDB.instance.addRecord(catId: RecordDB.instance.searchCategoryId(name: record.category!), accId: RecordDB.instance.searchAccountId(name: record.account), amount: record.amount, timeInMilliseconds: Int64(Date().timeIntervalSince1970.rounded()))
+                RecordDB.instance.addRecord(catId: sourceViewController.categoryId, accId: sourceViewController.accountId, amount: record.amount, timeInMilliseconds: Int64(Date().timeIntervalSince1970.rounded()))
                 _ = navigationController?.popViewController(animated: true)
             }
 

@@ -25,6 +25,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     var record: Record?
 
+    var accountId: Int64 = 0
+    var categoryId: Int64 = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -65,10 +68,15 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         if let _ = caller as? SelectAmountViewController {
             amountLabel.text = String(format: "%.2lf", myDouble)
         } else if let _ = caller as? SelectAccountTableViewController {
-            accountLabel.text = RecordDB.instance.searchAccounts(id: Int64(myDouble + 1))
+            accountLabel.text = RecordDB.instance.searchAccounts(id: Int(myDouble)).name
+
+            accountId = RecordDB.instance.searchAccounts(id: Int(myDouble)).id
 
         } else if let _ = caller as? SelectCategoryTableViewController {
-            categoryLabel.text = RecordDB.instance.searchCategories(id: Int64(myDouble + 1))
+            categoryLabel.text = RecordDB.instance.searchCategories(id: Int(myDouble)).name
+
+            categoryId = RecordDB.instance.searchCategories(id: Int(myDouble)).id
+
 
         } else if let _ = caller as? SelectPayeeTableViewController {
             payeeLabel.text = payees[Int(myDouble)]
