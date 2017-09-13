@@ -68,14 +68,14 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         if let _ = caller as? SelectAmountViewController {
             amountLabel.text = String(format: "%.2lf", myDouble)
         } else if let _ = caller as? SelectAccountTableViewController {
-            accountLabel.text = RecordDB.instance.searchAccounts(id: Int(myDouble)).name
+            accountLabel.text = RecordDB.instance.searchAccounts(id: Int64(myDouble), alphabetical: true).name
 
-            accountId = RecordDB.instance.searchAccounts(id: Int(myDouble)).id
+            accountId = RecordDB.instance.searchAccounts(id: Int64(myDouble), alphabetical: true).id
 
         } else if let _ = caller as? SelectCategoryTableViewController {
-            categoryLabel.text = RecordDB.instance.searchCategories(id: Int(myDouble)).name
+            categoryLabel.text = RecordDB.instance.searchCategories(id: Int64(myDouble), alphabetical: true).name
 
-            categoryId = RecordDB.instance.searchCategories(id: Int(myDouble)).id
+            categoryId = RecordDB.instance.searchCategories(id: Int64(myDouble), alphabetical: true).id
 
 
         } else if let _ = caller as? SelectPayeeTableViewController {

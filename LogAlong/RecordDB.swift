@@ -115,7 +115,7 @@ class RecordDB {
 
         do {
             for record in try db!.prepare(self.records) {
-                records.append(Record(category: searchCategories(id: Int(record[categoryId])).name, amount: record[amount], account: searchAccounts(id: Int(record[accountId])).name)!)
+                records.append(Record(category: searchCategories(id: record[categoryId], alphabetical: false).name, amount: record[amount], account: searchAccounts(id: record[accountId], alphabetical: false).name)!)
             }
         } catch {
             print("Select failted")
@@ -213,18 +213,27 @@ class RecordDB {
 
         }
     }
-    func searchAccounts(id: Int) -> Account {
+    func searchAccounts(id: Int64, alphabetical: Bool) -> Account {
         var account: Account?
         var accountIds: [Int64] = []
         do {
-            for account in try db!.prepare(self.accounts.order(aName.asc)) {
-                accountIds.append(account.get(aId))
+
+            if (alphabetical == true) {
+                for account in try db!.prepare(self.accounts.order(aName.asc)) {
+                    accountIds.append(account.get(aId))
+                }
+
+                // DON'T HARDCODE IT
+                for accountEntry in try db!.prepare(self.accounts.filter(aId == accountIds[Int(id)])) {
+                    account = Account(id: accountEntry[aId], name: accountEntry[aName])
+
+                }
+            } else {
+                for accountEntry in try db!.prepare(self.accounts.filter(aId == id)) {
+                    account = Account(id: accountEntry.get(aId), name: accountEntry.get(aName))
+                }
             }
 
-            for accountEntry in try db!.prepare(self.accounts.filter(aId == accountIds[id])) {
-                account = Account(id: accountEntry[aId], name: accountEntry[aName])
-
-            }
         } catch {
             fatalError()
         }
@@ -233,17 +242,25 @@ class RecordDB {
     }
 
 
-    func searchCategories(id: Int) -> Category {
+    func searchCategories(id: Int64, alphabetical: Bool) -> Category {
         var category: Category?
         var categoryIds: [Int64] = []
         do {
-            for category in try db!.prepare(self.categories.order(cName.asc)) {
-                categoryIds.append(category.get(cId))
-            }
 
-            for categoryEntry in try db!.prepare(self.categories.filter(cId == categoryIds[id])) {
-            category = Category( id: categoryEntry[cId], name: categoryEntry[cName])
+            if (alphabetical == true) {
+                for category in try db!.prepare(self.categories.order(cName.asc)) {
+                    categoryIds.append(category.get(cId))
+                }
 
+                // DON'T HARDCODE IT
+                for categoryEntry in try db!.prepare(self.categories.filter(cId == categoryIds[Int(id)])) {
+                    category = Category(id: categoryEntry[cId], name: categoryEntry[cName])
+
+                }
+            } else {
+                for categoryEntry in try db!.prepare(self.categories.filter(cId == id)) {
+                    category = Category(id: categoryEntry.get(cId), name: categoryEntry.get(cName))
+                }
             }
         } catch {
             fatalError()

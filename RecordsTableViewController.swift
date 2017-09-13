@@ -37,6 +37,7 @@ class RecordsTableViewController: UITableViewController {
     @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? AddTableViewController, let record = sourceViewController.record {
 
+            //print(tableView)
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 // Update an existing record.
                 records[selectedIndexPath.row] = record
@@ -55,6 +56,7 @@ class RecordsTableViewController: UITableViewController {
 
             //saveRecords()
         }
+        print("fsdfajfflskajf")
     }
 
     // MARK: - Table view data source
