@@ -80,7 +80,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         if editingStyle == .delete {
             // Delete the row from the data source
             accounts.remove(at: indexPath.row)
-            RecordDB.instance.removeAccount(id: indexPath.row + 1)
+            RecordDB.instance.removeAccount(id: Int64(indexPath.row))
 
             tableView.deleteRows(at: [indexPath], with: .fade)
 

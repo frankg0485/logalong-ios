@@ -79,7 +79,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
         if editingStyle == .delete {
             // Delete the row from the data source
             categories.remove(at: indexPath.row)
-            RecordDB.instance.removeCategory(id: indexPath.row + 1)
+            RecordDB.instance.removeCategory(id: Int64(indexPath.row))
 
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {

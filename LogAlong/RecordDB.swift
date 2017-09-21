@@ -106,7 +106,7 @@ class RecordDB {
         } catch {
             print("Select failed")
         }
-        
+
         return categories
     }
 
@@ -134,8 +134,13 @@ class RecordDB {
     }
 
     func removeAccount(id: Int64) {
+        var accountIds: [Int64] = []
         do {
-            let delete = accounts.filter(aId == id).delete()
+
+            for categoryEntry in try db!.prepare(accounts.order(aName.asc)) {
+                accountIds.append(categoryEntry[aId])
+            }
+            let delete = accounts.order(aName.asc).filter(aId == accountIds[Int(id)]).delete()
             try db!.run(delete)
         } catch {
 
@@ -164,8 +169,14 @@ class RecordDB {
     }
 
     func removeCategory(id: Int64) {
+        var categoryIds: [Int64] = []
+
+
         do {
-            let delete = categories.filter(cId == id).delete()
+            for categoryEntry in try db!.prepare(categories.order(cName.asc)) {
+                categoryIds.append(categoryEntry[cId])
+            }
+            let delete = categories.filter(cId == categoryIds[Int(id)]).delete()
             try db!.run(delete)
         } catch {
 
@@ -196,7 +207,8 @@ class RecordDB {
 
     func removeRecord(id: Int64) {
         do {
-            let delete = records.filter(rId == id).delete()
+            let record = records.filter(rId == id)
+            let delete = record.delete()
             try db!.run(delete)
         } catch {
 
@@ -255,7 +267,7 @@ class RecordDB {
                 // DON'T HARDCODE IT
                 for categoryEntry in try db!.prepare(self.categories.filter(cId == categoryIds[Int(id)])) {
                     category = Category(id: categoryEntry[cId], name: categoryEntry[cName])
-
+                    
                 }
             } else {
                 for categoryEntry in try db!.prepare(self.categories.filter(cId == id)) {
@@ -265,7 +277,7 @@ class RecordDB {
         } catch {
             fatalError()
         }
-
+        
         return category!
     }
     

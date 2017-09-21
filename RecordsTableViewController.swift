@@ -56,7 +56,6 @@ class RecordsTableViewController: UITableViewController {
 
             //saveRecords()
         }
-        print("fsdfajfflskajf")
     }
 
     // MARK: - Table view data source
