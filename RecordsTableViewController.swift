@@ -12,6 +12,8 @@ import os.log
 class RecordsTableViewController: UITableViewController {
 
     var records = [Record]()
+    let sortOptions = ["Sort By: Account", "Sort By: Category", "Sort By:"]
+    var sortCounter = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +35,18 @@ class RecordsTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
+    @IBAction func sortButtonClicked(_ sender: UIBarButtonItem) {
+        if (sortCounter == 2) {
+            sortCounter = 0
+            sender.title = sortOptions[sortCounter]
+        } else {
+            sender.title = sortOptions[sortCounter + 1]
+            sortCounter += 1
+        }
+
+    }
+
 
     @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? AddTableViewController, let record = sourceViewController.record {
