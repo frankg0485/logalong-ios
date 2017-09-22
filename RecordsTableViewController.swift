@@ -106,7 +106,7 @@ class RecordsTableViewController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             records.remove(at: indexPath.row)
-            RecordDB.instance.removeRecord(id: indexPath.row + 1)
+            RecordDB.instance.removeRecord(id: Int64(indexPath.row))
 
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {

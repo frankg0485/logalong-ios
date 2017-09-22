@@ -114,7 +114,7 @@ class RecordDB {
         var records: [Record] = []
 
         do {
-            for record in try db!.prepare(self.records) {
+            for record in try db!.prepare(self.records.order(time.asc)) {
                 records.append(Record(category: searchCategories(id: record[categoryId], alphabetical: false).name, amount: record[amount], account: searchAccounts(id: record[accountId], alphabetical: false).name)!)
             }
         } catch {
@@ -206,8 +206,14 @@ class RecordDB {
     }
 
     func removeRecord(id: Int64) {
+        var recordIds: [Int64] = []
+
         do {
-            let record = records.filter(rId == id)
+
+            for recordEntry in try db!.prepare(records.order(time.asc)) {
+                recordIds.append(recordEntry[rId])
+            }
+            let record = records.filter(rId == recordIds[Int(id)])
             let delete = record.delete()
             try db!.run(delete)
         } catch {
