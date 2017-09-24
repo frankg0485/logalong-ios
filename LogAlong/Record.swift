@@ -12,6 +12,7 @@ class Record {
     var category: String?
     var amount: Double
     var account: String
+    var time: Int64
 /*    var payee: String?
     var tag: String?
     var notes: String?*/
@@ -28,7 +29,7 @@ class Record {
         static let notes = "notes"
     }
 */
-    init?(category: String?, amount: Double, account: String/*payee: String?, tag: String?, notes: String?*/) {
+    init?(category: String?, amount: Double, account: String, time: Int64/*payee: String?, tag: String?, notes: String?*/) {
 
         guard !account.isEmpty else {
             return nil
@@ -40,6 +41,7 @@ class Record {
         self.category = category ?? ""
         self.amount = amount
         self.account = account
+        self.time = time
         /*self.payee = payee ?? ""
         self.tag = tag ?? ""
         self.notes = notes ?? ""*/

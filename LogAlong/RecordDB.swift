@@ -122,7 +122,7 @@ class RecordDB {
         
         do {
             for record in try db!.prepare(condition) {
-                records.append(Record(category: searchCategories(id: record[categoryId], alphabetical: false).name, amount: record[amount], account: searchAccounts(id: record[accountId], alphabetical: false).name)!)
+                records.append(Record(category: searchCategories(id: record[categoryId], alphabetical: false).name, amount: record[amount], account: searchAccounts(id: record[accountId], alphabetical: false).name, time: record[time])!)
             }
         } catch {
             print("Select failted")

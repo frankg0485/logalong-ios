@@ -54,7 +54,8 @@ class RecordsTableViewController: UITableViewController {
             }
         }
 
-        self.tableView.reloadData()
+
+        self.viewDidLoad()
     }
 
 
@@ -110,12 +111,20 @@ class RecordsTableViewController: UITableViewController {
          cell.tagLabel.text = record.tag*/
         cell.amountLabel.text = String(record.amount)
 
+        let date = Date(timeIntervalSince1970: TimeInterval(record.time))
 
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateStyle = .short
 
+        let dateString = dayTimePeriodFormatter.string(from: date)
+        
+        cell.dateLabel.text = dateString
+        
+        
         return cell
     }
-
-
+    
+    
 
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

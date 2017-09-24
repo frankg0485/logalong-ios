@@ -235,7 +235,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o4R-i0-7Qo">
-                                            <rect key="frame" x="0.0" y="69" width="150" height="22"/>
+                                            <rect key="frame" x="0.0" y="70" width="150" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -269,12 +269,20 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gar-yw-MY9">
+                                            <rect key="frame" x="0.0" y="39" width="150" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="accountLabel" destination="KiN-eM-XuF" id="N4m-6a-Qys"/>
                                     <outlet property="amountLabel" destination="HbL-dC-Cu0" id="EJO-Wy-1T6"/>
                                     <outlet property="categoryLabel" destination="o4R-i0-7Qo" id="g04-H4-k9M"/>
+                                    <outlet property="dateLabel" destination="Gar-yw-MY9" id="EDY-oz-jPR"/>
                                     <outlet property="payeelabel" destination="BcV-DC-glF" id="sgs-bb-Bkp"/>
                                     <outlet property="tagLabel" destination="xan-Lp-NXg" id="mEd-0K-ZO8"/>
                                     <segue destination="58n-ox-X6M" kind="show" identifier="ShowDetail" id="LxV-3D-kaH"/>
@@ -296,7 +304,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Fg-Md-CTt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1854" y="-269"/>
+            <point key="canvasLocation" x="1853.5999999999999" y="-269.41529235382313"/>
         </scene>
         <!--Settings-->
         <scene sceneID="Tmp-pD-n17">

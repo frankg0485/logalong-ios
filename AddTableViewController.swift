@@ -204,11 +204,12 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             let amount = Double(amountLabel.text!)!
             let account = accountLabel.text
             let category = categoryLabel.text
+            let time = Date().timeIntervalSince1970.rounded()
             /*let payee = payeeLabel.text
             let tag = tagLabel.text
             let notes = notesTextField.text*/
 
-            record = Record(category: category, amount: amount, account: account!/*, payee: payee, tag: tag, notes: notes*/)
+            record = Record(category: category, amount: amount, account: account!, time: Int64(time)/*, payee: payee, tag: tag, notes: notes*/)
         }
     }
 

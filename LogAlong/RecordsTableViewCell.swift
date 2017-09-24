@@ -15,7 +15,7 @@ class RecordsTableViewCell: UITableViewCell {
     @IBOutlet weak var payeelabel: UILabel!
     @IBOutlet weak var tagLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
-
+    @IBOutlet weak var dateLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
