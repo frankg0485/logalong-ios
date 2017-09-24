@@ -17,12 +17,11 @@ class RecordsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-
         navigationItem.leftBarButtonItem = editButtonItem
 
         records = RecordDB.instance.getRecords(sortBy: 0)
+
+        tableView.tableFooterView = UIView()
         /*        if let savedRecords = loadRecords() {
          records += savedRecords
          }*/

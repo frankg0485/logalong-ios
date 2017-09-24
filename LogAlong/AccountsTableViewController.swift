@@ -14,9 +14,11 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         navigationItem.leftBarButtonItem = editButtonItem
+
         accounts = RecordDB.instance.getAccounts()
+
+        tableView.tableFooterView = UIView()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

@@ -24,6 +24,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
             accountNameTextField.text = account
         }
 
+
         checkOkButtonState()
         // Do any additional setup after loading the view.
     }

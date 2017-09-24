@@ -39,6 +39,7 @@
 		01F8A2CF1F6886AA00EABD73 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01F8A2CE1F6886AA00EABD73 /* Account.swift */; };
 		01FBE7F61F439D5A00A0B514 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FBE7F51F439D5A00A0B514 /* CreateAccountViewController.swift */; };
 		01FBE7FA1F43A00800A0B514 /* NewAdditionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */; };
+		01FDE4911F78066300A7DD78 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,6 +151,7 @@
 		01F8A2CE1F6886AA00EABD73 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Account.swift; path = ../Account.swift; sourceTree = "<group>"; };
 		01FBE7F51F439D5A00A0B514 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
 		01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAdditionTableViewController.swift; sourceTree = "<group>"; };
+		01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +211,7 @@
 			children = (
 				019CCD241E6DAF64002EF989 /* AppDelegate.swift */,
 				019CCD2A1E6DAF64002EF989 /* Main.storyboard */,
+				01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */,
 				01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */,
 				01FBE7F51F439D5A00A0B514 /* CreateAccountViewController.swift */,
 				0103EF711F49BF2F0017DD80 /* CreateCategoryViewController.swift */,
@@ -434,6 +437,7 @@
 				01DE2C1B1F46764800ED5D9C /* CategoriesTableViewCell.swift in Sources */,
 				01FBE7FA1F43A00800A0B514 /* NewAdditionTableViewController.swift in Sources */,
 				019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */,
+				01FDE4911F78066300A7DD78 /* SettingsTableViewController.swift in Sources */,
 				0128AE481EC4829B007A999B /* AccountsTableViewController.swift in Sources */,
 				014893CF1EDE6106005E3C94 /* SelectAmountViewController.swift in Sources */,
 				019CCD541E748042002EF989 /* Record.swift in Sources */,
