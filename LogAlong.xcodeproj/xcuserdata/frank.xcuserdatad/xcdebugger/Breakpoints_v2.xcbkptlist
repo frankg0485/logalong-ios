@@ -26,45 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogAlong/RecordDB.swift"
-            timestampString = "527693575.400994"
+            timestampString = "527955866.673231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
-            landmarkName = "searchCategories(id:alphabetical:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LogAlong/RecordDB.swift"
-            timestampString = "526260153.560894"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
-            landmarkName = "getCategories()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LogAlong/RecordDB.swift"
-            timestampString = "526260140.868705"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "getAccounts()"
-            landmarkType = "7">
+            startingLineNumber = "304"
+            endingLineNumber = "304">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -90,11 +56,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogAlong/RecordDB.swift"
-            timestampString = "527693575.400994"
+            timestampString = "527955866.673231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
             landmarkName = "searchCategories(id:alphabetical:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -106,28 +72,76 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogAlong/RecordDB.swift"
-            timestampString = "526873404.812004"
+            timestampString = "527955866.673231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "getCategories()"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "updateRecord(id:newCategoryId:newAccountId:newAmount:newTime:newType:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LogAlong.RecordDB.updateRecord (id : Swift.Int64, newCategoryId : Swift.Int64, newAccountId : Swift.Int64, newAmount : Swift.Double, newTime : Swift.Int64, newType : Swift.Int) -&gt; ()"
+                  moduleName = "LogAlong"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/frank/Desktop/LogAlong/LogAlong/RecordDB.swift"
+                  timestampString = "527895312.89344"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "230"
+                  endingLineNumber = "230"
+                  offsetFromSymbolStart = "3653">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "LogAlong.RecordDB.updateRecord (id : Swift.Int64, newCategoryId : Swift.Int64, newAccountId : Swift.Int64, newAmount : Swift.Double, newTime : Swift.Int64, newType : Swift.Int) -&gt; ()"
+                  moduleName = "LogAlong"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/frank/Desktop/LogAlong/LogAlong/RecordDB.swift"
+                  timestampString = "527895312.898388"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "230"
+                  endingLineNumber = "230"
+                  offsetFromSymbolStart = "3920">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogAlong/RecordDB.swift"
-            timestampString = "527693575.400994"
+            timestampString = "527955866.673231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "218"
-            endingLineNumber = "218"
-            landmarkName = "removeRecord(id:)"
+            startingLineNumber = "297"
+            endingLineNumber = "297"
+            landmarkName = "RecordDB"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LogAlong/RecordDB.swift"
+            timestampString = "527955866.673231"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "getRecords(sortBy:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -138,12 +152,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LogAlong/RecordDB.swift"
-            timestampString = "527263864.20396"
+            timestampString = "527955866.673231"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "getRecords()"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
+            landmarkName = "searchCategories(id:alphabetical:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LogAlong/RecordDB.swift"
+            timestampString = "527955866.673231"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
+            landmarkName = "searchCategories(id:alphabetical:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "RecordsTableViewController.swift"
+            timestampString = "527957654.514826"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "sortButtonClicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

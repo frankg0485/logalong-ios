@@ -12,15 +12,17 @@ import os.log
 class RecordsTableViewController: UITableViewController {
 
     var records = [Record]()
-    let sortOptions = ["Sort By: Account", "Sort By: Category", "Sort By:"]
+    let sortOptions = ["Sort By:", "Sort By: Account", "Sort By: Category"]
     var sortCounter = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
 
         navigationItem.leftBarButtonItem = editButtonItem
 
-        records = RecordDB.instance.getRecords()
+        records = RecordDB.instance.getRecords(sortBy: 0)
         /*        if let savedRecords = loadRecords() {
          records += savedRecords
          }*/
@@ -40,11 +42,20 @@ class RecordsTableViewController: UITableViewController {
         if (sortCounter == 2) {
             sortCounter = 0
             sender.title = sortOptions[sortCounter]
+
+            self.records = RecordDB.instance.getRecords(sortBy: 0)
         } else {
             sender.title = sortOptions[sortCounter + 1]
             sortCounter += 1
+
+            if (sortCounter == 1) {
+                self.records = RecordDB.instance.getRecords(sortBy: 1)
+            } else {
+                self.records = RecordDB.instance.getRecords(sortBy: 2)
+            }
         }
 
+        self.tableView.reloadData()
     }
 
 

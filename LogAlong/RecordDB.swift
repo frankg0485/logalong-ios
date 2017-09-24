@@ -110,11 +110,18 @@ class RecordDB {
         return categories
     }
 
-    func getRecords() -> [Record] {
+    func getRecords(sortBy: Int) -> [Record] {
         var records: [Record] = []
+        var condition = self.records.order(time.asc)
 
+        if (sortBy == 1) {
+            condition = self.records.order(time.asc, accountId.asc)
+        } else if (sortBy == 2) {
+            condition = self.records.order(time.asc, categoryId.asc)
+        }
+        
         do {
-            for record in try db!.prepare(self.records.order(time.asc)) {
+            for record in try db!.prepare(condition) {
                 records.append(Record(category: searchCategories(id: record[categoryId], alphabetical: false).name, amount: record[amount], account: searchAccounts(id: record[accountId], alphabetical: false).name)!)
             }
         } catch {
@@ -284,7 +291,7 @@ class RecordDB {
             fatalError()
         }
         
-        return category!
+        return category ?? Category(id: 0, name: "Category Not Specified")
     }
     
     
