@@ -55,7 +55,7 @@ class RecordsTableViewController: UITableViewController {
         }
 
 
-        self.viewDidLoad()
+       self.tableView.reloadData()
     }
 
 
@@ -117,7 +117,7 @@ class RecordsTableViewController: UITableViewController {
         dayTimePeriodFormatter.dateStyle = .short
 
         let dateString = dayTimePeriodFormatter.string(from: date)
-        
+
         cell.dateLabel.text = dateString
         
         

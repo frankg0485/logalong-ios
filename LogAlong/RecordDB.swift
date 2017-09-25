@@ -110,14 +110,15 @@ class RecordDB {
         return categories
     }
 
+    //use enumeration
     func getRecords(sortBy: Int) -> [Record] {
         var records: [Record] = []
-        var condition = self.records.order(time.asc)
+        var condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc)
 
         if (sortBy == 1) {
-            condition = self.records.order(time.asc, accountId.asc)
+            condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc).order(aName.asc)
         } else if (sortBy == 2) {
-            condition = self.records.order(time.asc, categoryId.asc)
+            condition = self.records.join(.leftOuter, categories, on: categoryId == cId).order(time.asc).order(cName.asc)
         }
         
         do {
