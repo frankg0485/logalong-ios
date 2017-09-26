@@ -9,6 +9,11 @@
 import SQLite
 
 class RecordDB {
+    enum sorts: Int {
+        case ACCOUNT = 1
+        case CATEGORY = 2
+    }
+
     static let instance = RecordDB()
     private let db: Connection?
 
@@ -115,9 +120,9 @@ class RecordDB {
         var records: [Record] = []
         var condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc)
 
-        if (sortBy == 1) {
+        if (sortBy == sorts.ACCOUNT.rawValue) {
             condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc).order(aName.asc)
-        } else if (sortBy == 2) {
+        } else if (sortBy == sorts.CATEGORY.rawValue) {
             condition = self.records.join(.leftOuter, categories, on: categoryId == cId).order(time.asc).order(cName.asc)
         }
         
