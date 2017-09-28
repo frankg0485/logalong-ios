@@ -37,25 +37,37 @@ class RecordsTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func timeButtonClicked(_ sender: UIBarButtonItem) {
+        if (sender.title == "Time: Asc") {
+            sender.title = "Time: Desc"
+            records = RecordDB.instance.timeOrder(type: 2)
+        } else {
+            sender.title = "Time: Asc"
+            records = RecordDB.instance.timeOrder(type: 1)
+        }
+
+        tableView.reloadData()
+    }
+
     @IBAction func sortButtonClicked(_ sender: UIBarButtonItem) {
         if (sortCounter == 2) {
             sortCounter = 0
             sender.title = sortOptions[sortCounter]
 
-            self.records = RecordDB.instance.getRecords(sortBy: 0)
+            records = RecordDB.instance.getRecords(sortBy: 0)
         } else {
             sender.title = sortOptions[sortCounter + 1]
             sortCounter += 1
 
             if (sortCounter == 1) {
-                self.records = RecordDB.instance.getRecords(sortBy: 1)
+                records = RecordDB.instance.getRecords(sortBy: 1)
             } else {
-                self.records = RecordDB.instance.getRecords(sortBy: 2)
+                records = RecordDB.instance.getRecords(sortBy: 2)
             }
         }
 
 
-       self.tableView.reloadData()
+       tableView.reloadData()
     }
 
 

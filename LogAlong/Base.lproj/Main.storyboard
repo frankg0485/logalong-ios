@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -295,11 +296,18 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Records" id="PoS-uv-BJt">
-                        <barButtonItem key="rightBarButtonItem" title="Sort By:" id="yny-Eb-gJK">
-                            <connections>
-                                <action selector="sortButtonClicked:" destination="qSe-lV-ENf" id="wHj-p2-VSZ"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Sort By:" id="yny-Eb-gJK">
+                                <connections>
+                                    <action selector="sortButtonClicked:" destination="qSe-lV-ENf" id="wHj-p2-VSZ"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Time: Asc" id="w89-IL-E0m">
+                                <connections>
+                                    <action selector="timeButtonClicked:" destination="qSe-lV-ENf" id="byK-y7-PBY"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Fg-Md-CTt" userLabel="First Responder" sceneMemberID="firstResponder"/>

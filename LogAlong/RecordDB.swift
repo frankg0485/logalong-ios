@@ -14,6 +14,11 @@ class RecordDB {
         case CATEGORY = 2
     }
 
+    enum timeSorts: Int {
+        case ASC = 1
+        case DESC = 2
+    }
+
     static let instance = RecordDB()
     private let db: Connection?
 
@@ -115,7 +120,6 @@ class RecordDB {
         return categories
     }
 
-    //use enumeration
     func getRecords(sortBy: Int) -> [Record] {
         var records: [Record] = []
         var condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc)
@@ -296,9 +300,28 @@ class RecordDB {
         } catch {
             fatalError()
         }
-        
+
         return category ?? Category(id: 0, name: "Category Not Specified")
     }
-    
+
+    func timeOrder(type: Int) -> [Record] {
+        var records: [Record] = []
+        var condition = self.records
+
+        if (type == timeSorts.ASC.rawValue) {
+            condition = self.records.order(time.asc)
+        } else {
+            condition = self.records.order(time.desc)
+        }
+
+        do {
+            for record in try db!.prepare(condition) {
+                records.append(Record(category: searchCategories(id: record[categoryId], alphabetical: false).name, amount: record[amount], account: searchAccounts(id: record[accountId], alphabetical: false).name, time: record[time])!)
+            }
+        } catch {
+
+        }
+        return records
+    }
     
 }
