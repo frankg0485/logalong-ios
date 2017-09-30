@@ -210,7 +210,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v9P-fR-aVg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-292" y="1232.3838080959522"/>
+            <point key="canvasLocation" x="-334" y="1232"/>
         </scene>
         <!--Your Records-->
         <scene sceneID="smz-Ao-bi7">
@@ -831,7 +831,53 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3v4-z9-l4r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1853" y="1232"/>
+            <point key="canvasLocation" x="1527" y="1231"/>
+        </scene>
+        <!--Date Picker View Controller-->
+        <scene sceneID="ufU-oQ-tZG">
+            <objects>
+                <viewController id="zA7-tl-XaT" customClass="DatePickerViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NS5-C2-jMV"/>
+                        <viewControllerLayoutGuide type="bottom" id="HfB-vU-epJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Cac-fu-mW4">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="k7i-M1-ckE">
+                                <rect key="frame" x="20" y="28" width="314" height="197"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <date key="date" timeIntervalSinceReferenceDate="528256066.51876301">
+                                    <!--2017-09-28 01:47:46 +0000-->
+                                </date>
+                            </datePicker>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jze-UJ-gQw">
+                                <rect key="frame" x="20" y="233" width="314" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="OK"/>
+                                <connections>
+                                    <action selector="okButtonPressed:" destination="zA7-tl-XaT" eventType="touchUpInside" id="HN3-7A-7bY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h9h-tm-SfZ">
+                                <rect key="frame" x="20" y="262" width="314" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Cancel"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="350" height="350"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="350" height="300"/>
+                    <connections>
+                        <outlet property="datePicker" destination="k7i-M1-ckE" id="A7y-9c-5Dn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bkj-oG-U2R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1852.8" y="805.99700149925047"/>
         </scene>
         <!--Select Payee Table View Controller-->
         <scene sceneID="Gqj-os-rtZ">
@@ -954,7 +1000,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eoZ-Vi-0hb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1122" y="1232"/>
+            <point key="canvasLocation" x="905" y="1231"/>
         </scene>
         <!--Select Category Table View Controller-->
         <scene sceneID="42G-y6-wpT">
@@ -1009,7 +1055,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JYz-G3-D20" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="408.80000000000001" y="1232.3838080959522"/>
+            <point key="canvasLocation" x="287" y="1231"/>
         </scene>
         <!--New Record-->
         <scene sceneID="iXq-J6-Nvp">
@@ -1142,16 +1188,26 @@
                                 <action selector="cancel:" destination="58n-ox-X6M" id="V3u-Wm-qyh"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="GtD-UE-CSO">
-                            <connections>
-                                <segue destination="ZTN-hO-UNK" kind="unwind" unwindAction="unwindToRecordListWithSender:" id="Trd-b9-rKT"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="save" id="GtD-UE-CSO">
+                                <connections>
+                                    <segue destination="ZTN-hO-UNK" kind="unwind" unwindAction="unwindToRecordListWithSender:" id="Trd-b9-rKT"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" id="2Cj-yD-f89">
+                                <connections>
+                                    <segue destination="zA7-tl-XaT" kind="popoverPresentation" identifier="ChangeDate" popoverAnchorBarButtonItem="2Cj-yD-f89" id="8jU-GF-tHZ">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="accountLabel" destination="wP7-mJ-e3p" id="CBF-f1-2sc"/>
                         <outlet property="amountLabel" destination="rgy-MU-fRh" id="BzA-id-kmT"/>
                         <outlet property="categoryLabel" destination="4nh-vD-VJb" id="E6Z-ni-aXi"/>
+                        <outlet property="changeDateButton" destination="2Cj-yD-f89" id="Qf8-XR-agh"/>
                         <outlet property="notesTextField" destination="zvf-zc-gRp" id="ulh-QQ-Gzk"/>
                         <outlet property="payeeLabel" destination="HoC-zQ-kve" id="iOw-IL-PvQ"/>
                         <outlet property="saveButton" destination="GtD-UE-CSO" id="bxz-xt-CpW"/>
@@ -1554,7 +1610,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qEm-aR-PSV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1711.2" y="436.2818590704648"/>
+            <point key="canvasLocation" x="1854" y="385"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BEj-6B-Mf1">

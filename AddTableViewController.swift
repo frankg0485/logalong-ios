@@ -23,6 +23,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     @IBOutlet weak var notesTextField: UITextField!
 
+    @IBOutlet weak var changeDateButton: UIBarButtonItem!
+
     var record: Record?
 
     var accountId: Int64 = 0
@@ -33,13 +35,33 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
         notesTextField.delegate = self
 
+        if presentingViewController is NewAdditionTableViewController {
+            let date = Date()
+
+            let dayTimePeriodFormatter = DateFormatter()
+            dayTimePeriodFormatter.dateStyle = .short
+
+            let dateString = dayTimePeriodFormatter.string(from: date)
+
+            changeDateButton.title = dateString
+        }
+
         if let record = record {
             amountLabel.text = String(record.amount)
             accountLabel.text = record.account
             categoryLabel.text = record.category ?? "Category Not Specified"
-/*            payeeLabel.text = record.payee ?? "Payee Not Specified"
-            tagLabel.text = record.tag ?? "Tag Not Specified"
-            notesTextField.text = record.notes*/
+
+            let date = Date(timeIntervalSince1970: TimeInterval(record.time))
+
+            let dayTimePeriodFormatter = DateFormatter()
+            dayTimePeriodFormatter.dateStyle = .short
+
+            let dateString = dayTimePeriodFormatter.string(from: date)
+
+            changeDateButton.title = dateString
+            /*            payeeLabel.text = record.payee ?? "Payee Not Specified"
+             tagLabel.text = record.tag ?? "Tag Not Specified"
+             notesTextField.text = record.notes*/
         }
 
         updateSaveButtonState()
@@ -81,8 +103,16 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         } else if let _ = caller as? SelectPayeeTableViewController {
             payeeLabel.text = payees[Int(myDouble)]
 
-        } else {
+        } else if let _ = caller as? SelectTagTableViewController {
             tagLabel.text = tags[Int(myDouble)]
+        } else if let _ = caller as? DatePickerViewController {
+
+            let date = Date(timeIntervalSince1970: myDouble)
+            let formatter = DateFormatter()
+
+            formatter.dateStyle = .short
+
+            changeDateButton.title = formatter.string(from: date)
         }
 
         updateSaveButtonState()
@@ -171,7 +201,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             || (segue.identifier == "ChooseCategory")
             || (segue.identifier == "ChoosePayee")
             || (segue.identifier == "ChooseTag")
-            || (segue.identifier == "ChooseAmount") {
+            || (segue.identifier == "ChooseAmount")
+            || (segue.identifier == "ChangeDate") {
 
             let popoverViewController = segue.destination
 
@@ -195,7 +226,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             secondViewController.delegate = self
         }  else if let secondViewController = segue.destination as? SelectAmountViewController {
             secondViewController.delegate = self
-        }  else {
+        }  else if let secondViewController = segue.destination as? DatePickerViewController {
+            secondViewController.delegate = self
+        } else {
             guard let button = sender as? UIBarButtonItem, button === saveButton else {
                 os_log("The save button was not pressed, cancelling", log: OSLog.default, type: .debug)
                 return
@@ -206,25 +239,25 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             let category = categoryLabel.text
             let time = Date().timeIntervalSince1970.rounded()
             /*let payee = payeeLabel.text
-            let tag = tagLabel.text
-            let notes = notesTextField.text*/
+             let tag = tagLabel.text
+             let notes = notesTextField.text*/
 
             record = Record(category: category, amount: amount, account: account!, time: Int64(time)/*, payee: payee, tag: tag, notes: notes*/)
         }
     }
 
-
-
-
-
+    
+    
+    
+    
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
     }
-
-
+    
+    
     private func updateSaveButtonState() {
         // Disable the Save button if the text field is empty.
-
+        
         if (amountLabel.text == "Label") || (amountLabel.text == "0.0") || (accountLabel.text == "Choose Account") {
             saveButton.isEnabled = false
         } else {
