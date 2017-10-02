@@ -12,14 +12,31 @@ import os.log
 class RecordsTableViewController: UITableViewController {
 
     var records = [Record]()
+    var sections: [String] = ["All Records"]
+
     let sortOptions = ["Sort By:", "Sort By: Account", "Sort By: Category"]
-    var sortCounter = 0
+    var sortCounter = 0 {
+        didSet {
+            rowsInPreviousSections = 0
+            rowsInSection = 0
+            sectionCounter = 0
+
+        }
+    }
+
+    var timeCounterAsc = true
+
+    var sectionCounter = 0
+    var rowsInSection = 0
+    var rowsInPreviousSections
+        = 0
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem
 
-        records = RecordDB.instance.getRecords(sortBy: 0)
+        records = RecordDB.instance.getRecords(sortBy: 0, timeAsc: timeCounterAsc)
 
         tableView.tableFooterView = UIView()
         /*        if let savedRecords = loadRecords() {
@@ -40,11 +57,18 @@ class RecordsTableViewController: UITableViewController {
     @IBAction func timeButtonClicked(_ sender: UIBarButtonItem) {
         if (sender.title == "Time: Asc") {
             sender.title = "Time: Desc"
-            records = RecordDB.instance.timeOrder(type: 2)
+
+            timeCounterAsc = false
+            records = RecordDB.instance.getRecords(sortBy: 0, timeAsc: timeCounterAsc)
+
+
         } else {
             sender.title = "Time: Asc"
-            records = RecordDB.instance.timeOrder(type: 1)
+
+            timeCounterAsc = true
+            records = RecordDB.instance.getRecords(sortBy: 0, timeAsc: timeCounterAsc)
         }
+
 
         tableView.reloadData()
     }
@@ -54,17 +78,32 @@ class RecordsTableViewController: UITableViewController {
             sortCounter = 0
             sender.title = sortOptions[sortCounter]
 
-            records = RecordDB.instance.getRecords(sortBy: 0)
+            records = RecordDB.instance.getRecords(sortBy: 0, timeAsc: timeCounterAsc)
+
+            sections.removeAll()
+            sections.append("All Records")
         } else {
             sender.title = sortOptions[sortCounter + 1]
             sortCounter += 1
-
+            
             if (sortCounter == 1) {
-                records = RecordDB.instance.getRecords(sortBy: 1)
+                records = RecordDB.instance.getRecords(sortBy: 1, timeAsc: timeCounterAsc)
+
+                sections.removeAll()
+                for account in RecordDB.instance.getAccounts() {
+                    sections.append(account)
+                }
+
             } else {
-                records = RecordDB.instance.getRecords(sortBy: 2)
+                records = RecordDB.instance.getRecords(sortBy: 2, timeAsc: timeCounterAsc)
+
+                sections.removeAll()
+                for category in RecordDB.instance.getCategories() {
+                    sections.append(category)
+                }
             }
         }
+
 
 
        tableView.reloadData()
@@ -97,15 +136,26 @@ class RecordsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
+
+
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return records.count
+
+        if (sections.count == RecordDB.instance.getAccounts().count) {
+            return RecordDB.instance.searchRecords(account: sections[section], category: nil).count
+        } else if (sections.count == RecordDB.instance.getCategories().count) {
+            return RecordDB.instance.searchRecords(account: nil, category: sections[section]).count
+        } else {
+            return records.count
+        }
     }
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section]
+    }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
@@ -115,7 +165,21 @@ class RecordsTableViewController: UITableViewController {
 
         }
 
-        let record = records[indexPath.row]
+            if (indexPath.row == 0) {
+                sectionCounter += 1
+
+                if (sectionCounter > 1) {
+                    rowsInPreviousSections += 1
+
+                }
+                rowsInPreviousSections += rowsInSection
+                rowsInSection = 0
+            } else {
+                rowsInSection += 1
+            }
+
+
+        let record = records[indexPath.row + rowsInPreviousSections]
 
         cell.accountLabel.text = record.account
         cell.categoryLabel.text = record.category

@@ -120,14 +120,29 @@ class RecordDB {
         return categories
     }
 
-    func getRecords(sortBy: Int) -> [Record] {
+    func getRecords(sortBy: Int, timeAsc: Bool) -> [Record] {
         var records: [Record] = []
-        var condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc)
+        var condition = self.records.order(time.asc)
+
+        if (timeAsc == false) {
+            condition = self.records.order(time.desc)
+        }
 
         if (sortBy == sorts.ACCOUNT.rawValue) {
-            condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc).order(aName.asc)
+            
+            if (timeAsc == true) {
+                condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc).order(aName.asc)
+            } else {
+                condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc).order(aName.desc)
+            }
         } else if (sortBy == sorts.CATEGORY.rawValue) {
-            condition = self.records.join(.leftOuter, categories, on: categoryId == cId).order(time.asc).order(cName.asc)
+
+            if (timeAsc == true) {
+                condition = self.records.join(.leftOuter, categories, on: categoryId == cId).order(time.asc).order(cName.asc)
+            } else {
+                condition = self.records.join(.leftOuter, categories, on: accountId == aId).order(time.desc).order(aName.desc)
+            }
+
         }
         
         do {
@@ -304,14 +319,15 @@ class RecordDB {
         return category ?? Category(id: 0, name: "Category Not Specified")
     }
 
-    func timeOrder(type: Int) -> [Record] {
+    func searchRecords(account: String?, category: String?) -> [Record] {
         var records: [Record] = []
         var condition = self.records
 
-        if (type == timeSorts.ASC.rawValue) {
-            condition = self.records.order(time.asc)
+        if (account == nil) {
+            condition = self.records.join(.leftOuter, categories, on: categoryId == cId).filter(cName == category!).order(time.asc)
         } else {
-            condition = self.records.order(time.desc)
+           condition = self.records.join(.leftOuter, accounts, on: accountId == aId).filter(aName == account!).order(time.asc)
+
         }
 
         do {
@@ -321,7 +337,9 @@ class RecordDB {
         } catch {
 
         }
+
         return records
     }
+
     
 }
