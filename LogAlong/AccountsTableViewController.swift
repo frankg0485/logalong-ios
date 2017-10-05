@@ -121,7 +121,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             }
 
             guard let selectedAccountCell = sender as? AccountsTableViewCell else {
-                fatalError("Unexpected sender: \(sender)")
+                fatalError("Unexpected sender: \(String(describing: sender))")
             }
 
             guard let indexPath = tableView.indexPath(for: selectedAccountCell) else {
@@ -140,7 +140,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             popoverViewController.popoverPresentationController!.delegate = self
 
         default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
 
 
         }

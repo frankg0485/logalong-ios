@@ -118,7 +118,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
             }
 
             guard let selectedCategoryCell = sender as? CategoriesTableViewCell else {
-                fatalError("Unexpected sender: \(sender)")
+                fatalError("Unexpected sender: \(String(describing: sender))")
             }
 
             guard let indexPath = tableView.indexPath(for: selectedCategoryCell) else {
@@ -137,7 +137,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
             popoverViewController.popoverPresentationController!.delegate = self
 
         default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
             
             
         }

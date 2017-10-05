@@ -223,7 +223,11 @@ class SelectAmountViewController: UIViewController {
     }
 
     func deleteChar(inputStr: String) -> String {
-        return inputStr.substring(to: (inputStr.index(before: (inputStr.endIndex))))
+
+        var strCopy = inputStr
+
+        strCopy.remove(at: strCopy.index(before: strCopy.endIndex))
+        return strCopy
 
     }
 

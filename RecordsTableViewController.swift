@@ -24,7 +24,14 @@ class RecordsTableViewController: UITableViewController {
         }
     }
 
-    var timeCounterAsc = true
+    var timeCounterAsc = true {
+        didSet {
+            rowsInPreviousSections = 0
+            rowsInSection = 0
+            sectionCounter = 0
+
+        }
+    }
 
     var sectionCounter = 0
     var rowsInSection = 0
@@ -59,14 +66,14 @@ class RecordsTableViewController: UITableViewController {
             sender.title = "Time: Desc"
 
             timeCounterAsc = false
-            records = RecordDB.instance.getRecords(sortBy: 0, timeAsc: timeCounterAsc)
+            records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
 
         } else {
             sender.title = "Time: Asc"
 
             timeCounterAsc = true
-            records = RecordDB.instance.getRecords(sortBy: 0, timeAsc: timeCounterAsc)
+            records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
         }
 
 
@@ -78,7 +85,7 @@ class RecordsTableViewController: UITableViewController {
             sortCounter = 0
             sender.title = sortOptions[sortCounter]
 
-            records = RecordDB.instance.getRecords(sortBy: 0, timeAsc: timeCounterAsc)
+            records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
             sections.removeAll()
             sections.append("All Records")
@@ -87,7 +94,7 @@ class RecordsTableViewController: UITableViewController {
             sortCounter += 1
             
             if (sortCounter == 1) {
-                records = RecordDB.instance.getRecords(sortBy: 1, timeAsc: timeCounterAsc)
+                records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
                 sections.removeAll()
                 for account in RecordDB.instance.getAccounts() {
@@ -95,7 +102,7 @@ class RecordsTableViewController: UITableViewController {
                 }
 
             } else {
-                records = RecordDB.instance.getRecords(sortBy: 2, timeAsc: timeCounterAsc)
+                records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
                 sections.removeAll()
                 for category in RecordDB.instance.getCategories() {
@@ -254,7 +261,7 @@ class RecordsTableViewController: UITableViewController {
             }
 
             guard let selectedRecordCell = sender as? RecordsTableViewCell else {
-                fatalError("Unexpected sender: \(sender)")
+                fatalError("Unexpected sender: \(String(describing: sender))")
             }
 
             guard let indexPath = tableView.indexPath(for: selectedRecordCell) else {
@@ -265,7 +272,7 @@ class RecordsTableViewController: UITableViewController {
             recordDetailViewController.record = selectedRecord
 
         default:
-            fatalError("Unexpected Segue Identifier; \(segue.identifier)")
+            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
         }
     }
 
