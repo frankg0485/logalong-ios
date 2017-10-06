@@ -18,8 +18,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         accounts = RecordDB.instance.getAccounts()
 
-        tableView.tableFooterView = UIView()
-
+//        tableView.tableFooterView = UIView()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -51,6 +50,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         // #warning Incomplete implementation, return the number of rows
         return accounts.count
     }
+
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

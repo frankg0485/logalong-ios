@@ -18,7 +18,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
 
         categories = RecordDB.instance.getCategories()
 
-        tableView.tableFooterView = UIView()
+//        tableView.tableFooterView = UIView()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
