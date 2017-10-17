@@ -13,6 +13,7 @@ class SelectAccountTableViewController: UITableViewController {
 
     @IBOutlet weak var okButton: UIButton!
     var myIndexPath: Int = 0
+    var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0)
 
     weak var delegate: FViewControllerDelegate?
 
@@ -31,7 +32,9 @@ class SelectAccountTableViewController: UITableViewController {
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
 
-        delegate?.passDoubleBack(self, myDouble: Double(myIndexPath))
+        type.int64 = Int64(myIndexPath)
+
+        delegate?.passDoubleBack(self, type: type)
         self.dismiss(animated: true, completion: nil)
         /*       let myVC = storyboard?.instantiateViewController(withIdentifier: "testID") as! AddTableViewController
          myVC.intPassed = myIndexPath
@@ -62,6 +65,7 @@ class SelectAccountTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         okButton.isEnabled = true
+        
         myIndexPath = indexPath.row
     }
 

@@ -9,6 +9,11 @@
 import UIKit
 import os.log
 
+struct TypePassed {
+    var double: Double = 0
+    var int: Int = 0
+    var int64: Int64 = 0
+}
 
 var payees: [String] = ["Costco", "Walmart", "Chipotle", "Panera", "Biaggis"]
 var tags: [String] = ["Market America", "2014 Summer", "2015 Summer", "2016 Summer", "2017 Summer"]
@@ -86,28 +91,29 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return true
     }
 
-    func passDoubleBack(_ caller: UIViewController, myDouble: Double) {
+    func passDoubleBack(_ caller: UIViewController, type: TypePassed) {
         if let _ = caller as? SelectAmountViewController {
-            amountLabel.text = String(format: "%.2lf", myDouble)
-        } else if let _ = caller as? SelectAccountTableViewController {
-            accountLabel.text = RecordDB.instance.searchAccounts(id: Int64(myDouble), alphabetical: true).name
+            amountLabel.text = String(format: "%.2lf", type.double)
 
-            accountId = RecordDB.instance.searchAccounts(id: Int64(myDouble), alphabetical: true).id
+        } else if let _ = caller as? SelectAccountTableViewController {
+            accountLabel.text = RecordDB.instance.searchAccounts(id: type.int64, alphabetical: true).name
+
+            accountId = RecordDB.instance.searchAccounts(id: type.int64, alphabetical: true).id
 
         } else if let _ = caller as? SelectCategoryTableViewController {
-            categoryLabel.text = RecordDB.instance.searchCategories(id: Int64(myDouble), alphabetical: true).name
+            categoryLabel.text = RecordDB.instance.searchCategories(id: type.int64, alphabetical: true).name
 
-            categoryId = RecordDB.instance.searchCategories(id: Int64(myDouble), alphabetical: true).id
+            categoryId = RecordDB.instance.searchCategories(id: type.int64, alphabetical: true).id
 
 
         } else if let _ = caller as? SelectPayeeTableViewController {
-            payeeLabel.text = payees[Int(myDouble)]
+            payeeLabel.text = payees[type.int]
 
         } else if let _ = caller as? SelectTagTableViewController {
-            tagLabel.text = tags[Int(myDouble)]
+            tagLabel.text = tags[type.int]
         } else if let _ = caller as? DatePickerViewController {
 
-            let date = Date(timeIntervalSince1970: myDouble)
+            let date = Date(timeIntervalSince1970: type.double)
             let formatter = DateFormatter()
 
             formatter.dateStyle = .short

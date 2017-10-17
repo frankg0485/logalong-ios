@@ -11,7 +11,8 @@ import UIKit
 class DatePickerViewController: UIViewController {
 
     var delegate: FViewControllerDelegate?
-    
+    var type: TypePassed?
+
     @IBOutlet weak var datePicker: UIDatePicker!
 
     override func viewDidLoad() {
@@ -25,8 +26,9 @@ class DatePickerViewController: UIViewController {
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
 
+        type?.double = datePicker.date.timeIntervalSince1970.rounded()
 
-        delegate?.passDoubleBack(self, myDouble: datePicker.date.timeIntervalSince1970.rounded())
+        delegate?.passDoubleBack(self, type: type!)
 
         dismiss(animated: true, completion: nil)
     }

@@ -16,6 +16,7 @@ class SelectTagTableViewController: UITableViewController {
     weak var delegate: FViewControllerDelegate?
 
     var myIndexPath: Int = 0
+    var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +31,8 @@ class SelectTagTableViewController: UITableViewController {
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
 
-        delegate?.passDoubleBack(self, myDouble: Double(myIndexPath))
+        type.int = myIndexPath
+        delegate?.passDoubleBack(self, type: type)
 
         dismiss(animated: true, completion: nil)
     }

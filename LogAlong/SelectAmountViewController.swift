@@ -12,6 +12,7 @@ class SelectAmountViewController: UIViewController {
 
     @IBOutlet weak var amountTextField: UITextField!
     weak var delegate: FViewControllerDelegate?
+    var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0)
 
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var subtractButton: UIButton!
@@ -51,7 +52,9 @@ class SelectAmountViewController: UIViewController {
             return
         }
 
-        delegate?.passDoubleBack(self, myDouble: Double(amountTextField.text!)!)
+        type.double = Double(amountTextField.text!)!
+
+        delegate?.passDoubleBack(self, type: type)
         dismiss(animated: true, completion: nil)
     }
 

@@ -1,4 +1,3 @@
-//
 //  RecordDB.swift
 //  LogAlong
 //
@@ -122,35 +121,43 @@ class RecordDB {
 
     func getRecords(sortBy: Int, timeAsc: Bool) -> [Record] {
         var records: [Record] = []
-        var condition = self.records.order(time.asc)
+        let condition = self.records.join(.leftOuter, accounts, on: accountId == aId).join(.leftOuter, categories, on: categoryId == cId)
+        var condition1 = condition
 
+        if (timeAsc == true) {
+            condition1 = condition.order(time.asc)
+        }
         if (timeAsc == false) {
-            condition = self.records.order(time.desc)
+            condition1 = condition.order(time.desc)
         }
 
         if (sortBy == sorts.ACCOUNT.rawValue) {
             
             if (timeAsc == true) {
-                condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc).order(aName.asc)
+                condition1 = condition.order(aName.asc).order(time.asc)
             } else {
-                condition = self.records.join(.leftOuter, accounts, on: accountId == aId).order(time.asc).order(aName.desc)
+                condition1 = condition.order(aName.asc).order(time.desc)
             }
+
         } else if (sortBy == sorts.CATEGORY.rawValue) {
 
             if (timeAsc == true) {
-                condition = self.records.join(.leftOuter, categories, on: categoryId == cId).order(time.asc).order(cName.asc)
+                condition1 = condition.order(cName.asc).order(time.asc)
             } else {
-                condition = self.records.join(.leftOuter, categories, on: accountId == aId).order(time.desc).order(aName.desc)
+                condition1 = condition.order(cName.asc).order(time.desc)
             }
 
         }
         
         do {
-            for record in try db!.prepare(condition) {
-                records.append(Record(category: searchCategories(id: record[categoryId], alphabetical: false).name, amount: record[amount], account: searchAccounts(id: record[accountId], alphabetical: false).name, time: record[time])!)
+            for record in try db!.prepare(condition1) {
+                //print("record[rId] = \(record[rId])")
+                
+                records.append(Record(category: record[cName], amount: record[amount], account: record[aName], time: record[time])!)
+
             }
         } catch {
-            print("Select failted")
+            print("Select failed")
         }
         return records
     }
@@ -228,6 +235,7 @@ class RecordDB {
 
     func addRecord(catId: Int64, accId: Int64, amount: Double, timeInMilliseconds: Int64) {
         do {
+            
             let insert = records.insert(accountId <- accId, categoryId <- catId, self.amount <- amount, time <- timeInMilliseconds, type <- 0)
             let _ = try db!.run(insert)
 
@@ -273,7 +281,6 @@ class RecordDB {
                     accountIds.append(account.get(aId))
                 }
 
-                // DON'T HARDCODE IT
                 for accountEntry in try db!.prepare(self.accounts.filter(aId == accountIds[Int(id)])) {
                     account = Account(id: accountEntry[aId], name: accountEntry[aName])
 
@@ -287,7 +294,7 @@ class RecordDB {
         } catch {
             fatalError()
         }
-
+        print("id = \(id)")
         return account!
     }
 
