@@ -11,7 +11,7 @@ import UIKit
 class DatePickerViewController: UIViewController {
 
     var delegate: FViewControllerDelegate?
-    var type: TypePassed?
+    var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0)
 
     @IBOutlet weak var datePicker: UIDatePicker!
 
@@ -26,9 +26,9 @@ class DatePickerViewController: UIViewController {
     
     @IBAction func okButtonPressed(_ sender: UIButton) {
 
-        type?.double = datePicker.date.timeIntervalSince1970.rounded()
+        type.double = datePicker.date.timeIntervalSince1970.rounded()
 
-        delegate?.passDoubleBack(self, type: type!)
+        delegate?.passDoubleBack(self, type: type)
 
         dismiss(animated: true, completion: nil)
     }

@@ -134,17 +134,17 @@ class RecordDB {
         if (sortBy == sorts.ACCOUNT.rawValue) {
             
             if (timeAsc == true) {
-                condition1 = condition.order(aName.asc).order(time.asc)
+                condition1 = condition.order(aName.asc, time.asc)
             } else {
-                condition1 = condition.order(aName.asc).order(time.desc)
+                condition1 = condition.order(aName.asc, time.desc)
             }
 
         } else if (sortBy == sorts.CATEGORY.rawValue) {
 
             if (timeAsc == true) {
-                condition1 = condition.order(cName.asc).order(time.asc)
+                condition1 = condition.order(cName.asc, time.asc)
             } else {
-                condition1 = condition.order(cName.asc).order(time.desc)
+                condition1 = condition.order(cName.asc, time.desc)
             }
 
         }
