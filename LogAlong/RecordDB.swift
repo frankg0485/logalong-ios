@@ -132,29 +132,22 @@ class RecordDB {
         }
 
         if (sortBy == sorts.ACCOUNT.rawValue) {
-            
             if (timeAsc == true) {
                 condition1 = condition.order(aName.asc, time.asc)
             } else {
                 condition1 = condition.order(aName.asc, time.desc)
             }
-
         } else if (sortBy == sorts.CATEGORY.rawValue) {
-
             if (timeAsc == true) {
                 condition1 = condition.order(cName.asc, time.asc)
             } else {
                 condition1 = condition.order(cName.asc, time.desc)
             }
-
         }
         
         do {
             for record in try db!.prepare(condition1) {
-                //print("record[rId] = \(record[rId])")
-                
                 records.append(Record(category: record[cName], amount: record[amount], account: record[aName], time: record[time])!)
-
             }
         } catch {
             print("Select failed")
@@ -278,7 +271,7 @@ class RecordDB {
 
             if (alphabetical == true) {
                 for account in try db!.prepare(self.accounts.order(aName.asc)) {
-                    accountIds.append(account.get(aId))
+                    try accountIds.append(account.get(aId))
                 }
 
                 for accountEntry in try db!.prepare(self.accounts.filter(aId == accountIds[Int(id)])) {
@@ -287,7 +280,7 @@ class RecordDB {
                 }
             } else {
                 for accountEntry in try db!.prepare(self.accounts.filter(aId == id)) {
-                    account = Account(id: accountEntry.get(aId), name: accountEntry.get(aName))
+                    account = try Account(id: accountEntry.get(aId), name: accountEntry.get(aName))
                 }
             }
 
@@ -306,7 +299,7 @@ class RecordDB {
 
             if (alphabetical == true) {
                 for category in try db!.prepare(self.categories.order(cName.asc)) {
-                    categoryIds.append(category.get(cId))
+                    try categoryIds.append(category.get(cId))
                 }
 
                 // DON'T HARDCODE IT
@@ -316,7 +309,7 @@ class RecordDB {
                 }
             } else {
                 for categoryEntry in try db!.prepare(self.categories.filter(cId == id)) {
-                    category = Category(id: categoryEntry.get(cId), name: categoryEntry.get(cName))
+                    category = try Category(id: categoryEntry.get(cId), name: categoryEntry.get(cName))
                 }
             }
         } catch {
