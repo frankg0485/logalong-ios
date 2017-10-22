@@ -26,6 +26,9 @@
 		014893CF1EDE6106005E3C94 /* SelectAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */; };
 		014893D31EDFA368005E3C94 /* ProtocolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D21EDFA368005E3C94 /* ProtocolViewController.swift */; };
 		014893D71EEB0332005E3C94 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D61EEB0332005E3C94 /* MainTabViewController.swift */; };
+		0153672A1F9D5551001BCB89 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0153670D1F9D5400001BCB89 /* Charts.framework */; };
+		0153672B1F9D5551001BCB89 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0153670D1F9D5400001BCB89 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015367311F9D588F001BCB89 /* PieChartViewController.swift */; };
 		019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD241E6DAF64002EF989 /* AppDelegate.swift */; };
 		019CCD2C1E6DAF64002EF989 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 019CCD2A1E6DAF64002EF989 /* Main.storyboard */; };
 		019CCD2E1E6DAF64002EF989 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019CCD2D1E6DAF64002EF989 /* Assets.xcassets */; };
@@ -52,6 +55,41 @@
 			proxyType = 1;
 			remoteGlobalIDString = EE247AD21C3F04ED00AE3E12;
 			remoteInfo = "SQLite iOS";
+		};
+		0153670C1F9D5400001BCB89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 015367071F9D5400001BCB89 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
+			remoteInfo = Charts;
+		};
+		0153670E1F9D5400001BCB89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 015367071F9D5400001BCB89 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
+			remoteInfo = ChartsTests;
+		};
+		015367261F9D554A001BCB89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 015367211F9D554A001BCB89 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
+			remoteInfo = Charts;
+		};
+		015367281F9D554A001BCB89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 015367211F9D554A001BCB89 /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
+			remoteInfo = ChartsTests;
+		};
+		0153672C1F9D5551001BCB89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 015367071F9D5400001BCB89 /* Charts.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A58A4ED274A941CA248EA921;
+			remoteInfo = Charts;
 		};
 		019CCD381E6DAF65002EF989 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -119,6 +157,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				013318301F9BA145002B12EC /* SQLite.framework in Embed Frameworks */,
+				0153672B1F9D5551001BCB89 /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,6 +191,9 @@
 		014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAmountViewController.swift; sourceTree = "<group>"; };
 		014893D21EDFA368005E3C94 /* ProtocolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolViewController.swift; sourceTree = "<group>"; };
 		014893D61EEB0332005E3C94 /* MainTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
+		015367071F9D5400001BCB89 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "../../Downloads/Charts-master/Charts.xcodeproj"; sourceTree = "<group>"; };
+		015367211F9D554A001BCB89 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = "../../Downloads/Charts-master/Charts.xcodeproj"; sourceTree = "<group>"; };
+		015367311F9D588F001BCB89 /* PieChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewController.swift; sourceTree = "<group>"; };
 		019CCD211E6DAF64002EF989 /* LogAlong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogAlong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		019CCD241E6DAF64002EF989 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		019CCD2B1E6DAF64002EF989 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -181,6 +223,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0153672A1F9D5551001BCB89 /* Charts.framework in Frameworks */,
 				0133182F1F9BA145002B12EC /* SQLite.framework in Frameworks */,
 				0133182E1F9BA141002B12EC /* SQLite.framework in Frameworks */,
 			);
@@ -199,8 +242,27 @@
 		013318261F9BA141002B12EC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				015367071F9D5400001BCB89 /* Charts.xcodeproj */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		015367081F9D5400001BCB89 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0153670D1F9D5400001BCB89 /* Charts.framework */,
+				0153670F1F9D5400001BCB89 /* ChartsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		015367221F9D554A001BCB89 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				015367271F9D554A001BCB89 /* Charts.framework */,
+				015367291F9D554A001BCB89 /* ChartsTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		019CCD181E6DAF64002EF989 = {
@@ -209,6 +271,7 @@
 				019CCD231E6DAF64002EF989 /* LogAlong */,
 				019CCD3A1E6DAF65002EF989 /* LogAlongTests */,
 				019CCD221E6DAF64002EF989 /* Products */,
+				015367211F9D554A001BCB89 /* Charts.xcodeproj */,
 				01D19CCF1F85934F0010CF02 /* SQLite.xcodeproj */,
 				013318261F9BA141002B12EC /* Frameworks */,
 			);
@@ -228,6 +291,7 @@
 			children = (
 				019CCD241E6DAF64002EF989 /* AppDelegate.swift */,
 				019CCD2A1E6DAF64002EF989 /* Main.storyboard */,
+				015367311F9D588F001BCB89 /* PieChartViewController.swift */,
 				01FDE49B1F7EFBBC00A7DD78 /* DatePickerViewController.swift */,
 				01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */,
 				01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */,
@@ -303,6 +367,7 @@
 			);
 			dependencies = (
 				013318321F9BA145002B12EC /* PBXTargetDependency */,
+				0153672D1F9D5551001BCB89 /* PBXTargetDependency */,
 			);
 			name = LogAlong;
 			productName = LogAlong;
@@ -363,6 +428,14 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 015367081F9D5400001BCB89 /* Products */;
+					ProjectRef = 015367071F9D5400001BCB89 /* Charts.xcodeproj */;
+				},
+				{
+					ProductGroup = 015367221F9D554A001BCB89 /* Products */;
+					ProjectRef = 015367211F9D554A001BCB89 /* Charts.xcodeproj */;
+				},
+				{
 					ProductGroup = 01D19CD01F85934F0010CF02 /* Products */;
 					ProjectRef = 01D19CCF1F85934F0010CF02 /* SQLite.xcodeproj */;
 				},
@@ -376,6 +449,34 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		0153670D1F9D5400001BCB89 /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = 0153670C1F9D5400001BCB89 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0153670F1F9D5400001BCB89 /* ChartsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ChartsTests.xctest;
+			remoteRef = 0153670E1F9D5400001BCB89 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		015367271F9D554A001BCB89 /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = 015367261F9D554A001BCB89 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		015367291F9D554A001BCB89 /* ChartsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ChartsTests.xctest;
+			remoteRef = 015367281F9D554A001BCB89 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		01D19CDA1F85934F0010CF02 /* SQLite.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -458,6 +559,7 @@
 				0103EF721F49BF2F0017DD80 /* CreateCategoryViewController.swift in Sources */,
 				0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */,
 				019CCD501E6DC7D0002EF989 /* RecordsTableViewCell.swift in Sources */,
+				015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */,
 				01253CFE1F538675005B4D8C /* SelectCategoryTableViewCell.swift in Sources */,
 				01FDE49C1F7EFBBC00A7DD78 /* DatePickerViewController.swift in Sources */,
 				01253CF41F5318BE005B4D8C /* SelectAccountTableViewCell.swift in Sources */,
@@ -499,6 +601,11 @@
 			isa = PBXTargetDependency;
 			name = "SQLite iOS";
 			targetProxy = 013318311F9BA145002B12EC /* PBXContainerItemProxy */;
+		};
+		0153672D1F9D5551001BCB89 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Charts;
+			targetProxy = 0153672C1F9D5551001BCB89 /* PBXContainerItemProxy */;
 		};
 		019CCD391E6DAF65002EF989 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
