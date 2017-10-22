@@ -10,7 +10,7 @@ import UIKit
 
 class AccountsTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
 
-    var accounts: [String?] = []
+    var accounts: [Account] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +18,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         accounts = RecordDB.instance.getAccounts()
 
-//        tableView.tableFooterView = UIView()
+        //        tableView.tableFooterView = UIView()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -62,7 +62,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         let account = accounts[indexPath.row]
 
-        cell.nameLabel.text = account
+        cell.nameLabel.text = account.name
 
         return cell
     }
@@ -81,8 +81,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            accounts.remove(at: indexPath.row)
-            RecordDB.instance.removeAccount(id: Int64(indexPath.row))
+            RecordDB.instance.removeAccount(id: accounts.remove(at: indexPath.row).id)
 
             tableView.deleteRows(at: [indexPath], with: .fade)
 
@@ -155,21 +154,20 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         if let sourceViewController = sender.source as? CreateAccountViewController, let account = sourceViewController.account {
 
-            if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                accounts[selectedIndexPath.row] = account
-                RecordDB.instance.updateAccount(id: Int64(selectedIndexPath.row + 1), newName: account)
-                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            if let _ = tableView.indexPathForSelectedRow {
+                RecordDB.instance.updateAccount(id: account.id, newName: account.name)
             } else {
-                let newIndexPath = IndexPath(row: accounts.count, section: 0)
-                accounts.append(account)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-                
-                RecordDB.instance.addAccount(name: account)
+                RecordDB.instance.addAccount(name: account.name)
             }
-            
         }
-        
+        reloadTableView()
+
     }
-    
-    
+
+    func reloadTableView() {
+        accounts = RecordDB.instance.getAccounts()
+
+        tableView.reloadData()
+    }
+
 }

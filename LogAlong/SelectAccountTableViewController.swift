@@ -17,7 +17,7 @@ class SelectAccountTableViewController: UITableViewController {
 
     weak var delegate: FViewControllerDelegate?
 
-    var accounts: [String?] = []
+    var accounts: [Account] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +32,9 @@ class SelectAccountTableViewController: UITableViewController {
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
 
-        type.int64 = Int64(myIndexPath)
+        type.int64 = accounts[myIndexPath].id
 
-        delegate?.passDoubleBack(self, type: type)
+        delegate?.passNumberBack(self, type: type)
         self.dismiss(animated: true, completion: nil)
         /*       let myVC = storyboard?.instantiateViewController(withIdentifier: "testID") as! AddTableViewController
          myVC.intPassed = myIndexPath
@@ -52,25 +52,24 @@ class SelectAccountTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-        override func numberOfSections(in tableView: UITableView) -> Int {
-     // #warning Incomplete implementation, return the number of sections
-     return 1
-     }
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
+    }
 
-     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-     // #warning Incomplete implementation, return the number of rows
-     return accounts.count
-     }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
+        return accounts.count
+    }
 
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         okButton.isEnabled = true
-        
         myIndexPath = indexPath.row
     }
 
 
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "ChooseAccountCell"
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? SelectAccountTableViewCell else {
@@ -79,11 +78,11 @@ class SelectAccountTableViewController: UITableViewController {
 
         let account = accounts[indexPath.row]
 
-        cell.accountNameLabel.text = account
-        
+        cell.accountNameLabel.text = account.name
+
         return cell
-     }
-     
+    }
+
 
     /*
      // Override to support conditional editing of the table view.
@@ -132,5 +131,5 @@ class SelectAccountTableViewController: UITableViewController {
 
 
 
-    
+
 }

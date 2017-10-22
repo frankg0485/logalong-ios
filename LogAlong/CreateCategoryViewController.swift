@@ -10,10 +10,10 @@ import UIKit
 
 class CreateCategoryViewController: UIViewController, UITextFieldDelegate {
 
-    var category: String? = ""
+    var category: Category?
 
     @IBOutlet weak var categoryNameTextField: UITextField!
-    
+
     @IBOutlet weak var okButton: UIButton!
 
     override func viewDidLoad() {
@@ -21,7 +21,7 @@ class CreateCategoryViewController: UIViewController, UITextFieldDelegate {
         categoryNameTextField.delegate = self
 
         if let category = category {
-            categoryNameTextField.text = category
+            categoryNameTextField.text = category.name
         }
 
         checkOkButtonState()
@@ -47,7 +47,7 @@ class CreateCategoryViewController: UIViewController, UITextFieldDelegate {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        category = categoryNameTextField.text!
+        category = Category(id: 0, name: categoryNameTextField.text!)
     }
 
     func checkOkButtonState() {

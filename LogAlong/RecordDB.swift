@@ -46,9 +46,8 @@ class RecordDB {
             db = try Connection("\(path)/frankG.sqlite3")
         } catch {
             db = nil
-            print ("Unable to open database")
+            fatalError("Unable to open database")
         }
-
         createTables()
     }
 
@@ -56,20 +55,19 @@ class RecordDB {
         do {
             try db!.run(accounts.create(ifNotExists: true) { table in
                 table.column(aId, primaryKey: true)
-                table.column(aName)
+                table.column(aName, unique: true, collate: .nocase)
             })
         } catch {
-            print("Unable to create accounts table")
+            fatalError("Unable to create accounts table")
         }
 
         do {
             try db!.run(categories.create(ifNotExists: true) { table in
                 table.column(cId, primaryKey: true)
-                table.column(cName)
+                table.column(cName, unique: true, collate: .nocase)
             })
         } catch {
-            print("Unable to create categories table")
-
+            fatalError("Unable to create categories table")
         }
 
         do {
@@ -83,37 +81,34 @@ class RecordDB {
 
             })
         } catch {
-            print("Unable to create records table")
-
+            fatalError("Unable to create records table")
         }
     }
 
 
-    func getAccounts() -> [String] {
-        var accounts = [String]()
+    func getAccounts() -> [Account] {
+        var accounts: [Account] = []
 
         do {
-
             for account in try db!.prepare(self.accounts.order(aName.asc)) {
-                accounts.append(account[aName])
+                accounts.append(Account(id: account[aId], name: account[aName]))
             }
         } catch {
-            print("Select failed")
+            fatalError("Select failed")
         }
 
         return accounts
     }
 
-    func getCategories() -> [String] {
-        var categories = [String]()
+    func getCategories() -> [Category] {
+        var categories: [Category] = []
 
         do {
-
             for category in try db!.prepare(self.categories.order(cName.asc)) {
-                categories.append(category[cName])
+                categories.append(Category(id: category[cId], name: category[cName]))
             }
         } catch {
-            print("Select failed")
+            fatalError("Select failed")
         }
 
         return categories
@@ -121,36 +116,40 @@ class RecordDB {
 
     func getRecords(sortBy: Int, timeAsc: Bool) -> [Record] {
         var records: [Record] = []
-        let condition = self.records.join(.leftOuter, accounts, on: accountId == aId).join(.leftOuter, categories, on: categoryId == cId)
-        var condition1 = condition
+        var condition = self.records.join(.leftOuter, accounts, on: accountId == aId).join(.leftOuter, categories, on: categoryId == cId)
 
         if (timeAsc == true) {
-            condition1 = condition.order(time.asc)
+            condition = condition.order(time.asc)
         }
         if (timeAsc == false) {
-            condition1 = condition.order(time.desc)
+            condition = condition.order(time.desc)
         }
 
         if (sortBy == sorts.ACCOUNT.rawValue) {
             if (timeAsc == true) {
-                condition1 = condition.order(aName.asc, time.asc)
+                condition = condition.order(aName.asc, time.asc)
             } else {
-                condition1 = condition.order(aName.asc, time.desc)
+                condition = condition.order(aName.asc, time.desc)
             }
         } else if (sortBy == sorts.CATEGORY.rawValue) {
             if (timeAsc == true) {
-                condition1 = condition.order(cName.asc, time.asc)
+                condition = condition.order(cName.asc, time.asc)
             } else {
-                condition1 = condition.order(cName.asc, time.desc)
+                condition = condition.order(cName.asc, time.desc)
             }
         }
-        
+
         do {
-            for record in try db!.prepare(condition1) {
-                records.append(Record(category: record[cName], amount: record[amount], account: record[aName], time: record[time])!)
+            for record in try db!.prepare(condition) {
+
+                if (record[categoryId] == 0) {
+                    records.append(Record(categoryId: 0, amount: record[amount], accountId: record[accountId], time: record[time], rowId: record[rId])!)
+                } else {
+                    records.append(Record(categoryId: record[categoryId], amount: record[amount], accountId: record[accountId], time: record[time], rowId: record[rId])!)
+                }
             }
         } catch {
-            print("Select failed")
+            fatalError("Select failed")
         }
         return records
     }
@@ -161,21 +160,16 @@ class RecordDB {
             let _ = try db!.run(insert)
 
         } catch {
-            print("Insert failed")
+            fatalError("Insert failed")
         }
     }
 
     func removeAccount(id: Int64) {
-        var accountIds: [Int64] = []
         do {
-
-            for categoryEntry in try db!.prepare(accounts.order(aName.asc)) {
-                accountIds.append(categoryEntry[aId])
-            }
-            let delete = accounts.order(aName.asc).filter(aId == accountIds[Int(id)]).delete()
+            let delete = accounts.filter(aId == id).delete()
             try db!.run(delete)
         } catch {
-
+            fatalError("Account deletion failed")
         }
     }
 
@@ -186,7 +180,7 @@ class RecordDB {
 
             try db!.run(update)
         } catch {
-
+            fatalError("Account update failed")
         }
     }
 
@@ -196,150 +190,121 @@ class RecordDB {
             let _ = try db!.run(insert)
 
         } catch {
-            print("Insert failed")
+            fatalError("Insert failed")
         }
     }
 
     func removeCategory(id: Int64) {
-        var categoryIds: [Int64] = []
-
-
         do {
-            for categoryEntry in try db!.prepare(categories.order(cName.asc)) {
-                categoryIds.append(categoryEntry[cId])
-            }
-            let delete = categories.filter(cId == categoryIds[Int(id)]).delete()
+            let delete = categories.filter(cId == id).delete()
             try db!.run(delete)
         } catch {
-
+            fatalError("Category deletion failed")
         }
     }
 
     func updateCategory(id: Int64, newName: String) {
         do {
-            let category = categories.filter(aId == id)
+            let category = categories.filter(cId == id)
             let update = category.update(cName <- newName)
 
             try db!.run(update)
         } catch {
-
+            fatalError("Category update failed")
         }
     }
 
     func addRecord(catId: Int64, accId: Int64, amount: Double, timeInMilliseconds: Int64) {
         do {
-            
+
             let insert = records.insert(accountId <- accId, categoryId <- catId, self.amount <- amount, time <- timeInMilliseconds, type <- 0)
             let _ = try db!.run(insert)
 
         } catch {
-
-            print("Insert failed")
+            fatalError("Insert failed")
         }
     }
 
     func removeRecord(id: Int64) {
-        var recordIds: [Int64] = []
-
         do {
-
-            for recordEntry in try db!.prepare(records.order(time.asc)) {
-                recordIds.append(recordEntry[rId])
-            }
-            let record = records.filter(rId == recordIds[Int(id)])
-            let delete = record.delete()
+            let delete = records.filter(rId == id).delete()
             try db!.run(delete)
         } catch {
-
+            fatalError("Record deletion failed")
         }
     }
 
     func updateRecord(id: Int64, newCategoryId: Int64, newAccountId: Int64, newAmount: Double, newTime: Int64, newType: Int) {
+
         do {
             let record = records.filter(rId == id)
+
             let update = record.update(accountId <- newAccountId, categoryId <- newCategoryId, amount <- newAmount, time <- newTime, type <- newType)
 
             try db!.run(update)
         } catch {
-
+            fatalError("Record update failed")
         }
     }
-    func searchAccounts(id: Int64, alphabetical: Bool) -> Account {
-        var account: Account?
-        var accountIds: [Int64] = []
+
+    func getAccount(id: Int64) -> String {
+        var account: String = ""
+
         do {
-
-            if (alphabetical == true) {
-                for account in try db!.prepare(self.accounts.order(aName.asc)) {
-                    try accountIds.append(account.get(aId))
-                }
-
-                for accountEntry in try db!.prepare(self.accounts.filter(aId == accountIds[Int(id)])) {
-                    account = Account(id: accountEntry[aId], name: accountEntry[aName])
-
-                }
-            } else {
-                for accountEntry in try db!.prepare(self.accounts.filter(aId == id)) {
-                    account = try Account(id: accountEntry.get(aId), name: accountEntry.get(aName))
-                }
-            }
-
-        } catch {
-            fatalError()
-        }
-        print("id = \(id)")
-        return account!
-    }
-
-
-    func searchCategories(id: Int64, alphabetical: Bool) -> Category {
-        var category: Category?
-        var categoryIds: [Int64] = []
-        do {
-
-            if (alphabetical == true) {
-                for category in try db!.prepare(self.categories.order(cName.asc)) {
-                    try categoryIds.append(category.get(cId))
-                }
-
-                // DON'T HARDCODE IT
-                for categoryEntry in try db!.prepare(self.categories.filter(cId == categoryIds[Int(id)])) {
-                    category = Category(id: categoryEntry[cId], name: categoryEntry[cName])
-                    
-                }
-            } else {
-                for categoryEntry in try db!.prepare(self.categories.filter(cId == id)) {
-                    category = try Category(id: categoryEntry.get(cId), name: categoryEntry.get(cName))
-                }
+            for accountEntry in try db!.prepare(self.accounts.filter(aId == id)) {
+                account = accountEntry[aName]
             }
         } catch {
-            fatalError()
+            fatalError("Account search failed")
         }
-
-        return category ?? Category(id: 0, name: "Category Not Specified")
+        return account
     }
 
-    func searchRecords(account: String?, category: String?) -> [Record] {
+
+    func getCategory(id: Int64) -> String {
+        var category: String = ""
+
+        if (id == 0) {
+            return "Category Not Specified"
+        }
+
+        do {
+            for categoryEntry in try db!.prepare(self.categories.filter(cId == id)) {
+                category = categoryEntry[cName]
+            }
+        } catch {
+            fatalError("Category search failed")
+        }
+
+        return category
+    }
+
+    func searchRecordsByAccount(accountId: Int64) -> [Record] {
         var records: [Record] = []
-        var condition = self.records
-
-        if (account == nil) {
-            condition = self.records.join(.leftOuter, categories, on: categoryId == cId).filter(cName == category!).order(time.asc)
-        } else {
-           condition = self.records.join(.leftOuter, accounts, on: accountId == aId).filter(aName == account!).order(time.asc)
-
-        }
 
         do {
-            for record in try db!.prepare(condition) {
-                records.append(Record(category: searchCategories(id: record[categoryId], alphabetical: false).name, amount: record[amount], account: searchAccounts(id: record[accountId], alphabetical: false).name, time: record[time])!)
+            for record in try db!.prepare(self.records.filter(self.accountId == accountId).order(time.asc)) {
+                records.append(Record(categoryId: record[self.categoryId], amount: record[amount], accountId: record[self.accountId], time: record[time], rowId: record[rId])!)
             }
         } catch {
-
+            fatalError("Record search failed")
         }
 
         return records
     }
 
-    
+    func searchRecordsByCategory(categoryId: Int64) -> [Record] {
+        var records: [Record] = []
+
+        do {
+            for record in try db!.prepare(self.records.filter(self.categoryId == categoryId).order(time.asc)) {
+                records.append(Record(categoryId: record[self.categoryId], amount: record[amount], accountId: record[self.accountId], time: record[time], rowId: record[rId])!)
+            }
+        } catch {
+            fatalError("Record search failed")
+        }
+
+        return records
+    }
+
 }

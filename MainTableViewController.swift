@@ -10,10 +10,12 @@ import UIKit
 
 class MainTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
 
-    var accounts: [String] = []
+    var accounts: [Account] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tabBarController?.tabBar.isOpaque = true
 
         accounts = RecordDB.instance.getAccounts()
 
@@ -48,7 +50,7 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountBalance", for: indexPath) as? MainTableViewCell
 
         let account = accounts[indexPath.row]
-        cell?.nameLabel.text = account
+        cell?.nameLabel.text = account.name
         return cell!
     }
 

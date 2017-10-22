@@ -9,7 +9,9 @@
 import UIKit
 
 protocol FViewControllerDelegate: class {
-    func passDoubleBack(_ caller: UIViewController, type: TypePassed)
+    func passNumberBack(_ caller: UIViewController, type: TypePassed)
 }
 
-
+protocol FTableViewControllerDelegate: class {
+    func getId(name: String)
+}

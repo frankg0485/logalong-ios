@@ -17,7 +17,7 @@ class SelectCategoryTableViewController: UITableViewController {
 
     weak var delegate: FViewControllerDelegate?
 
-    var categories: [String?] = []
+    var categories: [Category] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +33,9 @@ class SelectCategoryTableViewController: UITableViewController {
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
 
-        type.int64 = Int64(myIndexPath)
-        
-        delegate?.passDoubleBack(self, type: type)
+        type.int64 = categories[myIndexPath].id
+
+        delegate?.passNumberBack(self, type: type)
         self.dismiss(animated: true, completion: nil)
     }
     override func didReceiveMemoryWarning() {
@@ -70,11 +70,11 @@ class SelectCategoryTableViewController: UITableViewController {
 
         let category = categories[indexPath.row]
 
-        cell.categoryNameLabel.text = category
+        cell.categoryNameLabel.text = category.name
 
         return cell
     }
-    
+
 
     /*
      // Override to support conditional editing of the table view.

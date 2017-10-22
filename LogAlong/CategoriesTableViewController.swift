@@ -10,7 +10,7 @@ import UIKit
 
 class CategoriesTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
 
-    var categories: [String?] = []
+    var categories: [Category] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +18,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
 
         categories = RecordDB.instance.getCategories()
 
-//        tableView.tableFooterView = UIView()
+        //        tableView.tableFooterView = UIView()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -61,7 +61,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
 
         let category = categories[indexPath.row]
 
-        cell.nameLabel.text = category
+        cell.nameLabel.text = category.name
 
         return cell
     }
@@ -80,8 +80,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            categories.remove(at: indexPath.row)
-            RecordDB.instance.removeCategory(id: Int64(indexPath.row))
+            RecordDB.instance.removeCategory(id: categories.remove(at: indexPath.row).id)
 
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
@@ -138,8 +137,8 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
 
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
-            
-            
+
+
         }
 
     }
@@ -147,27 +146,25 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
     }
-    
+
     @IBAction func unwindToCategoryList(sender: UIStoryboardSegue) {
 
-    
+
         if let sourceViewController = sender.source as? CreateCategoryViewController, let category = sourceViewController.category {
 
-            if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                categories[selectedIndexPath.row] = category
-                RecordDB.instance.updateCategory(id: Int64(selectedIndexPath.row + 1), newName: category)
-                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            if let _ = tableView.indexPathForSelectedRow {
+                RecordDB.instance.updateCategory(id: category.id, newName: category.name)
             } else {
-                let newIndexPath = IndexPath(row: categories.count, section: 0)
-                categories.append(category)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-
-                RecordDB.instance.addCategory(name: category)
+                RecordDB.instance.addCategory(name: category.name)
             }
-
         }
-        
+
+        reloadTableView()
     }
-    
-    
+
+    func reloadTableView() {
+        categories = RecordDB.instance.getCategories()
+
+        tableView.reloadData()
+    }
 }

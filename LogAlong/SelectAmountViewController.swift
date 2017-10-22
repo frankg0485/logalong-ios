@@ -54,7 +54,7 @@ class SelectAmountViewController: UIViewController {
 
         type.double = Double(amountTextField.text!)!
 
-        delegate?.passDoubleBack(self, type: type)
+        delegate?.passNumberBack(self, type: type)
         dismiss(animated: true, completion: nil)
     }
 
@@ -241,20 +241,20 @@ class SelectAmountViewController: UIViewController {
         switch operation {
         case "+":
             return firstNumber! + secondNumber!
-            
+
         case "-":
             return firstNumber! - secondNumber!
-            
+
         case "*":
             return firstNumber! * secondNumber!
-            
+
         case "/":
             return firstNumber! / secondNumber!
-            
+
         default:
             return 0
         }
-        
+
     }
     /*
      // MARK: - Navigation

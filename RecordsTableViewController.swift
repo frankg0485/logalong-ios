@@ -18,8 +18,7 @@ class RecordsTableViewController: UITableViewController {
     }
 
     var records = [Record]()
-    var sections: [String] = ["All Records"]
-
+    var sections: [Account] = [Account(id: 0, name: "All Records")]
     let sortOptions = ["Sort By:", "Sort By: Account", "Sort By: Category"]
     var sortCounter = 0 {
         didSet {
@@ -49,11 +48,12 @@ class RecordsTableViewController: UITableViewController {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem
 
-        //RecordDB.instance.removeRecord(id: 0)
-        //RecordDB.instance.removeRecord(id: 0)
-        //RecordDB.instance.removeRecord(id: 0)
+        tabBarController?.tabBar.isOpaque = true
 
-        //fatalError()
+        /*while (true) {
+         RecordDB.instance.removeRecord(id: 0, sortBy: sortCounter, timeAsc: timeCounterAsc)
+         }*/
+
         records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
         tableView.tableFooterView = UIView()
@@ -99,11 +99,11 @@ class RecordsTableViewController: UITableViewController {
             records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
             sections.removeAll()
-            sections.append("All Records")
+            sections.append(Account(id: 0, name: "All Records"))
         } else {
             sender.title = sortOptions[sortCounter + 1]
             sortCounter += 1
-            
+
             if (sortCounter == sorts.ACCOUNT.rawValue) {
                 records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
@@ -111,45 +111,49 @@ class RecordsTableViewController: UITableViewController {
                 for account in RecordDB.instance.getAccounts() {
                     sections.append(account)
                 }
-                
+
             } else {
                 records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
-                
+
                 sections.removeAll()
                 for category in RecordDB.instance.getCategories() {
-                    sections.append(category)
+                    sections.append(Account(id: category.id, name: category.name))
                 }
             }
         }
-        
-        
-        
+
+
+
         tableView.reloadData()
     }
-    
+
     @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? AddTableViewController, let record = sourceViewController.record {
-            
-            if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                // Update an existing record.
-                //records[selectedIndexPath.row] = record
-                RecordDB.instance.updateRecord(id: Int64(selectedIndexPath.row + 1), newCategoryId: sourceViewController.categoryId, newAccountId: sourceViewController.categoryId, newAmount: record.amount, newTime: record.time, newType: 0)
-                
-                
-                //tableView.reloadRows(at: [selectedIndexPath], with: .none)
-            } else {
-                // Add a new record.
-                //let newIndexPath = IndexPath(row: records.count, section: 0)
-                
-                //records.append(record)
-                //tableView.insertRows(at: [newIndexPath], with: .automatic)
-                
-                RecordDB.instance.addRecord(catId: sourceViewController.categoryId, accId: sourceViewController.accountId, amount: record.amount, timeInMilliseconds: record.time)
-                _ = navigationController?.popViewController(animated: true)
+        if let sourceViewController = sender.source as? AddTableViewController {
+            if let record = sourceViewController.record {
+
+                if let _ = tableView.indexPathForSelectedRow {
+                    // Update an existing record.
+                    //records[selectedIndexPath.row] = record
+                    /*print(sourceViewController.categoryId)
+                     print(sourceViewController.accountId)*/
+                    RecordDB.instance.updateRecord(id: record.rowId, newCategoryId: record.categoryId, newAccountId: record.accountId, newAmount: record.amount, newTime: record.time, newType: 0)
+
+
+                    //tableView.reloadRows(at: [selectedIndexPath], with: .none)
+                } else {
+                    // Add a new record.
+                    //let newIndexPath = IndexPath(row: records.count, section: 0)
+
+                    //records.append(record)
+                    //tableView.insertRows(at: [newIndexPath], with: .automatic)
+
+                    RecordDB.instance.addRecord(catId: record.categoryId, accId: record.accountId, amount: record.amount, timeInMilliseconds: record.time)
+                    _ = navigationController?.popViewController(animated: true)
+                }
+
+                reloadTableView()
+
             }
-            
-            reloadTableView()
-            
         }
     }
 
@@ -169,16 +173,16 @@ class RecordsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //CHANGE THIS: USE ENUMERATIONS
         if (sortCounter == sorts.ACCOUNT.rawValue) {
-            return RecordDB.instance.searchRecords(account: sections[section], category: nil).count
+            return RecordDB.instance.searchRecordsByAccount(accountId: sections[section].id).count
         } else if (sortCounter == sorts.CATEGORY.rawValue) {
-            return RecordDB.instance.searchRecords(account: nil, category: sections[section]).count
+            return RecordDB.instance.searchRecordsByCategory(categoryId: sections[section].id).count
         } else {
             return records.count
         }
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
+        return sections[section].name
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -189,24 +193,24 @@ class RecordsTableViewController: UITableViewController {
 
         }
 
-            if (indexPath.row == 0) {
-                sectionCounter += 1
+        if (indexPath.row == 0) {
+            sectionCounter += 1
 
-                if (sectionCounter > 1) {
-                    rowsInPreviousSections += 1
+            if (sectionCounter > 1) {
+                rowsInPreviousSections += 1
 
-                }
-                rowsInPreviousSections += rowsInSection
-                rowsInSection = 0
-            } else {
-                rowsInSection += 1
             }
+            rowsInPreviousSections += rowsInSection
+            rowsInSection = 0
+        } else {
+            rowsInSection += 1
+        }
 
-//print("asdfjalsdfkjasdlfkjasldkfjasldkfjasdf")
+        //print("asdfjalsdfkjasdlfkjasldkfjasldkfjasdf")
         let record = records[indexPath.row + rowsInPreviousSections]
 
-        cell.accountLabel.text = record.account
-        cell.categoryLabel.text = record.category
+        cell.accountLabel.text = RecordDB.instance.getAccount(id: record.accountId)
+        cell.categoryLabel.text = RecordDB.instance.getCategory(id: record.categoryId)
         /*        cell.payeelabel.text = record.payee
          cell.tagLabel.text = record.tag*/
         cell.amountLabel.text = String(record.amount)
@@ -219,12 +223,12 @@ class RecordsTableViewController: UITableViewController {
         let dateString = dayTimePeriodFormatter.string(from: date)
 
         cell.dateLabel.text = dateString
-        
-        
+
+
         return cell
     }
-    
-    
+
+
 
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -238,8 +242,7 @@ class RecordsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            records.remove(at: indexPath.row)
-            RecordDB.instance.removeRecord(id: Int64(indexPath.row))
+            RecordDB.instance.removeRecord(id: records.remove(at: indexPath.row).rowId)
 
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
@@ -320,19 +323,20 @@ class RecordsTableViewController: UITableViewController {
      os_log("Failed to save records...", log: OSLog.default, type: .error)
      }
      }
-     
+
      private func loadRecords() -> [Record]?  {
      return NSKeyedUnarchiver.unarchiveObject(withFile: Record.ArchiveURL.path) as? [Record]
      }
-     
+
      */
 
     func reloadTableView() {
         records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
-       // print("records.count = \(records.count)")
+
         rowsInPreviousSections = 0
         rowsInSection = 0
         sectionCounter = 0
+
         tableView.reloadData()
     }
 }

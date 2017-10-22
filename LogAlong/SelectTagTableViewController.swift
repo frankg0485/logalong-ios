@@ -32,7 +32,7 @@ class SelectTagTableViewController: UITableViewController {
     @IBAction func okButtonPressed(_ sender: UIButton) {
 
         type.int = myIndexPath
-        delegate?.passDoubleBack(self, type: type)
+        delegate?.passNumberBack(self, type: type)
 
         dismiss(animated: true, completion: nil)
     }

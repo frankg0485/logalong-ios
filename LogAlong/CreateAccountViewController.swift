@@ -10,8 +10,8 @@ import UIKit
 
 class CreateAccountViewController: UIViewController, UITextFieldDelegate {
 
-    var account: String?
-    
+    var account: Account?
+
     @IBOutlet weak var accountNameTextField: UITextField!
 
     @IBOutlet weak var okButton: UIButton!
@@ -21,7 +21,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
         accountNameTextField.delegate = self
 
         if let account = account {
-            accountNameTextField.text = account
+            accountNameTextField.text = account.name
         }
 
 
@@ -48,7 +48,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        account = accountNameTextField.text!
+        account = Account(id: 0, name: accountNameTextField.text!)
     }
 
     func checkOkButtonState() {

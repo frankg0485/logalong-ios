@@ -25,16 +25,13 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     @IBOutlet weak var payeeLabel: UILabel!
     @IBOutlet weak var tagLabel: UILabel!
     @IBOutlet weak var saveButton: UIBarButtonItem!
-
     @IBOutlet weak var notesTextField: UITextField!
-
     @IBOutlet weak var changeDateButton: UIBarButtonItem!
 
     var record: Record?
 
     var accountId: Int64 = 0
     var categoryId: Int64 = 0
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -53,8 +50,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
         if let record = record {
             amountLabel.text = String(record.amount)
-            accountLabel.text = record.account
-            categoryLabel.text = record.category ?? "Category Not Specified"
+            accountLabel.text = RecordDB.instance.getAccount(id: record.accountId)
+            categoryLabel.text = RecordDB.instance.getCategory(id: record.categoryId)
 
             let date = Date(timeIntervalSince1970: TimeInterval(record.time))
 
@@ -64,6 +61,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             let dateString = dayTimePeriodFormatter.string(from: date)
 
             changeDateButton.title = dateString
+
+            accountId = record.accountId
+            categoryId = record.categoryId
             /*            payeeLabel.text = record.payee ?? "Payee Not Specified"
              tagLabel.text = record.tag ?? "Tag Not Specified"
              notesTextField.text = record.notes*/
@@ -91,20 +91,17 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return true
     }
 
-    func passDoubleBack(_ caller: UIViewController, type: TypePassed) {
+    func passNumberBack(_ caller: UIViewController, type: TypePassed) {
         if let _ = caller as? SelectAmountViewController {
             amountLabel.text = String(format: "%.2lf", type.double)
 
         } else if let _ = caller as? SelectAccountTableViewController {
-            accountLabel.text = RecordDB.instance.searchAccounts(id: type.int64, alphabetical: true).name
-
-            accountId = RecordDB.instance.searchAccounts(id: type.int64, alphabetical: true).id
+            accountLabel.text = RecordDB.instance.getAccount(id: type.int64)
+            accountId = type.int64
 
         } else if let _ = caller as? SelectCategoryTableViewController {
-            categoryLabel.text = RecordDB.instance.searchCategories(id: type.int64, alphabetical: true).name
-
-            categoryId = RecordDB.instance.searchCategories(id: type.int64, alphabetical: true).id
-
+            categoryLabel.text = RecordDB.instance.getCategory(id: type.int64)
+            categoryId = type.int64
 
         } else if let _ = caller as? SelectPayeeTableViewController {
             payeeLabel.text = payees[type.int]
@@ -215,8 +212,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
 
             popoverViewController.popoverPresentationController!.delegate = self
-
-
         }
 
         if let secondViewController = segue.destination as? SelectAccountTableViewController {
@@ -241,29 +236,32 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             }
 
             let amount = Double(amountLabel.text!)!
-            let account = accountLabel.text
-            let category = categoryLabel.text
-            let time = Date().timeIntervalSince1970.rounded()
+
+            let formatter = DateFormatter()
+
+            formatter.dateStyle = .short
+
+            let time = formatter.date(from: changeDateButton.title!)?.timeIntervalSince1970.rounded()
             /*let payee = payeeLabel.text
              let tag = tagLabel.text
              let notes = notesTextField.text*/
 
-            record = Record(category: category, amount: amount, account: account!, time: Int64(time)/*, payee: payee, tag: tag, notes: notes*/)
+            record = Record(categoryId: categoryId, amount: amount, accountId: accountId, time: Int64(time!), rowId: record?.rowId ?? 1/*, payee: payee, tag: tag, notes: notes*/)
         }
     }
 
-    
-    
-    
-    
+
+
+
+
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
     }
-    
-    
+
+
     private func updateSaveButtonState() {
         // Disable the Save button if the text field is empty.
-        
+
         if (amountLabel.text == "Label") || (amountLabel.text == "0.0") || (accountLabel.text == "Choose Account") {
             saveButton.isEnabled = false
         } else {

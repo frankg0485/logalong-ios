@@ -11,7 +11,7 @@ import UIKit
 class SelectCategoryTableViewCell: UITableViewCell {
 
     @IBOutlet weak var categoryNameLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -11,7 +11,7 @@ import UIKit
 class SelectAccountTableViewCell: UITableViewCell {
 
     @IBOutlet weak var accountNameLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
