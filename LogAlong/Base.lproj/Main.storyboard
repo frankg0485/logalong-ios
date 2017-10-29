@@ -673,10 +673,10 @@
             </objects>
             <point key="canvasLocation" x="944.79999999999995" y="-1063.7181409295354"/>
         </scene>
-        <!--View Controller-->
+        <!--Pie Chart View Controller-->
         <scene sceneID="jKN-ke-XxS">
             <objects>
-                <viewController id="PO8-Nx-dSe" sceneMemberID="viewController">
+                <viewController id="PO8-Nx-dSe" customClass="PieChartViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2oC-SR-TwZ"/>
                         <viewControllerLayoutGuide type="bottom" id="fiX-HG-8mQ"/>
@@ -684,13 +684,23 @@
                     <view key="view" contentMode="scaleToFill" id="cAE-Rh-zJI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qAM-zp-jjT" customClass="PieChartView" customModule="Charts">
+                                <rect key="frame" x="0.0" y="72" width="375" height="546"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <navigationItem key="navigationItem" id="Ubm-4B-PoU"/>
+                    <connections>
+                        <outlet property="pieChartView" destination="qAM-zp-jjT" id="d4U-jV-D3N"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ONU-Vr-fAX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2065" y="438"/>
+            <point key="canvasLocation" x="-2066.4000000000001" y="437.63118440779613"/>
         </scene>
         <!--Accounts-->
         <scene sceneID="Imk-g6-Oc0">
