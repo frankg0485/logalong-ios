@@ -18,8 +18,6 @@ class PieChartViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBarController?.tabBar.isHidden = true
-        navigationController?.isNavigationBarHidden = true
         for _ in accounts {
             amounts.append((Double(arc4random()) / 0xFFFFFFFF) * (90) + 10)
         }
@@ -27,6 +25,7 @@ class PieChartViewController: UIViewController {
         createPieChart(accounts: accounts, values: amounts)
         // Do any additional setup after loading the view.
     }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

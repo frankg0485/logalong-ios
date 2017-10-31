@@ -48,8 +48,6 @@ class RecordsTableViewController: UITableViewController {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem
 
-        tabBarController?.tabBar.isOpaque = true
-
         /*while (true) {
          RecordDB.instance.removeRecord(id: 0, sortBy: sortCounter, timeAsc: timeCounterAsc)
          }*/
