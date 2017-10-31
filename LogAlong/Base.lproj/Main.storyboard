@@ -666,14 +666,42 @@
                         <segue destination="HgB-XM-zJ5" kind="relationship" relationship="viewControllers" id="E5X-Oc-AYk"/>
                         <segue destination="VCO-jN-beA" kind="relationship" relationship="viewControllers" id="k8Q-2L-F3g"/>
                         <segue destination="MqR-NU-7lk" kind="relationship" relationship="viewControllers" id="Z5W-fZ-Uqj"/>
-                        <segue destination="ccn-5h-6CY" kind="relationship" relationship="viewControllers" id="U6g-33-6jp"/>
+                        <segue destination="PO8-Nx-dSe" kind="relationship" relationship="viewControllers" id="gdZ-CP-dm8"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="944.79999999999995" y="-1063.7181409295354"/>
         </scene>
-        <!--Pie Chart View Controller-->
+        <!--Bar Chart View Controller-->
+        <scene sceneID="yMB-bH-hxS">
+            <objects>
+                <viewController id="EAT-As-eoM" customClass="BarChartViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0uM-XP-ZnO"/>
+                        <viewControllerLayoutGuide type="bottom" id="sju-GM-0yf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="XK8-JF-22Q">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cpz-a8-GxO" customClass="BarChartView" customModule="Charts">
+                                <rect key="frame" x="0.0" y="28" width="375" height="619"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <connections>
+                        <outlet property="barChartView" destination="Cpz-a8-GxO" id="9s6-bU-9XM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uzU-jI-C1q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1279.2" y="-269.41529235382313"/>
+        </scene>
+        <!--Charts-->
         <scene sceneID="jKN-ke-XxS">
             <objects>
                 <viewController id="PO8-Nx-dSe" customClass="PieChartViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
@@ -686,13 +714,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qAM-zp-jjT" customClass="PieChartView" customModule="Charts">
-                                <rect key="frame" x="0.0" y="72" width="375" height="546"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nc5-EK-uIl">
+                                        <rect key="frame" x="8" y="667" width="367" height="20"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yq4-n9-zjl">
+                                        <rect key="frame" x="0.0" y="619" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Charts" id="h4q-eo-me3">
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" id="Ubm-4B-PoU"/>
                     <connections>
                         <outlet property="pieChartView" destination="qAM-zp-jjT" id="d4U-jV-D3N"/>
@@ -700,7 +743,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ONU-Vr-fAX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2066.4000000000001" y="437.63118440779613"/>
+            <point key="canvasLocation" x="-383.19999999999999" y="-269.41529235382313"/>
         </scene>
         <!--Accounts-->
         <scene sceneID="Imk-g6-Oc0">
@@ -1774,28 +1817,10 @@
             </objects>
             <point key="canvasLocation" x="4586.3999999999996" y="-725.48725637181417"/>
         </scene>
-        <!--Charts-->
-        <scene sceneID="fGa-xO-Ymu">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ccn-5h-6CY" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Charts" id="74k-WM-pUS"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6av-fT-69x">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="PO8-Nx-dSe" kind="relationship" relationship="rootViewController" id="GKc-sI-1ix"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="EAB-Ho-eWq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-940.79999999999995" y="-269.86506746626691"/>
-        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="CJ7-Kj-Djb"/>
-        <segue reference="LxV-3D-kaH"/>
+        <segue reference="XC4-P6-fUh"/>
         <segue reference="lrW-zI-bh1"/>
     </inferredMetricsTieBreakers>
 </document>

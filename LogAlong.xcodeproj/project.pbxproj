@@ -19,6 +19,7 @@
 		0128AE501EC7BD8A007A999B /* SelectCategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE4F1EC7BD8A007A999B /* SelectCategoryTableViewController.swift */; };
 		0128AE521EC7BD98007A999B /* SelectPayeeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */; };
 		0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */; };
+		012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */; };
 		0133182E1F9BA141002B12EC /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D19CDA1F85934F0010CF02 /* SQLite.framework */; };
 		0133182F1F9BA145002B12EC /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01D19CDA1F85934F0010CF02 /* SQLite.framework */; };
 		013318301F9BA145002B12EC /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 01D19CDA1F85934F0010CF02 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -187,6 +188,7 @@
 		0128AE4F1EC7BD8A007A999B /* SelectCategoryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectCategoryTableViewController.swift; sourceTree = "<group>"; };
 		0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPayeeTableViewController.swift; sourceTree = "<group>"; };
 		0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTagTableViewController.swift; sourceTree = "<group>"; };
+		012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
 		013E34EC1F4366F900EF8972 /* RecordDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDB.swift; sourceTree = "<group>"; };
 		014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAmountViewController.swift; sourceTree = "<group>"; };
 		014893D21EDFA368005E3C94 /* ProtocolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolViewController.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 			children = (
 				019CCD241E6DAF64002EF989 /* AppDelegate.swift */,
 				019CCD2A1E6DAF64002EF989 /* Main.storyboard */,
+				012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */,
 				015367311F9D588F001BCB89 /* PieChartViewController.swift */,
 				01FDE49B1F7EFBBC00A7DD78 /* DatePickerViewController.swift */,
 				01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */,
@@ -561,6 +564,7 @@
 				019CCD501E6DC7D0002EF989 /* RecordsTableViewCell.swift in Sources */,
 				015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */,
 				01253CFE1F538675005B4D8C /* SelectCategoryTableViewCell.swift in Sources */,
+				012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */,
 				01FDE49C1F7EFBBC00A7DD78 /* DatePickerViewController.swift in Sources */,
 				01253CF41F5318BE005B4D8C /* SelectAccountTableViewCell.swift in Sources */,
 				013E34ED1F4366F900EF8972 /* RecordDB.swift in Sources */,
