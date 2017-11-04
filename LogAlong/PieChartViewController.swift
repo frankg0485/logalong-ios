@@ -13,23 +13,66 @@ class PieChartViewController: UIViewController {
 
     @IBOutlet weak var pieChartView: PieChartView!
 
-    let accounts = RecordDB.instance.getAccounts()
+    var accounts = RecordDB.instance.getAccounts()
     var amounts: [Double] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        createButtons()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+
+        let value = UIInterfaceOrientation.landscapeRight.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
+
+        tabBarController?.tabBar.isHidden = true
+
+        accounts = RecordDB.instance.getAccounts()
+
+        amounts.removeAll()
         for _ in accounts {
             amounts.append((Double(arc4random()) / 0xFFFFFFFF) * (90) + 10)
         }
 
         createPieChart(accounts: accounts, values: amounts)
-        // Do any additional setup after loading the view.
-    }
 
+       // pieChartView.frame = CGRect(x: 0, y: 0, width: 375, height: 639)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    private func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.landscapeLeft
+    }
+
+    private func shouldAutorotate() -> Bool {
+        return true
+    }
+
+    func createButtons() {
+        let leftButton = UIButton(frame: CGRect(x: 0, y: 317, width: 50, height: 50))
+        let rightButton = UIButton(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
+
+        leftButton.backgroundColor = .black
+        leftButton.setTitle("<", for: .normal)
+        leftButton.setTitleColor(UIColor.blue, for: .normal)
+        leftButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+
+        self.view.addSubview(leftButton)
+    }
+
+    @objc func buttonAction(sender: UIButton!) {
+        //present(BarChartViewController, animated: true, completion: nil)
+    }
+
+    @IBAction func xButtonClicked(_ sender: UIButton) {
+        tabBarController?.tabBar.isHidden = false
+        tabBarController?.selectedIndex = 1
     }
 
     func createPieChart(accounts: [Account], values: [Double]) {
