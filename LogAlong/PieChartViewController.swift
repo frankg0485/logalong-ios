@@ -19,6 +19,10 @@ class PieChartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        pieChartView.legend.orientation = .vertical
+        pieChartView.legend.horizontalAlignment = Legend.HorizontalAlignment.left
+        pieChartView.legend.verticalAlignment = Legend.VerticalAlignment.top
+
         createButtons()
     }
 
@@ -61,13 +65,13 @@ class PieChartViewController: UIViewController {
         leftButton.backgroundColor = .black
         leftButton.setTitle("<", for: .normal)
         leftButton.setTitleColor(UIColor.blue, for: .normal)
-        leftButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        leftButton.addTarget(self, action: Selector(("buttonAction:")), for: .touchUpInside)
 
         self.view.addSubview(leftButton)
     }
 
-    @objc func buttonAction(sender: UIButton!) {
-        //present(BarChartViewController, animated: true, completion: nil)
+    func buttonAction(sender: UIButton!) {
+        //present(UIViewController as BarChartViewController, animated: true, completion: nil)
     }
 
     @IBAction func xButtonClicked(_ sender: UIButton) {
