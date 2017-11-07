@@ -12,6 +12,10 @@ protocol FViewControllerDelegate: class {
     func passNumberBack(_ caller: UIViewController, type: TypePassed)
 }
 
-protocol FTableViewControllerDelegate: class {
-    func getId(name: String)
+protocol FLoginViewControllerDelegate: class {
+    func showHideNameCell(hide: Bool)
+}
+
+protocol FNotifyLoginViewControllerDelegate: class {
+    func notifyShowHideNameCell(hide: Bool)
 }
