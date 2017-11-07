@@ -24,6 +24,9 @@
 		014893D31EDFA368005E3C94 /* ProtocolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D21EDFA368005E3C94 /* ProtocolViewController.swift */; };
 		014893D71EEB0332005E3C94 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D61EEB0332005E3C94 /* MainTabViewController.swift */; };
 		015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015367311F9D588F001BCB89 /* PieChartViewController.swift */; };
+		017BA1141FAF5DC600694E38 /* LoginInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */; };
+		017BA1161FAF5DE500694E38 /* CreateOrLoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */; };
+		0193DA1B1FB08F4800B63211 /* LoginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */; };
 		019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD241E6DAF64002EF989 /* AppDelegate.swift */; };
 		019CCD2C1E6DAF64002EF989 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 019CCD2A1E6DAF64002EF989 /* Main.storyboard */; };
 		019CCD2E1E6DAF64002EF989 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019CCD2D1E6DAF64002EF989 /* Assets.xcassets */; };
@@ -160,6 +163,9 @@
 		014893D21EDFA368005E3C94 /* ProtocolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolViewController.swift; sourceTree = "<group>"; };
 		014893D61EEB0332005E3C94 /* MainTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
 		015367311F9D588F001BCB89 /* PieChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewController.swift; sourceTree = "<group>"; };
+		017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInfoTableViewController.swift; sourceTree = "<group>"; };
+		017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrLoginTableViewController.swift; sourceTree = "<group>"; };
+		0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenViewController.swift; sourceTree = "<group>"; };
 		019CCD211E6DAF64002EF989 /* LogAlong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LogAlong.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		019CCD241E6DAF64002EF989 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		019CCD2B1E6DAF64002EF989 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -236,7 +242,10 @@
 				CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */,
 				019CCD241E6DAF64002EF989 /* AppDelegate.swift */,
 				019CCD2A1E6DAF64002EF989 /* Main.storyboard */,
+				0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */,
 				012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */,
+				017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */,
+				017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */,
 				015367311F9D588F001BCB89 /* PieChartViewController.swift */,
 				CBC01B481FAEAA080092B184 /* Account.swift */,
 				01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */,
@@ -502,8 +511,10 @@
 				012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */,
 				01253CF41F5318BE005B4D8C /* SelectAccountTableViewCell.swift in Sources */,
 				013E34ED1F4366F900EF8972 /* RecordDB.swift in Sources */,
+				017BA1161FAF5DE500694E38 /* CreateOrLoginTableViewController.swift in Sources */,
 				CBC01B511FAEAA620092B184 /* RecordsTableViewController.swift in Sources */,
 				CBC01B4D1FAEAA420092B184 /* DatePickerViewController.swift in Sources */,
+				017BA1141FAF5DC600694E38 /* LoginInfoTableViewController.swift in Sources */,
 				CBC01B4F1FAEAA4D0092B184 /* MainTableViewController.swift in Sources */,
 				010797E61F6778FA00623C04 /* Category.swift in Sources */,
 				0128AE521EC7BD98007A999B /* SelectPayeeTableViewController.swift in Sources */,
@@ -513,6 +524,7 @@
 				01DE2C1B1F46764800ED5D9C /* CategoriesTableViewCell.swift in Sources */,
 				CBC01B491FAEAA080092B184 /* Account.swift in Sources */,
 				01FBE7FA1F43A00800A0B514 /* NewAdditionTableViewController.swift in Sources */,
+				0193DA1B1FB08F4800B63211 /* LoginScreenViewController.swift in Sources */,
 				CBC01B4B1FAEAA270092B184 /* AddTableViewController.swift in Sources */,
 				019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */,
 				01FDE4911F78066300A7DD78 /* SettingsTableViewController.swift in Sources */,
