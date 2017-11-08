@@ -47,6 +47,7 @@
 		CBC01B4D1FAEAA420092B184 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */; };
 		CBC01B4F1FAEAA4D0092B184 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */; };
 		CBC01B511FAEAA620092B184 /* RecordsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */; };
+		CBD618101FB0081300A2B57E /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD6180F1FB0081300A2B57E /* Server.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -190,6 +191,7 @@
 		CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
 		CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordsTableViewController.swift; sourceTree = "<group>"; };
+		CBD6180F1FB0081300A2B57E /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Server.swift; path = LogAlong/network/Server.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +238,7 @@
 		019CCD231E6DAF64002EF989 /* LogAlong */ = {
 			isa = PBXGroup;
 			children = (
+				CBD618011FB004D800A2B57E /* network */,
 				CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */,
 				CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */,
 				CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */,
@@ -317,6 +320,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CBD618011FB004D800A2B57E /* network */ = {
+			isa = PBXGroup;
+			children = (
+				CBD6180F1FB0081300A2B57E /* Server.swift */,
+			);
+			name = network;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -365,7 +376,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0900;
-				ORGANIZATIONNAME = "Frank Gao";
+				ORGANIZATIONNAME = "Swoag Technology";
 				TargetAttributes = {
 					019CCD201E6DAF64002EF989 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -533,6 +544,7 @@
 				019CCD541E748042002EF989 /* Record.swift in Sources */,
 				0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */,
 				019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */,
+				CBD618101FB0081300A2B57E /* Server.swift in Sources */,
 				0128AE4E1EC7BBFE007A999B /* SelectAccountTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

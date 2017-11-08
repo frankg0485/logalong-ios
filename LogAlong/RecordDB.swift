@@ -2,7 +2,7 @@
 //  LogAlong
 //
 //  Created by Frank Gao on 8/15/17.
-//  Copyright © 2017 Frank Gao. All rights reserved.
+//  Copyright © 2017 Swoag Technology. All rights reserved.
 //
 
 import SQLite
