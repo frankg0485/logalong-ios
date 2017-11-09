@@ -1870,7 +1870,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <navigationItem key="navigationItem" id="TrL-XP-QmN"/>
+                    <navigationItem key="navigationItem" id="TrL-XP-QmN">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="mgy-VB-Hd4">
+                            <connections>
+                                <action selector="cancelButtonClicked:" destination="YPv-cd-Dzw" id="rC5-BQ-YEG"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="3Va-pR-fZK">
+                            <connections>
+                                <action selector="doneButtonClicked:" destination="YPv-cd-Dzw" id="Ho6-0M-69l"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cOq-il-s8z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1937,6 +1948,10 @@
                             <outlet property="delegate" destination="Tj5-Fe-O71" id="aND-vy-p6W"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="createCell" destination="MBx-cG-oBz" id="Ito-Wg-MeN"/>
+                        <outlet property="loginCell" destination="cSn-E5-Dwx" id="KHS-ji-m3i"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BNa-Ml-WRn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2051,7 +2066,7 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="nameCell" destination="GBa-9f-T08" id="1up-4W-DrS"/>
+                        <outlet property="nameCell" destination="GBa-9f-T08" id="2NZ-kV-AgD"/>
                         <outlet property="nameTextField" destination="15U-nW-gPj" id="1Xn-cI-t9V"/>
                         <outlet property="passwordTextField" destination="Xq4-UO-qdI" id="5eA-Gm-QFT"/>
                         <outlet property="userIdTextField" destination="Lv3-Z1-uEI" id="ipM-8o-L9N"/>
