@@ -13,9 +13,16 @@ class CreateOrLoginTableViewController: UITableViewController {
 
     var delegate: FNotifyLoginViewControllerDelegate?
 
+    @IBOutlet var createCell: UITableViewCell!
+    @IBOutlet var loginCell: UITableViewCell!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        createCell.selectionStyle = UITableViewCellSelectionStyle.none
+        loginCell.selectionStyle = UITableViewCellSelectionStyle.none
+
+        createCell.accessoryType = UITableViewCellAccessoryType.checkmark
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -31,10 +38,16 @@ class CreateOrLoginTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.row == 0) {
+        if (createCell.isSelected == true) {
             delegate?.notifyShowHideNameCell(hide: false)
+
+            createCell.accessoryType = UITableViewCellAccessoryType.checkmark
+            loginCell.accessoryType = UITableViewCellAccessoryType.none
         } else {
             delegate?.notifyShowHideNameCell(hide: true)
+
+            createCell.accessoryType = UITableViewCellAccessoryType.none
+            loginCell.accessoryType = UITableViewCellAccessoryType.checkmark
         }
     }
     /*override func numberOfSections(in tableView: UITableView) -> Int {

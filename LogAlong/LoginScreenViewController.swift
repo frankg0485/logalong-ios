@@ -23,6 +23,14 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func cancelButtonClicked(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+
+    @IBAction func doneButtonClicked(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+
     func notifyShowHideNameCell(hide: Bool) {
         if (hide == true) {
             delegate?.showHideNameCell(hide: true)

@@ -10,11 +10,10 @@ import UIKit
 
 class LoginInfoTableViewController: UITableViewController, FLoginViewControllerDelegate, UITextFieldDelegate {
 
-    @IBOutlet weak var nameCell: UITableViewCell!
-
     @IBOutlet weak var userIdTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet var nameCell: UITableViewCell!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +24,6 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
 
         passwordTextField.isSecureTextEntry = true
 
-        nameCell = tableView.dequeueReusableCell(withIdentifier: "nameCell")
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -66,23 +64,23 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     }
     /*override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
-    }*/
+        return 4
+    }
 
-/*
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
         // Configure the cell...
 
         return cell
-    }
-*/
+    }*/
+
 
     /*
     // Override to support conditional editing of the table view.
