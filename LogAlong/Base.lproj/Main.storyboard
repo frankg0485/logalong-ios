@@ -201,6 +201,15 @@
                             <outlet property="delegate" destination="MGq-NC-xd1" id="dlY-5E-EEn"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="TCl-So-UnK">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Wts-FB-ZnV">
+                            <connections>
+                                <segue destination="3Vq-Ai-miU" kind="popoverPresentation" identifier="CreateAccount" popoverAnchorBarButtonItem="Wts-FB-ZnV" id="BLW-4O-PRr">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <value key="contentSizeForViewInPopover" type="size" width="375" height="550"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="550"/>
@@ -210,7 +219,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v9P-fR-aVg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-334" y="1232"/>
+            <point key="canvasLocation" x="62" y="1950"/>
         </scene>
         <!--Your Records-->
         <scene sceneID="smz-Ao-bi7">
@@ -601,7 +610,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Tgl-gP-egp"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="t7E-Ll-wPP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="506"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Account Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jjc-Rl-3fB">
@@ -635,7 +644,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="OK"/>
                                 <connections>
-                                    <segue destination="iji-rl-I52" kind="unwind" unwindAction="unwindToAccountListWithSender:" id="Lfs-Fy-nvB"/>
+                                    <action selector="okButtonClicked:" destination="3Vq-Ai-miU" eventType="touchUpInside" id="ccV-PT-Dz9"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -651,7 +660,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vJq-Jc-41v" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="iji-rl-I52" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="6460" y="10.794602698650676"/>
         </scene>
@@ -908,7 +916,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3v4-z9-l4r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1527" y="1231"/>
+            <point key="canvasLocation" x="2204" y="1230.5847076461771"/>
         </scene>
         <!--Date Picker View Controller-->
         <scene sceneID="ufU-oQ-tZG">
@@ -954,7 +962,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bkj-oG-U2R" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1852.8" y="805.99700149925047"/>
+            <point key="canvasLocation" x="2531.1999999999998" y="805.99700149925047"/>
         </scene>
         <!--Select Payee Table View Controller-->
         <scene sceneID="Gqj-os-rtZ">
@@ -1077,7 +1085,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eoZ-Vi-0hb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="905" y="1231"/>
+            <point key="canvasLocation" x="1583.2" y="1230.5847076461771"/>
         </scene>
         <!--Select Category Table View Controller-->
         <scene sceneID="42G-y6-wpT">
@@ -1123,6 +1131,9 @@
                             <outlet property="delegate" destination="cLH-mK-c18" id="xjd-OZ-ML6"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="iQu-Yh-nuv">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="F6s-sv-Ilv"/>
+                    </navigationItem>
                     <value key="contentSizeForViewInPopover" type="size" width="375" height="550"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="550"/>
@@ -1132,7 +1143,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JYz-G3-D20" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="287" y="1231"/>
+            <point key="canvasLocation" x="812" y="1951"/>
         </scene>
         <!--New Record-->
         <scene sceneID="iXq-J6-Nvp">
@@ -1180,7 +1191,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="MGq-NC-xd1" kind="popoverPresentation" identifier="ChooseAccount" popoverAnchorView="TKC-bZ-1ir" id="Ix2-bt-EAD">
+                                            <segue destination="fif-QF-Otk" kind="popoverPresentation" identifier="ChooseAccount" popoverAnchorView="TKC-bZ-1ir" id="Ix2-bt-EAD">
                                                 <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                             </segue>
                                         </connections>
@@ -1202,7 +1213,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="cLH-mK-c18" kind="popoverPresentation" identifier="ChooseCategory" popoverAnchorView="dy9-hV-10k" id="e07-YG-Arp">
+                                            <segue destination="vWI-1C-JR9" kind="popoverPresentation" identifier="ChooseCategory" popoverAnchorView="dy9-hV-10k" id="e07-YG-Arp">
                                                 <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                             </segue>
                                         </connections>
@@ -2076,10 +2087,46 @@
             </objects>
             <point key="canvasLocation" x="6460" y="-1625.4872563718143"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="gWz-Yw-A7n">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vWI-1C-JR9" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="DCn-ry-KOa">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="cLH-mK-c18" kind="relationship" relationship="rootViewController" id="jGW-kO-Eh4"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XbQ-x9-s6e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="812" y="1282.3088455772115"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="CyH-jy-PVP">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fif-QF-Otk" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dtv-Bt-w6H">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="MGq-NC-xd1" kind="relationship" relationship="rootViewController" id="Pbr-GV-UO6"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NkS-Ry-VJC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="63" y="1282"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="CJ7-Kj-Djb"/>
         <segue reference="XC4-P6-fUh"/>
-        <segue reference="lrW-zI-bh1"/>
+        <segue reference="BLW-4O-PRr"/>
     </inferredMetricsTieBreakers>
 </document>
