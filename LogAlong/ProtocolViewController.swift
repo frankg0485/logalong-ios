@@ -19,3 +19,7 @@ protocol FLoginViewControllerDelegate: class {
 protocol FNotifyLoginViewControllerDelegate: class {
     func notifyShowHideNameCell(hide: Bool)
 }
+
+protocol FPassCreationBackDelegate: class {
+    func passCreationBack(account: Account?, category: Category?)
+}

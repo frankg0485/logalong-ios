@@ -11,9 +11,9 @@ import UIKit
 class CreateAccountViewController: UIViewController, UITextFieldDelegate {
 
     var account: Account?
+    var delegate: FPassCreationBackDelegate?
 
     @IBOutlet weak var accountNameTextField: UITextField!
-
     @IBOutlet weak var okButton: UIButton!
 
     override func viewDidLoad() {
@@ -34,6 +34,13 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func okButtonClicked(_ sender: UIButton) {
+        account = Account(id: 0, name: accountNameTextField.text!)
+
+        delegate?.passCreationBack(account: account, category: nil)
+
+        dismiss(animated: true, completion: nil)
+    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -47,9 +54,8 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        account = Account(id: 0, name: accountNameTextField.text!)
-    }
+    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    }*/
 
     func checkOkButtonState() {
         if (accountNameTextField.text?.isEmpty == true) {

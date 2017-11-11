@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AccountsTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
+class AccountsTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     var accounts: [Account] = []
 
@@ -143,6 +143,10 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
 
         }
+
+        if let secondViewController = segue.destination as? CreateAccountViewController {
+            secondViewController.delegate = self
+        }
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
@@ -150,9 +154,8 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     }
 
 
-    @IBAction func unwindToAccountList(sender: UIStoryboardSegue) {
-
-        if let sourceViewController = sender.source as? CreateAccountViewController, let account = sourceViewController.account {
+    func passCreationBack(account: Account?, category: Category?) {
+        if let account = account {
 
             if let _ = tableView.indexPathForSelectedRow {
                 RecordDB.instance.updateAccount(id: account.id, newName: account.name)
@@ -160,8 +163,8 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
                 RecordDB.instance.addAccount(name: account.name)
             }
         }
-        reloadTableView()
 
+        reloadTableView()
     }
 
     func reloadTableView() {

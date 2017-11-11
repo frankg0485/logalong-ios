@@ -9,7 +9,7 @@
 import UIKit
 
 
-class SelectAccountTableViewController: UITableViewController {
+class SelectAccountTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     @IBOutlet weak var okButton: UIButton!
     var myIndexPath: Int = 0
@@ -50,6 +50,15 @@ class SelectAccountTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    func passCreationBack(account: Account?, category: Category?) {
+        if let account = account {
+
+            RecordDB.instance.addAccount(name: account.name)
+            _ = navigationController?.popViewController(animated: true)
+
+        }
+        reloadTableView()
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -119,17 +128,31 @@ class SelectAccountTableViewController: UITableViewController {
      }
      */
 
-    /*
+
      // MARK: - Navigation
 
      // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "CreateAccount") {
+            let popoverViewController = segue.destination
 
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
 
+            popoverViewController.popoverPresentationController!.delegate = self
+        }
 
+        if let secondViewController = segue.destination as? CreateAccountViewController {
+            secondViewController.delegate = self
+        }
+    }
 
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+
+    func reloadTableView() {
+        accounts = RecordDB.instance.getAccounts()
+
+        tableView.reloadData()
+    }
 }
