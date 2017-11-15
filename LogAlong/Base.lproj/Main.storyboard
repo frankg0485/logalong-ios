@@ -519,6 +519,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="nameLabel" destination="lOv-BF-gkS" id="glN-XP-zmq"/>
+                                    <segue destination="3Vq-Ai-miU" kind="show" identifier="ShowDetail" id="dVC-j6-4YP"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -530,7 +531,7 @@
                     <navigationItem key="navigationItem" title="Manage Categories" id="G6l-vB-MPF">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ain-qI-fsb">
                             <connections>
-                                <segue destination="gdE-2N-BNt" kind="popoverPresentation" identifier="CreateCategory" popoverAnchorBarButtonItem="ain-qI-fsb" id="Ypf-e1-WUW">
+                                <segue destination="3Vq-Ai-miU" kind="popoverPresentation" identifier="CreateCategory" popoverAnchorBarButtonItem="ain-qI-fsb" id="RT2-YT-yuh">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
                             </connections>
@@ -601,10 +602,10 @@
             </objects>
             <point key="canvasLocation" x="5580" y="10.344827586206897"/>
         </scene>
-        <!--Create Account View Controller-->
+        <!--Create View Controller-->
         <scene sceneID="pT7-bD-ErB">
             <objects>
-                <viewController id="3Vq-Ai-miU" customClass="CreateAccountViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="3Vq-Ai-miU" customClass="CreateViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5sd-UU-8Ea"/>
                         <viewControllerLayoutGuide type="bottom" id="Tgl-gP-egp"/>
@@ -613,7 +614,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Account Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jjc-Rl-3fB">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jjc-Rl-3fB">
                                 <rect key="frame" x="76" y="260" width="258" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
@@ -655,7 +656,8 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="550"/>
                     <connections>
-                        <outlet property="accountNameTextField" destination="Jjc-Rl-3fB" id="hMg-WC-flR"/>
+                        <outlet property="nameTextField" destination="Jjc-Rl-3fB" id="bNq-VC-5gC"/>
+                        <outlet property="newLabel" destination="hN4-v6-VAF" id="BfB-n3-8TI"/>
                         <outlet property="okButton" destination="Nu8-Cu-5KW" id="HlG-Fv-d0S"/>
                     </connections>
                 </viewController>
@@ -757,7 +759,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ONU-Vr-fAX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-120.08995502248877" y="-503.19999999999999"/>
+            <point key="canvasLocation" x="12" y="-270"/>
         </scene>
         <!--Accounts-->
         <scene sceneID="Imk-g6-Oc0">
@@ -775,7 +777,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y7E-xp-Z4B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="472.80000000000001" y="-268.51574212893553"/>
+            <point key="canvasLocation" x="520" y="-270"/>
         </scene>
         <!--Settings-->
         <scene sceneID="ke7-jc-aAm">
@@ -1132,7 +1134,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="iQu-Yh-nuv">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="F6s-sv-Ilv"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="F6s-sv-Ilv">
+                            <connections>
+                                <segue destination="3Vq-Ai-miU" kind="popoverPresentation" identifier="CreateCategory" popoverAnchorBarButtonItem="F6s-sv-Ilv" id="JeJ-X3-p7I">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <value key="contentSizeForViewInPopover" type="size" width="375" height="550"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -1754,68 +1762,6 @@
             </objects>
             <point key="canvasLocation" x="4586.3999999999996" y="11.244377811094454"/>
         </scene>
-        <!--Create Category View Controller-->
-        <scene sceneID="JJA-yc-sE4">
-            <objects>
-                <viewController id="gdE-2N-BNt" customClass="CreateCategoryViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="G6Z-vl-pfL"/>
-                        <viewControllerLayoutGuide type="bottom" id="mgG-5d-bcz"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ozK-r1-RUp">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9zo-au-t73">
-                                <rect key="frame" x="124" y="20" width="110" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="New Category">
-                                        <attributes>
-                                            <font key="NSFont" metaFont="system" size="17"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzO-HE-KkF">
-                                <rect key="frame" x="16" y="265" width="52" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Category Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lLM-vw-2h4">
-                                <rect key="frame" x="76" y="260" width="258" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bK2-AL-bWN">
-                                <rect key="frame" x="16" y="500" width="318" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="OK"/>
-                                <connections>
-                                    <segue destination="yz0-Ak-5qa" kind="unwind" unwindAction="unwindToCategoryListWithSender:" id="Mr0-Tx-0Iy"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="375" height="550"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="375" height="550"/>
-                    <connections>
-                        <outlet property="categoryNameTextField" destination="lLM-vw-2h4" id="fbM-cL-ama"/>
-                        <outlet property="okButton" destination="bK2-AL-bWN" id="hDB-d1-Sf3"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kbc-0W-8Zd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="yz0-Ak-5qa" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="6460" y="-726.83658170914543"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="63r-cd-FGU">
             <objects>
@@ -2127,6 +2073,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="CJ7-Kj-Djb"/>
         <segue reference="XC4-P6-fUh"/>
-        <segue reference="BLW-4O-PRr"/>
+        <segue reference="RT2-YT-yuh"/>
     </inferredMetricsTieBreakers>
 </document>
