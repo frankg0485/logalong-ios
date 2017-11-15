@@ -115,7 +115,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         switch (segue.identifier ?? "") {
 
         case "ShowDetail":
-            guard let accountDetailViewController = segue.destination as? CreateAccountViewController else {
+            guard let accountDetailViewController = segue.destination as? CreateViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
 
@@ -128,7 +128,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             }
 
             let selectedAccount = accounts[indexPath.row]
-            accountDetailViewController.account = selectedAccount
+            accountDetailViewController.creation = NameWithId(name: selectedAccount.name, id: selectedAccount.id)
 
         case "CreateAccount":
 
@@ -144,7 +144,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         }
 
-        if let secondViewController = segue.destination as? CreateAccountViewController {
+        if let secondViewController = segue.destination as? CreateViewController {
             secondViewController.delegate = self
         }
     }
@@ -154,14 +154,11 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     }
 
 
-    func passCreationBack(account: Account?, category: Category?) {
-        if let account = account {
-
-            if let _ = tableView.indexPathForSelectedRow {
-                RecordDB.instance.updateAccount(id: account.id, newName: account.name)
-            } else {
-                RecordDB.instance.addAccount(name: account.name)
-            }
+    func passCreationBack(creation: NameWithId) {
+        if let _ = tableView.indexPathForSelectedRow {
+            RecordDB.instance.updateAccount(id: creation.id, newName: creation.name)
+        } else {
+            RecordDB.instance.addAccount(name: creation.name)
         }
 
         reloadTableView()

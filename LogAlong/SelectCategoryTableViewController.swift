@@ -9,7 +9,7 @@
 import UIKit
 
 
-class SelectCategoryTableViewController: UITableViewController {
+class SelectCategoryTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     @IBOutlet weak var okButton: UIButton!
     var myIndexPath: Int = 0
@@ -36,13 +36,20 @@ class SelectCategoryTableViewController: UITableViewController {
         type.int64 = categories[myIndexPath].id
 
         delegate?.passNumberBack(self, type: type)
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+    func passCreationBack(creation: NameWithId) {
+        RecordDB.instance.addCategory(name: creation.name)
+        _ = navigationController?.popViewController(animated: true)
+
+        reloadTableView()
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -112,14 +119,32 @@ class SelectCategoryTableViewController: UITableViewController {
      */
 
 
-    /*
-     // MARK: - Navigation
 
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "CreateCategory") {
+            let popoverViewController = segue.destination
+
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+
+            popoverViewController.popoverPresentationController!.delegate = self
+        }
+
+        if let secondViewController = segue.destination as? CreateViewController {
+            secondViewController.delegate = self
+        }
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+
+    func reloadTableView() {
+        categories = RecordDB.instance.getCategories()
+
+        tableView.reloadData()
+    }
 
 }

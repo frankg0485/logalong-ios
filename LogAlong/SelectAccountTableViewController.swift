@@ -21,6 +21,7 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         accounts = RecordDB.instance.getAccounts()
         okButton.isEnabled = false
         // Uncomment the following line to preserve selection between presentations
@@ -35,7 +36,7 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
         type.int64 = accounts[myIndexPath].id
 
         delegate?.passNumberBack(self, type: type)
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
         /*       let myVC = storyboard?.instantiateViewController(withIdentifier: "testID") as! AddTableViewController
          myVC.intPassed = myIndexPath
 
@@ -50,13 +51,10 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
         // Dispose of any resources that can be recreated.
     }
 
-    func passCreationBack(account: Account?, category: Category?) {
-        if let account = account {
+    func passCreationBack(creation: NameWithId) {
+        RecordDB.instance.addAccount(name: creation.name)
+        _ = navigationController?.popViewController(animated: true)
 
-            RecordDB.instance.addAccount(name: account.name)
-            _ = navigationController?.popViewController(animated: true)
-
-        }
         reloadTableView()
     }
     // MARK: - Table view data source
@@ -141,7 +139,7 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
             popoverViewController.popoverPresentationController!.delegate = self
         }
 
-        if let secondViewController = segue.destination as? CreateAccountViewController {
+        if let secondViewController = segue.destination as? CreateViewController {
             secondViewController.delegate = self
         }
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CategoriesTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
+class CategoriesTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     var categories: [Category] = []
 
@@ -30,6 +30,17 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func passCreationBack(creation: NameWithId) {
+
+        if let _ = tableView.indexPathForSelectedRow {
+            RecordDB.instance.updateCategory(id: creation.id, newName: creation.name)
+        } else {
+            RecordDB.instance.addCategory(name: creation.name)
+        }
+
+        reloadTableView()
     }
 
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
@@ -112,7 +123,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
         switch (segue.identifier ?? "") {
 
         case "ShowDetail":
-            guard let categoryDetailViewController = segue.destination as? CreateCategoryViewController else {
+            guard let categoryDetailViewController = segue.destination as? CreateViewController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
 
@@ -125,7 +136,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
             }
 
             let selectedCategory = categories[indexPath.row]
-            categoryDetailViewController.category = selectedCategory
+            categoryDetailViewController.creation = NameWithId(name: selectedCategory.name, id: selectedCategory.id)
 
         case "CreateCategory":
 
@@ -141,25 +152,13 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
 
         }
 
+        if let secondViewController = segue.destination as? CreateViewController {
+            secondViewController.delegate = self
+        }
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
-    }
-
-    @IBAction func unwindToCategoryList(sender: UIStoryboardSegue) {
-
-
-        if let sourceViewController = sender.source as? CreateCategoryViewController, let category = sourceViewController.category {
-
-            if let _ = tableView.indexPathForSelectedRow {
-                RecordDB.instance.updateCategory(id: category.id, newName: category.name)
-            } else {
-                RecordDB.instance.addCategory(name: category.name)
-            }
-        }
-
-        reloadTableView()
     }
 
     func reloadTableView() {

@@ -214,15 +214,14 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             popoverViewController.popoverPresentationController!.delegate = self
         }
 
-        if let secondViewController = segue.destination as? SelectAccountTableViewController {
-
+        if let nextViewController = segue.destination as? UINavigationController {
+            if let secondViewController = nextViewController.topViewController as? SelectAccountTableViewController {
+                secondViewController.delegate = self
+            } else if let secondViewController = nextViewController.topViewController as? SelectCategoryTableViewController {
+                secondViewController.delegate = self
+            }
+        } else if let secondViewController = segue.destination as? SelectPayeeTableViewController {
             secondViewController.delegate = self
-        } else if let secondViewController = segue.destination as? SelectCategoryTableViewController {
-            secondViewController.delegate = self
-
-        }  else if let secondViewController = segue.destination as? SelectPayeeTableViewController {
-            secondViewController.delegate = self
-
         }  else if let secondViewController = segue.destination as? SelectTagTableViewController {
             secondViewController.delegate = self
         }  else if let secondViewController = segue.destination as? SelectAmountViewController {
