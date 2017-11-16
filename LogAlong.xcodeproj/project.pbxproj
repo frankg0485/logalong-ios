@@ -214,12 +214,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		014281AC1FBD19720071ED8F /* utilities */ = {
+		014281AC1FBD19720071ED8F /* utils */ = {
 			isa = PBXGroup;
 			children = (
 				014281A11FBD15870071ED8F /* LPreferences.swift */,
 			);
-			path = utilities;
+			path = utils;
 			sourceTree = "<group>";
 		};
 		019CCD181E6DAF64002EF989 = {
@@ -247,7 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				CBD618011FB004D800A2B57E /* network */,
-				014281AC1FBD19720071ED8F /* utilities */,
+				014281AC1FBD19720071ED8F /* utils */,
 				CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */,
 				CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */,
 				CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */,
