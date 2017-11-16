@@ -19,6 +19,7 @@
 		0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */; };
 		012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */; };
 		013E34ED1F4366F900EF8972 /* RecordDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013E34EC1F4366F900EF8972 /* RecordDB.swift */; };
+		014281A21FBD15870071ED8F /* LPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014281A11FBD15870071ED8F /* LPreferences.swift */; };
 		014893CF1EDE6106005E3C94 /* SelectAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */; };
 		014893D31EDFA368005E3C94 /* ProtocolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D21EDFA368005E3C94 /* ProtocolViewController.swift */; };
 		014893D71EEB0332005E3C94 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D61EEB0332005E3C94 /* MainTabViewController.swift */; };
@@ -158,6 +159,7 @@
 		0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTagTableViewController.swift; sourceTree = "<group>"; };
 		012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
 		013E34EC1F4366F900EF8972 /* RecordDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDB.swift; sourceTree = "<group>"; };
+		014281A11FBD15870071ED8F /* LPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPreferences.swift; sourceTree = "<group>"; };
 		014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAmountViewController.swift; sourceTree = "<group>"; };
 		014893D21EDFA368005E3C94 /* ProtocolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolViewController.swift; sourceTree = "<group>"; };
 		014893D61EEB0332005E3C94 /* MainTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
@@ -212,6 +214,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		014281AC1FBD19720071ED8F /* utilities */ = {
+			isa = PBXGroup;
+			children = (
+				014281A11FBD15870071ED8F /* LPreferences.swift */,
+			);
+			path = utilities;
+			sourceTree = "<group>";
+		};
 		019CCD181E6DAF64002EF989 = {
 			isa = PBXGroup;
 			children = (
@@ -237,8 +247,9 @@
 			isa = PBXGroup;
 			children = (
 				CBD618011FB004D800A2B57E /* network */,
-				CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */,
+				014281AC1FBD19720071ED8F /* utilities */,
 				CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */,
+				CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */,
 				CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */,
 				CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */,
 				019CCD241E6DAF64002EF989 /* AppDelegate.swift */,
@@ -530,6 +541,7 @@
 				0128AE501EC7BD8A007A999B /* SelectCategoryTableViewController.swift in Sources */,
 				01DE2C1B1F46764800ED5D9C /* CategoriesTableViewCell.swift in Sources */,
 				CBC01B491FAEAA080092B184 /* Account.swift in Sources */,
+				014281A21FBD15870071ED8F /* LPreferences.swift in Sources */,
 				01FBE7FA1F43A00800A0B514 /* NewAdditionTableViewController.swift in Sources */,
 				0193DA1B1FB08F4800B63211 /* LoginScreenViewController.swift in Sources */,
 				CBC01B4B1FAEAA270092B184 /* AddTableViewController.swift in Sources */,
