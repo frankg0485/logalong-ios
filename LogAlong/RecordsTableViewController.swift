@@ -51,7 +51,6 @@ class RecordsTableViewController: UITableViewController {
         /*while (true) {
          RecordDB.instance.removeRecord(id: 0, sortBy: sortCounter, timeAsc: timeCounterAsc)
          }*/
-
         records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
         tableView.tableFooterView = UIView()
