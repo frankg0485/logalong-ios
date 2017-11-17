@@ -9,7 +9,7 @@
 import Foundation
 
 class LTransport {
-    static func scramble(buf: inout [UInt8], off: Int, bytes: Int, scrambler: UInt32) {
+    static func scramble(buf: UnsafeMutablePointer<UInt8>, off: Int, bytes: Int, scrambler: UInt32) {
         var ss = [UInt8](repeating: 0, count: 4);
         ss[0] = UInt8((scrambler >> 24) & 0xff);
         ss[1] = UInt8((scrambler >> 16) & 0xff);
@@ -22,14 +22,10 @@ class LTransport {
     }
 
     static func scramble(_ buf: LBuffer, _ scrambler: UInt32) {
-        let len = buf.getShortAt(buf.getBufOffset() + 2)
-        if (len < 8) {
-            return;
+        let len = buf.getShortAt(buf.getOffset() + 2)
+        if (len >= 8) {
+            scramble(buf: buf.getBuf(), off: buf.getOffset() + 6, bytes: Int(len - 6) , scrambler: scrambler)
         }
-
-        var a = buf.getBuf()
-        scramble(buf: &a, off: buf.getBufOffset() + 6, bytes: Int(len - 6) , scrambler: scrambler)
-        buf.setBuf(a)
     }
 
     static func do_crc32(_ buf: LBuffer) {
@@ -50,7 +46,7 @@ class LTransport {
         buf.putShortAutoInc(d162);
         buf.setLen(16);
 
-        buf.setBufOffset(0);
+        buf.setOffset(0);
         scramble(buf, scrambler);
 
         do_crc32(buf);
