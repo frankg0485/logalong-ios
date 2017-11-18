@@ -11,25 +11,25 @@ import UIKit
 
 class LPreferences {
 
-    static let instance = LPreferences()
-    let defaults = UserDefaults.standard
 
-    let userNameKey = "userName"
-    let userIdKey = "userId"
+    static let defaults = UserDefaults.standard
 
-    func getUserName() -> String {
+    static let userNameKey = "userName"
+    static let userIdKey = "userId"
+
+    static func getUserName() -> String {
         return defaults.string(forKey: userNameKey) ?? ""
     }
 
-    func setUserName(newName: String) {
+    static func setUserName(newName: String) {
         defaults.set(newName, forKey: userNameKey)
     }
 
-    func getUserId() -> String {
+    static func getUserId() -> String {
         return defaults.string(forKey: userIdKey) ?? ""
     }
 
-    func setUserId(newId: String) {
+    static func setUserId(newId: String) {
         return defaults.set(newId, forKey: userIdKey)
     }
 }
