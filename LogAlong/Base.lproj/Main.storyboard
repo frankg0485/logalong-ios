@@ -1798,6 +1798,51 @@
             </objects>
             <point key="canvasLocation" x="4585.6000000000004" y="-1448.2758620689656"/>
         </scene>
+        <!--Login Timer View Controller-->
+        <scene sceneID="jSy-tk-ciy">
+            <objects>
+                <viewController id="692-8r-UR4" customClass="LoginTimerViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="LQu-9X-5ZT"/>
+                        <viewControllerLayoutGuide type="bottom" id="rHX-Bc-hge"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kCQ-lC-I6z">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gwB-ny-gyi">
+                                <rect key="frame" x="172" y="94" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="OK"/>
+                                <connections>
+                                    <action selector="okButtonClicked:" destination="692-8r-UR4" eventType="touchUpInside" id="8V0-9B-2if"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Connecting To Server..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="88I-Jk-FYW">
+                                <rect key="frame" x="16" y="36" width="343" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vcg-AC-2No">
+                                <rect key="frame" x="112" y="84" width="150" height="2"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <size key="freeformSize" width="375" height="150"/>
+                    <connections>
+                        <outlet property="connectingLabel" destination="88I-Jk-FYW" id="b9a-id-H59"/>
+                        <outlet property="okButton" destination="gwB-ny-gyi" id="b4k-f8-KZM"/>
+                        <outlet property="progressView" destination="Vcg-AC-2No" id="ZDm-1j-D8N"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AXN-jj-r5h" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6458.3999999999996" y="-1846.776611694153"/>
+        </scene>
         <!--Login Screen View Controller-->
         <scene sceneID="IYp-QZ-8G8">
             <objects>
@@ -1835,7 +1880,9 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="3Va-pR-fZK">
                             <connections>
-                                <action selector="doneButtonClicked:" destination="YPv-cd-Dzw" id="Ho6-0M-69l"/>
+                                <segue destination="692-8r-UR4" kind="popoverPresentation" popoverAnchorBarButtonItem="3Va-pR-fZK" id="6rP-FO-SaB">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
