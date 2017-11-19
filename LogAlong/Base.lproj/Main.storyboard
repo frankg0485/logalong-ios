@@ -1818,25 +1818,26 @@
                                     <action selector="okButtonClicked:" destination="692-8r-UR4" eventType="touchUpInside" id="8V0-9B-2if"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Connecting To Server..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="88I-Jk-FYW">
-                                <rect key="frame" x="16" y="36" width="343" height="21"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="33r-7v-Euo">
+                                <rect key="frame" x="177" y="66" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Connecting To Server..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="88I-Jk-FYW">
+                                <rect key="frame" x="17" y="37" width="342" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vcg-AC-2No">
-                                <rect key="frame" x="112" y="84" width="150" height="2"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </progressView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="375" height="150"/>
                     <size key="freeformSize" width="375" height="150"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="33r-7v-Euo" id="0a9-6d-74J"/>
                         <outlet property="connectingLabel" destination="88I-Jk-FYW" id="b9a-id-H59"/>
                         <outlet property="okButton" destination="gwB-ny-gyi" id="b4k-f8-KZM"/>
-                        <outlet property="progressView" destination="Vcg-AC-2No" id="ZDm-1j-D8N"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AXN-jj-r5h" userLabel="First Responder" sceneMemberID="firstResponder"/>
