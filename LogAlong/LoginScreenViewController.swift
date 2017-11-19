@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDelegate {
+class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDelegate, UIPopoverPresentationControllerDelegate {
 
     var delegate: FLoginViewControllerDelegate?
 
@@ -39,6 +39,9 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
         }
     }
 
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
 
     // MARK: - Navigation
 
@@ -48,6 +51,12 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
             secondViewController.delegate = self
         } else if let secondViewController = segue.destination as? LoginInfoTableViewController {
             delegate = secondViewController
+        } else {
+            let popoverViewController = segue.destination
+
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
+
+            popoverViewController.popoverPresentationController!.delegate = self
         }
 
     }

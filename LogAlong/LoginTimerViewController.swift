@@ -12,7 +12,7 @@ class LoginTimerViewController: UIViewController {
 
     @IBOutlet weak var okButton: UIButton!
     @IBOutlet weak var connectingLabel: UILabel!
-    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     var timer: Timer?
     var counter: Double = 15.0
@@ -20,6 +20,8 @@ class LoginTimerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         okButton.isHidden = true
+
+        activityIndicator.startAnimating()
 
         timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(LoginTimerViewController.updateCountDown), userInfo: nil, repeats: true)
         // Do any additional setup after loading the view.
@@ -37,7 +39,6 @@ class LoginTimerViewController: UIViewController {
     @objc func updateCountDown() {
         if (counter > 0) {
             counter = counter - 0.05
-            progressView.progress += (0.05/15)
         } else {
             stopCountDown()
         }
@@ -46,7 +47,9 @@ class LoginTimerViewController: UIViewController {
     func stopCountDown() {
         connectingLabel.text = "Unable to connect. Please try again later."
         okButton.isHidden = false
-        progressView.isHidden = true
+
+        activityIndicator.stopAnimating()
+        activityIndicator.isHidden = true
 
         timer?.invalidate()
         timer = nil
