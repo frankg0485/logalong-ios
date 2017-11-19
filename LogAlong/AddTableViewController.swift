@@ -15,6 +15,12 @@ struct TypePassed {
     var int64: Int64 = 0
 }
 
+enum addType: Int {
+    case EXPENSE = 1
+    case INCOME = 2
+    case TRANSFER = 3
+}
+
 var payees: [String] = ["Costco", "Walmart", "Chipotle", "Panera", "Biaggis"]
 var tags: [String] = ["Market America", "2014 Summer", "2015 Summer", "2016 Summer", "2017 Summer"]
 class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, FViewControllerDelegate {
@@ -32,8 +38,22 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     var accountId: Int64 = 0
     var categoryId: Int64 = 0
+
+    var type: Int = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if (type == addType.EXPENSE.rawValue) {
+            navigationController?.navigationBar.tintColor = UIColor.red
+            amountLabel.textColor = UIColor.red
+        } else if (type == addType.INCOME.rawValue) {
+            navigationController?.navigationBar.tintColor = UIColor.green
+            amountLabel.textColor = UIColor.green
+        } else if (type == addType.TRANSFER.rawValue) {
+            navigationController?.navigationBar.tintColor = UIColor.blue
+            amountLabel.isHidden = true
+        }
 
         notesTextField.delegate = self
 

@@ -86,12 +86,24 @@ class NewAdditionTableViewController: UITableViewController {
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    /*    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let secondViewController = segue.destination as? UINavigationController {
+            if let nextViewController = secondViewController.topViewController as? AddTableViewController {
+                switch (segue.identifier ?? "") {
+                case "AddExpense":
+                    nextViewController.type = addType.EXPENSE.rawValue
 
+                case "AddIncome":
+                    nextViewController.type = addType.INCOME.rawValue
 
+                case "AddTransfer":
+                    nextViewController.type = addType.TRANSFER.rawValue
 
-
-     }*/
-
+                default:
+                    fatalError()
+                }
+            }
+        }
+    }
 
 }
