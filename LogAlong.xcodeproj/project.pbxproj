@@ -54,6 +54,7 @@
 		CBC01B511FAEAA620092B184 /* RecordsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */; };
 		CBC374971FBE54890098721C /* LLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC374961FBE54890098721C /* LLog.swift */; };
 		CBD618101FB0081300A2B57E /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD6180F1FB0081300A2B57E /* Server.swift */; };
+		CBFB1BF01FC09A5D00B0321E /* LBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -204,6 +205,7 @@
 		CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordsTableViewController.swift; sourceTree = "<group>"; };
 		CBC374961FBE54890098721C /* LLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLog.swift; sourceTree = "<group>"; };
 		CBD6180F1FB0081300A2B57E /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Server.swift; path = LogAlong/network/Server.swift; sourceTree = SOURCE_ROOT; };
+		CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LBroadcast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				014281A11FBD15870071ED8F /* LPreferences.swift */,
+				CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */,
 				CBC374961FBE54890098721C /* LLog.swift */,
 			);
 			path = utils;
@@ -547,6 +550,7 @@
 				015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */,
 				01253CFE1F538675005B4D8C /* SelectCategoryTableViewCell.swift in Sources */,
 				012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */,
+				CBFB1BF01FC09A5D00B0321E /* LBroadcast.swift in Sources */,
 				01253CF41F5318BE005B4D8C /* SelectAccountTableViewCell.swift in Sources */,
 				013E34ED1F4366F900EF8972 /* RecordDB.swift in Sources */,
 				017BA1161FAF5DE500694E38 /* CreateOrLoginTableViewController.swift in Sources */,
