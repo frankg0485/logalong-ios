@@ -9,6 +9,7 @@
 import UIKit
 
 class MainTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
+    let TAG = "MainTableViewController"
 
     var accounts: [Account] = []
 
@@ -25,6 +26,16 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+
+        //TODO: should we 'unregister' this listener according to viewcontroller life cycle?
+        LBroadcast.register(LBroadcast.ACTION_NETWORK_CONNECTED,
+                            cb: #selector(self.networkConnected),
+                            listener: self)
+    }
+
+    @objc func networkConnected(notification: Notification) -> Void {
+        //TODO: update GUI to indicate network connection
+        LLog.d(TAG, "network connectd")
     }
 
     override func didReceiveMemoryWarning() {

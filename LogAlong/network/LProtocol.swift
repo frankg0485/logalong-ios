@@ -179,9 +179,7 @@ final class LProtocol : LServerDelegate {
                 LLog.d(TAG, "channel scrambler seed sent, server version: \(serverVersion)");
                 state = LConnectionState.CONNECTED;
 
-                //rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                //    .ACTION_CONNECTED_TO_SERVER));
-                //LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
+                LBroadcast.post(LBroadcast.ACTION_NETWORK_CONNECTED);
                 break;
 
             default:
