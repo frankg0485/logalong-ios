@@ -18,6 +18,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     var creation: NameWithId? = NameWithId(name: "", id: 0)
     var delegate: FPassCreationBackDelegate?
 
+    var typeBeingAdded: String = ""
+
     @IBOutlet weak var newLabel: UILabel!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var okButton: UIButton!
@@ -26,11 +28,11 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         nameTextField.delegate = self
 
-        if ((presentingViewController as? UINavigationController)?.topViewController is AccountsTableViewController) || ((presentingViewController as? UINavigationController)?.topViewController is SelectAccountTableViewController) {
+        if ((presentingViewController as? UINavigationController)?.topViewController is AccountsTableViewController) || (typeBeingAdded == "Account") {
             newLabel.text = "New Account"
             nameTextField.placeholder = "Account Name"
 
-        } else if ((presentingViewController as? UINavigationController)?.topViewController is CategoriesTableViewController) || ((presentingViewController as? UINavigationController)?.topViewController is SelectCategoryTableViewController) {
+        } else if ((presentingViewController as? UINavigationController)?.topViewController is CategoriesTableViewController) || (typeBeingAdded == "Category") {
             newLabel.text = "New Category"
             nameTextField.placeholder = "Category Name"
         }

@@ -8,9 +8,9 @@
 
 import UIKit
 
-class SelectAccountTableViewCell: UITableViewCell {
+class SelectTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var accountNameLabel: UILabel!
+    @IBOutlet weak var nameLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

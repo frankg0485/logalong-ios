@@ -9,7 +9,7 @@
 import UIKit
 
 
-class SelectAccountTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
+class SelectTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     @IBOutlet weak var okButton: UIButton!
     var myIndexPath: Int = 0
@@ -17,12 +17,13 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
 
     weak var delegate: FViewControllerDelegate?
 
-    var accounts: [Account] = []
+    var selections: [NameWithId] = []
+    var selectionType: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkIdentifierAndPopulateArray()
 
-        accounts = RecordDB.instance.getAccounts()
         okButton.isEnabled = false
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -33,7 +34,7 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
 
-        type.int64 = accounts[myIndexPath].id
+        type.int64 = selections[myIndexPath].id
 
         delegate?.passNumberBack(self, type: type)
         dismiss(animated: true, completion: nil)
@@ -66,7 +67,7 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return accounts.count
+        return selections.count
     }
 
 
@@ -77,19 +78,30 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = "ChooseAccountCell"
+        let cellIdentifier = "ChooseCell"
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? SelectAccountTableViewCell else {
-            fatalError("The dequeued cell is not an instance of SelectAccountTableViewCell.")
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? SelectTableViewCell else {
+            fatalError("The dequeued cell is not an instance of SelectTableViewCell.")
         }
 
-        let account = accounts[indexPath.row]
+        let selection = selections[indexPath.row]
 
-        cell.accountNameLabel.text = account.name
+        cell.nameLabel.text = selection.name
 
         return cell
     }
 
+    func checkIdentifierAndPopulateArray() {
+        if (selectionType == "ChooseAccount") {
+            for account in RecordDB.instance.getAccounts() {
+                selections.append(NameWithId(name: account.name, id: account.id))
+            }
+        } else if (selectionType == "ChooseCategory") {
+            for category in RecordDB.instance.getCategories() {
+                selections.append(NameWithId(name: category.name, id: category.id))
+            }
+        }
+    }
 
     /*
      // Override to support conditional editing of the table view.
@@ -131,7 +143,7 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
 
      // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "CreateAccount") {
+        if (segue.identifier == "CreateAccount") || (segue.identifier == "CreateCategory") {
             let popoverViewController = segue.destination
 
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
@@ -141,6 +153,12 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
 
         if let secondViewController = segue.destination as? CreateViewController {
             secondViewController.delegate = self
+
+            if (segue.identifier == "CreateAccount") {
+                secondViewController.typeBeingAdded = "Account"
+            } else {
+                secondViewController.typeBeingAdded = "Category"
+            }
         }
     }
 
@@ -149,7 +167,7 @@ class SelectAccountTableViewController: UITableViewController, UIPopoverPresenta
     }
 
     func reloadTableView() {
-        accounts = RecordDB.instance.getAccounts()
+        checkIdentifierAndPopulateArray()
 
         tableView.reloadData()
     }

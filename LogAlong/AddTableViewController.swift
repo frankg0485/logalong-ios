@@ -36,6 +36,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     var record: Record?
 
+    var typePassedBack: String = ""
+
     var accountId: Int64 = 0
     var categoryId: Int64 = 0
 
@@ -53,6 +55,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         } else if (type == addType.TRANSFER.rawValue) {
             navigationController?.navigationBar.tintColor = UIColor.blue
             amountLabel.isHidden = true
+            categoryLabel.text = "Choose Account"
         }
 
         notesTextField.delegate = self
@@ -115,13 +118,14 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         if let _ = caller as? SelectAmountViewController {
             amountLabel.text = String(format: "%.2lf", type.double)
 
-        } else if let _ = caller as? SelectAccountTableViewController {
-            accountLabel.text = RecordDB.instance.getAccount(id: type.int64)
-            accountId = type.int64
-
-        } else if let _ = caller as? SelectCategoryTableViewController {
-            categoryLabel.text = RecordDB.instance.getCategory(id: type.int64)
-            categoryId = type.int64
+        } else if let _ = caller as? SelectTableViewController {
+            if (typePassedBack == "ChooseAccount") {
+                accountLabel.text = RecordDB.instance.getAccount(id: type.int64)
+                accountId = type.int64
+            } else {
+                categoryLabel.text = RecordDB.instance.getCategory(id: type.int64)
+                categoryId = type.int64
+            }
 
         } else if let _ = caller as? SelectPayeeTableViewController {
             payeeLabel.text = payees[type.int]
@@ -156,6 +160,11 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }
     }
 
+    func checkTypePassedBack() {
+        if (typePassedBack == "ChooseAccount") {
+
+        }
+    }
 
 
     // MARK: - Table view data source
@@ -235,9 +244,10 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }
 
         if let nextViewController = segue.destination as? UINavigationController {
-            if let secondViewController = nextViewController.topViewController as? SelectAccountTableViewController {
-                secondViewController.delegate = self
-            } else if let secondViewController = nextViewController.topViewController as? SelectCategoryTableViewController {
+            if let secondViewController = nextViewController.topViewController as? SelectTableViewController {
+                secondViewController.selectionType = segue.identifier!
+                typePassedBack = segue.identifier!
+
                 secondViewController.delegate = self
             }
         } else if let secondViewController = segue.destination as? SelectPayeeTableViewController {
