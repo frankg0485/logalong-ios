@@ -227,9 +227,10 @@
 		014281AC1FBD19720071ED8F /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				014281A11FBD15870071ED8F /* LPreferences.swift */,
 				CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */,
 				CBC374961FBE54890098721C /* LLog.swift */,
+				014281A11FBD15870071ED8F /* LPreferences.swift */,
+				013E34EC1F4366F900EF8972 /* RecordDB.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -258,41 +259,12 @@
 		019CCD231E6DAF64002EF989 /* LogAlong */ = {
 			isa = PBXGroup;
 			children = (
+				CB15D4EB1FC3D734005D8B43 /* entities */,
+				CB15D4E11FC3D731005D8B43 /* views */,
 				CBD618011FB004D800A2B57E /* network */,
 				014281AC1FBD19720071ED8F /* utils */,
-				CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */,
-				CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */,
-				CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */,
-				CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */,
 				019CCD241E6DAF64002EF989 /* AppDelegate.swift */,
 				019CCD2A1E6DAF64002EF989 /* Main.storyboard */,
-				01FA01081FBFA627002C00C0 /* LoginTimerViewController.swift */,
-				0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */,
-				012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */,
-				017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */,
-				017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */,
-				015367311F9D588F001BCB89 /* PieChartViewController.swift */,
-				CBC01B481FAEAA080092B184 /* Account.swift */,
-				01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */,
-				01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */,
-				01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */,
-				014893D61EEB0332005E3C94 /* MainTabViewController.swift */,
-				014893D21EDFA368005E3C94 /* ProtocolViewController.swift */,
-				014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */,
-				0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */,
-				01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */,
-				0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */,
-				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
-				0128AE491EC482B8007A999B /* CategoriesTableViewController.swift */,
-				01DE2C1A1F46764800ED5D9C /* CategoriesTableViewCell.swift */,
-				0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */,
-				0128AE471EC4829B007A999B /* AccountsTableViewController.swift */,
-				01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */,
-				010797E51F6778FA00623C04 /* Category.swift */,
-				019CCD531E748042002EF989 /* Record.swift */,
-				013E34EC1F4366F900EF8972 /* RecordDB.swift */,
-				019CCD4D1E6DC7C5002EF989 /* MainTableViewCell.swift */,
-				019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */,
 				019CCD2D1E6DAF64002EF989 /* Assets.xcassets */,
 				019CCD2F1E6DAF64002EF989 /* LaunchScreen.storyboard */,
 				019CCD321E6DAF64002EF989 /* Info.plist */,
@@ -307,6 +279,66 @@
 				019CCD3D1E6DAF65002EF989 /* Info.plist */,
 			);
 			path = LogAlongTests;
+			sourceTree = "<group>";
+		};
+		CB15D4E11FC3D731005D8B43 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */,
+				0128AE471EC4829B007A999B /* AccountsTableViewController.swift */,
+				CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */,
+				01DE2C1A1F46764800ED5D9C /* CategoriesTableViewCell.swift */,
+				0128AE491EC482B8007A999B /* CategoriesTableViewController.swift */,
+				CB15D4EC1FC3D7E7005D8B43 /* charts */,
+				01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */,
+				CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */,
+				019CCD4D1E6DC7C5002EF989 /* MainTableViewCell.swift */,
+				CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */,
+				014893D61EEB0332005E3C94 /* MainTabViewController.swift */,
+				01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */,
+				014893D21EDFA368005E3C94 /* ProtocolViewController.swift */,
+				019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */,
+				CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */,
+				014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */,
+				0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */,
+				01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */,
+				0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */,
+				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
+				CB15D4ED1FC3D7EE005D8B43 /* settings */,
+				0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		CB15D4EB1FC3D734005D8B43 /* entities */ = {
+			isa = PBXGroup;
+			children = (
+				CBC01B481FAEAA080092B184 /* Account.swift */,
+				010797E51F6778FA00623C04 /* Category.swift */,
+				019CCD531E748042002EF989 /* Record.swift */,
+			);
+			path = entities;
+			sourceTree = "<group>";
+		};
+		CB15D4EC1FC3D7E7005D8B43 /* charts */ = {
+			isa = PBXGroup;
+			children = (
+				012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */,
+				015367311F9D588F001BCB89 /* PieChartViewController.swift */,
+			);
+			path = charts;
+			sourceTree = "<group>";
+		};
+		CB15D4ED1FC3D7EE005D8B43 /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */,
+				017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */,
+				0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */,
+				01FA01081FBFA627002C00C0 /* LoginTimerViewController.swift */,
+				01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */,
+			);
+			path = settings;
 			sourceTree = "<group>";
 		};
 		CBC01B1C1FAEA2FF0092B184 /* Products */ = {
