@@ -34,7 +34,7 @@ class LTransport {
         buf.setLen(buf.getLen() + 4)
     }
 
-    static func send_rqst(rqst: UInt16, d32: UInt32, d161: UInt16, d162: UInt16, scrambler: UInt32) {
+    static func send_rqst(_ rqst: UInt16, d32: UInt32, d161: UInt16, d162: UInt16, scrambler: UInt32) {
         let buf = LBuffer(size: 32);
 
         buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
@@ -45,6 +45,52 @@ class LTransport {
         buf.putShortAutoInc(d161);
         buf.putShortAutoInc(d162);
         buf.setLen(16);
+
+        buf.setOffset(0);
+        scramble(buf, scrambler);
+
+        do_crc32(buf);
+        LServer.instance.send(data: buf.getBuf(), bytes: buf.getLen())
+    }
+
+    static func send_rqst(_ rqst: UInt16, string: String, scrambler: UInt32) {
+        let buf = LBuffer(size: LProtocol.PACKET_MAX_LEN)
+        buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
+        buf.putShortAutoInc(UInt16(0));
+        buf.putShortAutoInc(rqst);
+
+        var len = string.utf8.count
+        buf.putShortAutoInc(UInt16(len))
+        buf.putStringAutoInc(string);
+
+
+        len = LProtocol.PACKET_PAYLOAD_LENGTH(buf.getOffset());
+        buf.putShortAt(UInt16(len), 2);
+        buf.setLen(len);
+
+        buf.setOffset(0);
+        scramble(buf, scrambler);
+
+        do_crc32(buf);
+        LServer.instance.send(data: buf.getBuf(), bytes: buf.getLen())
+    }
+
+    static func send_rqst(_ rqst: UInt16, strings: [String], scrambler: UInt32) {
+        let buf = LBuffer(size: LProtocol.PACKET_MAX_LEN)
+        buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
+        buf.putShortAutoInc(UInt16(0));
+        buf.putShortAutoInc(rqst);
+
+        var len = 0;
+        for string in strings {
+            len = string.utf8.count
+            buf.putShortAutoInc(UInt16(len))
+            buf.putStringAutoInc(string);
+        }
+
+        len = LProtocol.PACKET_PAYLOAD_LENGTH(buf.getOffset());
+        buf.putShortAt(UInt16(len), 2);
+        buf.setLen(len);
 
         buf.setOffset(0);
         scramble(buf, scrambler);

@@ -121,20 +121,21 @@ class LBuffer {
      long bits = getLongAutoInc();
      return Double.longBitsToDouble(bits);
      }
+     */
 
-     public long getLongAutoInc() {
-     long ret = (array[offset] & 0xffL) |
-     (0xff00L & (array[offset + 1] << 8)) |
-     (0xff0000L & (array[offset + 2] << 16)) |
-     (0xff000000L & (array[offset + 3] << 24)) |
-     (0xff00000000L & ((long) array[offset + 4] << 32)) |
-     (0xff0000000000L & ((long) array[offset + 5] << 40)) |
-     (0xff000000000000L & ((long) array[offset + 6] << 48)) |
-     (0xff00000000000000L & ((long) array[offset + 7] << 56));
-     offset += 8;
-     return ret;
-     }
-
+    func getLongAutoInc() -> UInt64 {
+        var val = UInt64(array[offset] & 0xff)
+        val += (0xff00 & (UInt64(array[offset + 1]) << 8))
+        val += (0xff0000 & (UInt64(array[offset + 2]) << 16))
+        val += (0xff000000 & (UInt64(array[offset + 3]) << 24))
+        val += (0xff00000000 & (UInt64(array[offset + 4]) << 32))
+        val += (0xff0000000000 & (UInt64(array[offset + 5]) << 40))
+        val += (0xff000000000000 & (UInt64(array[offset + 6]) << 48))
+        val += (0xff00000000000000 & (UInt64(array[offset + 7]) << 56))
+        offset += 8;
+        return val;
+    }
+    /*
      public byte[] getBytesAutoInc(int bytes) {
      byte[] tmp = new byte[bytes];
      System.arraycopy(array, offset, tmp, 0, bytes);
@@ -183,13 +184,10 @@ class LBuffer {
         offset += 2;
     }
 
-    /*
-     public int putShortAt(short val, int index) {
-     array[index] = (byte) (val & 0xff);
-     array[index + 1] = (byte) ((val >>> 8) & 0xff);
-     return 0;
-     }
-     */
+    func putShortAt(_ val: UInt16, _ index: Int) {
+        array[index] = UInt8(val & 0xff);
+        array[index + 1] = UInt8(val >> 8);
+    }
 
     func putIntAutoInc(_ val: UInt32) {
         array[offset] = UInt8(val & 0xff);
@@ -224,18 +222,15 @@ class LBuffer {
      long bits = Double.doubleToLongBits(val);
      return putLongAutoInc(bits);
      }
+     */
 
-     public int putStringAutoInc(String str) {
-     try {
-     byte[] bytes = str.getBytes("UTF-8");
-     System.arraycopy(bytes, 0, array, offset, bytes.length);
-     offset += bytes.length;
-     return 0;
-     } catch (Exception e) {
-     }
-     return -1;
-     }
+    func putStringAutoInc(_ str: String) {
+        let buf = [UInt8](str.utf8)
+        memcpy(array + offset, buf, buf.count)
+        offset += buf.count
+    }
 
+    /*
      public int putBytesAutoInc(byte[] bytes) {
      System.arraycopy(bytes, 0, array, offset, bytes.length);
      offset += bytes.length;

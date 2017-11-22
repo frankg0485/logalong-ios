@@ -76,24 +76,26 @@ extension LServer: StreamDelegate {
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         switch eventCode {
         case Stream.Event.hasBytesAvailable:
-            LLog.d(TAG, "new message received")
             rxQ.async {
                 self.recv(stream: aStream as! InputStream)
             }
-        case Stream.Event.endEncountered:
-            disconnect()
         case Stream.Event.errorOccurred:
-            //TODO: retry connection after some waiting
-            LLog.e(TAG, "error occurred")
+            LLog.e(TAG, "network stream error occurred")
+            fallthrough
+        case Stream.Event.endEncountered:
+            LLog.e(TAG, "network stream ended")
+            disconnect()
+            LBroadcast.post(LBroadcast.ACTION_NETWORK_DISCONNECTED)
         case Stream.Event.hasSpaceAvailable:
-            LLog.d(TAG, "has space available")
+            //LLog.d(TAG, "network stream has space available")
+            break;
         case Stream.Event.openCompleted:
             streamCount += 1
             if streamCount == 2 {
                 delegate.start()
             }
         default:
-            LLog.d(TAG, "some other event...")
+            LLog.d(TAG, "some other network stream event...")
             break
         }
     }
