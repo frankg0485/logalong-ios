@@ -45,7 +45,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         if (type == addType.EXPENSE.rawValue) {
             navigationController?.navigationBar.tintColor = UIColor.red
             amountLabel.textColor = UIColor.red

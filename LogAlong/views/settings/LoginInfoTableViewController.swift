@@ -15,6 +15,10 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet var nameCell: UITableViewCell!
 
+    var delegate: FPassNameIdPasswordDelegate?
+
+    var loginType: Int = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,9 +40,29 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
         // Dispose of any resources that can be recreated.
     }
 
+    func checkTextFields() {
+        if (nameCell.isHidden == true) {
+            loginType = typeOfLogin.LOGIN.rawValue
+
+            if (passwordTextField.text?.isEmpty == false) && (userIdTextField.text?.isEmpty == false) {
+                delegate?.passLoginInfoBack(name: nil, id: userIdTextField.text!, password: passwordTextField.text!, typeOfLogin: loginType)
+            }
+        } else {
+            loginType = typeOfLogin.CREATE.rawValue
+
+            if (nameTextField.text?.isEmpty == false) && (passwordTextField.text?.isEmpty == false) && (userIdTextField.text?.isEmpty == false) {
+                delegate?.passLoginInfoBack(name: nameTextField.text, id: userIdTextField.text!, password: passwordTextField.text!, typeOfLogin: loginType)
+            }
+        }
+    }
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        checkTextFields()
     }
 
     func showHideNameCell(hide: Bool) {
@@ -117,14 +141,13 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     }
     */
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+    }*/
+
 
 }

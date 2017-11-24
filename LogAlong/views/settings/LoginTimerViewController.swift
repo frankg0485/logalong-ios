@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum typeOfLogin: Int {
+    case CREATE = 0
+    case LOGIN = 1
+}
+
 class LoginTimerViewController: UIViewController {
     let TAG = "LoginTimerViewController"
 
@@ -17,6 +22,11 @@ class LoginTimerViewController: UIViewController {
 
     var timer: Timer?
     var counter: Double = 15.0
+
+    var name: String? = ""
+    var userId: String = ""
+    var password: String = ""
+    var typeOfLogin: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,11 +50,6 @@ class LoginTimerViewController: UIViewController {
         LLog.d(TAG, "user logged in")
         //TODO: user successfully logged in, updat GUI (automatically dismiss this popover and update parent view?)
         stopCountDown()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     @IBAction func okButtonClicked(_ sender: UIButton) {
