@@ -229,6 +229,7 @@
 		014281AC1FBD19720071ED8F /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				014893D21EDFA368005E3C94 /* ProtocolViewController.swift */,
 				CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */,
 				CBC374961FBE54890098721C /* LLog.swift */,
 				014281A11FBD15870071ED8F /* LPreferences.swift */,
@@ -298,7 +299,6 @@
 				CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */,
 				014893D61EEB0332005E3C94 /* MainTabViewController.swift */,
 				01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */,
-				014893D21EDFA368005E3C94 /* ProtocolViewController.swift */,
 				019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */,
 				CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */,
 				014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */,
@@ -307,7 +307,6 @@
 				0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */,
 				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
 				CB15D4ED1FC3D7EE005D8B43 /* settings */,
-				0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -339,6 +338,7 @@
 				0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */,
 				01FA01081FBFA627002C00C0 /* LoginTimerViewController.swift */,
 				01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */,
+				0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */,
 			);
 			path = settings;
 			sourceTree = "<group>";
