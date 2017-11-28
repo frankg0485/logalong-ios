@@ -9,13 +9,24 @@
 import Foundation
 import UIKit
 
+// UserDefaults is thread safe
 class LPreferences {
     static let defaults = UserDefaults.standard
 
     static let loginError = "LoginError"
     static let userIdNum = "userIdNum"
     static let userLoginNum = "userLoginNum"
+    static let userId = "userId"
     static let userName = "userName"
+    static let userPassword = "userPassword"
+
+    static func getUserId() -> String {
+        return defaults.string(forKey: userId) ?? ""
+    }
+
+    static func setUserId(_ val: String) {
+        defaults.set(val, forKey: userId)
+    }
 
     static func getUserName() -> String {
         return defaults.string(forKey: userName) ?? ""
@@ -24,6 +35,15 @@ class LPreferences {
     static func setUserName(_ val: String) {
         defaults.set(val, forKey: userName)
     }
+
+    static func getUserPassword() -> String {
+        return defaults.string(forKey: userPassword) ?? ""
+    }
+
+    static func setUserPassword(_ val: String) {
+        defaults.set(val, forKey: userPassword)
+    }
+
     /*
      static func getUserIdNum() -> UInt64 {
      return defaults.object(forKey: userIdNum) as! UInt64

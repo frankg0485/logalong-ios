@@ -34,6 +34,9 @@ class UiRequest: NSObject {
 
     @objc func networkConnected(notification: Notification) -> Void {
         state = UiConnectionState.CONNECTED;
+        if !LPreferences.getUserId().isEmpty {
+            UiLogIn(LPreferences.getUserId(), LPreferences.getUserPassword())
+        }
     }
 
     @objc func networkDisConnected(notification: Notification) -> Void {

@@ -172,6 +172,9 @@ final class LProtocol : LServerDelegate {
         //}
 
         // 'state' is updated only this thread, hence safe to read without lock
+        var bdata = [String:Any]();
+        bdata["status"] = Int(status);
+
         switch (state) {
         case LConnectionState.DISCONNECTED:
             switch (rsps) {
@@ -214,13 +217,9 @@ final class LProtocol : LServerDelegate {
                  }
                  */
                 break;
+
             case LProtocol.RSPS | LProtocol.RQST_CREATE_USER:
-                /*
-                 rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                 .ACTION_CREATE_USER));
-                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
-                 */
+                LBroadcast.post(LBroadcast.ACTION_CREATE_USER, sender: nil, data: bdata)
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_SIGN_IN:
@@ -251,7 +250,7 @@ final class LProtocol : LServerDelegate {
                     //login error, remember to force user to login
                     LPreferences.setLoginError(true);
                 }
-                LBroadcast.post(LBroadcast.ACTION_LOG_IN)
+                LBroadcast.post(LBroadcast.ACTION_LOG_IN, sender: nil, data: bdata)
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_RESET_PASSWORD:

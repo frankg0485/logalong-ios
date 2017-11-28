@@ -78,7 +78,7 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
             secondViewController.name = name
             secondViewController.userId = userId
             secondViewController.password = password
-            secondViewController.typeOfLogin = loginType
+            secondViewController.loginType = loginType
         }
 
     }
