@@ -1236,13 +1236,17 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="accountCell" destination="TKC-bZ-1ir" id="xIy-1Y-pgE"/>
                         <outlet property="accountLabel" destination="wP7-mJ-e3p" id="CBF-f1-2sc"/>
                         <outlet property="amountLabel" destination="rgy-MU-fRh" id="BzA-id-kmT"/>
+                        <outlet property="categoryCell" destination="dy9-hV-10k" id="wXK-PD-KAo"/>
                         <outlet property="categoryLabel" destination="4nh-vD-VJb" id="E6Z-ni-aXi"/>
                         <outlet property="changeDateButton" destination="2Cj-yD-f89" id="Qf8-XR-agh"/>
                         <outlet property="notesTextField" destination="zvf-zc-gRp" id="ulh-QQ-Gzk"/>
+                        <outlet property="payeeCell" destination="QJJ-vA-D3J" id="bwq-IH-iid"/>
                         <outlet property="payeeLabel" destination="HoC-zQ-kve" id="iOw-IL-PvQ"/>
                         <outlet property="saveButton" destination="GtD-UE-CSO" id="bxz-xt-CpW"/>
+                        <outlet property="tagCell" destination="49v-rs-auF" id="DTD-N2-9Hb"/>
                         <outlet property="tagLabel" destination="Sdp-KF-VDv" id="OMN-t0-ycM"/>
                     </connections>
                 </tableViewController>
