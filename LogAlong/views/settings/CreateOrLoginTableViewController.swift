@@ -29,7 +29,6 @@ class CreateOrLoginTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 
-        //TODO: these checks don't belong here (should be in parent LoginScreenViewController?)
         if !LPreferences.getUserId().isEmpty {
             createCell.isHidden = true
             loginCell.isHidden = true

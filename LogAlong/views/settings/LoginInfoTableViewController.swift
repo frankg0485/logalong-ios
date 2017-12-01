@@ -14,6 +14,8 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet var nameCell: UITableViewCell!
+    @IBOutlet weak var showPasswordCell: UITableViewCell!
+    @IBOutlet weak var passwordCell: UITableViewCell!
 
     var delegate: FPassNameIdPasswordDelegate?
 
@@ -22,6 +24,15 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if !LPreferences.getUserId().isEmpty {
+            passwordCell.isHidden = true
+            showPasswordCell.isHidden = true
+
+            tableView.separatorStyle = .none
+
+            userIdTextField.text = LPreferences.getUserId()
+            nameTextField.text = LPreferences.getUserName()
+        }
         passwordTextField.delegate = self
         userIdTextField.delegate = self
         nameTextField.delegate = self
@@ -33,13 +44,6 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-
-        //TODO: these checks don't belong here (should be in parent LoginScreenViewController?)
-        if !LPreferences.getUserId().isEmpty {
-            passwordTextField.isHidden = true
-            userIdTextField.text = LPreferences.getUserId()
-            nameTextField.text = LPreferences.getUserName()
-        }
     }
 
     override func didReceiveMemoryWarning() {

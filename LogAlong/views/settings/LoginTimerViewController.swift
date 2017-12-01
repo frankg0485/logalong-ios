@@ -118,10 +118,12 @@ class LoginTimerViewController: UIViewController {
 
         if success {
             LLog.d(TAG, "user logged in")
-            //TODO: report success
+            connectingLabel.text = "Login Successful"
+
         } else {
             LLog.d(TAG, "user failed to login")
-            //TODO: update GUI to report error
+            connectingLabel.text = "Unable to connect. Please try again later."
+
         }
     }
 
@@ -138,7 +140,6 @@ class LoginTimerViewController: UIViewController {
     }
 
     func stopCountDown() {
-        connectingLabel.text = "Unable to connect. Please try again later."
         okButton.isHidden = false
 
         activityIndicator.stopAnimating()

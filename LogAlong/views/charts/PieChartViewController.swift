@@ -76,7 +76,7 @@ class PieChartViewController: UIViewController {
 
     @IBAction func xButtonClicked(_ sender: UIButton) {
         tabBarController?.tabBar.isHidden = false
-        tabBarController?.selectedIndex = 1
+        tabBarController?.selectedIndex = 3
     }
 
     func createPieChart(accounts: [LAccount], values: [Double]) {

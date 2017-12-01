@@ -15,6 +15,7 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.yellow], for: .normal)
 
         tabBarController?.tabBar.isOpaque = true
 
@@ -34,8 +35,9 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
     }
 
     @objc func networkConnected(notification: Notification) -> Void {
-        //TODO: update GUI to indicate network connection
-        LLog.d(TAG, "network connectd")
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.blue], for: .normal)
+
+        LLog.d(TAG, "network connected")
     }
 
     override func didReceiveMemoryWarning() {
