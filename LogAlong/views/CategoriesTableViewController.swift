@@ -10,13 +10,13 @@ import UIKit
 
 class CategoriesTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
-    var categories: [Category] = []
+    var categories: [LCategory] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem
 
-        categories = RecordDB.instance.getCategories()
+        categories = DBCategory.instance.getAll()
 
         //        tableView.tableFooterView = UIView()
 
@@ -35,9 +35,10 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
     func passCreationBack(creation: NameWithId) {
 
         if let _ = tableView.indexPathForSelectedRow {
-            RecordDB.instance.updateCategory(id: creation.id, newName: creation.name)
+            DBCategory.instance.update(LCategory(id: creation.id, name: creation.name))
         } else {
-            RecordDB.instance.addCategory(name: creation.name)
+            var category = LCategory(name: creation.name)
+            DBCategory.instance.add(&category)
         }
 
         reloadTableView()
@@ -91,7 +92,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            RecordDB.instance.removeCategory(id: categories.remove(at: indexPath.row).id)
+            DBCategory.instance.remove(id: categories.remove(at: indexPath.row).id)
 
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
@@ -162,7 +163,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
     }
 
     func reloadTableView() {
-        categories = RecordDB.instance.getCategories()
+        categories = DBCategory.instance.getAll()
 
         tableView.reloadData()
     }

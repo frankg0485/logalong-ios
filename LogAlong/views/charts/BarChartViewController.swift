@@ -13,7 +13,7 @@ class BarChartViewController: UIViewController {
 
     @IBOutlet weak var barChartView: BarChartView!
 
-    let accounts = RecordDB.instance.getAccounts()
+    let accounts = DBAccount.instance.getAll()
     var amounts: [Double] = []
 
     override func viewDidLoad() {
@@ -31,7 +31,7 @@ class BarChartViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func createBarChart(accounts: [Account], values: [Double]) {
+    func createBarChart(accounts: [LAccount], values: [Double]) {
         var entries = [BarChartDataEntry]()
 
         for i in 0..<accounts.count {

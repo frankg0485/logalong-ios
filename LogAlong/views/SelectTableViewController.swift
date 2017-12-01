@@ -53,7 +53,8 @@ class SelectTableViewController: UITableViewController, UIPopoverPresentationCon
     }
 
     func passCreationBack(creation: NameWithId) {
-        RecordDB.instance.addAccount(name: creation.name)
+        var account = LAccount(name: creation.name)
+        DBAccount.instance.add(&account)
         _ = navigationController?.popViewController(animated: true)
 
         reloadTableView()
@@ -93,11 +94,11 @@ class SelectTableViewController: UITableViewController, UIPopoverPresentationCon
 
     func checkIdentifierAndPopulateArray() {
         if (selectionType == "ChooseAccount") {
-            for account in RecordDB.instance.getAccounts() {
+            for account in DBAccount.instance.getAll() {
                 selections.append(NameWithId(name: account.name, id: account.id))
             }
         } else if (selectionType == "ChooseCategory") {
-            for category in RecordDB.instance.getCategories() {
+            for category in DBCategory.instance.getAll() {
                 selections.append(NameWithId(name: category.name, id: category.id))
             }
         }

@@ -11,14 +11,14 @@ import UIKit
 class MainTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
     let TAG = "MainTableViewController"
 
-    var accounts: [Account] = []
+    var accounts: [LAccount] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tabBarController?.tabBar.isOpaque = true
 
-        accounts = RecordDB.instance.getAccounts()
+        accounts = DBAccount.instance.getAll()
 
         tableView.tableFooterView = UIView()
         // Uncomment the following line to preserve selection between presentations

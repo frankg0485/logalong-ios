@@ -41,7 +41,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     @IBOutlet weak var notesTextField: UITextField!
     @IBOutlet weak var changeDateButton: UIBarButtonItem!
 
-    var record: Record?
+    var record: LTransaction?
 
     var typePassedBack: String = ""
 
@@ -84,10 +84,10 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
         if let record = record {
             amountLabel.text = String(record.amount)
-            accountLabel.text = RecordDB.instance.getAccount(id: record.accountId)
-            categoryLabel.text = RecordDB.instance.getCategory(id: record.categoryId)
+            accountLabel.text = DBAccount.instance.get(id: record.accountId)?.name
+            categoryLabel.text = DBCategory.instance.get(id: record.categoryId)?.name
 
-            let date = Date(timeIntervalSince1970: TimeInterval(record.time))
+            let date = Date(timeIntervalSince1970: TimeInterval(record.timestamp))
 
             let dayTimePeriodFormatter = DateFormatter()
             dayTimePeriodFormatter.dateStyle = .short
@@ -134,17 +134,17 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
             if (self.type == addType.TRANSFER.rawValue) {
                 if (cellsHaveBeenSelected[0] == true) {
-                    accountLabel.text = RecordDB.instance.getAccount(id: type.int64)
+                    accountLabel.text = DBAccount.instance.get(id: type.int64)?.name
                 } else {
-                    categoryLabel.text = RecordDB.instance.getAccount(id: type.int64)
+                    categoryLabel.text = DBCategory.instance.get(id: type.int64)?.name
                 }
             } else {
 
                 if (typePassedBack == "ChooseAccount") {
-                    accountLabel.text = RecordDB.instance.getAccount(id: type.int64)
+                    accountLabel.text = DBAccount.instance.get(id: type.int64)?.name
                     accountId = type.int64
                 } else {
-                    categoryLabel.text = RecordDB.instance.getCategory(id: type.int64)
+                    categoryLabel.text = DBCategory.instance.get(id: type.int64)?.name
                     categoryId = type.int64
                 }
             }
@@ -311,7 +311,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                  let tag = tagLabel.text
                  let notes = notesTextField.text*/
 
-                record = Record(categoryId: categoryId, amount: amount, accountId: accountId, time: Int64(time!), rowId: record?.rowId ?? 1/*, payee: payee, tag: tag, notes: notes*/)
+                record = LTransaction(categoryId: categoryId, amount: amount, accountId: accountId, timestamp: Int64(time!), rowId: record?.rowId ?? 1/*, payee: payee, tag: tag, notes: notes*/)
             }
 
             presentingViewController?.dismiss(animated: true, completion: nil)

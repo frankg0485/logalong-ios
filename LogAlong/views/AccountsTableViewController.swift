@@ -10,13 +10,13 @@ import UIKit
 
 class AccountsTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
-    var accounts: [Account] = []
+    var accounts: [LAccount] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = editButtonItem
 
-        accounts = RecordDB.instance.getAccounts()
+        accounts = DBAccount.instance.getAll()
 
         //        tableView.tableFooterView = UIView()
         // Uncomment the following line to preserve selection between presentations
@@ -81,7 +81,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            RecordDB.instance.removeAccount(id: accounts.remove(at: indexPath.row).id)
+            DBAccount.instance.remove(id: accounts.remove(at: indexPath.row).id)
 
             tableView.deleteRows(at: [indexPath], with: .fade)
 
@@ -156,16 +156,17 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
     func passCreationBack(creation: NameWithId) {
         if let _ = tableView.indexPathForSelectedRow {
-            RecordDB.instance.updateAccount(id: creation.id, newName: creation.name)
+            DBAccount.instance.update(LAccount(id: creation.id, name: creation.name))
         } else {
-            RecordDB.instance.addAccount(name: creation.name)
+            var account = LAccount(name: creation.name)
+            DBAccount.instance.add(&account)
         }
 
         reloadTableView()
     }
 
     func reloadTableView() {
-        accounts = RecordDB.instance.getAccounts()
+        accounts = DBAccount.instance.getAll()
 
         tableView.reloadData()
     }

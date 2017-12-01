@@ -17,8 +17,8 @@ class RecordsTableViewController: UITableViewController {
         case CATEGORY = 2
     }
 
-    var records = [Record]()
-    var sections: [Account] = [Account(id: 0, name: "All Records")]
+    var records = [LTransaction]()
+    var sections: [LAccount] = [LAccount(id: 0, name: "All Records")]
     let sortOptions = ["Sort By:", "Sort By: Account", "Sort By: Category"]
     var sortCounter = 0 {
         didSet {
@@ -51,7 +51,7 @@ class RecordsTableViewController: UITableViewController {
         /*while (true) {
          RecordDB.instance.removeRecord(id: 0, sortBy: sortCounter, timeAsc: timeCounterAsc)
          }*/
-        records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
+        records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
         tableView.tableFooterView = UIView()
         /*        if let savedRecords = loadRecords() {
@@ -74,14 +74,14 @@ class RecordsTableViewController: UITableViewController {
             sender.title = "Time: Desc"
 
             timeCounterAsc = false
-            records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
+            records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
 
         } else {
             sender.title = "Time: Asc"
 
             timeCounterAsc = true
-            records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
+            records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
         }
 
 
@@ -93,33 +93,31 @@ class RecordsTableViewController: UITableViewController {
             sortCounter = sorts.NONE.rawValue
             sender.title = sortOptions[sortCounter]
 
-            records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
+            records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
             sections.removeAll()
-            sections.append(Account(id: 0, name: "All Records"))
+            sections.append(LAccount(id: 0, name: "All Records"))
         } else {
             sender.title = sortOptions[sortCounter + 1]
             sortCounter += 1
 
             if (sortCounter == sorts.ACCOUNT.rawValue) {
-                records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
+                records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
                 sections.removeAll()
-                for account in RecordDB.instance.getAccounts() {
+                for account in DBAccount.instance.getAll() {
                     sections.append(account)
                 }
 
             } else {
-                records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
+                records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
                 sections.removeAll()
-                for category in RecordDB.instance.getCategories() {
-                    sections.append(Account(id: category.id, name: category.name))
+                for category in DBCategory.instance.getAll() {
+                    sections.append(LAccount(id: category.id, name: category.name))
                 }
             }
         }
-
-
 
         tableView.reloadData()
     }
@@ -131,10 +129,7 @@ class RecordsTableViewController: UITableViewController {
                 if let _ = tableView.indexPathForSelectedRow {
                     // Update an existing record.
                     //records[selectedIndexPath.row] = record
-                    /*print(sourceViewController.categoryId)
-                     print(sourceViewController.accountId)*/
-                    RecordDB.instance.updateRecord(id: record.rowId, newCategoryId: record.categoryId, newAccountId: record.accountId, newAmount: record.amount, newTime: record.time, newType: 0)
-
+                    DBTransaction.instance.update(record)
 
                     //tableView.reloadRows(at: [selectedIndexPath], with: .none)
                 } else {
@@ -143,8 +138,8 @@ class RecordsTableViewController: UITableViewController {
 
                     //records.append(record)
                     //tableView.insertRows(at: [newIndexPath], with: .automatic)
-
-                    RecordDB.instance.addRecord(catId: record.categoryId, accId: record.accountId, amount: record.amount, timeInMilliseconds: record.time)
+                    var mRecord = record
+                    DBTransaction.instance.add(&mRecord)
                     _ = navigationController?.popViewController(animated: true)
                 }
 
@@ -170,9 +165,9 @@ class RecordsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //CHANGE THIS: USE ENUMERATIONS
         if (sortCounter == sorts.ACCOUNT.rawValue) {
-            return RecordDB.instance.searchRecordsByAccount(accountId: sections[section].id).count
+            return DBTransaction.instance.getAllByAccount(accountId: sections[section].id).count
         } else if (sortCounter == sorts.CATEGORY.rawValue) {
-            return RecordDB.instance.searchRecordsByCategory(categoryId: sections[section].id).count
+            return DBTransaction.instance.getAllByCategory(categoryId: sections[section].id).count
         } else {
             return records.count
         }
@@ -206,13 +201,13 @@ class RecordsTableViewController: UITableViewController {
         //print("asdfjalsdfkjasdlfkjasldkfjasldkfjasdf")
         let record = records[indexPath.row + rowsInPreviousSections]
 
-        cell.accountLabel.text = RecordDB.instance.getAccount(id: record.accountId)
-        cell.categoryLabel.text = RecordDB.instance.getCategory(id: record.categoryId)
+        cell.accountLabel.text = DBAccount.instance.get(id: record.accountId)?.name
+        cell.categoryLabel.text = DBCategory.instance.get(id: record.categoryId)?.name
         /*        cell.payeelabel.text = record.payee
          cell.tagLabel.text = record.tag*/
         cell.amountLabel.text = String(record.amount)
 
-        let date = Date(timeIntervalSince1970: TimeInterval(record.time))
+        let date = Date(timeIntervalSince1970: TimeInterval(record.timestamp))
 
         let dayTimePeriodFormatter = DateFormatter()
         dayTimePeriodFormatter.dateStyle = .short
@@ -239,7 +234,7 @@ class RecordsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            RecordDB.instance.removeRecord(id: records.remove(at: indexPath.row).rowId)
+            DBTransaction.instance.remove(id: records.remove(at: indexPath.row).rowId)
 
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
@@ -328,7 +323,7 @@ class RecordsTableViewController: UITableViewController {
      */
 
     func reloadTableView() {
-        records = RecordDB.instance.getRecords(sortBy: sortCounter, timeAsc: timeCounterAsc)
+        records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
 
         rowsInPreviousSections = 0
         rowsInSection = 0

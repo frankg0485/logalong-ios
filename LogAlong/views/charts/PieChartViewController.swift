@@ -13,7 +13,7 @@ class PieChartViewController: UIViewController {
 
     @IBOutlet weak var pieChartView: PieChartView!
 
-    var accounts = RecordDB.instance.getAccounts()
+    var accounts = DBAccount.instance.getAll()
     var amounts: [Double] = []
 
     override func viewDidLoad() {
@@ -33,7 +33,7 @@ class PieChartViewController: UIViewController {
 
         tabBarController?.tabBar.isHidden = true
 
-        accounts = RecordDB.instance.getAccounts()
+        accounts = DBAccount.instance.getAll()
 
         amounts.removeAll()
         for _ in accounts {
@@ -79,7 +79,7 @@ class PieChartViewController: UIViewController {
         tabBarController?.selectedIndex = 1
     }
 
-    func createPieChart(accounts: [Account], values: [Double]) {
+    func createPieChart(accounts: [LAccount], values: [Double]) {
         var entries = [PieChartDataEntry]()
 
         for i in 0..<values.count {
