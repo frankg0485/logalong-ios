@@ -675,11 +675,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="selectedIndex">
+                            <integer key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                     <connections>
-                        <segue destination="HgB-XM-zJ5" kind="relationship" relationship="viewControllers" id="E5X-Oc-AYk"/>
-                        <segue destination="VCO-jN-beA" kind="relationship" relationship="viewControllers" id="k8Q-2L-F3g"/>
-                        <segue destination="MqR-NU-7lk" kind="relationship" relationship="viewControllers" id="Z5W-fZ-Uqj"/>
                         <segue destination="PO8-Nx-dSe" kind="relationship" relationship="viewControllers" id="gdZ-CP-dm8"/>
+                        <segue destination="VCO-jN-beA" kind="relationship" relationship="viewControllers" id="k8Q-2L-F3g"/>
+                        <segue destination="HgB-XM-zJ5" kind="relationship" relationship="viewControllers" id="E5X-Oc-AYk"/>
+                        <segue destination="MqR-NU-7lk" kind="relationship" relationship="viewControllers" id="Z5W-fZ-Uqj"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -761,11 +766,11 @@
             </objects>
             <point key="canvasLocation" x="12" y="-270"/>
         </scene>
-        <!--Accounts-->
+        <!--Logalong-->
         <scene sceneID="Imk-g6-Oc0">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HgB-XM-zJ5" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Accounts" id="y4a-vh-ChK"/>
+                    <tabBarItem key="tabBarItem" title="Logalong" id="y4a-vh-ChK"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xSM-cI-skZ">
                         <autoresizingMask key="autoresizingMask"/>
@@ -2013,7 +2018,9 @@
                     <connections>
                         <outlet property="nameCell" destination="GBa-9f-T08" id="2NZ-kV-AgD"/>
                         <outlet property="nameTextField" destination="15U-nW-gPj" id="1Xn-cI-t9V"/>
+                        <outlet property="passwordCell" destination="ca8-IH-xDm" id="Cb2-V1-59k"/>
                         <outlet property="passwordTextField" destination="Xq4-UO-qdI" id="5eA-Gm-QFT"/>
+                        <outlet property="showPasswordCell" destination="a6y-lp-ddv" id="Lmc-If-8Kz"/>
                         <outlet property="userIdTextField" destination="Lv3-Z1-uEI" id="ipM-8o-L9N"/>
                     </connections>
                 </tableViewController>
