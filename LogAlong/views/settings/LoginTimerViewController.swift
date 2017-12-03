@@ -72,9 +72,12 @@ class LoginTimerViewController: UIViewController {
 
         if success {
             LLog.d(TAG, "user created")
+            connectingLabel.text = NSLocalizedString("Login Successful", comment: "")
+
         } else {
             LLog.d(TAG, "failed to create user")
-            //TODO: update GUI to report error
+            connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
+
         }
         stopCountDown()
     }
@@ -100,9 +103,12 @@ class LoginTimerViewController: UIViewController {
 
         if success {
             LLog.d(TAG, "user signed in")
+            connectingLabel.text = NSLocalizedString("Login Successful", comment: "")
+
         } else {
             LLog.d(TAG, "user failed to sign in")
-            //TODO: update GUI to report error
+            connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
+
         }
     }
 
@@ -118,11 +124,11 @@ class LoginTimerViewController: UIViewController {
 
         if success {
             LLog.d(TAG, "user logged in")
-            connectingLabel.text = "Login Successful"
+            connectingLabel.text = NSLocalizedString("Login Successful", comment: "")
 
         } else {
             LLog.d(TAG, "user failed to login")
-            connectingLabel.text = "Unable to connect. Please try again later."
+            connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
 
         }
     }
