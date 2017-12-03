@@ -15,6 +15,7 @@ class DBHelper {
     let accounts = Table("LAccount")
     let categories = Table("LCategory")
     let transactions = Table("LTransaction")
+    let journals = Table("LJournal")
 
     static let id = Expression<Int64>("Id")
     static let name = Expression<String>("Name")
@@ -23,6 +24,9 @@ class DBHelper {
     static let amount = Expression<Double>("Amount")
     static let timestamp = Expression<Int64>("Timestamp")
     static let type = Expression<Int>("Type")
+
+    static let journalId = Expression<Int>("JournalId")
+    static let data = Expression<Data>("Data")
 
     init() {
         let path = NSSearchPathForDirectoriesInDomains(
@@ -68,6 +72,16 @@ class DBHelper {
             })
         } catch {
             LLog.e("\(self)", "Unable to create records table")
+        }
+
+        do {
+            try db!.run(journals.create(ifNotExists: true) { table in
+                table.column(DBHelper.id, primaryKey: true)
+                table.column(DBHelper.journalId)
+                table.column(DBHelper.data, defaultValue: nil)
+            })
+        } catch {
+            LLog.e("\(self)", "Unable to create journals table")
         }
     }
 }

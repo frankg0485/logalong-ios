@@ -59,6 +59,8 @@
 		CBC01B511FAEAA620092B184 /* RecordsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */; };
 		CBC374971FBE54890098721C /* LLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC374961FBE54890098721C /* LLog.swift */; };
 		CBD618101FB0081300A2B57E /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD6180F1FB0081300A2B57E /* Server.swift */; };
+		CBE058901FD33367002B2F08 /* LJournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */; };
+		CBEF97621FD25B8A00D61F79 /* DBJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF97611FD25B8A00D61F79 /* DBJournal.swift */; };
 		CBFB1BF01FC09A5D00B0321E /* LBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */; };
 /* End PBXBuildFile section */
 
@@ -215,6 +217,8 @@
 		CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordsTableViewController.swift; sourceTree = "<group>"; };
 		CBC374961FBE54890098721C /* LLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLog.swift; sourceTree = "<group>"; };
 		CBD6180F1FB0081300A2B57E /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Server.swift; path = LogAlong/network/Server.swift; sourceTree = SOURCE_ROOT; };
+		CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LJournalEntry.swift; sourceTree = "<group>"; };
+		CBEF97611FD25B8A00D61F79 /* DBJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBJournal.swift; sourceTree = "<group>"; };
 		CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LBroadcast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -248,6 +252,7 @@
 				013E34EC1F4366F900EF8972 /* DBTransaction.swift */,
 				CB10735F1FCE62D900390032 /* DBHelper.swift */,
 				CB1073611FCE6D0E00390032 /* DBAccount.swift */,
+				CBEF97611FD25B8A00D61F79 /* DBJournal.swift */,
 				CB1073651FCE735900390032 /* DBGeneric.swift */,
 				CB1073631FCE6F6E00390032 /* DBCategory.swift */,
 			);
@@ -336,6 +341,7 @@
 				019CCD531E748042002EF989 /* LTransaction.swift */,
 				CB81316B1FCFB2CC00E33079 /* LDbBase.swift */,
 				CB1073541FCE599E00390032 /* LJournal.swift */,
+				CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */,
 			);
 			path = entities;
 			sourceTree = "<group>";
@@ -600,6 +606,7 @@
 				015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */,
 				012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */,
 				CBFB1BF01FC09A5D00B0321E /* LBroadcast.swift in Sources */,
+				CBE058901FD33367002B2F08 /* LJournalEntry.swift in Sources */,
 				01253CF41F5318BE005B4D8C /* SelectTableViewCell.swift in Sources */,
 				013E34ED1F4366F900EF8972 /* DBTransaction.swift in Sources */,
 				CB1073661FCE735900390032 /* DBGeneric.swift in Sources */,
@@ -631,6 +638,7 @@
 				019CCD541E748042002EF989 /* LTransaction.swift in Sources */,
 				0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */,
 				CB1073641FCE6F6E00390032 /* DBCategory.swift in Sources */,
+				CBEF97621FD25B8A00D61F79 /* DBJournal.swift in Sources */,
 				019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */,
 				CBD618101FB0081300A2B57E /* Server.swift in Sources */,
 				CB51B55C1FBBFF11002CABA1 /* LBuffer.swift in Sources */,

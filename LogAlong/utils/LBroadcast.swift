@@ -25,9 +25,9 @@ class LBroadcast {
      public static final int ACTION_POST_JOURNAL = 62;
      public static final int ACTION_POLL = 63;
      public static final int ACTION_POLL_ACK = 64;
-
-     public static final int ACTION_NEW_JOURNAL_AVAILABLE = 300;
-
+*/
+     static let ACTION_NEW_JOURNAL_AVAILABLE = 300;
+/*
      public static final int ACTION_UI_UPDATE_USER_PROFILE = 500;
      public static final int ACTION_UI_UPDATE_ACCOUNT = 501;
      public static final int ACTION_UI_UPDATE_CATEGORY = 502;

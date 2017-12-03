@@ -204,20 +204,20 @@ class LBuffer {
         array[index + 3] = UInt8((val >> 24) & 0xff);
     }
 
-    /*
-     public int putLongAutoInc(long val) {
-     array[offset] = (byte) (val & 0xff);
-     array[offset + 1] = (byte) ((val >>> 8) & 0xff);
-     array[offset + 2] = (byte) ((val >>> 16) & 0xff);
-     array[offset + 3] = (byte) ((val >>> 24) & 0xff);
-     array[offset + 4] = (byte) ((val >>> 32) & 0xff);
-     array[offset + 5] = (byte) ((val >>> 40) & 0xff);
-     array[offset + 6] = (byte) ((val >>> 48) & 0xff);
-     array[offset + 7] = (byte) ((val >>> 56) & 0xff);
-     offset += 8;
-     return 0;
-     }
+    func putLongAutoInc(_ sval: Int64) {
+        let val = UInt64(sval)
+        array[offset] = UInt8(val & 0xff);
+        array[offset + 1] = UInt8((val >> 8) & 0xff);
+        array[offset + 2] = UInt8((val >> 16) & 0xff);
+        array[offset + 3] = UInt8((val >> 24) & 0xff);
+        array[offset + 4] = UInt8((val >> 32) & 0xff);
+        array[offset + 5] = UInt8((val >> 40) & 0xff);
+        array[offset + 6] = UInt8((val >> 48) & 0xff);
+        array[offset + 7] = UInt8((val >> 56) & 0xff);
+        offset += 8;
+    }
 
+    /*
      public int putDoubleAutoInc(double val) {
      long bits = Double.doubleToLongBits(val);
      return putLongAutoInc(bits);
@@ -309,12 +309,14 @@ class LBuffer {
      public void setOffset(int off) {
      offset = off;
      }
+     */
 
-     public void clear() {
-     offset = 0;
-     bytes = 0;
-     }
+    func clear() {
+        offset = 0;
+        bytes = 0;
+    }
 
+    /*
      public void reset() {
      if (offset != 0) {
      //byte[] a = new byte[array.length];
