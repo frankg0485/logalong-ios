@@ -60,7 +60,9 @@
 		CBC374971FBE54890098721C /* LLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC374961FBE54890098721C /* LLog.swift */; };
 		CBD618101FB0081300A2B57E /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD6180F1FB0081300A2B57E /* Server.swift */; };
 		CBE058901FD33367002B2F08 /* LJournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */; };
+		CBEDFD181FD6E6D60015E98E /* LService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEDFD171FD6E6D60015E98E /* LService.swift */; };
 		CBEF97621FD25B8A00D61F79 /* DBJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF97611FD25B8A00D61F79 /* DBJournal.swift */; };
+		CBEF97711FD4654F00D61F79 /* LExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF97701FD4654F00D61F79 /* LExtension.swift */; };
 		CBFB1BF01FC09A5D00B0321E /* LBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */; };
 /* End PBXBuildFile section */
 
@@ -218,7 +220,9 @@
 		CBC374961FBE54890098721C /* LLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLog.swift; sourceTree = "<group>"; };
 		CBD6180F1FB0081300A2B57E /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Server.swift; path = LogAlong/network/Server.swift; sourceTree = SOURCE_ROOT; };
 		CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LJournalEntry.swift; sourceTree = "<group>"; };
+		CBEDFD171FD6E6D60015E98E /* LService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LService.swift; sourceTree = "<group>"; };
 		CBEF97611FD25B8A00D61F79 /* DBJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBJournal.swift; sourceTree = "<group>"; };
+		CBEF97701FD4654F00D61F79 /* LExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LExtension.swift; sourceTree = "<group>"; };
 		CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LBroadcast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -255,6 +259,7 @@
 				CBEF97611FD25B8A00D61F79 /* DBJournal.swift */,
 				CB1073651FCE735900390032 /* DBGeneric.swift */,
 				CB1073631FCE6F6E00390032 /* DBCategory.swift */,
+				CBEF97701FD4654F00D61F79 /* LExtension.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -402,6 +407,7 @@
 			isa = PBXGroup;
 			children = (
 				CBD6180F1FB0081300A2B57E /* Server.swift */,
+				CBEDFD171FD6E6D60015E98E /* LService.swift */,
 				CB51B5571FBBDF26002CABA1 /* LProtocol.swift */,
 				CBAA49591FC51CCA00E77834 /* UiRequest.swift */,
 				CB51B5591FBBFBF6002CABA1 /* LTransport.swift */,
@@ -465,6 +471,11 @@
 						CreatedOnToolsVersion = 8.2.1;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 					019CCD361E6DAF65002EF989 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -628,6 +639,7 @@
 				0193DA1B1FB08F4800B63211 /* LoginScreenViewController.swift in Sources */,
 				CBC01B4B1FAEAA270092B184 /* AddTableViewController.swift in Sources */,
 				019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */,
+				CBEF97711FD4654F00D61F79 /* LExtension.swift in Sources */,
 				01FDE4911F78066300A7DD78 /* SettingsTableViewController.swift in Sources */,
 				CB1073551FCE599E00390032 /* LJournal.swift in Sources */,
 				CB51B5581FBBDF26002CABA1 /* LProtocol.swift in Sources */,
@@ -639,6 +651,7 @@
 				0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */,
 				CB1073641FCE6F6E00390032 /* DBCategory.swift in Sources */,
 				CBEF97621FD25B8A00D61F79 /* DBJournal.swift in Sources */,
+				CBEDFD181FD6E6D60015E98E /* LService.swift in Sources */,
 				019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */,
 				CBD618101FB0081300A2B57E /* Server.swift in Sources */,
 				CB51B55C1FBBFF11002CABA1 /* LBuffer.swift in Sources */,
