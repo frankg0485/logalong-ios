@@ -54,7 +54,7 @@ class LBuffer {
     /*
      public int append(byte[] buf) {
      if (offset + bytes + buf.length > array.length) {
-     LLog.e(TAG, "buffer overlow: " + buf.length + "@" + bytes + " offset: " + offset);
+     LLog.e("\(self)", "buffer overlow: " + buf.length + "@" + bytes + " offset: " + offset);
      return -1;
      }
      System.arraycopy(buf, 0, array, offset + bytes, buf.length);
@@ -65,7 +65,7 @@ class LBuffer {
      public int append(LBuffer buf) {
      int len = buf.getLen();
      if (offset + bytes + len > array.length) {
-     LLog.e(TAG, "buffer overlow: " + len + "@" + bytes + " offset: " + offset);
+     LLog.e("\(self)", "buffer overlow: " + len + "@" + bytes + " offset: " + offset);
      return -1;
      }
      System.arraycopy(buf.getBuf(), 0, array, offset + bytes, len);
@@ -274,7 +274,7 @@ class LBuffer {
      }
 
      public int putIntsAutoInc(int[] ints, int off, int count) {
-     LLog.d(TAG, "off: " + off + " count: " + count + "/" + ints.length);
+     LLog.d("\(self)", "off: " + off + " count: " + count + "/" + ints.length);
      if (count == 0) return 0;
      byte[] bytes = new byte[count << 2];
 

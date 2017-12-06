@@ -9,7 +9,6 @@
 import UIKit
 
 class MainTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
-    let TAG = "MainTableViewController"
 
     var accounts: [LAccount] = []
 
@@ -37,7 +36,7 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
     @objc func networkConnected(notification: Notification) -> Void {
         navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.blue], for: .normal)
 
-        LLog.d(TAG, "network connected")
+        LLog.d("\(self)", "network connected")
     }
 
     override func didReceiveMemoryWarning() {

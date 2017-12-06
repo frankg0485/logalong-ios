@@ -16,7 +16,6 @@ enum UiConnectionState {
 }
 
 class UiRequest: NSObject {
-    let TAG = "UiRequest"
     var state = UiConnectionState.CONNECTING;
 
     static let instance = UiRequest()
@@ -88,8 +87,18 @@ class UiRequest: NSObject {
         var strings = [String]()
         strings.append(name)
         strings.append(email)
-        LTransport.send_rqst(LProtocol.RQST_RESET_PASSWORD, strings: strings, scrambler: LProtocol.instance.scrambler);
-        return true;
+        LTransport.send_rqst(LProtocol.RQST_RESET_PASSWORD, strings: strings, scrambler: LProtocol.instance.scrambler)
+        return true
+    }
+
+    func UiPoll() -> Bool {
+        LTransport.send_rqst(LProtocol.RQST_POLL, scrambler: LProtocol.instance.scrambler)
+        return true
+    }
+
+    func UiPollAck(_ id: Int64) -> Bool {
+        LTransport.send_rqst(LProtocol.RQST_POLL_ACK, d64: id, scrambler: LProtocol.instance.scrambler)
+        return true
     }
 
     func UiPostJournal(_ journalId: Int, data: [UInt8]) -> Bool {

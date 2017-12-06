@@ -34,8 +34,33 @@ class LTransport {
         buf.setLen(buf.getLen() + 4)
     }
 
+    static func send_rqst(_ rqst: UInt16, d32: UInt32, string: String, scrambler: UInt32) {
+        let buf = LBuffer(size: LProtocol.PACKET_MAX_LEN)
+
+        buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
+        buf.putShortAutoInc(0);
+        buf.putShortAutoInc(rqst);
+        buf.putIntAutoInc(d32);
+
+        let tmp = [UInt8](string.utf8)
+        buf.putShortAutoInc(UInt16(tmp.count));
+        buf.putStringAutoInc(string);
+
+        let len = LProtocol.PACKET_PAYLOAD_LENGTH(buf.getOffset());
+        buf.putShortAt(UInt16(len), 2);
+        buf.setLen(len);
+
+
+        buf.setOffset(0);
+        scramble(buf, scrambler);
+
+        do_crc32(buf);
+        LServer.instance.send(data: buf.getBuf(), bytes: buf.getLen())
+    }
+
     static func send_rqst(_ rqst: UInt16, d32: UInt32, datab: [UInt8], scrambler: UInt32) {
         let buf = LBuffer(size: LProtocol.PACKET_MAX_LEN)
+
         buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
         buf.putShortAutoInc(0);
         buf.putShortAutoInc(rqst);
@@ -53,17 +78,47 @@ class LTransport {
         LServer.instance.send(data: buf.getBuf(), bytes: buf.getLen())
     }
 
-    static func send_rqst(_ rqst: UInt16, d32: UInt32, d161: UInt16, d162: UInt16, scrambler: UInt32) {
-        let buf = LBuffer(size: 32);
+    static func send_rqst(_ rqst: UInt16, d321: UInt32, d322: UInt32, length: UInt16,
+                          datab: [UInt8], offset: Int, bytes: Int, scrambler: UInt32) {
+        let buf = LBuffer(size: LProtocol.PACKET_MAX_LEN)
 
         buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
-        buf.putShortAutoInc(16);
-
+        buf.putShortAutoInc(0);
         buf.putShortAutoInc(rqst);
-        buf.putIntAutoInc(d32);
-        buf.putShortAutoInc(d161);
-        buf.putShortAutoInc(d162);
-        buf.setLen(16);
+        buf.putIntAutoInc(d321);
+        buf.putIntAutoInc(d322);
+
+        buf.putShortAutoInc(length);
+        buf.putBytesAutoInc(datab, offset, bytes);
+
+        let len = LProtocol.PACKET_PAYLOAD_LENGTH(buf.getOffset());
+        buf.putShortAt(UInt16(len), 2);
+        buf.setLen(len);
+
+        buf.setOffset(0);
+        scramble(buf, scrambler);
+
+        do_crc32(buf);
+        LServer.instance.send(data: buf.getBuf(), bytes: buf.getLen())
+    }
+
+    static func send_rqst(_ rqst: UInt16, strings: [String], scrambler: UInt32) {
+        let buf = LBuffer(size: LProtocol.PACKET_MAX_LEN)
+
+        buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
+        buf.putShortAutoInc(UInt16(0));
+        buf.putShortAutoInc(rqst);
+
+        var len = 0;
+        for string in strings {
+            len = string.utf8.count
+            buf.putShortAutoInc(UInt16(len))
+            buf.putStringAutoInc(string);
+        }
+
+        len = LProtocol.PACKET_PAYLOAD_LENGTH(buf.getOffset());
+        buf.putShortAt(UInt16(len), 2);
+        buf.setLen(len);
 
         buf.setOffset(0);
         scramble(buf, scrambler);
@@ -74,6 +129,7 @@ class LTransport {
 
     static func send_rqst(_ rqst: UInt16, string: String, scrambler: UInt32) {
         let buf = LBuffer(size: LProtocol.PACKET_MAX_LEN)
+
         buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
         buf.putShortAutoInc(UInt16(0));
         buf.putShortAutoInc(rqst);
@@ -94,22 +150,67 @@ class LTransport {
         LServer.instance.send(data: buf.getBuf(), bytes: buf.getLen())
     }
 
-    static func send_rqst(_ rqst: UInt16, strings: [String], scrambler: UInt32) {
-        let buf = LBuffer(size: LProtocol.PACKET_MAX_LEN)
+    static func send_rqst(_ rqst: UInt16, d64: Int64, scrambler: UInt32) {
+        let buf = LBuffer(size: 24)
+
         buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
-        buf.putShortAutoInc(UInt16(0));
+        buf.putShortAutoInc(16);
+
         buf.putShortAutoInc(rqst);
+        buf.putLongAutoInc(d64);
+        buf.setLen(16);
 
-        var len = 0;
-        for string in strings {
-            len = string.utf8.count
-            buf.putShortAutoInc(UInt16(len))
-            buf.putStringAutoInc(string);
-        }
+        buf.setOffset(0);
+        scramble(buf, scrambler);
 
-        len = LProtocol.PACKET_PAYLOAD_LENGTH(buf.getOffset());
-        buf.putShortAt(UInt16(len), 2);
-        buf.setLen(len);
+        do_crc32(buf);
+        LServer.instance.send(data: buf.getBuf(), bytes: buf.getLen())
+    }
+
+    static func send_rqst(_ rqst: UInt16, d32: UInt32, scrambler: UInt32) {
+        let buf = LBuffer(size: 16)
+
+        buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
+        buf.putShortAutoInc(12);
+
+        buf.putShortAutoInc(rqst);
+        buf.putIntAutoInc(d32);
+        buf.setLen(12);
+
+        buf.setOffset(0);
+        scramble(buf, scrambler)
+
+        do_crc32(buf)
+        LServer.instance.send(data: buf.getBuf(), bytes: buf.getLen())
+    }
+
+    static func send_rqst(_ rqst: UInt16, d32: UInt32, d161: UInt16, d162: UInt16, scrambler: UInt32) {
+        let buf = LBuffer(size: 32)
+
+        buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
+        buf.putShortAutoInc(16);
+
+        buf.putShortAutoInc(rqst);
+        buf.putIntAutoInc(d32);
+        buf.putShortAutoInc(d161);
+        buf.putShortAutoInc(d162);
+        buf.setLen(16);
+
+        buf.setOffset(0);
+        scramble(buf, scrambler);
+
+        do_crc32(buf);
+        LServer.instance.send(data: buf.getBuf(), bytes: buf.getLen())
+    }
+
+    static func send_rqst(_ rqst: UInt16, scrambler: UInt32) {
+        let buf = LBuffer(size: 16)
+
+        buf.putShortAutoInc(LProtocol.PACKET_SIGNATURE1);
+        buf.putShortAutoInc(8);
+
+        buf.putShortAutoInc(rqst);
+        buf.setLen(8);
 
         buf.setOffset(0);
         scramble(buf, scrambler);

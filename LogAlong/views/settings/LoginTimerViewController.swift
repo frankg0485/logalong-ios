@@ -14,7 +14,6 @@ enum typeOfLogin: Int {
 }
 
 class LoginTimerViewController: UIViewController {
-    let TAG = "LoginTimerViewController"
 
     @IBOutlet weak var okButton: UIButton!
     @IBOutlet weak var connectingLabel: UILabel!
@@ -51,7 +50,7 @@ class LoginTimerViewController: UIViewController {
         } else if LPreferences.getUserId().isEmpty {
             UiRequest.instance.UiCreateUser(userId, password, fullname: name!)
         } else {
-            LLog.e(TAG, "unexpected state, requested to recreate user");
+            LLog.e("\(self)", "unexpected state, requested to recreate user");
         }
     }
 
@@ -76,11 +75,11 @@ class LoginTimerViewController: UIViewController {
         }
 
         if success {
-            LLog.d(TAG, "user created")
+            LLog.d("\(self)", "user created")
             connectingLabel.text = NSLocalizedString("Login Successful", comment: "")
 
         } else {
-            LLog.d(TAG, "failed to create user")
+            LLog.d("\(self)", "failed to create user")
             connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
 
         }
@@ -110,11 +109,11 @@ class LoginTimerViewController: UIViewController {
         }
 
         if success {
-            LLog.d(TAG, "user signed in")
+            LLog.d("\(self)", "user signed in")
             connectingLabel.text = NSLocalizedString("Login Successful", comment: "")
 
         } else {
-            LLog.d(TAG, "user failed to sign in")
+            LLog.d("\(self)", "user failed to sign in")
             connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
 
         }
@@ -137,11 +136,11 @@ class LoginTimerViewController: UIViewController {
         }
 
         if success {
-            LLog.d(TAG, "user logged in")
+            LLog.d("\(self)", "user logged in")
             connectingLabel.text = NSLocalizedString("Login Successful", comment: "")
 
         } else {
-            LLog.d(TAG, "user failed to login")
+            LLog.d("\(self)", "user failed to login")
             connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
 
         }

@@ -14,7 +14,6 @@ protocol LServerDelegate: class {
 }
 
 final class LServer: NSObject {
-    let TAG = "LServer"
     weak var delegate: LServerDelegate!
     static let instance = LServer()
 
@@ -80,14 +79,14 @@ extension LServer: StreamDelegate {
                 self.recv(stream: aStream as! InputStream)
             }
         case Stream.Event.errorOccurred:
-            LLog.e(TAG, "network stream error occurred")
+            LLog.e("\(self)", "network stream error occurred")
             fallthrough
         case Stream.Event.endEncountered:
-            LLog.e(TAG, "network stream ended")
+            LLog.e("\(self)", "network stream ended")
             disconnect()
             LBroadcast.post(LBroadcast.ACTION_NETWORK_DISCONNECTED)
         case Stream.Event.hasSpaceAvailable:
-            //LLog.d(TAG, "network stream has space available")
+            //LLog.d("\(self)", "network stream has space available")
             break;
         case Stream.Event.openCompleted:
             streamCount += 1
@@ -95,7 +94,7 @@ extension LServer: StreamDelegate {
                 delegate.start()
             }
         default:
-            LLog.d(TAG, "some other network stream event...")
+            LLog.d("\(self)", "some other network stream event...")
             break
         }
     }
@@ -105,7 +104,7 @@ extension LServer: StreamDelegate {
             let numberOfBytesRead = inputStream.read(rxBuffer + rxBytes, maxLength: LServer.MAX_RX_BYTES)
             if numberOfBytesRead < 0 {
                 if let _ = inputStream.streamError {
-                    LLog.w(TAG, "input stream error")
+                    LLog.w("\(self)", "input stream error")
                     break
                 }
             } else {
