@@ -38,7 +38,19 @@ class DBJournal : DBGeneric {
         return ret
     }
 
-    func remove(id: Int64) -> Bool {
-        return super.remove(table, id: id)
+    func remove(id: Int) -> Bool {
+        do {
+            if let row = try DBHelper.instance.db!.pluck(table) {
+                if id == row[DBHelper.journalId] {
+                    return super.remove(table, id: row[DBHelper.id]);
+                } else {
+                    LLog.w("\(self)", "journal ID mismatch present upon removing")
+                }
+            }
+        } catch {
+            LLog.w("\(self)", "unable to get journal entry upon removing")
+        }
+
+        return false
     }
 }

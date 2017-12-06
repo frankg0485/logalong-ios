@@ -13,10 +13,131 @@ class LJournal {
 
     var journalId: Int = 0
     var data = LBuffer(size: LJournal.MAX_JOURNAL_LENGTH)
+
+    private var lastFlushMs: Int64 = 0
+    private var lastFlushId: Int = 0
     private var postCount = 0;
     private var flushCount = 0;
 
-    func flush() {
+    func flush() -> Bool {
+        /*
+        if (recordJournalFlushAction == null) {
+            recordJournalFlushAction = new LJournal.RecordJournalFlushAction();
+        }
+        if (scheduleJournalFlushAction == null) {
+            scheduleJournalFlushAction = new LJournal.ScheduleJournalFlushAction();
+        }
+        if (accountJournalFlushAction == null) {
+            accountJournalFlushAction = new LJournal.AccountJournalFlushAction();
+        }
+        if (categoryJournalFlushAction == null) {
+            categoryJournalFlushAction = new LJournal.CategoryJournalFlushAction();
+        }
+        if (tagJournalFlushAction == null) {
+            tagJournalFlushAction = new LJournal.TagJournalFlushAction();
+        }
+        if (vendorJournalFlushAction == null) {
+            vendorJournalFlushAction = new LJournal.VendorJournalFlushAction();
+        }*/
+
+        let entry = DBJournal.instance.get()
+        if (nil == entry) {
+            return false
+        }
+
+        if (lastFlushId == entry?.journalId && (Date().currentTimeMillis - lastFlushMs < 15000)) {
+            //so not to keep flushing the same journal over and over
+            LLog.w("\(self)", "journal flush request ignored: \(entry!.journalId)")
+            LLog.d("\(self)", "lastFlushMs: \(lastFlushMs) delta: \(lastFlushMs - Date().currentTimeMillis)")
+            return false;
+        }
+        LLog.d("\(self)", "total flushing count: \(flushCount)")
+        flushCount += 1
+
+        var removeEntry = false;
+        var newEntry = false;
+
+        lastFlushId = entry!.journalId;
+        lastFlushMs = Date().currentTimeMillis;
+
+        /*
+        LBuffer jdata = new LBuffer(entry.data);
+        LBuffer ndata = new LBuffer(MAX_JOURNAL_DATA_BYTES);
+        switch (jdata.getShortAutoInc()) {
+        case LProtocol.JRQST_ADD_RECORD:
+            if (!recordJournalFlushAction.add(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_UPDATE_RECORD:
+            if (!recordJournalFlushAction.update(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_DELETE_RECORD:
+            if (!recordJournalFlushAction.delete(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_ADD_SCHEDULE:
+            if (!scheduleJournalFlushAction.add(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_UPDATE_SCHEDULE:
+            if (!scheduleJournalFlushAction.update(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_DELETE_SCHEDULE:
+            if (!scheduleJournalFlushAction.delete(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_ADD_ACCOUNT:
+            if (!accountJournalFlushAction.add(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_UPDATE_ACCOUNT:
+            if (!accountJournalFlushAction.update(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_DELETE_ACCOUNT:
+            if (!accountJournalFlushAction.delete(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_ADD_CATEGORY:
+            if (!categoryJournalFlushAction.add(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_UPDATE_CATEGORY:
+            if (!categoryJournalFlushAction.update(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_DELETE_CATEGORY:
+            if (!categoryJournalFlushAction.delete(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_ADD_TAG:
+            if (!tagJournalFlushAction.add(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_UPDATE_TAG:
+            if (!tagJournalFlushAction.update(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_DELETE_TAG:
+            if (!tagJournalFlushAction.delete(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_ADD_VENDOR:
+            if (!vendorJournalFlushAction.add(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_UPDATE_VENDOR:
+            if (!vendorJournalFlushAction.update(jdata, ndata)) return false;
+            break;
+        case LProtocol.JRQST_DELETE_VENDOR:
+            if (!vendorJournalFlushAction.delete(jdata, ndata)) return false;
+            break;
+        }
+ */
+
+        //errorCount = 0;
+        if (removeEntry) {
+            DBJournal.instance.remove(id: entry!.journalId)
+            return false;
+        }
+/*
+        if (newEntry) {
+            try {
+            entry.data = new byte[ndata.getLen()];
+            System.arraycopy(ndata.getBuf(), 0, entry.data, 0, ndata.getLen());
+            } catch (Exception e) {
+            LLog.e(TAG, "unexpected record post error: " + e.getMessage());
+            }
+        }
+ */
+        UiRequest.instance.UiPostJournal(entry!.journalId, data: entry!.data);
+        return true;
 
     }
 
@@ -103,12 +224,13 @@ class LJournal {
 
      public boolean deleteSchedule(long id) {
      return postById(id, LProtocol.JRQST_DELETE_SCHEDULE);
-     }
+     }*/
 
-     public boolean addAccount(long id) {
-     return postById(id, LProtocol.JRQST_ADD_ACCOUNT);
-     }
+    func addAccount(_ id: Int64) -> Bool {
+        return postById(id, LProtocol.JRQST_ADD_ACCOUNT);
+    }
 
+    /*
      public boolean updateAccount(long id) {
      return postById(id, LProtocol.JRQST_UPDATE_ACCOUNT);
      }
@@ -187,14 +309,14 @@ class LJournal {
         return ret
     }
 
-    private func post(jrqst: UInt16) -> Bool {
+    private func post(_ jrqst: UInt16) -> Bool {
         data.clear()
         data.putShortAutoInc(jrqst);
         data.setLen(data.getOffset());
         return post()
     }
 
-    private func postById(id: Int64, jrqst: UInt16) -> Bool {
+    private func postById(_ id: Int64, _ jrqst: UInt16) -> Bool {
         data.clear();
         data.putShortAutoInc(jrqst);
         data.putLongAutoInc(id);
@@ -202,7 +324,7 @@ class LJournal {
         return post();
     }
 
-    private func postLongLong(_ long1: Int64, _ long2: Int64, jrqst: UInt16) -> Bool {
+    private func postLongLong(_ long1: Int64, _ long2: Int64, _ jrqst: UInt16) -> Bool {
         data.clear();
         data.putShortAutoInc(jrqst);
         data.putLongAutoInc(long1);

@@ -227,19 +227,17 @@ class LBuffer {
         offset += buf.count
     }
 
+    func putBytesAutoInc(_ bytes: [UInt8]) {
+        memcpy(array + offset, bytes, bytes.count)
+        offset += bytes.count
+    }
+
+    func putBytesAutoInc(_ bytes: [UInt8], _ off: Int, _ length: Int) {
+        memcpy(array + offset, [UInt8](bytes[off...]), length)
+        offset += length
+    }
+
     /*
-     public int putBytesAutoInc(byte[] bytes) {
-     System.arraycopy(bytes, 0, array, offset, bytes.length);
-     offset += bytes.length;
-     return 0;
-     }
-
-     public int putBytesAutoInc(byte[] bytes, int off, int length) {
-     System.arraycopy(bytes, off, array, offset, length);
-     offset += length;
-     return 0;
-     }
-
      public int putShortsAutoInc(short[] shorts) {
      int len = shorts.length;
      if (len == 0) return 0;
