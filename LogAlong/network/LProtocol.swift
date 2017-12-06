@@ -195,27 +195,26 @@ final class LProtocol : LServerDelegate {
         case LConnectionState.CONNECTED:
             switch (rsps) {
             case LProtocol.RSPS | LProtocol.RQST_GET_USER_BY_NAME:
-                /*{
+/*
                  rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
                  .ACTION_GET_USER_BY_NAME));
                  rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
 
                  if (RSPS_OK == status) {
-                 String name, fullName;
-                 long gid = pkt.getLongAutoInc();
-                 int bytes = pkt.getShortAutoInc();
-                 name = pkt.getStringAutoInc(bytes);
-                 bytes = pkt.getShortAutoInc();
-                 fullName = pkt.getStringAutoInc(bytes);
+                 var name: String = ""
+                 var fullName: String = ""
+                 var gid: UInt64 = pkt.getLongAutoInc()
+                 var bytes: UInt16 = pkt.getShortAutoInc()
+                 name = pkt.getStringAutoInc(bytes)
+                 bytes = pkt.getShortAutoInc()
+                 fullName = pkt.getStringAutoInc(bytes)
 
                  rspsIntent.putExtra("id", gid);
                  rspsIntent.putExtra("name", name);
                  rspsIntent.putExtra("fullName", fullName);
                  }
                  LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
-                 break;
-                 }
-                 */
+*/
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_CREATE_USER:
@@ -223,20 +222,16 @@ final class LProtocol : LServerDelegate {
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_SIGN_IN:
-                /*{
-                 rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                 .ACTION_SIGN_IN));
-                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                 if (RSPS_OK == status) {
-                 LPreferences.setLoginError(false);
-                 int bytes = pkt.getShortAutoInc();
-                 String name = pkt.getStringAutoInc(bytes);
-                 rspsIntent.putExtra("userName", name);
-                 }
-                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
-                 break;
-                 }
-                 */
+                if (LProtocol.RSPS_OK == status) {
+                    LPreferences.setLoginError(false)
+                    let bytes = pkt.getShortAutoInc()
+                    let name = pkt.getStringAutoInc(Int(bytes))
+
+                    bdata["userName"] = name
+                }
+
+                LBroadcast.post(LBroadcast.ACTION_SIGN_IN, sender: nil, data: bdata)
+
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_LOG_IN:
@@ -250,6 +245,7 @@ final class LProtocol : LServerDelegate {
                     //login error, remember to force user to login
                     LPreferences.setLoginError(true);
                 }
+
                 LBroadcast.post(LBroadcast.ACTION_LOG_IN, sender: nil, data: bdata)
                 break;
 

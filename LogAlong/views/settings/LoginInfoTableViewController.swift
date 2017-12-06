@@ -33,6 +33,7 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
             userIdTextField.text = LPreferences.getUserId()
             nameTextField.text = LPreferences.getUserName()
         }
+
         passwordTextField.delegate = self
         userIdTextField.delegate = self
         nameTextField.delegate = self

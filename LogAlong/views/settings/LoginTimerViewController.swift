@@ -31,6 +31,8 @@ class LoginTimerViewController: UIViewController {
     var password: String = ""
     var loginType: Int = 0
 
+    private var serverIsDown = true
+
     override func viewDidLoad() {
         super.viewDidLoad()
         okButton.isHidden = true
@@ -45,7 +47,7 @@ class LoginTimerViewController: UIViewController {
         LBroadcast.register(LBroadcast.ACTION_LOG_IN, cb: #selector(self.login), listener: self)
 
         if typeOfLogin.LOGIN.rawValue == loginType {
-            UiRequest.instance.UiSignIn(userId, password )
+            UiRequest.instance.UiSignIn(userId, password)
         } else if LPreferences.getUserId().isEmpty {
             UiRequest.instance.UiCreateUser(userId, password, fullname: name!)
         } else {
@@ -55,6 +57,9 @@ class LoginTimerViewController: UIViewController {
 
     @objc func createUser(notification: Notification) -> Void {
         var success = false
+
+        serverIsDown = false
+
         if let bdata = notification.userInfo as? [String: Any] {
             if let status = bdata["status"] as? Int {
                 if LProtocol.RSPS_OK == status {
@@ -84,12 +89,15 @@ class LoginTimerViewController: UIViewController {
 
     @objc func signin(notification: Notification) -> Void {
         var success = false
+
+        serverIsDown = false
+
         if let bdata = notification.userInfo as? [String: Any] {
             if let status = bdata["status"] as? Int {
                 if LProtocol.RSPS_OK == status {
                     LPreferences.setUserId(userId)
                     LPreferences.setUserPassword(password)
-                    if let name = bdata["name"] as? String {
+                    if let name = bdata["userName"] as? String {
                         LPreferences.setUserName(name)
                     }
 
@@ -110,10 +118,16 @@ class LoginTimerViewController: UIViewController {
             connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
 
         }
+
+        stopCountDown()
+
     }
 
     @objc func login(notification: Notification) -> Void {
         var success = false
+
+        serverIsDown = false
+
         if let bdata = notification.userInfo as? [String: Any] {
             if let status = bdata["status"] as? Int {
                 if LProtocol.RSPS_OK == status {
@@ -146,6 +160,12 @@ class LoginTimerViewController: UIViewController {
     }
 
     func stopCountDown() {
+
+        if serverIsDown {
+            connectingLabel.text =
+            NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
+        }
+
         okButton.isHidden = false
 
         activityIndicator.stopAnimating()

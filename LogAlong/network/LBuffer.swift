@@ -158,21 +158,18 @@ class LBuffer {
      tmp[ii] = getIntAutoInc();
      return tmp;
      }
+     */
+    func getStringAutoInc(_ bytes: Int) -> String {
+        let tmp = [UInt8](repeating: UInt8(0), count: bytes)
+        memcpy(UnsafeMutableRawPointer(mutating: tmp), array + offset, bytes)
+        offset += bytes
 
-     public String getStringAutoInc(int bytes) {
-     byte[] tmp = new byte[bytes];
-     System.arraycopy(array, offset, tmp, 0, bytes);
-     offset += bytes;
-     try {
-     return new String(tmp, "UTF-8");
-     } catch (Exception e) {
-     LLog.w(TAG, "unable to decode string");
-     }
-     return null;
-     }
+        return String(bytes: tmp, encoding: .utf8) ?? ""
+    }
 
-     public int putByteAutoInc(byte b) {
-     array[offset] = b;
+        /*
+         public int putByteAutoInc(byte b) {
+         array[offset] = b;
      offset++;
      return 0;
      }
