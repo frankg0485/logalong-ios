@@ -27,3 +27,15 @@ protocol FPassCreationBackDelegate: class {
 protocol FPassNameIdPasswordDelegate: class {
     func passLoginInfoBack(name: String?, id: String, password: String, typeOfLogin: Int)
 }
+
+protocol FNotifyReloadLoginScreenDelegate: class {
+    func notifyReloadLoginScreen()
+}
+
+protocol FReloadLoginScreenDelegate: class {
+    func reloadLoginScreen()
+}
+
+protocol FLoginTypeDelegate: class {
+    func getFinalLoginType() -> Int
+}

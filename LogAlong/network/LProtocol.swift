@@ -270,6 +270,8 @@ final class LProtocol : LServerDelegate {
                     .ACTION_UPDATE_USER_PROFILE));
                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
+
+                LBroadcast.post(LBroadcast.ACTION_UPDATE_USER_PROFILE, sender: nil, data: bdata)
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_SIGN_IN:

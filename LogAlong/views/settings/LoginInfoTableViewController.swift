@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginInfoTableViewController: UITableViewController, FLoginViewControllerDelegate, UITextFieldDelegate {
+class LoginInfoTableViewController: UITableViewController, FLoginViewControllerDelegate, UITextFieldDelegate, FReloadLoginScreenDelegate, FLoginTypeDelegate {
 
     @IBOutlet weak var userIdTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -21,12 +21,18 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
 
     var loginType: Int = 0
 
+    private var validUser = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //nameCell.isHidden = false
+
         if !LPreferences.getUserId().isEmpty {
-            passwordCell.isHidden = true
-            showPasswordCell.isHidden = true
+            validUser = true
+
+            /*passwordCell.isHidden = true
+            showPasswordCell.isHidden = true*/
 
             tableView.separatorStyle = .none
 
@@ -50,6 +56,18 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func getFinalLoginType() -> Int {
+        if nameCell.isHidden == true {
+            return typeOfLogin.LOGIN.rawValue
+        } else {
+            return typeOfLogin.CREATE.rawValue
+        }
+    }
+
+    func reloadLoginScreen() {
+        self.viewDidLoad()
     }
 
     func checkTextFields() {
@@ -98,26 +116,36 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
 
         }
     }
-    /*override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (validUser) && ((indexPath.row > 0) && (indexPath.row < 3)) {
+            return 0.0
+        }
+
+        return super.tableView(tableView, heightForRowAt: indexPath)
+    }
+    /*
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 4
+        if (validUser) {
+            return super.tableView(tableView, numberOfRowsInSection: section) - 2
+        }
+
+        return super.tableView(tableView, numberOfRowsInSection: section)
     }
 
-
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        if (validUser) && (indexPath.row > 0) {
+            return tableView.cellForRow(at: IndexPath(row: indexPath.row + 1, section: 0))!
+        }
+        return super.tableView(tableView, cellForRowAt: indexPath)
 
-        // Configure the cell...
+    }
 
-        return cell
-    }*/
-
-
+*/
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

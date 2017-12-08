@@ -8,9 +8,11 @@
 
 import UIKit
 
-class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDelegate, FPassNameIdPasswordDelegate, UIPopoverPresentationControllerDelegate {
+class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDelegate, FPassNameIdPasswordDelegate, UIPopoverPresentationControllerDelegate, FNotifyReloadLoginScreenDelegate {
 
-    var delegate: FLoginViewControllerDelegate?
+    var loginDelegate: FLoginViewControllerDelegate?
+    var reloadDelegate: FReloadLoginScreenDelegate?
+    var loginTypeDelegate: FLoginTypeDelegate?
 
     var nameCellHidden: Bool = false
 
@@ -19,15 +21,23 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
     var password: String = ""
     var loginType: Int = 0
 
+    @IBOutlet weak var doneButton: UIBarButtonItem!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        if !LPreferences.getUserId().isEmpty {
+            doneButton.isEnabled = false
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func notifyReloadLoginScreen() {
+        viewDidLoad()
+        reloadDelegate?.reloadLoginScreen()
     }
 
     func passLoginInfoBack(name: String?, id: String, password: String, typeOfLogin: Int) {
@@ -48,10 +58,10 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
     func notifyShowHideNameCell(hide: Bool) {
         if (hide == true) {
             nameCellHidden = true
-            delegate?.showHideNameCell(hide: true)
+            loginDelegate?.showHideNameCell(hide: true)
         } else {
             nameCellHidden = false
-            delegate?.showHideNameCell(hide: false)
+            loginDelegate?.showHideNameCell(hide: false)
         }
     }
 
@@ -66,7 +76,9 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
         if let secondViewController = segue.destination as? CreateOrLoginTableViewController {
             secondViewController.delegate = self
         } else if let secondViewController = segue.destination as? LoginInfoTableViewController {
-            delegate = secondViewController
+            loginDelegate = secondViewController
+            reloadDelegate = secondViewController
+            loginTypeDelegate = secondViewController
             secondViewController.delegate = self
         } else if let secondViewController = segue.destination as? LoginTimerViewController {
             let popoverViewController = segue.destination
@@ -78,7 +90,9 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
             secondViewController.name = name
             secondViewController.userId = userId
             secondViewController.password = password
-            secondViewController.loginType = loginType
+            secondViewController.loginType = (loginTypeDelegate?.getFinalLoginType())!
+
+            secondViewController.delegate = self
         }
 
     }

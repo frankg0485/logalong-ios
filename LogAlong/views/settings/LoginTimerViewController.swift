@@ -31,6 +31,9 @@ class LoginTimerViewController: UIViewController {
     var loginType: Int = 0
 
     private var serverIsDown = true
+    var reloadLoginScreen = false
+
+    var delegate: FNotifyReloadLoginScreenDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +80,7 @@ class LoginTimerViewController: UIViewController {
         if success {
             LLog.d("\(self)", "user created")
             connectingLabel.text = NSLocalizedString("Login Successful", comment: "")
-
+            reloadLoginScreen = true
         } else {
             LLog.d("\(self)", "failed to create user")
             connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
@@ -111,7 +114,7 @@ class LoginTimerViewController: UIViewController {
         if success {
             LLog.d("\(self)", "user signed in")
             connectingLabel.text = NSLocalizedString("Login Successful", comment: "")
-
+            reloadLoginScreen = true
         } else {
             LLog.d("\(self)", "user failed to sign in")
             connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
@@ -147,6 +150,10 @@ class LoginTimerViewController: UIViewController {
     }
 
     @IBAction func okButtonClicked(_ sender: UIButton) {
+        if reloadLoginScreen {
+            delegate?.notifyReloadLoginScreen()
+        }
+
         dismiss(animated: true, completion: nil)
     }
 
@@ -163,6 +170,8 @@ class LoginTimerViewController: UIViewController {
         if serverIsDown {
             connectingLabel.text =
             NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
+        } else {
+
         }
 
         okButton.isHidden = false
