@@ -55,6 +55,8 @@ class SelectTableViewController: UITableViewController, UIPopoverPresentationCon
     func passCreationBack(creation: NameWithId) {
         var account = LAccount(name: creation.name)
         DBAccount.instance.add(&account)
+        LJournal.instance.addAccount(account.id)
+
         _ = navigationController?.popViewController(animated: true)
 
         reloadTableView()

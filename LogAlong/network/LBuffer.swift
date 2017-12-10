@@ -21,6 +21,13 @@ class LBuffer {
         bytes = 0;
     }
 
+    init (buf: [UInt8]) {
+        array = UnsafeMutablePointer<UInt8>.allocate(capacity: buf.count)
+        memcpy(array, buf, buf.count)
+        offset = 0
+        bytes = 0
+    }
+
     func getBuf() -> UnsafeMutablePointer<UInt8> {
         return array;
     }

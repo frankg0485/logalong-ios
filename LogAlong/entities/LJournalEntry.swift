@@ -16,4 +16,10 @@ struct LJournalEntry {
         self.journalId = journalId
         self.data = data
     }
+
+    init(journalId: Int, datap: UnsafeMutablePointer<UInt8>, bytes: Int) {
+        self.journalId = journalId
+        self.data = [UInt8](repeating: 0, count: bytes);
+        memcpy(UnsafeMutableRawPointer(mutating: self.data), datap, bytes)
+    }
 }

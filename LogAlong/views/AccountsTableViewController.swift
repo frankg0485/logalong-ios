@@ -160,6 +160,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         } else {
             var account = LAccount(name: creation.name)
             DBAccount.instance.add(&account)
+            LJournal.instance.addAccount(account.id)
         }
 
         reloadTableView()

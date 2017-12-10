@@ -102,7 +102,8 @@ class UiRequest: NSObject {
     }
 
     func UiPostJournal(_ journalId: Int, data: [UInt8]) -> Bool {
-        LTransport.send_rqst(LProtocol.RQST_POST_JOURNAL, d32: UInt32(journalId), datab: data, scrambler: LProtocol.instance.scrambler);
+        LTransport.send_rqst(LProtocol.RQST_POST_JOURNAL, d32: UInt32(journalId),
+                             datab: data, offset: 0, bytes: data.count, scrambler: LProtocol.instance.scrambler);
         return true
     }
 }

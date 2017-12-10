@@ -7,7 +7,15 @@
 //
 import Foundation
 
+protocol GenericJD {
+    func getId() -> Int64
+    func getGid() -> Int64
+    func getRequestCode() -> UInt16
+    func add_data(_ jdata: LBuffer) -> Bool
+}
+
 class LJournal {
+    static let MAX_ERROR_RETRIES = 10
     static let MAX_JOURNAL_LENGTH = 512
     static let instance = LJournal()
 
@@ -19,6 +27,147 @@ class LJournal {
     private var postCount = 0;
     private var flushCount = 0;
 
+    private var removeEntry = false
+    private var newEntry = false
+    private var errorCount = 0
+
+    private class GenericJournalFlushAction<D: GenericJD> {
+        private func do_add(_ jdata: LBuffer, _ d: D) -> Bool {
+            jdata.clear();
+            jdata.putShortAutoInc(d.getRequestCode())
+            jdata.putLongAutoInc(d.getId())
+            return d.add_data(jdata)
+        }
+
+        private func do_update(_ jdata: LBuffer, _ d : D) -> Bool {
+            jdata.clear();
+            jdata.putShortAutoInc(UInt16(d.getRequestCode() + 1));
+            jdata.putLongAutoInc(d.getGid())
+            return d.add_data(jdata)
+        }
+
+        private func do_delete(_ jdata: LBuffer, _ d: D) {
+            jdata.clear();
+            jdata.putShortAutoInc(UInt16(d.getRequestCode() + 2))
+            jdata.putLongAutoInc(d.getGid());
+            jdata.setLen(jdata.getOffset());
+        }
+
+        func add(_ d: D?, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
+            var remove = false;
+            var new = false;
+            let ret = true;
+
+            if (d == nil) {
+                //ok to ignore add request if entry has been deleted afterwards
+                LLog.w("\(self)", "unable to find requested db entry");
+                remove = true;
+            } else if (d!.getGid() != 0) {
+                // ok to ignore add request if entry has GID assigned already
+                remove = true;
+            } else {
+                if (!do_add(ndata, d!)) {
+                    LLog.w("\(self)", "unable to add db entry");
+                    remove = true;
+                } else {
+                    new = true;
+                }
+            }
+            return (ret, new, remove)
+        }
+
+        func update(_ d: D?, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
+            var remove = false;
+            var new = false;
+            var ret = true;
+
+            if (d == nil) {
+                //ok to ignore update request if entry has been deleted afterwards
+                LLog.w("\(self)", "unable to find entry");
+                remove = true;
+            } else {
+                if (d!.getGid() == 0) {
+                    ret = false;
+                } else {
+                    do_update(ndata, d!);
+                    new = true;
+                }
+            }
+            return (ret, new, remove)
+        }
+
+        func delete(_ d: D?, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
+            var remove = false;
+            var new = false;
+            var ret = true;
+
+            if (d == nil) {
+                //ok to ignore delete request if entry has been deleted already
+                LLog.w("\(self)", "unable to find db entry")
+                remove = true;
+            } else {
+                if (d!.getGid() == 0) {
+                    ret = false;
+                } else {
+                    do_delete(ndata, d!);
+                    new = true;
+                }
+            }
+            return (ret, new, remove)
+        }
+
+    }
+
+    private class JLAccount: LAccount, GenericJD {
+        init(account: LAccount) {
+            super.init(id: account.id, gid: account.gid, name: account.name)
+        }
+
+        func getId() -> Int64 {
+            return id
+        }
+
+        func getGid() -> Int64 {
+            return gid
+        }
+
+        func getRequestCode() -> UInt16 {
+            return LProtocol.JRQST_ADD_ACCOUNT
+        }
+
+        func add_data(_ jdata: LBuffer) -> Bool {
+            let sname = [UInt8](name.utf8)
+            jdata.putShortAutoInc(UInt16(sname.count))
+            jdata.putBytesAutoInc(sname)
+            jdata.setLen(jdata.getOffset());
+            return true;
+        }
+    }
+
+    private class AccountJournalFlushAction : GenericJournalFlushAction<JLAccount> {
+        private func getD(_ jdata: LBuffer) -> JLAccount? {
+            if let account = DBAccount.instance.get(id: Int64(jdata.getLongAutoInc())) {
+                return JLAccount(account: account)
+            } else {
+                return nil
+            }
+        }
+
+        func add(_ jdata: LBuffer, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
+            return super.add(getD(jdata), ndata)
+        }
+
+        func update(_ jdata: LBuffer, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
+            return super.update(getD(jdata), ndata)
+        }
+
+        func delete(_ jdata: LBuffer, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
+            return super.delete(getD(jdata), ndata)
+        }
+    }
+
+    private var accountJournalFlushAction: AccountJournalFlushAction?
+
     func flush() -> Bool {
         /*
         if (recordJournalFlushAction == null) {
@@ -26,10 +175,11 @@ class LJournal {
         }
         if (scheduleJournalFlushAction == null) {
             scheduleJournalFlushAction = new LJournal.ScheduleJournalFlushAction();
+        }*/
+        if (accountJournalFlushAction == nil) {
+            accountJournalFlushAction = AccountJournalFlushAction();
         }
-        if (accountJournalFlushAction == null) {
-            accountJournalFlushAction = new LJournal.AccountJournalFlushAction();
-        }
+        /*
         if (categoryJournalFlushAction == null) {
             categoryJournalFlushAction = new LJournal.CategoryJournalFlushAction();
         }
@@ -54,16 +204,17 @@ class LJournal {
         LLog.d("\(self)", "total flushing count: \(flushCount)")
         flushCount += 1
 
-        var removeEntry = false;
-        var newEntry = false;
+        var retVal = true
+        var removeEntry = false
+        var newEntry = false
 
         lastFlushId = entry!.journalId;
         lastFlushMs = Date().currentTimeMillis;
 
-        /*
-        LBuffer jdata = new LBuffer(entry.data);
-        LBuffer ndata = new LBuffer(MAX_JOURNAL_DATA_BYTES);
+        let jdata: LBuffer = LBuffer(buf: entry!.data);
+        let ndata: LBuffer = LBuffer(size: LJournal.MAX_JOURNAL_LENGTH);
         switch (jdata.getShortAutoInc()) {
+            /*
         case LProtocol.JRQST_ADD_RECORD:
             if (!recordJournalFlushAction.add(jdata, ndata)) return false;
             break;
@@ -82,15 +233,14 @@ class LJournal {
         case LProtocol.JRQST_DELETE_SCHEDULE:
             if (!scheduleJournalFlushAction.delete(jdata, ndata)) return false;
             break;
+             */
         case LProtocol.JRQST_ADD_ACCOUNT:
-            if (!accountJournalFlushAction.add(jdata, ndata)) return false;
-            break;
+            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.add(jdata, ndata)
         case LProtocol.JRQST_UPDATE_ACCOUNT:
-            if (!accountJournalFlushAction.update(jdata, ndata)) return false;
-            break;
+            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.update(jdata, ndata)
         case LProtocol.JRQST_DELETE_ACCOUNT:
-            if (!accountJournalFlushAction.delete(jdata, ndata)) return false;
-            break;
+            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.delete(jdata, ndata)
+            /*
         case LProtocol.JRQST_ADD_CATEGORY:
             if (!categoryJournalFlushAction.add(jdata, ndata)) return false;
             break;
@@ -118,27 +268,35 @@ class LJournal {
         case LProtocol.JRQST_DELETE_VENDOR:
             if (!vendorJournalFlushAction.delete(jdata, ndata)) return false;
             break;
+             */
+        default:
+            break
         }
- */
 
-        //errorCount = 0;
+        if (!retVal) {
+            // let service to retry later
+            errorCount += 1
+            if (errorCount > LJournal.MAX_ERROR_RETRIES) {
+                removeEntry = true;
+                LLog.e("\(self)", "db entry gid not available, journal request dropped");
+            } else {
+                return false;
+            }
+        }
+
+        errorCount = 0;
         if (removeEntry) {
             DBJournal.instance.remove(id: entry!.journalId)
             return false;
         }
-/*
-        if (newEntry) {
-            try {
-            entry.data = new byte[ndata.getLen()];
-            System.arraycopy(ndata.getBuf(), 0, entry.data, 0, ndata.getLen());
-            } catch (Exception e) {
-            LLog.e(TAG, "unexpected record post error: " + e.getMessage());
-            }
-        }
- */
-        UiRequest.instance.UiPostJournal(entry!.journalId, data: entry!.data);
-        return true;
 
+        if (newEntry) {
+            let entry2 = LJournalEntry(journalId: entry!.journalId, datap: ndata.getBuf(), bytes: ndata.getLen())
+            UiRequest.instance.UiPostJournal(entry!.journalId, data: entry2.data)
+        } else {
+            UiRequest.instance.UiPostJournal(entry!.journalId, data: entry!.data);
+        }
+        return true;
     }
 
     /*
@@ -230,15 +388,15 @@ class LJournal {
         return postById(id, LProtocol.JRQST_ADD_ACCOUNT);
     }
 
+    func updateAccount(_ id: Int64) -> Bool {
+        return postById(id, LProtocol.JRQST_UPDATE_ACCOUNT);
+    }
+
+    func deleteAccount(_ id: Int64) -> Bool {
+        return postById(id, LProtocol.JRQST_DELETE_ACCOUNT);
+    }
+
     /*
-     public boolean updateAccount(long id) {
-     return postById(id, LProtocol.JRQST_UPDATE_ACCOUNT);
-     }
-
-     public boolean deleteAccount(long id) {
-     return postById(id, LProtocol.JRQST_DELETE_ACCOUNT);
-     }
-
      public boolean addCategory(long id) {
      return postById(id, LProtocol.JRQST_ADD_CATEGORY);
      }
