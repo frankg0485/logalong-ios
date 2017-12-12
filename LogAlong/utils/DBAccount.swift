@@ -15,7 +15,7 @@ class DBAccount : DBGeneric {
 
         do {
             for account in try DBHelper.instance.db!.prepare(DBHelper.instance.accounts.order(DBHelper.name.asc)) {
-                accounts.append(LAccount(id: account[DBHelper.id], gid: 0, name: account[DBHelper.name]))
+                accounts.append(LAccount(id: account[DBHelper.id], gid: account[DBHelper.gid], name: account[DBHelper.name]))
             }
         } catch {
             LLog.e("\(self)", "Get all accounts failed")
@@ -27,6 +27,14 @@ class DBAccount : DBGeneric {
     func get(id: Int64) -> LAccount? {
         if let ret: (gid: Int64, name: String) = super.get(DBHelper.instance.accounts, id: id) {
             return LAccount(id: id, gid: ret.gid, name: ret.name)
+        } else {
+            return nil
+        }
+    }
+
+    func get(gid: Int64) -> LAccount? {
+        if let ret: (id: Int64, name: String) = super.get(DBHelper.instance.accounts, gid: gid) {
+            return LAccount(id: ret.id, gid: gid, name: ret.name)
         } else {
             return nil
         }

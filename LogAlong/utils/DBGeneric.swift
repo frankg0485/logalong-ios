@@ -14,10 +14,22 @@ class DBGeneric {
         do {
             for entry in try DBHelper.instance.db!.prepare(table.filter(DBHelper.id == id)) {
                 //TODO: error report if multiple entries found
-                return (gid: 0, name: entry[DBHelper.name])
+                return (gid: entry[DBHelper.gid], name: entry[DBHelper.name])
             }
         } catch {
             LLog.e("\(self)", "unable to find entry with id: \(id)")
+        }
+        return nil
+    }
+
+    func get(_ table: Table, gid: Int64) -> (id: Int64, name: String)? {
+        do {
+            for entry in try DBHelper.instance.db!.prepare(table.filter(DBHelper.gid == gid)) {
+                //TODO: error report if multiple entries found
+                return (id: entry[DBHelper.id], name: entry[DBHelper.name])
+            }
+        } catch {
+            LLog.e("\(self)", "unable to find entry with gid: \(gid)")
         }
         return nil
     }
@@ -26,12 +38,12 @@ class DBGeneric {
         var ret = false
 
         do {
-            let insert = table.insert(DBHelper.name <- name)
+            let insert = table.insert(DBHelper.name <- name, DBHelper.gid <- (dbase as! LDbBase).gid)
             let rowid = try DBHelper.instance.db!.run(insert)
             ret = (rowid != 0)
             (dbase as! LDbBase).id = rowid
         } catch {
-            LLog.e("\(self)", "DB insert failed")
+            LLog.e("\(self)", "DB insert failed: \(error)")
         }
 
         return ret

@@ -267,217 +267,213 @@ final class LProtocol : LServerDelegate {
             switch (rsps) {
             case LProtocol.RSPS | LProtocol.RQST_UPDATE_USER_PROFILE:
                 /*rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                    .ACTION_UPDATE_USER_PROFILE));
-                rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
+                 .ACTION_UPDATE_USER_PROFILE));
+                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
+                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
 
                 LBroadcast.post(LBroadcast.ACTION_UPDATE_USER_PROFILE, sender: nil, data: bdata)
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_SIGN_IN:
                 /*rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                    .ACTION_SIGN_IN));
-                rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                if (RSPS_OK == status) {
-                    LPreferences.setLoginError(false);
-                    int bytes = pkt.getShortAutoInc();
-                    String name = pkt.getStringAutoInc(bytes);
-                    rspsIntent.putExtra("userName", name);
-                }
-                LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
+                 .ACTION_SIGN_IN));
+                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
+                 if (RSPS_OK == status) {
+                 LPreferences.setLoginError(false);
+                 int bytes = pkt.getShortAutoInc();
+                 String name = pkt.getStringAutoInc(bytes);
+                 rspsIntent.putExtra("userName", name);
+                 }
+                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_GET_USER_BY_NAME:
                 /*rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                    .ACTION_GET_USER_BY_NAME));
-                rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
+                 .ACTION_GET_USER_BY_NAME));
+                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
 
-                if (RSPS_OK == status) {
-                    String name, fullName;
-                    long gid = pkt.getLongAutoInc();
-                    int bytes = pkt.getShortAutoInc();
-                    name = pkt.getStringAutoInc(bytes);
-                    bytes = pkt.getShortAutoInc();
-                    fullName = pkt.getStringAutoInc(bytes);
+                 if (RSPS_OK == status) {
+                 String name, fullName;
+                 long gid = pkt.getLongAutoInc();
+                 int bytes = pkt.getShortAutoInc();
+                 name = pkt.getStringAutoInc(bytes);
+                 bytes = pkt.getShortAutoInc();
+                 fullName = pkt.getStringAutoInc(bytes);
 
-                    rspsIntent.putExtra("id", gid);
-                    rspsIntent.putExtra("name", name);
-                    rspsIntent.putExtra("fullName", fullName);
-                    LPreferences.setShareUserId(gid, name);
-                    LPreferences.setShareUserName(gid, fullName);
-                }
-                LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
+                 rspsIntent.putExtra("id", gid);
+                 rspsIntent.putExtra("name", name);
+                 rspsIntent.putExtra("fullName", fullName);
+                 LPreferences.setShareUserId(gid, name);
+                 LPreferences.setShareUserName(gid, fullName);
+                 }
+                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_RESET_PASSWORD:
                 /*rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver.ACTION_UI_RESET_PASSWORD));
-                rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
+                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
+                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_POST_JOURNAL:
-                /*packetConsumptionStatus.isResponseCompleted = (status != RSPS_MORE);
-                rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver.ACTION_POST_JOURNAL));
-                rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
                 if (LProtocol.RSPS_OK == status || LProtocol.RSPS_MORE == status) {
-                    int journalId = pkt.getIntAutoInc();
-                    rspsIntent.putExtra("journalId", journalId);
-                    short jrqstId = pkt.getShortAutoInc();
-                    rspsIntent.putExtra("jrqstId", jrqstId);
-                    short jret = pkt.getShortAutoInc();
-                    rspsIntent.putExtra("jret", jret);
+                    let journalId = Int(pkt.getIntAutoInc())
+                    bdata["journalId"] = journalId
+                    let jrqstId = pkt.getShortAutoInc()
+                    bdata["jrqstId"] = jrqstId
+                    let jret = pkt.getShortAutoInc()
+                    bdata["jret"] = jret
 
                     switch (jrqstId) {
                     case LProtocol.JRQST_ADD_ACCOUNT:
                         if (LProtocol.RSPS_OK == jret) {
-                            rspsIntent.putExtra("id", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("gid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("uid", pkt.getLongAutoInc());
+                            bdata["id"] = Int64(pkt.getLongAutoInc())
+                            bdata["gid"] = Int64(pkt.getLongAutoInc())
+                            bdata["uid"] =  Int64(pkt.getLongAutoInc())
                         }
-                        break;
-                    case LProtocol.JRQST_ADD_CATEGORY:
-                    case LProtocol.JRQST_ADD_VENDOR:
-                    case LProtocol.JRQST_ADD_TAG:
-                    case LProtocol.JRQST_ADD_RECORD:
+
+                    case LProtocol.JRQST_ADD_CATEGORY: fallthrough
+                    case LProtocol.JRQST_ADD_VENDOR: fallthrough
+                    case LProtocol.JRQST_ADD_TAG: fallthrough
+                    case LProtocol.JRQST_ADD_RECORD: fallthrough
                     case LProtocol.JRQST_ADD_SCHEDULE:
-                        if (RSPS_OK == jret) {
-                            rspsIntent.putExtra("id", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("gid", pkt.getLongAutoInc());
+                        if (LProtocol.RSPS_OK == jret) {
+                            bdata["id"] = Int64(pkt.getLongAutoInc())
+                            bdata["gid"] = Int64(pkt.getLongAutoInc())
                         }
-                        break;
+
                     case LProtocol.JRQST_GET_ACCOUNTS:
-                        if (RSPS_OK == jret) {
-                            rspsIntent.putExtra("gid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("uid", pkt.getLongAutoInc());
-                            int bytes = pkt.getShortAutoInc();
-                            String name = pkt.getStringAutoInc(bytes);
-                            rspsIntent.putExtra("name", name);
+                        if (LProtocol.RSPS_OK == jret) {
+                            bdata["gid"] = Int64(pkt.getLongAutoInc())
+                            bdata["uid"] = Int64(pkt.getLongAutoInc())
+                            let bytes = pkt.getShortAutoInc();
+                            let name = pkt.getStringAutoInc(Int(bytes))
+                            bdata["name"] = name
                         }
-                        break;
+
                     case LProtocol.JRQST_GET_ACCOUNT_USERS:
-                        if (RSPS_OK == jret) {
-                            rspsIntent.putExtra("aid", pkt.getLongAutoInc());
-                            short length = pkt.getShortAutoInc();
-                            String accountUsers = pkt.getStringAutoInc(length);
-                            rspsIntent.putExtra("users", accountUsers);
+                        if (LProtocol.RSPS_OK == jret) {
+                            bdata["aid"] = Int64(pkt.getLongAutoInc())
+                            let length = pkt.getShortAutoInc()
+                            let accountUsers = pkt.getStringAutoInc(Int(length))
+                            bdata["users"] = accountUsers
                         }
-                        break;
+
                     case LProtocol.JRQST_GET_CATEGORIES:
-                        if (RSPS_OK == jret) {
-                            rspsIntent.putExtra("gid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("pgid", pkt.getLongAutoInc());
-                            short bytes = pkt.getShortAutoInc();
-                            String name = pkt.getStringAutoInc(bytes);
-                            rspsIntent.putExtra("name", name);
+                        if (LProtocol.RSPS_OK == jret) {
+                            bdata["gid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["pgid"] = UInt64(pkt.getLongAutoInc())
+                            let bytes = pkt.getShortAutoInc()
+                            let name = pkt.getStringAutoInc(Int(bytes))
+                            bdata["name"] = name
                         }
-                        break;
+
                     case LProtocol.JRQST_GET_VENDORS:
-                        if (RSPS_OK == jret) {
-                            rspsIntent.putExtra("gid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("type", (int) pkt.getByteAutoInc());
-                            short bytes = pkt.getShortAutoInc();
-                            String name = pkt.getStringAutoInc(bytes);
-                            rspsIntent.putExtra("name", name);
+                        if (LProtocol.RSPS_OK == jret) {
+                            bdata["gid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["type"] = pkt.getByteAutoInc()
+                            let bytes = pkt.getShortAutoInc()
+                            let name = pkt.getStringAutoInc(Int(bytes))
+                            bdata["name"] =  name
                         }
-                        break;
-                    case LProtocol.JRQST_GET_"\(self)"S:
-                        if (RSPS_OK == jret) {
-                            rspsIntent.putExtra("gid", pkt.getLongAutoInc());
-                            short bytes = pkt.getShortAutoInc();
-                            String name = pkt.getStringAutoInc(bytes);
-                            rspsIntent.putExtra("name", name);
+
+                    case LProtocol.JRQST_GET_TAGS:
+                        if (LProtocol.RSPS_OK == jret) {
+                            bdata["gid"] = UInt64(pkt.getLongAutoInc())
+                            let bytes = pkt.getShortAutoInc()
+                            let name = pkt.getStringAutoInc(Int(bytes))
+                            bdata["name"] = name
                         }
-                        break;
-                    case LProtocol.JRQST_GET_RECORD:
-                    case LProtocol.JRQST_GET_RECORDS:
+
+                    case LProtocol.JRQST_GET_RECORD: fallthrough
+                    case LProtocol.JRQST_GET_RECORDS: fallthrough
                     case LProtocol.JRQST_GET_ACCOUNT_RECORDS:
-                        if (RSPS_OK == jret) {
-                            rspsIntent.putExtra("gid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("aid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("aid2", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("cid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("tid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("vid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("type", pkt.getByteAutoInc());
-                            rspsIntent.putExtra("amount", pkt.getDoubleAutoInc());
-                            rspsIntent.putExtra("createBy", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("changeBy", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("recordId", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("timestamp", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("createTime", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("changeTime", pkt.getLongAutoInc());
+                        if (LProtocol.RSPS_OK == jret) {
+                            bdata["gid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["aid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["aid2"] = UInt64(pkt.getLongAutoInc())
+                            bdata["cid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["tid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["vid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["type"] = pkt.getByteAutoInc()
+                            //bdata["amount"] = pkt.getDoubleAutoInc()
+                            bdata["createBy"] = UInt64(pkt.getLongAutoInc())
+                            bdata["changeBy"] = UInt64(pkt.getLongAutoInc())
+                            bdata["recordId"] = UInt64(pkt.getLongAutoInc())
+                            bdata["timestamp"] = UInt64(pkt.getLongAutoInc())
+                            bdata["createTime"] = UInt64(pkt.getLongAutoInc())
+                            bdata["changeTime"] = UInt64(pkt.getLongAutoInc())
 
-                            short bytes = pkt.getShortAutoInc();
-                            String note = pkt.getStringAutoInc(bytes);
-                            rspsIntent.putExtra("note", note);
+                            let bytes = pkt.getShortAutoInc()
+                            let note = pkt.getStringAutoInc(Int(bytes))
+                            bdata["note"] = note
                         }
-                        break;
 
-                    case LProtocol.JRQST_GET_SCHEDULE:
-                    case LProtocol.JRQST_GET_SCHEDULES:
+                    case LProtocol.JRQST_GET_SCHEDULE: fallthrough
+                    case LProtocol.JRQST_GET_SCHEDULES: fallthrough
                     case LProtocol.JRQST_GET_ACCOUNT_SCHEDULES:
-                        if (RSPS_OK == jret) {
-                            rspsIntent.putExtra("gid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("aid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("aid2", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("cid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("tid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("vid", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("type", pkt.getByteAutoInc());
-                            rspsIntent.putExtra("amount", pkt.getDoubleAutoInc());
-                            rspsIntent.putExtra("createBy", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("changeBy", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("recordId", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("timestamp", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("createTime", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("changeTime", pkt.getLongAutoInc());
+                        if (LProtocol.RSPS_OK == jret) {
+                            bdata["gid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["aid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["aid2"] = UInt64(pkt.getLongAutoInc())
+                            bdata["cid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["tid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["vid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["type"] = pkt.getByteAutoInc()
+                            //bdata["amount"] = pkt.getDoubleAutoInc()
+                            bdata["createBy"] = UInt64(pkt.getLongAutoInc())
+                            bdata["changeBy"] = UInt64(pkt.getLongAutoInc())
+                            bdata["recordId"] = UInt64(pkt.getLongAutoInc())
+                            bdata["timestamp"] = UInt64(pkt.getLongAutoInc())
+                            bdata["createTime"] = UInt64(pkt.getLongAutoInc())
+                            bdata["changeTime"] = UInt64(pkt.getLongAutoInc())
 
-                            short bytes = pkt.getShortAutoInc();
-                            String note = pkt.getStringAutoInc(bytes);
-                            rspsIntent.putExtra("note", note);
+                            let bytes = pkt.getShortAutoInc()
+                            let note = pkt.getStringAutoInc(Int(bytes))
+                            bdata["note"] = note
 
-                            rspsIntent.putExtra("nextTime", pkt.getLongAutoInc());
-                            rspsIntent.putExtra("interval", pkt.getByteAutoInc());
-                            rspsIntent.putExtra("unit", pkt.getByteAutoInc());
-                            rspsIntent.putExtra("count", pkt.getByteAutoInc());
-                            rspsIntent.putExtra("enabled", pkt.getByteAutoInc());
+                            bdata["nextTime"] = UInt64(pkt.getLongAutoInc())
+                            bdata["interval"] = pkt.getByteAutoInc()
+                            bdata["unit"] = pkt.getByteAutoInc()
+                            bdata["count"] = pkt.getByteAutoInc()
+                            bdata["enabled"] = pkt.getByteAutoInc()
                         }
-                        break;
+
+                    default:
+                        LLog.w("\(self)", "unknown journal request: \(jrqstId)")
                     }
                 }
-
-                LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
-                break;
+                LBroadcast.post(LBroadcast.ACTION_POST_JOURNAL, sender: nil, data: bdata)
 
             case LProtocol.RSPS | LProtocol.RQST_POLL:
                 /*packetConsumptionStatus.isResponseCompleted = (status == RSPS_OK || status == RSPS_ERROR);
-                rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver.ACTION_POLL));
-                rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                if (status == RSPS_OK) {
-                    rspsIntent.putExtra("id", pkt.getLongAutoInc());
-                    rspsIntent.putExtra("nid", pkt.getShortAutoInc());
-                    rspsIntent.putExtra("int1", pkt.getLongAutoInc());
-                    rspsIntent.putExtra("int2", pkt.getLongAutoInc());
-                    int bytes = pkt.getShortAutoInc();
-                    String txt = pkt.getStringAutoInc(bytes);
-                    rspsIntent.putExtra("txt1", txt);
-                    bytes = pkt.getShortAutoInc();
-                    txt = pkt.getStringAutoInc(bytes);
-                    rspsIntent.putExtra("txt2", txt);
+                 rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver.ACTION_POLL));
+                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
+                 if (status == RSPS_OK) {
+                 rspsIntent.putExtra("id", pkt.getLongAutoInc());
+                 rspsIntent.putExtra("nid", pkt.getShortAutoInc());
+                 rspsIntent.putExtra("int1", pkt.getLongAutoInc());
+                 rspsIntent.putExtra("int2", pkt.getLongAutoInc());
+                 int bytes = pkt.getShortAutoInc();
+                 String txt = pkt.getStringAutoInc(bytes);
+                 rspsIntent.putExtra("txt1", txt);
+                 bytes = pkt.getShortAutoInc();
+                 txt = pkt.getStringAutoInc(bytes);
+                 rspsIntent.putExtra("txt2", txt);
 
-                    bytes = pkt.getShortAutoInc();
-                    rspsIntent.putExtra("blob", pkt.getBytesAutoInc(bytes));
-                }
-                LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
+                 bytes = pkt.getShortAutoInc();
+                 rspsIntent.putExtra("blob", pkt.getBytesAutoInc(bytes));
+                 }
+                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_POLL_ACK:
                 /*if (status == RSPS_OK) {
-                    rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver.ACTION_POLL_ACK));
-                    LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
-                } else {
-                    LLog.w("\(self)", "unable to acknowledge polling");
-                }*/
+                 rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver.ACTION_POLL_ACK));
+                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
+                 } else {
+                 LLog.w("\(self)", "unable to acknowledge polling");
+                 }*/
                 break;
 
             case LProtocol.PUSH_NOTIFICATION:

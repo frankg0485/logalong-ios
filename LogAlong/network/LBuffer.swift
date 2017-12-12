@@ -17,8 +17,8 @@ class LBuffer {
         if size > 0 {
             array = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
         }
-        offset = 0;
-        bytes = 0;
+        offset = 0
+        bytes = 0
     }
 
     init (buf: [UInt8]) {
@@ -29,33 +29,33 @@ class LBuffer {
     }
 
     func getBuf() -> UnsafeMutablePointer<UInt8> {
-        return array;
+        return array
     }
 
     func setBuf(_ array: UnsafeMutablePointer<UInt8>) {
-        self.array = array;
-        offset = 0;
-        bytes = 0;
+        self.array = array
+        offset = 0
+        bytes = 0
     }
 
     func getOffset() -> Int {
-        return offset;
+        return offset
     }
 
     func setOffset(_ offset: Int) {
-        self.offset = offset;
+        self.offset = offset
     }
 
     func size() -> Int {
-        return 0;
+        return 0
     }
 
     func getLen() -> Int {
-        return self.bytes;
+        return self.bytes
     }
 
     func setLen(_ bytes: Int) {
-        self.bytes = bytes;
+        self.bytes = bytes
     }
 
     /*
@@ -82,48 +82,47 @@ class LBuffer {
      */
 
     func getShortAt(_ off: Int) -> UInt16 {
-        var val = UInt16(array[off] & 0xff);
-        val += (0xff00 & UInt16(array[off + 1]) << 8);
-        return val;
+        var val = UInt16(array[off] & 0xff)
+        val += (0xff00 & UInt16(array[off + 1]) << 8)
+        return val
     }
 
     func getShort() -> UInt16 {
-        var val = UInt16(array[offset] & 0xff);
-        val += (0xff00 & UInt16(array[offset + 1]) << 8);
-        return val;
+        var val = UInt16(array[offset] & 0xff)
+        val += (0xff00 & UInt16(array[offset + 1]) << 8)
+        return val
     }
 
     func getIntAt(_ off: Int) -> UInt32 {
-        var val = UInt32(array[off] & 0xff);
-        val += UInt32(0xff00 & (UInt32(array[off + 1]) << 8));
-        val += UInt32(0xff0000 & ((UInt32(array[off + 2]) << 16)));
-        val += UInt32(0xff000000 & ((UInt32(array[off + 3]) << 24)));
-        return val;
+        var val = UInt32(array[off] & 0xff)
+        val += UInt32(0xff00 & (UInt32(array[off + 1]) << 8))
+        val += UInt32(0xff0000 & ((UInt32(array[off + 2]) << 16)))
+        val += UInt32(0xff000000 & ((UInt32(array[off + 3]) << 24)))
+        return val
     }
 
-    /*
-     public byte getByteAutoInc() {
-     offset++;
-     return array[offset - 1];
-     }*/
+    func getByteAutoInc() -> UInt8 {
+        offset += 1
+        return array[offset - 1]
+    }
 
     func getShortAutoInc() -> UInt16 {
         var val = UInt16(array[offset] & 0xff);
         val += (0xff00 & UInt16(array[offset + 1]) << 8);
-        offset += 2;
-        return val;
+        offset += 2
+        return val
     }
 
-    /*
-     public int getIntAutoInc() {
-     int ret = (array[offset] & 0xff) |
-     (0xff00 & (array[offset + 1] << 8)) |
-     (0xff0000 & (array[offset + 2] << 16)) |
-     (0xff000000 & (array[offset + 3] << 24));
-     offset += 4;
-     return ret;
+    func getIntAutoInc() -> UInt32 {
+        var val = UInt32(array[offset] & 0xff)
+        val += (0xff00 & (UInt32(array[offset + 1]) << 8))
+        val += (0xff0000 & (UInt32(array[offset + 2]) << 16))
+        val += (0xff000000 & (UInt32(array[offset + 3]) << 24))
+        offset += 4
+        return val
      }
 
+    /*
      public double getDoubleAutoInc() {
      long bits = getLongAutoInc();
      return Double.longBitsToDouble(bits);
@@ -166,6 +165,7 @@ class LBuffer {
      return tmp;
      }
      */
+
     func getStringAutoInc(_ bytes: Int) -> String {
         let tmp = [UInt8](repeating: UInt8(0), count: bytes)
         memcpy(UnsafeMutableRawPointer(mutating: tmp), array + offset, bytes)
@@ -174,13 +174,10 @@ class LBuffer {
         return String(bytes: tmp, encoding: .utf8) ?? ""
     }
 
-        /*
-         public int putByteAutoInc(byte b) {
-         array[offset] = b;
-     offset++;
-     return 0;
-     }
-     */
+    func putByteAutoInc(_ b: UInt8) {
+        array[offset] = b;
+        offset += 1
+    }
 
     func putShortAutoInc(_ val: UInt16) {
         array[offset] = UInt8(val & 0xff);

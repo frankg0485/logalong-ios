@@ -18,12 +18,18 @@ class DBHelper {
     let journals = Table("LJournal")
 
     static let id = Expression<Int64>("Id")
+    static let gid = Expression<Int64>("Gid")
+    static let rid = Expression<Int64>("Rid")
     static let name = Expression<String>("Name")
     static let accountId = Expression<Int64>("AccountId")
     static let categoryId = Expression<Int64>("CategoryId")
     static let amount = Expression<Double>("Amount")
     static let timestamp = Expression<Int64>("Timestamp")
     static let type = Expression<Int>("Type")
+    static let showBalance = Expression<Int>("ShowBalance")
+    static let icon = Expression<Data?>("Icon")
+    static let number = Expression<Int64?>("Number")
+    static let share = Expression<String?>("Share")
 
     static let journalId = Expression<Int>("JournalId")
     static let data = Expression<Data>("Data")
@@ -46,7 +52,13 @@ class DBHelper {
         do {
             try db!.run(accounts.create(ifNotExists: true) { table in
                 table.column(DBHelper.id, primaryKey: true)
+                table.column(DBHelper.gid, unique: true)
                 table.column(DBHelper.name, unique: true, collate: .nocase)
+                /*
+                table.column(DBHelper.share)
+                table.column(DBHelper.number)
+                table.column(DBHelper.timestamp)
+                table.column(DBHelper.showBalance)*/
             })
         } catch {
             LLog.e("\(self)", "Unable to create accounts table")
