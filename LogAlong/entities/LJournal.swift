@@ -122,7 +122,10 @@ class LJournal {
 
     private class JLAccount: LAccount, GenericJD {
         init(account: LAccount) {
-            super.init(id: account.id, gid: account.gid, name: account.name)
+            super.init(id: account.id, gid: account.gid, name: account.name,
+                       share: account.share,
+                       showBalance: account.showBalance,
+                       create: account.timestampCreate, access: account.timestampAccess)
         }
 
         func getId() -> Int64 {

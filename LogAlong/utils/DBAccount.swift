@@ -14,12 +14,20 @@ class DBAccount : DBGeneric {
     private func getValues(_ row: Row) -> LAccount? {
         return LAccount(id: row[DBHelper.id],
                         gid: row[DBHelper.gid],
-                        name: row[DBHelper.name])
+                        name: row[DBHelper.name],
+                        share: row[DBHelper.share],
+                        showBalance: row[DBHelper.showBalance] != 0,
+                        create: row[DBHelper.timestampCretae],
+                        access: row[DBHelper.timestampAccess])
     }
 
     private func setValues(_ value: LAccount) -> [SQLite.Setter] {
         return [DBHelper.gid <- value.gid,
-                DBHelper.name <- value.name]
+                DBHelper.name <- value.name,
+                DBHelper.share <- value.share,
+                DBHelper.showBalance <- (value.showBalance ? 1 : 0),
+                DBHelper.timestampCretae <- value.timestampCreate,
+                DBHelper.timestampAccess <- value.timestampAccess]
     }
 
     func getAll() -> [LAccount] {

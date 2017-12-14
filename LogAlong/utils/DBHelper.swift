@@ -25,11 +25,12 @@ class DBHelper {
     static let categoryId = Expression<Int64>("CategoryId")
     static let amount = Expression<Double>("Amount")
     static let timestamp = Expression<Int64>("Timestamp")
+    static let timestampCretae = Expression<Int64>("TimestampCreate")
+    static let timestampAccess = Expression<Int64>("TimestampAccess")
     static let type = Expression<Int>("Type")
     static let showBalance = Expression<Int>("ShowBalance")
     static let icon = Expression<Data?>("Icon")
-    static let number = Expression<Int64?>("Number")
-    static let share = Expression<String?>("Share")
+    static let share = Expression<String>("Share")
 
     static let journalId = Expression<Int>("JournalId")
     static let data = Expression<Data>("Data")
@@ -54,11 +55,11 @@ class DBHelper {
                 table.column(DBHelper.id, primaryKey: true)
                 table.column(DBHelper.gid)
                 table.column(DBHelper.name, unique: true, collate: .nocase)
-                /*
                 table.column(DBHelper.share)
-                table.column(DBHelper.number)
-                table.column(DBHelper.timestamp)
-                table.column(DBHelper.showBalance)*/
+                table.column(DBHelper.timestampCretae)
+                table.column(DBHelper.timestampAccess)
+                table.column(DBHelper.showBalance)
+                table.column(DBHelper.icon)
             })
         } catch {
             LLog.e("\(self)", "Unable to create accounts table")

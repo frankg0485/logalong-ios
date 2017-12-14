@@ -39,6 +39,6 @@ class LTransaction : LDbBase {
          self.tag = tag ?? ""
          self.notes = notes ?? ""*/
 
-        super.init(name: "")
+        super.init()
     }
 }
