@@ -13,11 +13,45 @@ class LService {
     var pollingCount = 0
     var journalPostErrorCount = 0
 
+    private static let NOTIFICATION_UPDATE_USER_PROFILE: UInt16 = 0x001
+    private static let NOTIFICATION_ADD_SHARE_USER: UInt16 = 0x002
+    private static let NOTIFICATION_ADD_ACCOUNT: UInt16 = 0x010
+    private static let NOTIFICATION_UPDATE_ACCOUNT: UInt16 = 0x011
+    private static let NOTIFICATION_DELETE_ACCOUNT: UInt16 = 0x012
+    private static let NOTIFICATION_UPDATE_ACCOUNT_GID: UInt16 = 0x013
+    private static let NOTIFICATION_ADD_CATEGORY: UInt16 = 0x020
+    private static let NOTIFICATION_UPDATE_CATEGORY: UInt16 = 0x021
+    private static let NOTIFICATION_DELETE_CATEGORY: UInt16 = 0x022
+    private static let NOTIFICATION_ADD_TAG: UInt16 = 0x030
+    private static let NOTIFICATION_UPDATE_TAG: UInt16 = 0x031
+    private static let NOTIFICATION_DELETE_TAG: UInt16 = 0x032
+    private static let NOTIFICATION_ADD_VENDOR: UInt16 = 0x040
+    private static let NOTIFICATION_UPDATE_VENDOR: UInt16 = 0x041
+    private static let NOTIFICATION_DELETE_VENDOR: UInt16 = 0x042
+    private static let NOTIFICATION_GET_RECORD: UInt16 = 0x050
+    private static let NOTIFICATION_UPDATE_RECORD: UInt16 = 0x051
+    private static let NOTIFICATION_DELETE_RECORD: UInt16 = 0x052
+    private static let NOTIFICATION_GET_RECORDS: UInt16 = 0x053
+    private static let NOTIFICATION_ADD_SCHEDULE: UInt16 = 0x060
+    private static let NOTIFICATION_UPDATE_SCHEDULE: UInt16 = 0x061
+    private static let NOTIFICATION_DELETE_SCHEDULE: UInt16 = 0x062
+    private static let NOTIFICATION_REQUEST_ACCOUNT_SHARE: UInt16 = 0x101
+    private static let NOTIFICATION_DECLINE_ACCOUNT_SHARE: UInt16 = 0x102
+    private static let NOTIFICATION_UPDATE_ACCOUNT_USER: UInt16 = 0x103
+    private static let NOTIFICATION_GET_ACCOUNT_RECORDS: UInt16 = 0x201
+    private static let NOTIFICATION_GET_ACCOUNTS: UInt16 = 0x202
+    private static let NOTIFICATION_GET_CATEGORIES: UInt16 = 0x203
+    private static let NOTIFICATION_GET_VENDORS: UInt16 = 0x204
+    private static let NOTIFICATION_GET_TAGS: UInt16 = 0x205
+    private static let NOTIFICATION_GET_ACCOUNT_SCHEDULES: UInt16 = 0x211
+
     func start() {
         LBroadcast.register(LBroadcast.ACTION_LOG_IN, cb: #selector(self.login), listener: self)
         LBroadcast.register(LBroadcast.ACTION_NEW_JOURNAL_AVAILABLE, cb: #selector(self.newJournalAvailable), listener: self)
         LBroadcast.register(LBroadcast.ACTION_POST_JOURNAL, cb: #selector(self.postJournal), listener: self)
         LBroadcast.register(LBroadcast.ACTION_PUSH_NOTIFICATION, cb: #selector(self.pushNotification), listener: self)
+        LBroadcast.register(LBroadcast.ACTION_POLL, cb: #selector(self.poll), listener: self)
+        LBroadcast.register(LBroadcast.ACTION_POLL_ACK, cb: #selector(self.pollAck), listener: self)
     }
 
     func stop() {
@@ -395,6 +429,7 @@ class LService {
         }
     }
 
+
     @objc func pushNotification(notification: Notification) {
         LLog.d("\(self)", "poll upon push notification");
         //reset polling count upon receiving push notification from server
@@ -407,4 +442,464 @@ class LService {
             UiRequest.instance.UiPoll()
         }
     }
+
+    @objc func poll(notification: Notification) {
+        if let bdata = notification.userInfo as? [String: Any] {
+            if (LProtocol.RSPS_OK == (bdata["status"]) as! Int) {
+                let id: UInt64 = bdata["id"] as! UInt64
+                let nid: UInt16 = bdata["nid"] as! UInt16
+
+                switch (nid) {
+                case LService.NOTIFICATION_UPDATE_USER_PROFILE:
+                    LPreferences.setUserName(bdata["txt1"] as! String)
+
+                    LBroadcast.post(LBroadcast.ACTION_UPDATE_USER_PROFILE, sender: nil, data: bdata)
+
+                    break
+                default:
+                    break
+                }
+
+                //pollingCount = MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION;
+                UiRequest.instance.UiPollAck(Int64(id))
+
+            } else {
+                //no more
+                LLog.d("\(self)", "flushing journal upon polling ends ...");
+                if (!LJournal.instance.flush()) {
+                    /*if (LFragmentActivity.upRunning) {
+                     //server.UiUtcSync();
+                     if (pollingCount++ < MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION) {
+                     serviceHandler.postDelayed(pollRunnable, NETWORK_IDLE_POLLING_MS);
+                     }
+
+                     Intent uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+                     .ACTION_UI_NET_IDLE));
+                     LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+                     } else {
+                     LLog.d(TAG, "no activity visible, shutdown now");
+                     serviceHandler.postDelayed(serviceShutdownRunnable,
+                     SERVICE_SHUTDOWN_MS);
+                     }*/
+                }
+            }
+        }
+            /*
+             case NOTIFICATION_UPDATE_USER_PROFILE:
+             LPreferences.setUserName(intent.getStringExtra("txt1"));
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_USER_PROFILE));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             break;
+             */
+            /*
+             if (LProtocol.RSPS_OK == ret) {
+             long id = intent.getLongExtra("id", 0);
+             short nid = intent.getShortExtra("nid", (short) 0);
+             switch (nid) {
+             case NOTIFICATION_ADD_ACCOUNT:
+             long gid = intent.getLongExtra("int1", 0L);
+             long uid = intent.getLongExtra("int2", 0L);
+             String name = intent.getStringExtra("txt1");
+
+             DBAccount dbAccount = DBAccount.getInstance();
+             LAccount account = dbAccount.getByGid(gid);
+             if (null != account) {
+             account.setOwner(uid);
+             account.setName(name);
+             dbAccount.update(account);
+             } else {
+             account = dbAccount.getByName(name);
+             if (null != account) {
+             account.setOwner(uid);
+             account.setGid(gid);
+             dbAccount.update(account);
+             } else {
+             account = new LAccount();
+             account.setOwner(uid);
+             account.setGid(gid);
+             account.setName(name);
+             dbAccount.add(account);
+             }
+             }
+             Intent uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_ACCOUNT));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             break;
+
+             case NOTIFICATION_UPDATE_ACCOUNT:
+             gid = intent.getLongExtra("int1", 0L);
+             name = intent.getStringExtra("txt1");
+
+             dbAccount = DBAccount.getInstance();
+             account = dbAccount.getByGid(gid);
+             if (null != account) {
+             account.setName(name);
+             dbAccount.update(account);
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_ACCOUNT));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+
+             case NOTIFICATION_DELETE_ACCOUNT:
+             gid = intent.getLongExtra("int1", 0L);
+             dbAccount = DBAccount.getInstance();
+             account = dbAccount.getByGid(gid);
+             if (null != account) {
+             LTask.start(new DBAccount.MyAccountDeleteTask(), account.getId());
+             dbAccount.deleteById(account.getId());
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_ACCOUNT));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+
+             case NOTIFICATION_UPDATE_ACCOUNT_GID:
+             gid = intent.getLongExtra("int1", 0L);
+             long gid2 = intent.getLongExtra("int2", 0L);
+
+             dbAccount = DBAccount.getInstance();
+             account = dbAccount.getByGid(gid);
+             if (null != account) {
+             account.setGid(gid2);
+             dbAccount.update(account);
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_ACCOUNT));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+
+             case NOTIFICATION_ADD_CATEGORY:
+             gid = intent.getLongExtra("int1", 0L);
+             long pid = intent.getLongExtra("int2", 0L);
+             name = intent.getStringExtra("txt1");
+             DBCategory dbCategory = DBCategory.getInstance();
+             LCategory category = dbCategory.getByGid(gid);
+             if (null != category) {
+             category.setName(name);
+             //category.setPid(pid);
+             dbCategory.update(category);
+             } else {
+             category = dbCategory.getByName(name);
+             if (null != category) {
+             category.setGid(gid);
+             //category.setPid(pid);
+             dbCategory.update(category);
+             } else {
+             category = new LCategory();
+             category.setGid(gid);
+             category.setName(name);
+             dbCategory.add(category);
+             }
+             }
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_CATEGORY));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             break;
+
+             case NOTIFICATION_UPDATE_CATEGORY:
+             gid = intent.getLongExtra("int1", 0L);
+             pid = intent.getLongExtra("int2", 0L);
+             name = intent.getStringExtra("txt1");
+             dbCategory = DBCategory.getInstance();
+             category = dbCategory.getByGid(gid);
+             if (null != category) {
+             category.setName(name);
+             //category.setPid(pid);
+             dbCategory.update(category);
+
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_CATEGORY));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+
+             case NOTIFICATION_DELETE_CATEGORY:
+             gid = intent.getLongExtra("int1", 0L);
+             dbCategory = DBCategory.getInstance();
+             category = dbCategory.getByGid(gid);
+             if (null != category) {
+             dbCategory.deleteById(category.getId());
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_CATEGORY));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+
+             case NOTIFICATION_ADD_TAG:
+             gid = intent.getLongExtra("int1", 0L);
+             name = intent.getStringExtra("txt1");
+             DBTag dbTag = DBTag.getInstance();
+             LTag tag = dbTag.getByGid(gid);
+             if (null != tag) {
+             tag.setName(name);
+             dbTag.update(tag);
+             } else {
+             tag = dbTag.getByName(name);
+             if (null != tag) {
+             tag.setGid(gid);
+             dbTag.update(tag);
+             } else {
+             tag = new LTag();
+             tag.setGid(gid);
+             tag.setName(name);
+             dbTag.add(tag);
+             }
+             }
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_TAG));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             break;
+
+             case NOTIFICATION_UPDATE_TAG:
+             gid = intent.getLongExtra("int1", 0L);
+             name = intent.getStringExtra("txt1");
+             dbTag = DBTag.getInstance();
+             tag = dbTag.getByGid(gid);
+             if (null != tag) {
+             tag.setName(name);
+             dbTag.update(tag);
+
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_TAG));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+
+             case NOTIFICATION_DELETE_TAG:
+             gid = intent.getLongExtra("int1", 0L);
+             dbTag = DBTag.getInstance();
+             tag = dbTag.getByGid(gid);
+             if (null != tag) {
+             dbTag.deleteById(tag.getId());
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_TAG));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+             case NOTIFICATION_ADD_VENDOR:
+             gid = intent.getLongExtra("int1", 0L);
+             long type = intent.getLongExtra("int2", 0L);
+             name = intent.getStringExtra("txt1");
+             DBVendor dbVendor = DBVendor.getInstance();
+             LVendor vendor = dbVendor.getByGid(gid);
+             if (null != vendor) {
+             vendor.setName(name);
+             vendor.setType((int) type);
+             dbVendor.update(vendor);
+             } else {
+             vendor = dbVendor.getByName(name);
+             if (null != vendor) {
+             vendor.setGid(gid);
+             dbVendor.update(vendor);
+             } else {
+             vendor = new LVendor();
+             vendor.setGid(gid);
+             vendor.setName(name);
+             vendor.setType((int) type);
+             dbVendor.add(vendor);
+             }
+             }
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_VENDOR));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             break;
+
+             case NOTIFICATION_UPDATE_VENDOR:
+             gid = intent.getLongExtra("int1", 0L);
+             type = intent.getLongExtra("int2", 0L);
+             name = intent.getStringExtra("txt1");
+             dbVendor = DBVendor.getInstance();
+             vendor = dbVendor.getByGid(gid);
+             if (null != vendor) {
+             vendor.setName(name);
+             vendor.setType((int) type);
+             dbVendor.update(vendor);
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_VENDOR));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+
+             case NOTIFICATION_DELETE_VENDOR:
+             gid = intent.getLongExtra("int1", 0L);
+             dbVendor = DBVendor.getInstance();
+             vendor = dbVendor.getByGid(gid);
+             if (null != vendor) {
+             dbVendor.deleteById(vendor.getId());
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_VENDOR));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+
+             case NOTIFICATION_GET_RECORD:
+             case NOTIFICATION_UPDATE_RECORD:
+             gid = intent.getLongExtra("int1", 0L);
+             journal.getRecord(gid);
+             break;
+
+             case NOTIFICATION_DELETE_RECORD:
+             gid = intent.getLongExtra("int1", 0L);
+             DBTransaction dbTransaction = DBTransaction.getInstance();
+             LTransaction transaction = dbTransaction.getByGid(gid);
+             if (null != transaction) {
+             dbTransaction.deleteById(transaction.getId());
+             }
+             break;
+
+             case NOTIFICATION_GET_RECORDS:
+             byte[] blob = intent.getByteArrayExtra("blob");
+             LBuffer data = new LBuffer(blob);
+             long[] ids = new long[blob.length / Long.BYTES];
+             for (int ii = 0; ii < ids.length; ii++) {
+             ids[ii] = data.getLongAutoInc();
+             }
+             journal.getRecords(ids);
+             break;
+
+             case NOTIFICATION_ADD_SCHEDULE:
+             case NOTIFICATION_UPDATE_SCHEDULE:
+             gid = intent.getLongExtra("int1", 0L);
+             journal.getSchedule(gid);
+             break;
+
+             case NOTIFICATION_DELETE_SCHEDULE:
+             gid = intent.getLongExtra("int1", 0L);
+             DBScheduledTransaction dbScheduledTransaction = DBScheduledTransaction.getInstance();
+             LScheduledTransaction scheduledTransaction = dbScheduledTransaction.getByGid(gid);
+             if (null != scheduledTransaction) {
+             dbScheduledTransaction.deleteById(scheduledTransaction.getId());
+             }
+             break;
+
+             case NOTIFICATION_UPDATE_USER_PROFILE:
+             LPreferences.setUserName(intent.getStringExtra("txt1"));
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_USER_PROFILE));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             break;
+
+             case NOTIFICATION_ADD_SHARE_USER:
+             uid = intent.getLongExtra("int1", 0L);
+             LPreferences.setShareUserId(uid, intent.getStringExtra("txt1"));
+             LPreferences.setShareUserName(uid, intent.getStringExtra("txt2"));
+             break;
+
+             case NOTIFICATION_REQUEST_ACCOUNT_SHARE:
+             long aid = intent.getLongExtra("int1", 0L);
+             uid = intent.getLongExtra("int2", 0L);
+
+             long shareAccept = LPreferences.getShareAccept(uid);
+             if (shareAccept != 0 && (shareAccept + 24 * 3600 * 1000 > System.currentTimeMillis())) {
+             LJournal journal = new LJournal();
+             journal.confirmAccountShare(aid, uid, true);
+             } else {
+             name = intent.getStringExtra("txt1");
+             LAccountShareRequest shareRequest = new LAccountShareRequest(uid, LPreferences
+             .getShareUserId(uid), LPreferences.getShareUserName(uid), name, aid);
+             LPreferences.addAccountShareRequest(shareRequest);
+
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_SHARE_ACCOUNT));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+
+             case NOTIFICATION_DECLINE_ACCOUNT_SHARE:
+             aid = intent.getLongExtra("int1", 0L);
+             uid = intent.getLongExtra("int2", 0L);
+             dbAccount = DBAccount.getInstance();
+             account = dbAccount.getByGid(aid);
+             if (null != account) {
+             //only remove if share state is INVITED, in other words, do not
+             //unshare a previously confirmed share here
+             if (LAccount.ACCOUNT_SHARE_INVITED == account.getShareUserState(uid)) {
+             account.removeShareUser(uid);
+             dbAccount.update(account);
+
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_ACCOUNT));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             }
+             break;
+
+             case NOTIFICATION_UPDATE_ACCOUNT_USER:
+             aid = intent.getLongExtra("int1", 0L);
+             dbAccount = DBAccount.getInstance();
+             account = dbAccount.getByGid(aid);
+             if (null != account) {
+             account.setSharedIdsString(intent.getStringExtra("txt1"));
+             dbAccount.update(account);
+
+             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_UPDATE_ACCOUNT));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             }
+             break;
+
+             case NOTIFICATION_GET_ACCOUNT_RECORDS:
+             aid = intent.getLongExtra("int1", 0L);
+             journal.getAccountRecords(aid);
+             break;
+
+             case NOTIFICATION_GET_ACCOUNT_SCHEDULES:
+             aid = intent.getLongExtra("int1", 0L);
+             journal.getAccountSchedules(aid);
+             break;
+
+             case NOTIFICATION_GET_ACCOUNTS:
+             journal.getAllAccounts();
+             break;
+
+             case NOTIFICATION_GET_CATEGORIES:
+             journal.getAllCategories();
+             break;
+
+             case NOTIFICATION_GET_VENDORS:
+             journal.getAllVendors();
+             break;
+
+             case NOTIFICATION_GET_TAGS:
+             journal.getAllTags();
+             break;
+
+             default:
+             LLog.w(TAG, "unexpected notification id: " + nid);
+             }
+             pollingCount = MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION;
+             server.UiPollAck(id);
+             } else {
+             //no more
+             LLog.d(TAG, "flushing journal upon polling ends ...");
+             if (!journal.flush()) {
+             if (LFragmentActivity.upRunning) {
+             //server.UiUtcSync();
+             if (pollingCount++ < MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION) {
+             serviceHandler.postDelayed(pollRunnable, NETWORK_IDLE_POLLING_MS);
+             }
+
+             Intent uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
+             .ACTION_UI_NET_IDLE));
+             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+             } else {
+             LLog.d(TAG, "no activity visible, shutdown now");
+             serviceHandler.postDelayed(serviceShutdownRunnable,
+             SERVICE_SHUTDOWN_MS);
+             }
+             }
+             }
+             break;
+
+             */
+        }
+
+        @objc func pollAck(notification: Notification) {
+            if (!LJournal.instance.flush()) {
+                UiRequest.instance.UiPoll()
+            }
+        }
+
 }

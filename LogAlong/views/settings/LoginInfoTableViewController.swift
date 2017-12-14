@@ -31,12 +31,15 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
         if !LPreferences.getUserId().isEmpty {
             validUser = true
 
+            LBroadcast.register(LBroadcast.ACTION_UPDATE_USER_PROFILE, cb: #selector(self.updateUserName), listener: self)
+
             /*passwordCell.isHidden = true
             showPasswordCell.isHidden = true*/
 
             tableView.separatorStyle = .none
 
             userIdTextField.text = LPreferences.getUserId()
+            userIdTextField.isEnabled = false
             nameTextField.text = LPreferences.getUserName()
         }
 
@@ -56,6 +59,10 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    @objc func updateUserName(notification: Notification) {
+        nameTextField.text = LPreferences.getUserName()
     }
 
     func getFinalLoginType() -> Int {
@@ -92,6 +99,10 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
+        if (validUser) {
+            LPreferences.setUserName(nameTextField.text!)
+            UiRequest.instance.UiUpdateUserProfile(userIdTextField.text!, LPreferences.getUserPassword(), newPass: LPreferences.getUserPassword(), fullName: nameTextField.text!)
+        }
         checkTextFields()
     }
 

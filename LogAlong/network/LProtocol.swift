@@ -266,11 +266,6 @@ final class LProtocol : LServerDelegate {
             LLog.d("\(self)", "user logged in")
             switch (rsps) {
             case LProtocol.RSPS | LProtocol.RQST_UPDATE_USER_PROFILE:
-                /*rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                 .ACTION_UPDATE_USER_PROFILE));
-                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
-
                 LBroadcast.post(LBroadcast.ACTION_UPDATE_USER_PROFILE, sender: nil, data: bdata)
                 break;
 
@@ -446,34 +441,34 @@ final class LProtocol : LServerDelegate {
                 LBroadcast.post(LBroadcast.ACTION_POST_JOURNAL, sender: nil, data: bdata)
 
             case LProtocol.RSPS | LProtocol.RQST_POLL:
-                /*packetConsumptionStatus.isResponseCompleted = (status == RSPS_OK || status == RSPS_ERROR);
-                 rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver.ACTION_POLL));
-                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                 if (status == RSPS_OK) {
-                 rspsIntent.putExtra("id", pkt.getLongAutoInc());
-                 rspsIntent.putExtra("nid", pkt.getShortAutoInc());
-                 rspsIntent.putExtra("int1", pkt.getLongAutoInc());
-                 rspsIntent.putExtra("int2", pkt.getLongAutoInc());
-                 int bytes = pkt.getShortAutoInc();
-                 String txt = pkt.getStringAutoInc(bytes);
-                 rspsIntent.putExtra("txt1", txt);
-                 bytes = pkt.getShortAutoInc();
-                 txt = pkt.getStringAutoInc(bytes);
-                 rspsIntent.putExtra("txt2", txt);
+                if LProtocol.RSPS_OK == status {
+                    bdata["id"] = pkt.getLongAutoInc()
+                    bdata["nid"] = pkt.getShortAutoInc()
+                    bdata["int1"] = pkt.getLongAutoInc()
+                    bdata["int2"] = pkt.getLongAutoInc()
 
-                 bytes = pkt.getShortAutoInc();
-                 rspsIntent.putExtra("blob", pkt.getBytesAutoInc(bytes));
-                 }
-                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
+                    var bytes = pkt.getShortAutoInc()
+                    var txt = pkt.getStringAutoInc(Int(bytes))
+                    bdata["txt1"] = txt
+
+                    bytes = pkt.getShortAutoInc()
+                    txt = pkt.getStringAutoInc(Int(bytes))
+                    bdata["txt2"] = txt
+
+                    bytes = pkt.getShortAutoInc()
+                    bdata["blob"] = pkt.getBytesAutoInc(Int(bytes))
+                }
+
+                LBroadcast.post(LBroadcast.ACTION_POLL, sender: nil, data: bdata)
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_POLL_ACK:
-                /*if (status == RSPS_OK) {
-                 rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver.ACTION_POLL_ACK));
-                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
-                 } else {
-                 LLog.w("\(self)", "unable to acknowledge polling");
-                 }*/
+                if LProtocol.RSPS_OK == status {
+                    LBroadcast.post(LBroadcast.ACTION_POLL_ACK, sender: nil, data: bdata)
+                } else {
+                    LLog.w("\(self)", "unable to acknowledge polling")
+                }
+
                 break;
 
             case LProtocol.PUSH_NOTIFICATION:

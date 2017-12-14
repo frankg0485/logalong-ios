@@ -141,15 +141,15 @@ class LBuffer {
         offset += 8;
         return val;
     }
+
+    func getBytesAutoInc(_ bytes: Int) -> [UInt8] {
+        let tmp = [UInt8](repeating: UInt8(0), count: bytes)
+        memcpy(UnsafeMutableRawPointer(mutating: tmp), array + offset, bytes)
+        offset += bytes
+
+        return tmp
+    }
     /*
-     public byte[] getBytesAutoInc(int bytes) {
-     byte[] tmp = new byte[bytes];
-     System.arraycopy(array, offset, tmp, 0, bytes);
-     offset += bytes;
-
-     return tmp;
-     }
-
      public short[] getShortsAutoInc(int shorts) {
      short[] tmp = new short[shorts];
      for (int ii = 0; ii < shorts; ii++)
