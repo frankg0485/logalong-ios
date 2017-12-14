@@ -53,10 +53,11 @@ class LJournal {
             jdata.setLen(jdata.getOffset());
         }
 
-        func add(_ d: D?, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
+        func add(_ fetch: (LBuffer) -> D?, _ jdata: LBuffer, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
             var remove = false;
             var new = false;
             let ret = true;
+            let d = fetch(jdata)
 
             if (d == nil) {
                 //ok to ignore add request if entry has been deleted afterwards
@@ -76,10 +77,11 @@ class LJournal {
             return (ret, new, remove)
         }
 
-        func update(_ d: D?, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
+        func update(_ fetch: (LBuffer) -> D?, _ jdata: LBuffer, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
             var remove = false;
             var new = false;
             var ret = true;
+            let d = fetch(jdata)
 
             if (d == nil) {
                 //ok to ignore update request if entry has been deleted afterwards
@@ -96,10 +98,11 @@ class LJournal {
             return (ret, new, remove)
         }
 
-        func delete(_ d: D?, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
+        func delete(_ fetch: (LBuffer) -> D?, _ jdata: LBuffer, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
             var remove = false;
             var new = false;
             var ret = true;
+            let d = fetch(jdata)
 
             if (d == nil) {
                 //ok to ignore delete request if entry has been deleted already
@@ -115,7 +118,6 @@ class LJournal {
             }
             return (ret, new, remove)
         }
-
     }
 
     private class JLAccount: LAccount, GenericJD {
@@ -142,31 +144,17 @@ class LJournal {
             jdata.setLen(jdata.getOffset());
             return true;
         }
-    }
 
-    private class AccountJournalFlushAction : GenericJournalFlushAction<JLAccount> {
-        private func getD(_ jdata: LBuffer) -> JLAccount? {
+        static func fetch(_ jdata: LBuffer) -> JLAccount? {
             if let account = DBAccount.instance.get(id: Int64(jdata.getLongAutoInc())) {
                 return JLAccount(account: account)
             } else {
                 return nil
             }
         }
-
-        func add(_ jdata: LBuffer, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
-            return super.add(getD(jdata), ndata)
-        }
-
-        func update(_ jdata: LBuffer, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
-            return super.update(getD(jdata), ndata)
-        }
-
-        func delete(_ jdata: LBuffer, _ ndata: LBuffer) -> (ret: Bool, new: Bool, remove: Bool) {
-            return super.delete(getD(jdata), ndata)
-        }
     }
 
-    private var accountJournalFlushAction: AccountJournalFlushAction?
+    private var accountJournalFlushAction: GenericJournalFlushAction<JLAccount>?
 
     func flush() -> Bool {
         /*
@@ -177,7 +165,7 @@ class LJournal {
             scheduleJournalFlushAction = new LJournal.ScheduleJournalFlushAction();
         }*/
         if (accountJournalFlushAction == nil) {
-            accountJournalFlushAction = AccountJournalFlushAction();
+            accountJournalFlushAction = GenericJournalFlushAction<JLAccount>();
         }
         /*
         if (categoryJournalFlushAction == null) {
@@ -235,11 +223,11 @@ class LJournal {
             break;
              */
         case LProtocol.JRQST_ADD_ACCOUNT:
-            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.add(jdata, ndata)
+            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.add(JLAccount.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_ACCOUNT:
-            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.update(jdata, ndata)
+            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.update(JLAccount.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_ACCOUNT:
-            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.delete(jdata, ndata)
+            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.delete(JLAccount.fetch, jdata, ndata)
             /*
         case LProtocol.JRQST_ADD_CATEGORY:
             if (!categoryJournalFlushAction.add(jdata, ndata)) return false;
