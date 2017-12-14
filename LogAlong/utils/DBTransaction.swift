@@ -8,7 +8,7 @@ import SQLite
 
 class DBTransaction: DBGeneric {
     static let instance = DBTransaction()
-    let table = DBHelper.instance.transactions
+    private let table = DBHelper.instance.transactions
 
     enum sorts: Int {
         case ACCOUNT = 1
@@ -29,7 +29,8 @@ class DBTransaction: DBGeneric {
     }
 
     private func setValues(_ value: LTransaction) -> [SQLite.Setter] {
-        return [DBHelper.categoryId <- value.categoryId,
+        return [DBHelper.gid <- value.gid,
+                DBHelper.categoryId <- value.categoryId,
                 DBHelper.accountId <- value.accountId,
                 DBHelper.amount <- value.amount,
                 DBHelper.type <- value.type,
@@ -37,17 +38,27 @@ class DBTransaction: DBGeneric {
     }
 
     func getAll() -> [LTransaction] {
-        var transactions: [LTransaction] = []
+        return super.getAll(table, getValues, by: DBHelper.timestamp.asc)
+    }
 
-        do {
-            for row in try DBHelper.instance.db!.prepare(table.order(DBHelper.timestamp.asc)) {
-                transactions.append(getValues(row)!)
-            }
-        } catch {
-            LLog.e("\(self)", "Get all transactions failed")
-        }
+    func get(id: Int64) -> LTransaction? {
+        return super.get(table, getValues, id: id)
+    }
 
-        return transactions
+    func get(gid: Int64) -> LTransaction? {
+        return super.get(table, getValues, gid: gid)
+    }
+
+    func add(_ account: inout LTransaction) -> Bool {
+        return super.add(table, setValues, &account)
+    }
+
+    func remove(id: Int64) -> Bool {
+        return super.remove(table, id: id)
+    }
+
+    func update(_ trans: LTransaction) -> Bool {
+        return super.update(table, setValues, trans)
     }
 
     func getAll(sortBy: Int, timeAsc: Bool) -> [LTransaction] {
@@ -119,28 +130,5 @@ class DBTransaction: DBGeneric {
 
     func getAllByCategory(categoryId: Int64) -> [LTransaction] {
         return getAllBy(id: categoryId, col: DBHelper.categoryId)
-    }
-
-    func add(_ transaction: inout LTransaction) -> Bool {
-        return super.add(DBHelper.instance.transactions, dbase: &transaction,
-                         categoryId: transaction.categoryId,
-                         accountId: transaction.accountId,
-                         amount: transaction.amount,
-                         timestamp: transaction.timestamp,
-                         type: transaction.type)
-    }
-
-    func remove(id: Int64) -> Bool {
-        return super.remove(DBHelper.instance.transactions, id: id)
-    }
-
-    func update(_ transaction: LTransaction) -> Bool {
-        return super.update(DBHelper.instance.transactions,
-                            id: transaction.id,
-                            accountId: transaction.accountId,
-                            categoryId: transaction.categoryId,
-                            amount: transaction.amount,
-                            timestamp: transaction.timestamp,
-                            type: transaction.type)
     }
 }

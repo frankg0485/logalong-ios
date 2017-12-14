@@ -9,61 +9,54 @@
 import SQLite
 
 class DBGeneric {
+    func getAll<T>(_ table: Table, _ getValues: (Row) -> T?, by: Expressible...) -> [T] {
+        var ts: [T] = []
 
-    func get(_ table: Table, id: Int64) -> (gid: Int64, name: String)? {
         do {
-            for entry in try DBHelper.instance.db!.prepare(table.filter(DBHelper.id == id)) {
-                //TODO: error report if multiple entries found
-                return (gid: entry[DBHelper.gid], name: entry[DBHelper.name])
+            for row in try DBHelper.instance.db!.prepare(table.order(by)) {
+                ts.append(getValues(row)!)
             }
         } catch {
-            LLog.e("\(self)", "unable to find entry with id: \(id)")
+            LLog.e("\(self)", "Get all rows failed")
+        }
+
+        return ts
+    }
+
+    func get<T>(_ table: Table, _ getValues: (Row) -> T?, id: Int64) -> T? {
+        do {
+            for row in try DBHelper.instance.db!.prepare(table.filter(DBHelper.id == id)) {
+                //TODO: error report if multiple entries found
+                return getValues(row)
+            }
+        } catch {
+            LLog.e("\(self)", "unable to find row with id: \(id)")
         }
         return nil
     }
 
-    func get(_ table: Table, gid: Int64) -> (id: Int64, name: String)? {
+    func get<T>(_ table: Table, _ getValues: (Row) -> T?, gid: Int64) -> T? {
         do {
-            for entry in try DBHelper.instance.db!.prepare(table.filter(DBHelper.gid == gid)) {
+            for row in try DBHelper.instance.db!.prepare(table.filter(DBHelper.gid == gid)) {
                 //TODO: error report if multiple entries found
-                return (id: entry[DBHelper.id], name: entry[DBHelper.name])
+                return getValues(row)
             }
         } catch {
-            LLog.e("\(self)", "unable to find entry with gid: \(gid)")
+            LLog.e("\(self)", "unable to find row with gid: \(gid)")
         }
         return nil
     }
 
-    func add<T>(_ table: Table, dbase: inout T, name: String) -> Bool {
+    func add<T>(_ table: Table, _ setValues: (T) -> [SQLite.Setter], _ dbase: inout T) -> Bool {
         var ret = false
 
         do {
-            let insert = table.insert(DBHelper.name <- name, DBHelper.gid <- (dbase as! LDbBase).gid)
+            let insert = table.insert(setValues(dbase))
             let rowid = try DBHelper.instance.db!.run(insert)
             ret = (rowid != 0)
             (dbase as! LDbBase).id = rowid
         } catch {
             LLog.e("\(self)", "DB insert failed: \(error)")
-        }
-
-        return ret
-    }
-
-    func add<T>(_ table: Table, dbase: inout T, categoryId: Int64, accountId: Int64,
-                amount: Double, timestamp: Int64, type: Int) -> Bool {
-        var ret = false
-
-        do {
-            let insert = table.insert(DBHelper.categoryId <- categoryId,
-                                      DBHelper.accountId <- accountId,
-                                      DBHelper.amount <- amount,
-                                      DBHelper.timestamp <- timestamp,
-                                      DBHelper.type <- type)
-            let rowid = try DBHelper.instance.db!.run(insert)
-            ret = (rowid != 0)
-            (dbase as! LDbBase).id = rowid
-        } catch {
-            LLog.e("\(self)", "DB insert failed")
         }
 
         return ret
@@ -83,33 +76,12 @@ class DBGeneric {
         return ret
     }
 
-    func update(_ table: Table, id: Int64, name: String) -> Bool {
+    func update<T>(_ table: Table, _ setValues: (T) -> [SQLite.Setter], _ dbase: T) -> Bool {
         var ret = false
 
         do {
-            let tab = table.filter(DBHelper.id == id)
-            let update = tab.update(DBHelper.name <- name)
-
-            try DBHelper.instance.db!.run(update)
-            ret = true
-        } catch {
-            LLog.e("\(self)", "DB update failed")
-        }
-
-        return ret
-    }
-
-    func update(_ table: Table, id: Int64, accountId: Int64, categoryId: Int64,
-                amount: Double, timestamp: Int64, type: Int) -> Bool {
-        var ret = false
-
-        do {
-            let tab = table.filter(DBHelper.id == id)
-            let update = tab.update(DBHelper.accountId <- accountId,
-                                    DBHelper.categoryId <- categoryId,
-                                    DBHelper.amount <- amount,
-                                    DBHelper.timestamp <- timestamp,
-                                    DBHelper.type <- type)
+            let tab = table.filter(DBHelper.id == (dbase as! LDbBase).id)
+            let update = tab.update(setValues(dbase))
 
             try DBHelper.instance.db!.run(update)
             ret = true

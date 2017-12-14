@@ -52,7 +52,7 @@ class DBHelper {
         do {
             try db!.run(accounts.create(ifNotExists: true) { table in
                 table.column(DBHelper.id, primaryKey: true)
-                table.column(DBHelper.gid, unique: true)
+                table.column(DBHelper.gid)
                 table.column(DBHelper.name, unique: true, collate: .nocase)
                 /*
                 table.column(DBHelper.share)
@@ -67,6 +67,7 @@ class DBHelper {
         do {
             try db!.run(categories.create(ifNotExists: true) { table in
                 table.column(DBHelper.id, primaryKey: true)
+                table.column(DBHelper.gid)
                 table.column(DBHelper.name, unique: true, collate: .nocase)
             })
         } catch {
@@ -76,6 +77,7 @@ class DBHelper {
         do {
             try db!.run(transactions.create(ifNotExists: true) { table in
                 table.column(DBHelper.id, primaryKey: true)
+                table.column(DBHelper.gid)
                 table.column(DBHelper.accountId)
                 table.column(DBHelper.categoryId)
                 table.column(DBHelper.amount)

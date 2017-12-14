@@ -9,46 +9,40 @@ import SQLite
 
 class DBAccount : DBGeneric {
     static let instance = DBAccount()
+    private let table = DBHelper.instance.accounts
+
+    private func getValues(_ row: Row) -> LAccount? {
+        return LAccount(id: row[DBHelper.id],
+                        gid: row[DBHelper.gid],
+                        name: row[DBHelper.name])
+    }
+
+    private func setValues(_ value: LAccount) -> [SQLite.Setter] {
+        return [DBHelper.gid <- value.gid,
+                DBHelper.name <- value.name]
+    }
 
     func getAll() -> [LAccount] {
-        var accounts: [LAccount] = []
-
-        do {
-            for account in try DBHelper.instance.db!.prepare(DBHelper.instance.accounts.order(DBHelper.name.asc)) {
-                accounts.append(LAccount(id: account[DBHelper.id], gid: account[DBHelper.gid], name: account[DBHelper.name]))
-            }
-        } catch {
-            LLog.e("\(self)", "Get all accounts failed")
-        }
-
-        return accounts
+        return super.getAll(table, getValues, by: DBHelper.name.asc)
     }
 
     func get(id: Int64) -> LAccount? {
-        if let ret: (gid: Int64, name: String) = super.get(DBHelper.instance.accounts, id: id) {
-            return LAccount(id: id, gid: ret.gid, name: ret.name)
-        } else {
-            return nil
-        }
+        return super.get(table, getValues, id: id)
     }
 
     func get(gid: Int64) -> LAccount? {
-        if let ret: (id: Int64, name: String) = super.get(DBHelper.instance.accounts, gid: gid) {
-            return LAccount(id: ret.id, gid: gid, name: ret.name)
-        } else {
-            return nil
-        }
+        return super.get(table, getValues, gid: gid)
     }
 
     func add(_ account: inout LAccount) -> Bool {
-        return super.add(DBHelper.instance.accounts, dbase: &account, name: account.name)
+        return super.add(table, setValues, &account)
     }
 
     func remove(id: Int64) -> Bool {
-        return super.remove(DBHelper.instance.accounts, id: id)
+        return super.remove(table, id: id)
     }
 
     func update(_ account: LAccount) -> Bool {
-        return super.update(DBHelper.instance.accounts, id: account.id, name: account.name)
+        return super.update(table, setValues, account)
     }
 }

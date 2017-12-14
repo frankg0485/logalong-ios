@@ -5,41 +5,44 @@
 //  Created by Michael Gao on 11/28/17.
 //  Copyright © 2017 Swoag Technology. All rights reserved.
 //
+import SQLite
 
 class DBCategory : DBGeneric {
     static let instance = DBCategory()
+    private let table = DBHelper.instance.categories
+
+    private func getValues(_ row: Row) -> LCategory? {
+        return LCategory(id: row[DBHelper.id],
+                         gid: row[DBHelper.gid],
+                         name: row[DBHelper.name])
+    }
+
+    private func setValues(_ value: LCategory) -> [SQLite.Setter] {
+        return [DBHelper.gid <- value.gid,
+                DBHelper.name <- value.name]
+    }
 
     func getAll() -> [LCategory] {
-        var categories: [LCategory] = []
-
-        do {
-            for category in try DBHelper.instance.db!.prepare(DBHelper.instance.categories.order(DBHelper.name.asc)) {
-                categories.append(LCategory(id: category[DBHelper.id], gid: 0, name: category[DBHelper.name]))
-            }
-        } catch {
-            LLog.e("\(self)", "Select all category failed")
-        }
-
-        return categories
+        return super.getAll(table, getValues, by: DBHelper.name.asc)
     }
 
     func get(id: Int64) -> LCategory? {
-        if let ret: (gid: Int64, name: String) = super.get(DBHelper.instance.categories, id: id) {
-            return LCategory(id: id, gid: ret.gid, name: ret.name)
-        } else {
-            return nil
-        }
+        return super.get(table, getValues, id: id)
+    }
+
+    func get(gid: Int64) -> LCategory? {
+        return super.get(table, getValues, gid: gid)
     }
 
     func add(_ category: inout LCategory) -> Bool {
-        return super.add(DBHelper.instance.categories, dbase: &category, name: category.name)
+        return super.add(table, setValues, &category)
     }
 
     func remove(id: Int64) -> Bool {
-        return super.remove(DBHelper.instance.categories, id: id)
+        return super.remove(table, id: id)
     }
 
     func update(_ category: LCategory) -> Bool {
-        return super.update(DBHelper.instance.categories, id: category.id, name: category.name)
+        return super.update(table, setValues, category)
     }
 }
