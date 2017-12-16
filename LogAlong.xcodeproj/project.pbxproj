@@ -50,6 +50,10 @@
 		CB51B55C1FBBFF11002CABA1 /* LBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB51B55B1FBBFF11002CABA1 /* LBuffer.swift */; };
 		CB81316C1FCFB2CC00E33079 /* LDbBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81316B1FCFB2CC00E33079 /* LDbBase.swift */; };
 		CBAA495A1FC51CCA00E77834 /* UiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA49591FC51CCA00E77834 /* UiRequest.swift */; };
+		CBB51D1F1FE49660000CD233 /* LTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D1E1FE49660000CD233 /* LTag.swift */; };
+		CBB51D2A1FE496CF000CD233 /* LVendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D291FE496CF000CD233 /* LVendor.swift */; };
+		CBB51D2C1FE49EC2000CD233 /* DBTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D2B1FE49EC2000CD233 /* DBTag.swift */; };
+		CBB51D2E1FE49EDB000CD233 /* DBVendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D2D1FE49EDB000CD233 /* DBVendor.swift */; };
 		CBC01B461FAEA4C70092B184 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; };
 		CBC01B471FAEA4F30092B184 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B261FAEA2FF0092B184 /* SQLite.framework */; };
 		CBC01B491FAEAA080092B184 /* LAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B481FAEAA080092B184 /* LAccount.swift */; };
@@ -210,6 +214,10 @@
 		CB51B55B1FBBFF11002CABA1 /* LBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LBuffer.swift; path = network/LBuffer.swift; sourceTree = "<group>"; };
 		CB81316B1FCFB2CC00E33079 /* LDbBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDbBase.swift; sourceTree = "<group>"; };
 		CBAA49591FC51CCA00E77834 /* UiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UiRequest.swift; path = network/UiRequest.swift; sourceTree = "<group>"; };
+		CBB51D1E1FE49660000CD233 /* LTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTag.swift; sourceTree = "<group>"; };
+		CBB51D291FE496CF000CD233 /* LVendor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LVendor.swift; sourceTree = "<group>"; };
+		CBB51D2B1FE49EC2000CD233 /* DBTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTag.swift; sourceTree = "<group>"; };
+		CBB51D2D1FE49EDB000CD233 /* DBVendor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBVendor.swift; sourceTree = "<group>"; };
 		CBC01B1B1FAEA2FF0092B184 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = ../sqlite/SQLite.xcodeproj; sourceTree = "<group>"; };
 		CBC01B3C1FAEA3AB0092B184 /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Charts.xcodeproj; path = ../charts/Charts.xcodeproj; sourceTree = "<group>"; };
 		CBC01B481FAEAA080092B184 /* LAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LAccount.swift; sourceTree = "<group>"; };
@@ -259,7 +267,9 @@
 				CBEF97611FD25B8A00D61F79 /* DBJournal.swift */,
 				CB1073651FCE735900390032 /* DBGeneric.swift */,
 				CB1073631FCE6F6E00390032 /* DBCategory.swift */,
+				CBB51D2B1FE49EC2000CD233 /* DBTag.swift */,
 				CBEF97701FD4654F00D61F79 /* LExtension.swift */,
+				CBB51D2D1FE49EDB000CD233 /* DBVendor.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -347,6 +357,8 @@
 				CB81316B1FCFB2CC00E33079 /* LDbBase.swift */,
 				CB1073541FCE599E00390032 /* LJournal.swift */,
 				CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */,
+				CBB51D1E1FE49660000CD233 /* LTag.swift */,
+				CBB51D291FE496CF000CD233 /* LVendor.swift */,
 			);
 			path = entities;
 			sourceTree = "<group>";
@@ -610,9 +622,11 @@
 				CB3154DF1FBD3AA6006F9DE4 /* Crc32.swift in Sources */,
 				CBC374971FBE54890098721C /* LLog.swift in Sources */,
 				CB81316C1FCFB2CC00E33079 /* LDbBase.swift in Sources */,
+				CBB51D1F1FE49660000CD233 /* LTag.swift in Sources */,
 				014893D31EDFA368005E3C94 /* ProtocolViewController.swift in Sources */,
 				CB1073621FCE6D0E00390032 /* DBAccount.swift in Sources */,
 				0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */,
+				CBB51D2E1FE49EDB000CD233 /* DBVendor.swift in Sources */,
 				019CCD501E6DC7D0002EF989 /* RecordsTableViewCell.swift in Sources */,
 				015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */,
 				012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */,
@@ -645,8 +659,10 @@
 				CB51B5581FBBDF26002CABA1 /* LProtocol.swift in Sources */,
 				0128AE481EC4829B007A999B /* AccountsTableViewController.swift in Sources */,
 				014893CF1EDE6106005E3C94 /* SelectAmountViewController.swift in Sources */,
+				CBB51D2A1FE496CF000CD233 /* LVendor.swift in Sources */,
 				01FA01091FBFA627002C00C0 /* LoginTimerViewController.swift in Sources */,
 				CBAA495A1FC51CCA00E77834 /* UiRequest.swift in Sources */,
+				CBB51D2C1FE49EC2000CD233 /* DBTag.swift in Sources */,
 				019CCD541E748042002EF989 /* LTransaction.swift in Sources */,
 				0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */,
 				CB1073641FCE6F6E00390032 /* DBCategory.swift in Sources */,
