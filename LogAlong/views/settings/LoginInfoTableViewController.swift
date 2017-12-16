@@ -26,7 +26,8 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //nameCell.isHidden = false
+        nameCell.isHidden = false
+        tableView.separatorStyle = .none
 
         if !LPreferences.getUserId().isEmpty {
             validUser = true
@@ -75,6 +76,7 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
 
     func reloadLoginScreen() {
         self.viewDidLoad()
+        tableView.reloadData()
     }
 
     func checkTextFields() {
@@ -129,6 +131,7 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        print("indexPath.row = \(indexPath.row)")
         if (validUser) && ((indexPath.row > 0) && (indexPath.row < 3)) {
             return 0.0
         }

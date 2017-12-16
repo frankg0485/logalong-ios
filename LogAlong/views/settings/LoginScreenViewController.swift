@@ -11,8 +11,9 @@ import UIKit
 class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDelegate, FPassNameIdPasswordDelegate, UIPopoverPresentationControllerDelegate, FNotifyReloadLoginScreenDelegate {
 
     var loginDelegate: FLoginViewControllerDelegate?
-    var reloadDelegate: FReloadLoginScreenDelegate?
+    var reloadLoginInfoDelegate: FReloadLoginScreenDelegate?
     var loginTypeDelegate: FLoginTypeDelegate?
+    var reloadSwitchDelegate: FReloadLoginScreenDelegate?
 
     var nameCellHidden: Bool = false
 
@@ -37,7 +38,8 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
 
     func notifyReloadLoginScreen() {
         viewDidLoad()
-        reloadDelegate?.reloadLoginScreen()
+        reloadLoginInfoDelegate?.reloadLoginScreen()
+        reloadSwitchDelegate?.reloadLoginScreen()
     }
 
     func passLoginInfoBack(name: String?, id: String, password: String, typeOfLogin: Int) {
@@ -75,9 +77,10 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let secondViewController = segue.destination as? CreateOrLoginTableViewController {
             secondViewController.delegate = self
+            reloadSwitchDelegate = secondViewController
         } else if let secondViewController = segue.destination as? LoginInfoTableViewController {
             loginDelegate = secondViewController
-            reloadDelegate = secondViewController
+            reloadLoginInfoDelegate = secondViewController
             loginTypeDelegate = secondViewController
             secondViewController.delegate = self
         } else if let secondViewController = segue.destination as? LoginTimerViewController {

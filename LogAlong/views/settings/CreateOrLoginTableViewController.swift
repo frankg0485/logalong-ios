@@ -9,7 +9,7 @@
 import UIKit
 
 
-class CreateOrLoginTableViewController: UITableViewController {
+class CreateOrLoginTableViewController: UITableViewController, FReloadLoginScreenDelegate {
 
     var delegate: FNotifyLoginViewControllerDelegate?
 
@@ -38,6 +38,10 @@ class CreateOrLoginTableViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func reloadLoginScreen() {
+        viewDidLoad()
     }
 
     // MARK: - Table view data source
