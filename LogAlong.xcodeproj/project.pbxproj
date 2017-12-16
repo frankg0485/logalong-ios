@@ -21,6 +21,9 @@
 		014893CF1EDE6106005E3C94 /* SelectAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */; };
 		014893D31EDFA368005E3C94 /* ProtocolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D21EDFA368005E3C94 /* ProtocolViewController.swift */; };
 		014893D71EEB0332005E3C94 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D61EEB0332005E3C94 /* MainTabViewController.swift */; };
+		015183E71FE4911A002AC812 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B261FAEA2FF0092B184 /* SQLite.framework */; };
+		015183E81FE4911A002AC812 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B261FAEA2FF0092B184 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		015183F11FE57EF0002AC812 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015367311F9D588F001BCB89 /* PieChartViewController.swift */; };
 		017BA1141FAF5DC600694E38 /* LoginInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */; };
 		017BA1161FAF5DE500694E38 /* CreateOrLoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */; };
@@ -55,7 +58,6 @@
 		CBB51D2C1FE49EC2000CD233 /* DBTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D2B1FE49EC2000CD233 /* DBTag.swift */; };
 		CBB51D2E1FE49EDB000CD233 /* DBVendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D2D1FE49EDB000CD233 /* DBVendor.swift */; };
 		CBC01B461FAEA4C70092B184 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; };
-		CBC01B471FAEA4F30092B184 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B261FAEA2FF0092B184 /* SQLite.framework */; };
 		CBC01B491FAEAA080092B184 /* LAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B481FAEAA080092B184 /* LAccount.swift */; };
 		CBC01B4B1FAEAA270092B184 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */; };
 		CBC01B4D1FAEAA420092B184 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */; };
@@ -71,6 +73,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		015183E91FE4911A002AC812 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CBC01B1B1FAEA2FF0092B184 /* SQLite.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EE247AD21C3F04ED00AE3E12;
+			remoteInfo = "SQLite iOS";
+		};
+		015183F21FE57EF0002AC812 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CBC01B3C1FAEA3AB0092B184 /* Charts.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A58A4ED274A941CA248EA921;
+			remoteInfo = Charts;
+		};
 		019CCD381E6DAF65002EF989 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 019CCD191E6DAF64002EF989 /* Project object */;
@@ -144,12 +160,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		013318331F9BA145002B12EC /* Embed Frameworks */ = {
+		015183EB1FE4911A002AC812 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				015183E81FE4911A002AC812 /* SQLite.framework in Embed Frameworks */,
+				015183F11FE57EF0002AC812 /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -239,7 +257,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBC01B471FAEA4F30092B184 /* SQLite.framework in Frameworks */,
+				015183E71FE4911A002AC812 /* SQLite.framework in Frameworks */,
 				CBC01B461FAEA4C70092B184 /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,11 +458,13 @@
 				019CCD1E1E6DAF64002EF989 /* Frameworks */,
 				019CCD1F1E6DAF64002EF989 /* Resources */,
 				01B5EB491EF4AE62001EF3F7 /* Embed App Extensions */,
-				013318331F9BA145002B12EC /* Embed Frameworks */,
+				015183EB1FE4911A002AC812 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				015183EA1FE4911A002AC812 /* PBXTargetDependency */,
+				015183F31FE57EF0002AC812 /* PBXTargetDependency */,
 			);
 			name = LogAlong;
 			productName = LogAlong;
@@ -481,6 +501,7 @@
 				TargetAttributes = {
 					019CCD201E6DAF64002EF989 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = EMR65N9MP5;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -686,6 +707,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		015183EA1FE4911A002AC812 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SQLite iOS";
+			targetProxy = 015183E91FE4911A002AC812 /* PBXContainerItemProxy */;
+		};
+		015183F31FE57EF0002AC812 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Charts;
+			targetProxy = 015183F21FE57EF0002AC812 /* PBXContainerItemProxy */;
+		};
 		019CCD391E6DAF65002EF989 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 019CCD201E6DAF64002EF989 /* LogAlong */;
@@ -759,7 +790,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -809,7 +840,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -824,6 +855,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = EMR65N9MP5;
 				INFOPLIST_FILE = LogAlong/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.LogAlong;
@@ -841,6 +873,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = EMR65N9MP5;
 				INFOPLIST_FILE = LogAlong/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.LogAlong;
