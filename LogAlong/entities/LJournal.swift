@@ -194,8 +194,81 @@ class LJournal {
         }
     }
 
+    private class JLTag: LTag, GenericJD {
+        init(tag: LTag) {
+            super.init(id: tag.id, gid: tag.gid, name: tag.name,
+                       create: tag.timestampCreate, access: tag.timestampAccess)
+        }
+
+        func getId() -> Int64 {
+            return id
+        }
+
+        func getGid() -> Int64 {
+            return gid
+        }
+
+        func getRequestCode() -> UInt16 {
+            return LProtocol.JRQST_ADD_TAG
+        }
+
+        func add_data(_ jdata: LBuffer) -> Bool {
+            let sname = [UInt8](name.utf8)
+            jdata.putShortAutoInc(UInt16(sname.count))
+            jdata.putBytesAutoInc(sname)
+            jdata.setLen(jdata.getOffset());
+            return true;
+        }
+
+        static func fetch(_ jdata: LBuffer) -> JLTag? {
+            if let tag = DBTag.instance.get(id: Int64(jdata.getLongAutoInc())) {
+                return JLTag(tag: tag)
+            } else {
+                return nil
+            }
+        }
+    }
+
+    private class JLVendor: LVendor, GenericJD {
+        init(vendor: LVendor) {
+            super.init(id: vendor.id, gid: vendor.gid, name: vendor.name, type: vendor.type,
+                       create: vendor.timestampCreate, access: vendor.timestampAccess)
+        }
+
+        func getId() -> Int64 {
+            return id
+        }
+
+        func getGid() -> Int64 {
+            return gid
+        }
+
+        func getRequestCode() -> UInt16 {
+            return LProtocol.JRQST_ADD_VENDOR
+        }
+
+        func add_data(_ jdata: LBuffer) -> Bool {
+            jdata.putByteAutoInc(type.rawValue);
+            let sname = [UInt8](name.utf8)
+            jdata.putShortAutoInc(UInt16(sname.count))
+            jdata.putBytesAutoInc(sname)
+            jdata.setLen(jdata.getOffset());
+            return true;
+        }
+
+        static func fetch(_ jdata: LBuffer) -> JLVendor? {
+            if let vendor = DBVendor.instance.get(id: Int64(jdata.getLongAutoInc())) {
+                return JLVendor(vendor: vendor)
+            } else {
+                return nil
+            }
+        }
+    }
+
     private var accountJournalFlushAction: GenericJournalFlushAction<JLAccount>?
     private var categoryJournalFlushAction: GenericJournalFlushAction<JLCategory>?
+    private var tagJournalFlushAction: GenericJournalFlushAction<JLTag>?
+    private var vendorJournalFlushAction: GenericJournalFlushAction<JLVendor>?
 
     func flush() -> Bool {
         /*
@@ -211,13 +284,12 @@ class LJournal {
         if (categoryJournalFlushAction == nil) {
             categoryJournalFlushAction = GenericJournalFlushAction<JLCategory>()
         }
-        /*
-         if (tagJournalFlushAction == null) {
-         tagJournalFlushAction = new LJournal.TagJournalFlushAction();
-         }
-         if (vendorJournalFlushAction == null) {
-         vendorJournalFlushAction = new LJournal.VendorJournalFlushAction();
-         }*/
+        if (tagJournalFlushAction == nil) {
+            tagJournalFlushAction = GenericJournalFlushAction<JLTag>()
+        }
+        if (vendorJournalFlushAction == nil) {
+            vendorJournalFlushAction = GenericJournalFlushAction<JLVendor>()
+        }
 
         let entry = DBJournal.instance.get()
         if (nil == entry) {
@@ -275,26 +347,18 @@ class LJournal {
             (retVal, newEntry, removeEntry) = categoryJournalFlushAction!.update(JLCategory.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_CATEGORY:
             (retVal, newEntry, removeEntry) = categoryJournalFlushAction!.delete(JLCategory.fetch, jdata, ndata)
-            /*
-             case LProtocol.JRQST_ADD_TAG:
-             if (!tagJournalFlushAction.add(jdata, ndata)) return false;
-             break;
-             case LProtocol.JRQST_UPDATE_TAG:
-             if (!tagJournalFlushAction.update(jdata, ndata)) return false;
-             break;
-             case LProtocol.JRQST_DELETE_TAG:
-             if (!tagJournalFlushAction.delete(jdata, ndata)) return false;
-             break;
-             case LProtocol.JRQST_ADD_VENDOR:
-             if (!vendorJournalFlushAction.add(jdata, ndata)) return false;
-             break;
-             case LProtocol.JRQST_UPDATE_VENDOR:
-             if (!vendorJournalFlushAction.update(jdata, ndata)) return false;
-             break;
-             case LProtocol.JRQST_DELETE_VENDOR:
-             if (!vendorJournalFlushAction.delete(jdata, ndata)) return false;
-             break;
-             */
+        case LProtocol.JRQST_ADD_TAG:
+            (retVal, newEntry, removeEntry) = tagJournalFlushAction!.add(JLTag.fetch, jdata, ndata)
+        case LProtocol.JRQST_UPDATE_TAG:
+            (retVal, newEntry, removeEntry) = tagJournalFlushAction!.update(JLTag.fetch, jdata, ndata)
+        case LProtocol.JRQST_DELETE_TAG:
+            (retVal, newEntry, removeEntry) = tagJournalFlushAction!.delete(JLTag.fetch, jdata, ndata)
+        case LProtocol.JRQST_ADD_VENDOR:
+            (retVal, newEntry, removeEntry) = vendorJournalFlushAction!.add(JLVendor.fetch, jdata, ndata)
+        case LProtocol.JRQST_UPDATE_VENDOR:
+            (retVal, newEntry, removeEntry) = vendorJournalFlushAction!.update(JLVendor.fetch, jdata, ndata)
+        case LProtocol.JRQST_DELETE_VENDOR:
+            (retVal, newEntry, removeEntry) = vendorJournalFlushAction!.delete(JLVendor.fetch, jdata, ndata)
         default:
             break
         }
