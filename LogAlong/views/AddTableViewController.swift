@@ -293,7 +293,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             secondViewController.delegate = self
         } else {
             guard let button = sender as? UIBarButtonItem, button === saveButton else {
-                os_log("The save button was not pressed, cancelling", log: OSLog.default, type: .debug)
+                LLog.d("\(self)", "The save button was not pressed, cancelling")
                 return
             }
 
