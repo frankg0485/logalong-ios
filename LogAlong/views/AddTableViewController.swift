@@ -311,21 +311,19 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                  let tag = tagLabel.text
                  let notes = notesTextField.text*/
 
-                record = LTransaction(categoryId: categoryId, amount: amount, accountId: accountId, timestamp: Int64(time!), rowId: record?.rowId ?? 1/*, payee: payee, tag: tag, notes: notes*/)
+                //TODO: handle type, tag, vendor etc
+                record = LTransaction(accountId: accountId, accountId2: 0,
+                                      amount: amount, type: TransactionType.EXPENSE,
+                                      categoryId: categoryId, tagId: 0, vendorId: 0, timestamp: Int64(time!))
             }
 
             presentingViewController?.dismiss(animated: true, completion: nil)
         }
     }
 
-
-
-
-
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
     }
-
 
     private func updateSaveButtonState() {
         if (type == addType.TRANSFER.rawValue) {

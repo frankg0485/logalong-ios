@@ -234,7 +234,7 @@ class RecordsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            DBTransaction.instance.remove(id: records.remove(at: indexPath.row).rowId)
+            DBTransaction.instance.remove(id: records.remove(at: indexPath.row).id)
 
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {

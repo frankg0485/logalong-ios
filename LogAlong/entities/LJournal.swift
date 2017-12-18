@@ -120,6 +120,121 @@ class LJournal {
         }
     }
 
+    class JLTransaction : LTransaction, GenericJD {
+        func getId() -> Int64 {
+            return id
+        }
+
+        func getGid() -> Int64 {
+            return gid
+        }
+
+        func getRequestCode() -> UInt16 {
+            return LProtocol.JRQST_ADD_RECORD
+        }
+
+        func add_data(_ jdata: LBuffer) -> Bool {
+            /*
+            if (LTransaction.TRANSACTION_TYPE_TRANSFER_COPY == details.getTransaction().getType()) return false;
+
+            jdata.putLongAutoInc(details.getAccount().getGid());
+            jdata.putLongAutoInc(details.getAccount2().getGid());
+            jdata.putLongAutoInc(details.getCategory().getGid());
+            jdata.putLongAutoInc(details.getTag().getGid());
+            jdata.putLongAutoInc(details.getVendor().getGid());
+            jdata.putByteAutoInc((byte) details.getTransaction().getType());
+            jdata.putDoubleAutoInc(details.getTransaction().getValue());
+            jdata.putLongAutoInc(details.getTransaction().getChangeBy());
+            if (0 == details.getTransaction().getRid()) {
+                //assign new record rid
+                details.getTransaction().generateRid();
+                DBTransaction.getInstance().updateColumnById(details.getId(), DBHelper.TABLE_COLUMN_IRID, details
+                    .getTransaction().getRid());
+
+                if (LTransaction.TRANSACTION_TYPE_TRANSFER == details.getTransaction().getType()) {
+                    DBTransaction.getInstance().updateTransferCopyRid(details.getTransaction());
+                }
+            }
+            jdata.putLongAutoInc(details.getTransaction().getRid());
+            jdata.putLongAutoInc(details.getTransaction().getTimeStamp());
+            jdata.putLongAutoInc(details.getTransaction().getTimeStampCreate());
+            jdata.putLongAutoInc(details.getTransaction().getTimeStampLast());
+            try {
+            byte[] note = details.getTransaction().getNote().getBytes("UTF-8");
+            jdata.putShortAutoInc((short) note.length);
+            jdata.putBytesAutoInc(note);
+            } catch (Exception e) {
+            LLog.e(TAG, "unexpected error when adding record " + e.getMessage());
+            return false;
+            }
+            jdata.setLen(jdata.getBufOffset());
+             */
+            return true;
+        }
+    }
+
+    /*
+    private class ScheduleJournalFlushAction extends GenericJournalFlushAction<LScheduledTransaction> {
+
+    @Override
+    LScheduledTransaction getById(long id) {
+    return DBScheduledTransaction.getInstance().getById(id);
+    }
+
+    @Override
+    LScheduledTransaction getByIdAll(long id) {
+    return DBScheduledTransaction.getInstance().getByIdAll(id);
+    }
+
+    @Override
+    boolean isGidAssigned(LScheduledTransaction lScheduledTransaction) {
+    return lScheduledTransaction.getGid() != 0;
+    }
+
+    @Override
+    short getRequestCode() {
+    return LProtocol.JRQST_ADD_SCHEDULE;
+    }
+
+    @Override
+    boolean add_data(LBuffer jdata, LScheduledTransaction lScheduledTransaction) {
+    jdata.putLongAutoInc(DBAccount.getInstance().getGidById(lScheduledTransaction.getAccount()));
+    jdata.putLongAutoInc(DBAccount.getInstance().getGidById(lScheduledTransaction.getAccount2()));
+    jdata.putLongAutoInc(DBCategory.getInstance().getGidById(lScheduledTransaction.getCategory()));
+    jdata.putLongAutoInc(DBTag.getInstance().getGidById(lScheduledTransaction.getTag()));
+    jdata.putLongAutoInc(DBVendor.getInstance().getGidById(lScheduledTransaction.getVendor()));
+    jdata.putByteAutoInc((byte) lScheduledTransaction.getType());
+    jdata.putDoubleAutoInc(lScheduledTransaction.getValue());
+    jdata.putLongAutoInc(lScheduledTransaction.getChangeBy());
+    if (0 == lScheduledTransaction.getRid()) {
+    lScheduledTransaction.generateRid();
+    DBScheduledTransaction.getInstance().updateColumnById(lScheduledTransaction.getId(), DBHelper
+    .TABLE_COLUMN_IRID, lScheduledTransaction.getRid());
+    }
+    jdata.putLongAutoInc(lScheduledTransaction.getRid());
+    jdata.putLongAutoInc(lScheduledTransaction.getTimeStamp());
+    jdata.putLongAutoInc(lScheduledTransaction.getTimeStampCreate());
+    jdata.putLongAutoInc(lScheduledTransaction.getTimeStampLast());
+    try {
+    byte[] note = lScheduledTransaction.getNote().getBytes("UTF-8");
+    jdata.putShortAutoInc((short) note.length);
+    jdata.putBytesAutoInc(note);
+    } catch (Exception e) {
+    LLog.e(TAG, "unexpected error when adding schedule " + e.getMessage());
+    return false;
+    }
+
+    jdata.putLongAutoInc(lScheduledTransaction.getNextTime());
+    jdata.putByteAutoInc((byte) lScheduledTransaction.getRepeatInterval());
+    jdata.putByteAutoInc((byte) lScheduledTransaction.getRepeatUnit());
+    jdata.putByteAutoInc((byte) lScheduledTransaction.getRepeatCount());
+    jdata.putByteAutoInc((byte) (lScheduledTransaction.isEnabled() ? 1 : 0));
+
+    jdata.setLen(jdata.getBufOffset());
+    return true;
+    }
+    }
+    */
     private class JLAccount: LAccount, GenericJD {
         init(account: LAccount) {
             super.init(id: account.id, gid: account.gid, name: account.name,

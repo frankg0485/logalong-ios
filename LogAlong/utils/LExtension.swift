@@ -8,6 +8,19 @@
 
 import Foundation
 
+class LA {
+    static func toByteArray<T>(_ value: T) -> [UInt8] {
+        var value = value
+        return withUnsafeBytes(of: &value) { Array($0) }
+    }
+
+    static func fromByteArray<T>(_ value: [UInt8], _: T.Type) -> T {
+        return value.withUnsafeBytes {
+            $0.baseAddress!.load(as: T.self)
+        }
+    }
+}
+
 extension Date {
     var currentTimeMillis: Int64 {
         return Int64((self.timeIntervalSince1970 * 1000.0).rounded())

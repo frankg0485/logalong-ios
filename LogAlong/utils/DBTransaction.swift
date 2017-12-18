@@ -21,20 +21,36 @@ class DBTransaction: DBGeneric {
     }
 
     private func getValues(_ row: Row) -> LTransaction? {
-        return LTransaction(categoryId: row[DBHelper.categoryId],
-                            amount: row[DBHelper.amount],
+        return LTransaction(id: row[DBHelper.id],
+                            gid: row[DBHelper.gid],
+                            rid: UInt64(row[DBHelper.rid]),
                             accountId: row[DBHelper.accountId],
+                            accountId2: row[DBHelper.accountId2],
+                            amount: row[DBHelper.amount],
+                            type: TransactionType(rawValue: UInt8(row[DBHelper.type]))!,
+                            categoryId: row[DBHelper.categoryId],
+                            tagId: row[DBHelper.tagId],
+                            vendorId: row[DBHelper.vendorId],
+                            note: row[DBHelper.note],
                             timestamp: row[DBHelper.timestamp],
-                            rowId: row[DBHelper.id])!
+                            create: row[DBHelper.timestampCretae],
+                            access: row[DBHelper.timestampAccess])
     }
 
     private func setValues(_ value: LTransaction) -> [SQLite.Setter] {
         return [DBHelper.gid <- value.gid,
-                DBHelper.categoryId <- value.categoryId,
+                DBHelper.rid <- Int64(value.rid),
                 DBHelper.accountId <- value.accountId,
+                DBHelper.accountId2 <- value.accountId2,
                 DBHelper.amount <- value.amount,
-                DBHelper.type <- value.type,
-                DBHelper.timestamp <- value.timestamp]
+                DBHelper.type <- Int(value.type.rawValue),
+                DBHelper.categoryId <- value.categoryId,
+                DBHelper.tagId <- value.tagId,
+                DBHelper.vendorId <- value.vendorId,
+                DBHelper.note <- value.note,
+                DBHelper.timestamp <- value.timestamp,
+                DBHelper.timestampCretae <- value.timestampCreate,
+                DBHelper.timestampAccess <- value.timestampAccess]
     }
 
     func getAll() -> [LTransaction] {
