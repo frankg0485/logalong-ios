@@ -158,12 +158,12 @@ class LJournal {
             jdata.putLongAutoInc(by)
             if (0 == rid) {
                 rid = LTransaction.generateRid()
-                DBTransaction.instance.updateColumnById(id, DBHelper.rid, Int64(rid))
+                DBTransaction.instance.updateColumnById(id, DBHelper.rid, rid)
                 if (TransactionType.TRANSFER == type) {
                     DBTransaction.instance.updateTransferCopyRid(transaction: self)
                 }
             }
-            jdata.putLongAutoInc(Int64(rid))
+            jdata.putLongAutoInc(rid)
             jdata.putLongAutoInc(timestamp)
             jdata.putLongAutoInc(timestampCreate)
             jdata.putLongAutoInc(timestampAccess)
@@ -177,7 +177,7 @@ class LJournal {
         }
 
         static func fetch(_ jdata: LBuffer) -> JLTransaction? {
-            if let details = DBTransaction.instance.getDetails(id: Int64(jdata.getLongAutoInc())) {
+            if let details = DBTransaction.instance.getDetails(id: jdata.getLongAutoInc()) {
                 return JLTransaction(details: details)
             } else {
                 return nil
@@ -276,7 +276,7 @@ class LJournal {
         }
 
         static func fetch(_ jdata: LBuffer) -> JLAccount? {
-            if let account = DBAccount.instance.get(id: Int64(jdata.getLongAutoInc())) {
+            if let account = DBAccount.instance.get(id: jdata.getLongAutoInc()) {
                 return JLAccount(account: account)
             } else {
                 return nil
@@ -313,7 +313,7 @@ class LJournal {
         }
 
         static func fetch(_ jdata: LBuffer) -> JLCategory? {
-            if let category = DBCategory.instance.get(id: Int64(jdata.getLongAutoInc())) {
+            if let category = DBCategory.instance.get(id: jdata.getLongAutoInc()) {
                 return JLCategory(category: category)
             } else {
                 return nil
@@ -348,7 +348,7 @@ class LJournal {
         }
 
         static func fetch(_ jdata: LBuffer) -> JLTag? {
-            if let tag = DBTag.instance.get(id: Int64(jdata.getLongAutoInc())) {
+            if let tag = DBTag.instance.get(id: jdata.getLongAutoInc()) {
                 return JLTag(tag: tag)
             } else {
                 return nil
@@ -384,7 +384,7 @@ class LJournal {
         }
 
         static func fetch(_ jdata: LBuffer) -> JLVendor? {
-            if let vendor = DBVendor.instance.get(id: Int64(jdata.getLongAutoInc())) {
+            if let vendor = DBVendor.instance.get(id: jdata.getLongAutoInc()) {
                 return JLVendor(vendor: vendor)
             } else {
                 return nil

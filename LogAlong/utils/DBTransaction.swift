@@ -30,7 +30,7 @@ class DBTransaction: DBGeneric<LTransaction> {
     private func rdValues(_ row: Row) -> LTransaction? {
         return LTransaction(id: row[DBHelper.id],
                             gid: row[DBHelper.gid],
-                            rid: UInt64(row[DBHelper.rid]),
+                            rid: row[DBHelper.rid],
                             accountId: row[DBHelper.accountId],
                             accountId2: row[DBHelper.accountId2],
                             amount: row[DBHelper.amount],
@@ -47,7 +47,7 @@ class DBTransaction: DBGeneric<LTransaction> {
 
     private func wrValues(_ value: LTransaction) -> [SQLite.Setter] {
         return [DBHelper.gid <- value.gid,
-                DBHelper.rid <- Int64(value.rid),
+                DBHelper.rid <- value.rid,
                 DBHelper.accountId <- value.accountId,
                 DBHelper.accountId2 <- value.accountId2,
                 DBHelper.amount <- value.amount,
@@ -66,7 +66,7 @@ class DBTransaction: DBGeneric<LTransaction> {
         let details = LTransactionDetails()
         details.id = row[DBHelper.instance.transactions[DBHelper.id]]
         details.gid = row[DBHelper.instance.transactions[DBHelper.gid]]
-        details.rid = UInt64(row[DBHelper.instance.transactions[DBHelper.rid]])
+        details.rid = row[DBHelper.instance.transactions[DBHelper.rid]]
         details.accountId = row[DBHelper.accountId]
         details.accountId2 = row[DBHelper.accountId2]
         details.categoryId = row[DBHelper.categoryId]
@@ -190,7 +190,7 @@ class DBTransaction: DBGeneric<LTransaction> {
         }
 
         var cv = [SQLite.Setter]()
-        cv.append(DBHelper.rid <- Int64(transaction.rid))
+        cv.append(DBHelper.rid <- transaction.rid)
 
         do {
             let query = table!.filter(DBHelper.accountId == transaction.accountId2

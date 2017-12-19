@@ -204,7 +204,7 @@ final class LProtocol : LServerDelegate {
                  if (RSPS_OK == status) {
                  var name: String = ""
                  var fullName: String = ""
-                 var gid: UInt64 = pkt.getLongAutoInc()
+                 var gid: Int64 = pkt.getLongAutoInc()
                  var bytes: UInt16 = pkt.getShortAutoInc()
                  name = pkt.getStringAutoInc(bytes)
                  bytes = pkt.getShortAutoInc()
@@ -322,9 +322,9 @@ final class LProtocol : LServerDelegate {
                     switch (jrqstId) {
                     case LProtocol.JRQST_ADD_ACCOUNT:
                         if (LProtocol.RSPS_OK == jret) {
-                            bdata["id"] = Int64(pkt.getLongAutoInc())
-                            bdata["gid"] = Int64(pkt.getLongAutoInc())
-                            bdata["uid"] =  Int64(pkt.getLongAutoInc())
+                            bdata["id"] = pkt.getLongAutoInc()
+                            bdata["gid"] = pkt.getLongAutoInc()
+                            bdata["uid"] =  pkt.getLongAutoInc()
                         }
 
                     case LProtocol.JRQST_ADD_CATEGORY: fallthrough
@@ -333,14 +333,14 @@ final class LProtocol : LServerDelegate {
                     case LProtocol.JRQST_ADD_RECORD: fallthrough
                     case LProtocol.JRQST_ADD_SCHEDULE:
                         if (LProtocol.RSPS_OK == jret) {
-                            bdata["id"] = Int64(pkt.getLongAutoInc())
-                            bdata["gid"] = Int64(pkt.getLongAutoInc())
+                            bdata["id"] = pkt.getLongAutoInc()
+                            bdata["gid"] = pkt.getLongAutoInc()
                         }
 
                     case LProtocol.JRQST_GET_ACCOUNTS:
                         if (LProtocol.RSPS_OK == jret) {
-                            bdata["gid"] = Int64(pkt.getLongAutoInc())
-                            bdata["uid"] = Int64(pkt.getLongAutoInc())
+                            bdata["gid"] = pkt.getLongAutoInc()
+                            bdata["uid"] = pkt.getLongAutoInc()
                             let bytes = pkt.getShortAutoInc();
                             let name = pkt.getStringAutoInc(Int(bytes))
                             bdata["name"] = name
@@ -348,7 +348,7 @@ final class LProtocol : LServerDelegate {
 
                     case LProtocol.JRQST_GET_ACCOUNT_USERS:
                         if (LProtocol.RSPS_OK == jret) {
-                            bdata["aid"] = Int64(pkt.getLongAutoInc())
+                            bdata["aid"] = pkt.getLongAutoInc()
                             let length = pkt.getShortAutoInc()
                             let accountUsers = pkt.getStringAutoInc(Int(length))
                             bdata["users"] = accountUsers
@@ -356,8 +356,8 @@ final class LProtocol : LServerDelegate {
 
                     case LProtocol.JRQST_GET_CATEGORIES:
                         if (LProtocol.RSPS_OK == jret) {
-                            bdata["gid"] = UInt64(pkt.getLongAutoInc())
-                            bdata["pgid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["gid"] = pkt.getLongAutoInc()
+                            bdata["pgid"] = pkt.getLongAutoInc()
                             let bytes = pkt.getShortAutoInc()
                             let name = pkt.getStringAutoInc(Int(bytes))
                             bdata["name"] = name
@@ -365,7 +365,7 @@ final class LProtocol : LServerDelegate {
 
                     case LProtocol.JRQST_GET_VENDORS:
                         if (LProtocol.RSPS_OK == jret) {
-                            bdata["gid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["gid"] = pkt.getLongAutoInc()
                             bdata["type"] = pkt.getByteAutoInc()
                             let bytes = pkt.getShortAutoInc()
                             let name = pkt.getStringAutoInc(Int(bytes))
@@ -374,7 +374,7 @@ final class LProtocol : LServerDelegate {
 
                     case LProtocol.JRQST_GET_TAGS:
                         if (LProtocol.RSPS_OK == jret) {
-                            bdata["gid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["gid"] = pkt.getLongAutoInc()
                             let bytes = pkt.getShortAutoInc()
                             let name = pkt.getStringAutoInc(Int(bytes))
                             bdata["name"] = name
@@ -384,20 +384,20 @@ final class LProtocol : LServerDelegate {
                     case LProtocol.JRQST_GET_RECORDS: fallthrough
                     case LProtocol.JRQST_GET_ACCOUNT_RECORDS:
                         if (LProtocol.RSPS_OK == jret) {
-                            bdata["gid"] = UInt64(pkt.getLongAutoInc())
-                            bdata["aid"] = UInt64(pkt.getLongAutoInc())
-                            bdata["aid2"] = UInt64(pkt.getLongAutoInc())
-                            bdata["cid"] = UInt64(pkt.getLongAutoInc())
-                            bdata["tid"] = UInt64(pkt.getLongAutoInc())
-                            bdata["vid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["gid"] = pkt.getLongAutoInc()
+                            bdata["aid"] = pkt.getLongAutoInc()
+                            bdata["aid2"] = pkt.getLongAutoInc()
+                            bdata["cid"] = pkt.getLongAutoInc()
+                            bdata["tid"] = pkt.getLongAutoInc()
+                            bdata["vid"] = pkt.getLongAutoInc()
                             bdata["type"] = pkt.getByteAutoInc()
-                            //bdata["amount"] = pkt.getDoubleAutoInc()
-                            bdata["createBy"] = UInt64(pkt.getLongAutoInc())
-                            bdata["changeBy"] = UInt64(pkt.getLongAutoInc())
-                            bdata["recordId"] = UInt64(pkt.getLongAutoInc())
-                            bdata["timestamp"] = UInt64(pkt.getLongAutoInc())
-                            bdata["createTime"] = UInt64(pkt.getLongAutoInc())
-                            bdata["changeTime"] = UInt64(pkt.getLongAutoInc())
+                            bdata["amount"] = pkt.getDoubleAutoInc()
+                            bdata["createBy"] = pkt.getLongAutoInc()
+                            bdata["changeBy"] = pkt.getLongAutoInc()
+                            bdata["recordId"] = pkt.getLongAutoInc()
+                            bdata["timestamp"] = pkt.getLongAutoInc()
+                            bdata["createTime"] = pkt.getLongAutoInc()
+                            bdata["changeTime"] = pkt.getLongAutoInc()
 
                             let bytes = pkt.getShortAutoInc()
                             let note = pkt.getStringAutoInc(Int(bytes))
@@ -408,26 +408,26 @@ final class LProtocol : LServerDelegate {
                     case LProtocol.JRQST_GET_SCHEDULES: fallthrough
                     case LProtocol.JRQST_GET_ACCOUNT_SCHEDULES:
                         if (LProtocol.RSPS_OK == jret) {
-                            bdata["gid"] = UInt64(pkt.getLongAutoInc())
-                            bdata["aid"] = UInt64(pkt.getLongAutoInc())
-                            bdata["aid2"] = UInt64(pkt.getLongAutoInc())
-                            bdata["cid"] = UInt64(pkt.getLongAutoInc())
-                            bdata["tid"] = UInt64(pkt.getLongAutoInc())
-                            bdata["vid"] = UInt64(pkt.getLongAutoInc())
+                            bdata["gid"] = pkt.getLongAutoInc()
+                            bdata["aid"] = pkt.getLongAutoInc()
+                            bdata["aid2"] = pkt.getLongAutoInc()
+                            bdata["cid"] = pkt.getLongAutoInc()
+                            bdata["tid"] = pkt.getLongAutoInc()
+                            bdata["vid"] = pkt.getLongAutoInc()
                             bdata["type"] = pkt.getByteAutoInc()
-                            //bdata["amount"] = pkt.getDoubleAutoInc()
-                            bdata["createBy"] = UInt64(pkt.getLongAutoInc())
-                            bdata["changeBy"] = UInt64(pkt.getLongAutoInc())
-                            bdata["recordId"] = UInt64(pkt.getLongAutoInc())
-                            bdata["timestamp"] = UInt64(pkt.getLongAutoInc())
-                            bdata["createTime"] = UInt64(pkt.getLongAutoInc())
-                            bdata["changeTime"] = UInt64(pkt.getLongAutoInc())
+                            bdata["amount"] = pkt.getDoubleAutoInc()
+                            bdata["createBy"] = pkt.getLongAutoInc()
+                            bdata["changeBy"] = pkt.getLongAutoInc()
+                            bdata["recordId"] = pkt.getLongAutoInc()
+                            bdata["timestamp"] = pkt.getLongAutoInc()
+                            bdata["createTime"] = pkt.getLongAutoInc()
+                            bdata["changeTime"] = pkt.getLongAutoInc()
 
                             let bytes = pkt.getShortAutoInc()
                             let note = pkt.getStringAutoInc(Int(bytes))
                             bdata["note"] = note
 
-                            bdata["nextTime"] = UInt64(pkt.getLongAutoInc())
+                            bdata["nextTime"] = pkt.getLongAutoInc()
                             bdata["interval"] = pkt.getByteAutoInc()
                             bdata["unit"] = pkt.getByteAutoInc()
                             bdata["count"] = pkt.getByteAutoInc()

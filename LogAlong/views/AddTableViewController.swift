@@ -312,6 +312,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                  let notes = notesTextField.text*/
 
                 //TODO: handle type, tag, vendor etc
+                //QUESTION: is 'time' in second or millisecond?
                 record = LTransaction(accountId: accountId, accountId2: 0,
                                       amount: amount, type: TransactionType.EXPENSE,
                                       categoryId: categoryId, tagId: 0, vendorId: 0, timestamp: Int64(time!))

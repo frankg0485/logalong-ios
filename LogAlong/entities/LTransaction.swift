@@ -22,7 +22,7 @@ class LTransaction : LDbBase {
     var accountId: Int64
     var accountId2: Int64
     var timestamp: Int64
-    var rid: UInt64
+    var rid: Int64
     var type: TransactionType
     var note: String
     var by: Int64
@@ -42,7 +42,7 @@ class LTransaction : LDbBase {
         super.init()
     }
 
-    init(id: Int64, gid: Int64, rid: UInt64,
+    init(id: Int64, gid: Int64, rid: Int64,
          accountId: Int64, accountId2: Int64, amount: Double, type: TransactionType,
          categoryId: Int64, tagId: Int64, vendorId: Int64, note: String, by: Int64,
          timestamp: Int64,  create: Int64, access: Int64) {
@@ -73,9 +73,9 @@ class LTransaction : LDbBase {
         self.timestamp = timestamp
     }
 
-    static func generateRid() -> UInt64 {
+    static func generateRid() -> Int64 {
         var rid = UInt64(arc4random())
         rid |= UInt64(crc32(0, data: Data(LA.toByteArray(Date().currentTimeMillis)))) << 32
-        return rid
+        return Int64(bitPattern: rid)
     }
 }

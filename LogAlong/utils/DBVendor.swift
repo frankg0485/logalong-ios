@@ -21,13 +21,17 @@ class DBVendor : DBGeneric<LVendor> {
         return LVendor(id: row[DBHelper.id],
                          gid: row[DBHelper.gid],
                          name: row[DBHelper.name],
-                         type: VendorType(rawValue: UInt8(row[DBHelper.type]))!)
+                         type: VendorType(rawValue: UInt8(row[DBHelper.type]))!,
+                         create: row[DBHelper.timestampCretae],
+                         access: row[DBHelper.timestampAccess])
     }
 
     private func wrValues(_ value: LVendor) -> [SQLite.Setter] {
         return [DBHelper.gid <- value.gid,
                 DBHelper.name <- value.name,
-                DBHelper.type <- Int(value.type.rawValue)]
+                DBHelper.type <- Int(value.type.rawValue),
+                DBHelper.timestampCretae <- value.timestampCreate,
+                DBHelper.timestampAccess <- value.timestampAccess]
     }
 
     func getAll() -> [LVendor] {

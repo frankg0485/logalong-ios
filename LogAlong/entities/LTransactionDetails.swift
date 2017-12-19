@@ -24,7 +24,7 @@ class LTransactionDetails: LTransaction {
         super.init()
     }
 
-    init(id: Int64, gid: Int64, rid: UInt64,
+    init(id: Int64, gid: Int64, rid: Int64,
          accountId: Int64, accountId2: Int64, amount: Double, type: TransactionType,
          categoryId: Int64, tagId: Int64, vendorId: Int64, note: String, by: Int64,
          timestamp: Int64,  create: Int64, access: Int64,

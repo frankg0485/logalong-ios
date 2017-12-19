@@ -45,19 +45,19 @@ class LPreferences {
     }
 
     /*
-     static func getUserIdNum() -> UInt64 {
-     return defaults.object(forKey: userIdNum) as! UInt64
+     static func getUserIdNum() -> Int64 {
+     return defaults.object(forKey: userIdNum) as! Int64
      }
 
-     static func setUserIdNum(_ val: UInt64) {
+     static func setUserIdNum(_ val: Int64) {
      return defaults.set(val, forKey: userIdNum)
      }
 
-     static func getUserLoginNum() -> UInt64 {
-     return defaults.object(forKey: userLoginNum) as! UInt64
+     static func getUserLoginNum() -> Int64 {
+     return defaults.object(forKey: userLoginNum) as! Int64
      }
 
-     static func setUserLoginNum(_ val: UInt64) {
+     static func setUserLoginNum(_ val: Int64) {
      return defaults.set(val, forKey: userLoginNum)
      }
      */

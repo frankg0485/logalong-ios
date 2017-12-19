@@ -446,7 +446,7 @@ class LService {
     @objc func poll(notification: Notification) {
         if let bdata = notification.userInfo as? [String: Any] {
             if (LProtocol.RSPS_OK == (bdata["status"]) as! Int) {
-                let id: UInt64 = bdata["id"] as! UInt64
+                let id: Int64 = bdata["id"] as! Int64
                 let nid: UInt16 = bdata["nid"] as! UInt16
 
                 switch (nid) {
@@ -461,7 +461,7 @@ class LService {
                 }
 
                 //pollingCount = MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION;
-                UiRequest.instance.UiPollAck(Int64(id))
+                UiRequest.instance.UiPollAck(id)
 
             } else {
                 //no more

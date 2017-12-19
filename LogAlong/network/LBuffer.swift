@@ -127,7 +127,7 @@ class LBuffer {
         return LA.fromByteArray(ba, Double.self)
     }
 
-    func getLongAutoInc() -> UInt64 {
+    func getLongAutoInc() -> Int64 {
         var val = UInt64(array[offset] & 0xff)
         val += (0xff00 & (UInt64(array[offset + 1]) << 8))
         val += (0xff0000 & (UInt64(array[offset + 2]) << 16))
@@ -137,7 +137,7 @@ class LBuffer {
         val += (0xff000000000000 & (UInt64(array[offset + 6]) << 48))
         val += (0xff00000000000000 & (UInt64(array[offset + 7]) << 56))
         offset += 8;
-        return val;
+        return Int64(bitPattern: val);
     }
 
     func getBytesAutoInc(_ bytes: Int) -> [UInt8] {
@@ -204,7 +204,7 @@ class LBuffer {
     }
 
     func putLongAutoInc(_ sval: Int64) {
-        let val = UInt64(sval)
+        let val = UInt64(bitPattern: sval)
         array[offset] = UInt8(val & 0xff);
         array[offset + 1] = UInt8((val >> 8) & 0xff);
         array[offset + 2] = UInt8((val >> 16) & 0xff);
