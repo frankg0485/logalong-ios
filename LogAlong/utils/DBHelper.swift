@@ -47,6 +47,7 @@ class DBHelper {
     static let scheduleTime = Expression<Int64>("ScheduleTime")
     static let year = Expression<Int>("Year")
     static let balance = Expression<String>("Balance")
+    static let by = Expression<Int64>("By")
 
     static let journalId = Expression<Int>("JournalId")
     static let data = Expression<Data>("Data")
@@ -155,6 +156,7 @@ class DBHelper {
                 table.column(DBHelper.timestamp)
                 table.column(DBHelper.type)
                 table.column(DBHelper.note)
+                table.column(DBHelper.by)
                 table.column(DBHelper.rid)
                 table.column(DBHelper.timestampCretae)
                 table.column(DBHelper.timestampAccess)
@@ -177,6 +179,7 @@ class DBHelper {
                 table.column(DBHelper.timestamp)
                 table.column(DBHelper.type)
                 table.column(DBHelper.note)
+                table.column(DBHelper.by)
                 table.column(DBHelper.rid)
                 table.column(DBHelper.timestampCretae)
                 table.column(DBHelper.timestampAccess)

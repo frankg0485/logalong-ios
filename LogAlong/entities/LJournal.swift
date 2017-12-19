@@ -120,7 +120,17 @@ class LJournal {
         }
     }
 
-    class JLTransaction : LTransaction, GenericJD {
+    class JLTransaction : LTransactionDetails, GenericJD {
+        init(details: LTransactionDetails) {
+            super.init(id: details.id, gid: details.gid, rid: details.rid,
+                       accountId: details.accountId, accountId2: details.accountId2, amount: details.amount,
+                       type: details.type, categoryId: details.categoryId,
+                       tagId: details.tagId, vendorId: details.vendorId, note: details.note, by: details.by,
+                       timestamp: details.timestamp, create: details.timestampCreate,
+                       access: details.timestampAccess, account: details.account, account2: details.account2,
+                       category: details.category, tag: details.tag, vendor: details.vendor)
+        }
+
         func getId() -> Int64 {
             return id
         }
@@ -134,42 +144,44 @@ class LJournal {
         }
 
         func add_data(_ jdata: LBuffer) -> Bool {
-            /*
-            if (LTransaction.TRANSACTION_TYPE_TRANSFER_COPY == details.getTransaction().getType()) return false;
+            if (TransactionType.TRANSFER_COPY == type) {
+                return false
+            }
 
-            jdata.putLongAutoInc(details.getAccount().getGid());
-            jdata.putLongAutoInc(details.getAccount2().getGid());
-            jdata.putLongAutoInc(details.getCategory().getGid());
-            jdata.putLongAutoInc(details.getTag().getGid());
-            jdata.putLongAutoInc(details.getVendor().getGid());
-            jdata.putByteAutoInc((byte) details.getTransaction().getType());
-            jdata.putDoubleAutoInc(details.getTransaction().getValue());
-            jdata.putLongAutoInc(details.getTransaction().getChangeBy());
-            if (0 == details.getTransaction().getRid()) {
-                //assign new record rid
-                details.getTransaction().generateRid();
-                DBTransaction.getInstance().updateColumnById(details.getId(), DBHelper.TABLE_COLUMN_IRID, details
-                    .getTransaction().getRid());
-
-                if (LTransaction.TRANSACTION_TYPE_TRANSFER == details.getTransaction().getType()) {
-                    DBTransaction.getInstance().updateTransferCopyRid(details.getTransaction());
+            jdata.putLongAutoInc(account.gid)
+            jdata.putLongAutoInc(account2.gid)
+            jdata.putLongAutoInc(category.gid)
+            jdata.putLongAutoInc(tag.gid)
+            jdata.putLongAutoInc(vendor.gid)
+            jdata.putByteAutoInc(type.rawValue)
+            jdata.putDoubleAutoInc(amount)
+            jdata.putLongAutoInc(by)
+            if (0 == rid) {
+                rid = LTransaction.generateRid()
+                DBTransaction.instance.updateColumnById(id, DBHelper.rid, Int64(rid))
+                if (TransactionType.TRANSFER == type) {
+                    DBTransaction.instance.updateTransferCopyRid(transaction: self)
                 }
             }
-            jdata.putLongAutoInc(details.getTransaction().getRid());
-            jdata.putLongAutoInc(details.getTransaction().getTimeStamp());
-            jdata.putLongAutoInc(details.getTransaction().getTimeStampCreate());
-            jdata.putLongAutoInc(details.getTransaction().getTimeStampLast());
-            try {
-            byte[] note = details.getTransaction().getNote().getBytes("UTF-8");
-            jdata.putShortAutoInc((short) note.length);
-            jdata.putBytesAutoInc(note);
-            } catch (Exception e) {
-            LLog.e(TAG, "unexpected error when adding record " + e.getMessage());
-            return false;
+            jdata.putLongAutoInc(Int64(rid))
+            jdata.putLongAutoInc(timestamp)
+            jdata.putLongAutoInc(timestampCreate)
+            jdata.putLongAutoInc(timestampAccess)
+
+            let snote = [UInt8](note.utf8)
+            jdata.putShortAutoInc(UInt16(snote.count))
+            jdata.putBytesAutoInc(snote)
+            jdata.setLen(jdata.getOffset())
+
+            return true
+        }
+
+        static func fetch(_ jdata: LBuffer) -> JLTransaction? {
+            if let details = DBTransaction.instance.getDetails(id: Int64(jdata.getLongAutoInc())) {
+                return JLTransaction(details: details)
+            } else {
+                return nil
             }
-            jdata.setLen(jdata.getBufOffset());
-             */
-            return true;
         }
     }
 
@@ -380,31 +392,13 @@ class LJournal {
         }
     }
 
-    private var accountJournalFlushAction: GenericJournalFlushAction<JLAccount>?
-    private var categoryJournalFlushAction: GenericJournalFlushAction<JLCategory>?
-    private var tagJournalFlushAction: GenericJournalFlushAction<JLTag>?
-    private var vendorJournalFlushAction: GenericJournalFlushAction<JLVendor>?
+    private lazy var accountJournalFlushAction: GenericJournalFlushAction<JLAccount> = GenericJournalFlushAction<JLAccount>()
+    private lazy var categoryJournalFlushAction: GenericJournalFlushAction<JLCategory> = GenericJournalFlushAction<JLCategory>()
+    private lazy var tagJournalFlushAction: GenericJournalFlushAction<JLTag> = GenericJournalFlushAction<JLTag>()
+    private lazy var vendorJournalFlushAction: GenericJournalFlushAction<JLVendor> = GenericJournalFlushAction<JLVendor>()
+    private lazy var recordJournalFlushAction: GenericJournalFlushAction<JLTransaction> = GenericJournalFlushAction<JLTransaction>()
 
     func flush() -> Bool {
-        /*
-         if (recordJournalFlushAction == null) {
-         recordJournalFlushAction = new LJournal.RecordJournalFlushAction();
-         }
-         if (scheduleJournalFlushAction == null) {
-         scheduleJournalFlushAction = new LJournal.ScheduleJournalFlushAction();
-         }*/
-        if (accountJournalFlushAction == nil) {
-            accountJournalFlushAction = GenericJournalFlushAction<JLAccount>()
-        }
-        if (categoryJournalFlushAction == nil) {
-            categoryJournalFlushAction = GenericJournalFlushAction<JLCategory>()
-        }
-        if (tagJournalFlushAction == nil) {
-            tagJournalFlushAction = GenericJournalFlushAction<JLTag>()
-        }
-        if (vendorJournalFlushAction == nil) {
-            vendorJournalFlushAction = GenericJournalFlushAction<JLVendor>()
-        }
 
         let entry = DBJournal.instance.get()
         if (nil == entry) {
@@ -430,16 +424,13 @@ class LJournal {
         let jdata: LBuffer = LBuffer(buf: entry!.data);
         let ndata: LBuffer = LBuffer(size: LJournal.MAX_JOURNAL_LENGTH);
         switch (jdata.getShortAutoInc()) {
+        case LProtocol.JRQST_ADD_RECORD:
+            (retVal, newEntry, removeEntry) = recordJournalFlushAction.add(JLTransaction.fetch, jdata, ndata)
+        case LProtocol.JRQST_UPDATE_RECORD:
+            (retVal, newEntry, removeEntry) = recordJournalFlushAction.update(JLTransaction.fetch, jdata, ndata)
+        case LProtocol.JRQST_DELETE_RECORD:
+            (retVal, newEntry, removeEntry) = recordJournalFlushAction.delete(JLTransaction.fetch, jdata, ndata)
             /*
-             case LProtocol.JRQST_ADD_RECORD:
-             if (!recordJournalFlushAction.add(jdata, ndata)) return false;
-             break;
-             case LProtocol.JRQST_UPDATE_RECORD:
-             if (!recordJournalFlushAction.update(jdata, ndata)) return false;
-             break;
-             case LProtocol.JRQST_DELETE_RECORD:
-             if (!recordJournalFlushAction.delete(jdata, ndata)) return false;
-             break;
              case LProtocol.JRQST_ADD_SCHEDULE:
              if (!scheduleJournalFlushAction.add(jdata, ndata)) return false;
              break;
@@ -451,29 +442,29 @@ class LJournal {
              break;
              */
         case LProtocol.JRQST_ADD_ACCOUNT:
-            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.add(JLAccount.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = accountJournalFlushAction.add(JLAccount.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_ACCOUNT:
-            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.update(JLAccount.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = accountJournalFlushAction.update(JLAccount.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_ACCOUNT:
-            (retVal, newEntry, removeEntry) = accountJournalFlushAction!.delete(JLAccount.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = accountJournalFlushAction.delete(JLAccount.fetch, jdata, ndata)
         case LProtocol.JRQST_ADD_CATEGORY:
-            (retVal, newEntry, removeEntry) = categoryJournalFlushAction!.add(JLCategory.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = categoryJournalFlushAction.add(JLCategory.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_CATEGORY:
-            (retVal, newEntry, removeEntry) = categoryJournalFlushAction!.update(JLCategory.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = categoryJournalFlushAction.update(JLCategory.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_CATEGORY:
-            (retVal, newEntry, removeEntry) = categoryJournalFlushAction!.delete(JLCategory.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = categoryJournalFlushAction.delete(JLCategory.fetch, jdata, ndata)
         case LProtocol.JRQST_ADD_TAG:
-            (retVal, newEntry, removeEntry) = tagJournalFlushAction!.add(JLTag.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = tagJournalFlushAction.add(JLTag.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_TAG:
-            (retVal, newEntry, removeEntry) = tagJournalFlushAction!.update(JLTag.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = tagJournalFlushAction.update(JLTag.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_TAG:
-            (retVal, newEntry, removeEntry) = tagJournalFlushAction!.delete(JLTag.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = tagJournalFlushAction.delete(JLTag.fetch, jdata, ndata)
         case LProtocol.JRQST_ADD_VENDOR:
-            (retVal, newEntry, removeEntry) = vendorJournalFlushAction!.add(JLVendor.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = vendorJournalFlushAction.add(JLVendor.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_VENDOR:
-            (retVal, newEntry, removeEntry) = vendorJournalFlushAction!.update(JLVendor.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = vendorJournalFlushAction.update(JLVendor.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_VENDOR:
-            (retVal, newEntry, removeEntry) = vendorJournalFlushAction!.delete(JLVendor.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = vendorJournalFlushAction.delete(JLVendor.fetch, jdata, ndata)
         default:
             break
         }

@@ -7,11 +7,17 @@
 //
 import SQLite
 
-class DBAccount : DBGeneric {
+class DBAccount : DBGeneric<LAccount> {
     static let instance = DBAccount()
-    private let table = DBHelper.instance.accounts
 
-    private func getValues(_ row: Row) -> LAccount? {
+    override init() {
+        super.init()
+        table = DBHelper.instance.accounts
+        getValues = rdValues
+        setValues = wrValues
+    }
+
+    private func rdValues(_ row: Row) -> LAccount? {
         return LAccount(id: row[DBHelper.id],
                         gid: row[DBHelper.gid],
                         name: row[DBHelper.name],
@@ -21,7 +27,7 @@ class DBAccount : DBGeneric {
                         access: row[DBHelper.timestampAccess])
     }
 
-    private func setValues(_ value: LAccount) -> [SQLite.Setter] {
+    private func wrValues(_ value: LAccount) -> [SQLite.Setter] {
         return [DBHelper.gid <- value.gid,
                 DBHelper.name <- value.name,
                 DBHelper.share <- value.share,
@@ -31,26 +37,6 @@ class DBAccount : DBGeneric {
     }
 
     func getAll() -> [LAccount] {
-        return super.getAll(table, getValues, by: DBHelper.name.asc)
-    }
-
-    func get(id: Int64) -> LAccount? {
-        return super.get(table, getValues, id: id)
-    }
-
-    func get(gid: Int64) -> LAccount? {
-        return super.get(table, getValues, gid: gid)
-    }
-
-    func add(_ account: inout LAccount) -> Bool {
-        return super.add(table, setValues, &account)
-    }
-
-    func remove(id: Int64) -> Bool {
-        return super.remove(table, id: id)
-    }
-
-    func update(_ account: LAccount) -> Bool {
-        return super.update(table, setValues, account)
+        return super.getAll(by: DBHelper.name.asc)
     }
 }

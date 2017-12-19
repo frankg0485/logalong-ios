@@ -7,42 +7,28 @@
 //
 import SQLite
 
-class DBCategory : DBGeneric {
+class DBCategory : DBGeneric<LCategory> {
     static let instance = DBCategory()
-    private let table = DBHelper.instance.categories
 
-    private func getValues(_ row: Row) -> LCategory? {
+    override init() {
+        super.init()
+        table = DBHelper.instance.categories
+        getValues = rdValues
+        setValues = wrValues
+    }
+
+    private func rdValues(_ row: Row) -> LCategory? {
         return LCategory(id: row[DBHelper.id],
                          gid: row[DBHelper.gid],
                          name: row[DBHelper.name])
     }
 
-    private func setValues(_ value: LCategory) -> [SQLite.Setter] {
+    private func wrValues(_ value: LCategory) -> [SQLite.Setter] {
         return [DBHelper.gid <- value.gid,
                 DBHelper.name <- value.name]
     }
 
     func getAll() -> [LCategory] {
-        return super.getAll(table, getValues, by: DBHelper.name.asc)
-    }
-
-    func get(id: Int64) -> LCategory? {
-        return super.get(table, getValues, id: id)
-    }
-
-    func get(gid: Int64) -> LCategory? {
-        return super.get(table, getValues, gid: gid)
-    }
-
-    func add(_ category: inout LCategory) -> Bool {
-        return super.add(table, setValues, &category)
-    }
-
-    func remove(id: Int64) -> Bool {
-        return super.remove(table, id: id)
-    }
-
-    func update(_ category: LCategory) -> Bool {
-        return super.update(table, setValues, category)
+        return super.getAll(by: DBHelper.name.asc)
     }
 }

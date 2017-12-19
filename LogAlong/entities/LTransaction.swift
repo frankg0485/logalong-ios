@@ -25,6 +25,7 @@ class LTransaction : LDbBase {
     var rid: UInt64
     var type: TransactionType
     var note: String
+    var by: Int64
 
     override init() {
         self.accountId = 0
@@ -36,13 +37,14 @@ class LTransaction : LDbBase {
         self.timestamp = Date().currentTimeMillis
         self.type = TransactionType.EXPENSE
         self.note = ""
+        self.by = 0
         self.rid = LTransaction.generateRid()
         super.init()
     }
 
     init(id: Int64, gid: Int64, rid: UInt64,
          accountId: Int64, accountId2: Int64, amount: Double, type: TransactionType,
-         categoryId: Int64, tagId: Int64, vendorId: Int64, note: String,
+         categoryId: Int64, tagId: Int64, vendorId: Int64, note: String, by: Int64,
          timestamp: Int64,  create: Int64, access: Int64) {
         self.accountId = accountId;
         self.accountId2 = accountId2;
@@ -54,6 +56,7 @@ class LTransaction : LDbBase {
         self.type = type
         self.rid = rid
         self.note = note
+        self.by = by
         super.init(id: id, gid: gid, name: "", create: create, access: access)
     }
 

@@ -8,7 +8,7 @@
 
 import SQLite
 
-class DBJournal : DBGeneric {
+class DBJournal {
     static let instance = DBJournal()
     let table = DBHelper.instance.journals
 
@@ -39,10 +39,18 @@ class DBJournal : DBGeneric {
     }
 
     func remove(id: Int) -> Bool {
+        var ret = false
+
         do {
             if let row = try DBHelper.instance.db!.pluck(table) {
                 if id == row[DBHelper.journalId] {
-                    return super.remove(table, id: row[DBHelper.id]);
+                    do {
+                        let delete = table.filter(DBHelper.id == row[DBHelper.id]).delete()
+                        try DBHelper.instance.db!.run(delete)
+                        ret = true
+                    } catch {
+                        LLog.e("\(self)", "DB deletion failed")
+                    }
                 } else {
                     LLog.w("\(self)", "journal ID mismatch present upon removing")
                 }
@@ -51,6 +59,6 @@ class DBJournal : DBGeneric {
             LLog.w("\(self)", "unable to get journal entry upon removing")
         }
 
-        return false
+        return ret
     }
 }
