@@ -39,3 +39,7 @@ protocol FReloadLoginScreenDelegate: class {
 protocol FLoginTypeDelegate: class {
     func getFinalLoginType() -> Int
 }
+
+protocol FNotifyShowPasswordDelegate: class {
+    func showPassword(show: Bool)
+}

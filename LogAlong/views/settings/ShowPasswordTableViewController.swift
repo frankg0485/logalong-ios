@@ -1,41 +1,25 @@
 //
-//  CreateOrLoginTableViewController.swift
+//  ShowPasswordTableViewController.swift
 //  LogAlong
 //
-//  Created by Frank Gao on 11/5/17.
+//  Created by Frank Gao on 12/16/17.
 //  Copyright © 2017 Swoag Technology. All rights reserved.
 //
 
 import UIKit
 
+class ShowPasswordTableViewController: UITableViewController {
 
-class CreateOrLoginTableViewController: UITableViewController, FReloadLoginScreenDelegate {
-
-    var delegate: FNotifyLoginViewControllerDelegate?
-
-    @IBOutlet var createCell: UITableViewCell!
-    @IBOutlet var loginCell: UITableViewCell!
+    var delegate: FNotifyShowPasswordDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.backgroundColor = UIColor(hexString: "#ced0d2")
-        createCell.selectionStyle = UITableViewCellSelectionStyle.none
-        loginCell.selectionStyle = UITableViewCellSelectionStyle.none
-
-        createCell.accessoryType = UITableViewCellAccessoryType.checkmark
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-
-        if !LPreferences.getUserId().isEmpty {
-            tableView.backgroundColor = UIColor.white
-
-            createCell.isHidden = true
-            loginCell.isHidden = true
-        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,29 +27,9 @@ class CreateOrLoginTableViewController: UITableViewController, FReloadLoginScree
         // Dispose of any resources that can be recreated.
     }
 
-    func reloadLoginScreen() {
-        viewDidLoad()
-    }
-
     // MARK: - Table view data source
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.backgroundColor = UIColor.clear
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (createCell.isSelected == true) {
-            delegate?.notifyShowHideNameCell(hide: false)
-
-            createCell.accessoryType = UITableViewCellAccessoryType.checkmark
-            loginCell.accessoryType = UITableViewCellAccessoryType.none
-        } else {
-            delegate?.notifyShowHideNameCell(hide: true)
-
-            createCell.accessoryType = UITableViewCellAccessoryType.none
-            loginCell.accessoryType = UITableViewCellAccessoryType.checkmark
-        }
-    }
-    /*override func numberOfSections(in tableView: UITableView) -> Int {
+/*
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 0
     }
@@ -73,8 +37,18 @@ class CreateOrLoginTableViewController: UITableViewController, FReloadLoginScree
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 0
-    }*/
-
+    }
+*/
+    override func tableView(_ tableVIew: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCell = tableView.cellForRow(at: indexPath)
+        if (selectedCell?.accessoryType == UITableViewCellAccessoryType.none) {
+            selectedCell?.accessoryType = UITableViewCellAccessoryType.checkmark
+            delegate?.showPassword(show: true)
+        } else {
+            selectedCell?.accessoryType = UITableViewCellAccessoryType.none
+            delegate?.showPassword(show: false)
+        }
+    }
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)

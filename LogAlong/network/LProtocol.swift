@@ -255,6 +255,7 @@ final class LProtocol : LServerDelegate {
                  rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
                  LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
                  */
+
                 break;
 
             default:

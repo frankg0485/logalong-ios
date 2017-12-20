@@ -7,18 +7,23 @@
 //
 
 import UIKit
+import Foundation
 
-class LoginInfoTableViewController: UITableViewController, FLoginViewControllerDelegate, UITextFieldDelegate, FReloadLoginScreenDelegate, FLoginTypeDelegate {
+class LoginInfoTableViewController: UITableViewController, FLoginViewControllerDelegate, UITextFieldDelegate, FReloadLoginScreenDelegate, FLoginTypeDelegate, UIPopoverPresentationControllerDelegate {
 
     @IBOutlet weak var userIdTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
+
     @IBOutlet var nameCell: UITableViewCell!
     @IBOutlet weak var showPasswordCell: UITableViewCell!
     @IBOutlet weak var passwordCell: UITableViewCell!
 
-    var delegate: FPassNameIdPasswordDelegate?
+    @IBOutlet weak var changePasswordButton: UIButton!
+    @IBOutlet weak var searchButton: UIButton!
+    @IBOutlet weak var checkButton: UIButton!
 
+    var delegate: FPassNameIdPasswordDelegate?
     var loginType: Int = 0
 
     private var validUser = false
@@ -28,25 +33,40 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
 
         nameCell.isHidden = false
         tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor.white
 
         if !LPreferences.getUserId().isEmpty {
             validUser = true
 
+            changePasswordButton.isHidden = false
+            searchButton.isHidden = true
+            checkButton.isHidden = true
+
             LBroadcast.register(LBroadcast.ACTION_UPDATE_USER_PROFILE, cb: #selector(self.updateUserName), listener: self)
 
             /*passwordCell.isHidden = true
-            showPasswordCell.isHidden = true*/
+             showPasswordCell.isHidden = true*/
 
             tableView.separatorStyle = .none
 
             userIdTextField.text = LPreferences.getUserId()
             userIdTextField.isEnabled = false
             nameTextField.text = LPreferences.getUserName()
+        } else {
+            changePasswordButton.isHidden = true
+            searchButton.isHidden = false
+            checkButton.isHidden = false
+
+            passwordTextField.backgroundColor = UIColor(hexString: "#ced0d2")
+
         }
 
         passwordTextField.delegate = self
         userIdTextField.delegate = self
         nameTextField.delegate = self
+
+        userIdTextField.backgroundColor = UIColor(hexString: "#ced0d2")
+        nameTextField.backgroundColor = UIColor(hexString: "#ced0d2")
 
         passwordTextField.isSecureTextEntry = true
 
@@ -104,19 +124,26 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
         if (validUser) {
             LPreferences.setUserName(nameTextField.text!)
             UiRequest.instance.UiUpdateUserProfile(userIdTextField.text!, LPreferences.getUserPassword(), newPass: LPreferences.getUserPassword(), fullName: nameTextField.text!)
+        } else {
+            checkTextFields()
         }
-        checkTextFields()
+
     }
 
     func showHideNameCell(hide: Bool) {
-        if (hide == true) {
+        if hide {
             nameCell.isHidden = true
         } else {
             nameCell.isHidden = false
         }
+
+        checkTextFields()
     }
     // MARK: - Table view data source
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = UIColor(hexString: "#ced0d2")
+    }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.row == 2) {
             if (tableView.cellForRow(at: indexPath)?.accessoryType == UITableViewCellAccessoryType.none) {
@@ -131,26 +158,23 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        print("indexPath.row = \(indexPath.row)")
         if (validUser) && ((indexPath.row > 0) && (indexPath.row < 3)) {
             return 0.0
         }
 
         return super.tableView(tableView, heightForRowAt: indexPath)
     }
+
     /*
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (validUser) {
-            return super.tableView(tableView, numberOfRowsInSection: section) - 2
-        }
-
-        return super.tableView(tableView, numberOfRowsInSection: section)
+        return 4
     }
-
+ */
+/*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (validUser) && (indexPath.row > 0) {
             return tableView.cellForRow(at: IndexPath(row: indexPath.row + 1, section: 0))!
@@ -195,13 +219,41 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     }
     */
 
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
 
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "ChangePassword") {
+            let popoverViewController = segue.destination
 
-    }*/
+            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
 
+            popoverViewController.popoverPresentationController!.delegate = self
+        }
+    }
 
+}
+
+extension UIColor {
+    convenience init(hexString: String, alpha: CGFloat = 1.0) {
+        let hexString: String = hexString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let scanner = Scanner(string: hexString)
+        if (hexString.hasPrefix("#")) {
+            scanner.scanLocation = 1
+        }
+        var color: UInt32 = 0
+        scanner.scanHexInt32(&color)
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        self.init(red:red, green:green, blue:blue, alpha:alpha)
+    }
 }
