@@ -52,6 +52,7 @@
 		CB1BC6311FE770A100FD9D7E /* LTransactionDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1BC6301FE770A100FD9D7E /* LTransactionDetails.swift */; };
 		CB1BC63A1FE7717600FD9D7E /* LScheduledTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1BC6391FE7717600FD9D7E /* LScheduledTransaction.swift */; };
 		CB3154DF1FBD3AA6006F9DE4 /* Crc32.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3154DE1FBD3AA6006F9DE4 /* Crc32.swift */; };
+		CB3E5FA01FEDEAD300C64CBD /* LTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3E5F9F1FEDEAD300C64CBD /* LTheme.swift */; };
 		CB51B5581FBBDF26002CABA1 /* LProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB51B5571FBBDF26002CABA1 /* LProtocol.swift */; };
 		CB51B55A1FBBFBF6002CABA1 /* LTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB51B5591FBBFBF6002CABA1 /* LTransport.swift */; };
 		CB51B55C1FBBFF11002CABA1 /* LBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB51B55B1FBBFF11002CABA1 /* LBuffer.swift */; };
@@ -235,6 +236,7 @@
 		CB1BC6301FE770A100FD9D7E /* LTransactionDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTransactionDetails.swift; sourceTree = "<group>"; };
 		CB1BC6391FE7717600FD9D7E /* LScheduledTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LScheduledTransaction.swift; sourceTree = "<group>"; };
 		CB3154DE1FBD3AA6006F9DE4 /* Crc32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Crc32.swift; path = network/Crc32.swift; sourceTree = "<group>"; };
+		CB3E5F9F1FEDEAD300C64CBD /* LTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTheme.swift; sourceTree = "<group>"; };
 		CB51B5571FBBDF26002CABA1 /* LProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LProtocol.swift; path = network/LProtocol.swift; sourceTree = "<group>"; };
 		CB51B5591FBBFBF6002CABA1 /* LTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LTransport.swift; path = network/LTransport.swift; sourceTree = "<group>"; };
 		CB51B55B1FBBFF11002CABA1 /* LBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LBuffer.swift; path = network/LBuffer.swift; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				CBB51D2B1FE49EC2000CD233 /* DBTag.swift */,
 				CBEF97701FD4654F00D61F79 /* LExtension.swift */,
 				CBB51D2D1FE49EDB000CD233 /* DBVendor.swift */,
+				CB3E5F9F1FEDEAD300C64CBD /* LTheme.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -708,6 +711,7 @@
 				019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */,
 				CBD618101FB0081300A2B57E /* Server.swift in Sources */,
 				CB51B55C1FBBFF11002CABA1 /* LBuffer.swift in Sources */,
+				CB3E5FA01FEDEAD300C64CBD /* LTheme.swift in Sources */,
 				0128AE4E1EC7BBFE007A999B /* SelectTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
