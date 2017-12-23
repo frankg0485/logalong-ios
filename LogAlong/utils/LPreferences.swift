@@ -14,11 +14,20 @@ class LPreferences {
     static let defaults = UserDefaults.standard
 
     static let loginError = "LoginError"
+    static let recordsViewTimeInterval = "recordsViewTimeInterval"
     static let userIdNum = "userIdNum"
     static let userLoginNum = "userLoginNum"
     static let userId = "userId"
     static let userName = "userName"
     static let userPassword = "userPassword"
+
+    static func getRecordsViewTimeInterval() -> Int {
+        return defaults.integer(forKey: recordsViewTimeInterval)
+    }
+
+    static func setRecordsViewTimeInterval(_ val: Int) {
+        defaults.set(val, forKey: recordsViewTimeInterval)
+    }
 
     static func getUserId() -> String {
         return defaults.string(forKey: userId) ?? ""
