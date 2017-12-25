@@ -74,6 +74,7 @@
 		CBEDFD181FD6E6D60015E98E /* LService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEDFD171FD6E6D60015E98E /* LService.swift */; };
 		CBEF97621FD25B8A00D61F79 /* DBJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF97611FD25B8A00D61F79 /* DBJournal.swift */; };
 		CBEF97711FD4654F00D61F79 /* LExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF97701FD4654F00D61F79 /* LExtension.swift */; };
+		CBF135CE1FF0214E00E7E8AE /* LLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF135CD1FF0214E00E7E8AE /* LLayout.swift */; };
 		CBFB1BF01FC09A5D00B0321E /* LBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */; };
 /* End PBXBuildFile section */
 
@@ -259,6 +260,7 @@
 		CBEDFD171FD6E6D60015E98E /* LService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LService.swift; sourceTree = "<group>"; };
 		CBEF97611FD25B8A00D61F79 /* DBJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBJournal.swift; sourceTree = "<group>"; };
 		CBEF97701FD4654F00D61F79 /* LExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LExtension.swift; sourceTree = "<group>"; };
+		CBF135CD1FF0214E00E7E8AE /* LLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLayout.swift; sourceTree = "<group>"; };
 		CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LBroadcast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -299,6 +301,7 @@
 				CBEF97701FD4654F00D61F79 /* LExtension.swift */,
 				CBB51D2D1FE49EDB000CD233 /* DBVendor.swift */,
 				CB3E5F9F1FEDEAD300C64CBD /* LTheme.swift */,
+				CBF135CD1FF0214E00E7E8AE /* LLayout.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -653,6 +656,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBF135CE1FF0214E00E7E8AE /* LLayout.swift in Sources */,
 				01FBE7F61F439D5A00A0B514 /* CreateViewController.swift in Sources */,
 				014893D71EEB0332005E3C94 /* MainTabViewController.swift in Sources */,
 				CB3154DF1FBD3AA6006F9DE4 /* Crc32.swift in Sources */,
