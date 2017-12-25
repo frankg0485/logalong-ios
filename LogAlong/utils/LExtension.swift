@@ -23,12 +23,17 @@ class LA {
 
 extension UIColor {
     public convenience init(hex: UInt32) {
-        let r, g, b, a: CGFloat
+        let r, g, b: CGFloat
+        var a: CGFloat
 
         a = CGFloat((hex & 0xff000000) >> 24) / 255
         r = CGFloat((hex & 0x00ff0000) >> 16) / 255
         g = CGFloat((hex & 0x0000ff00) >> 8) / 255
         b = CGFloat(hex & 0x000000ff) / 255
+
+        if a == 0 {
+            a = 1.0
+        }
 
         self.init(red: r, green: g, blue: b, alpha: a)
     }

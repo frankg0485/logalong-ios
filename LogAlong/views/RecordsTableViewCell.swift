@@ -10,12 +10,10 @@ import UIKit
 
 class RecordsTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var accountLabel: UILabel!
-    @IBOutlet weak var categoryLabel: UILabel!
-    @IBOutlet weak var payeelabel: UILabel!
-    @IBOutlet weak var tagLabel: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var categoryLabel: UILabel!
+    @IBOutlet weak var tagLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
