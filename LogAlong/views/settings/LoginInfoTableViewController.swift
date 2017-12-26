@@ -8,8 +8,8 @@
 
 import UIKit
 import Foundation
-
-class LoginInfoTableViewController: UITableViewController, FLoginViewControllerDelegate, UITextFieldDelegate, FReloadLoginScreenDelegate, FLoginTypeDelegate, UIPopoverPresentationControllerDelegate {
+import AVFoundation
+class LoginInfoTableViewController: UITableViewController, FLoginViewControllerDelegate, UITextFieldDelegate, FReloadLoginScreenDelegate, FLoginTypeDelegate, UIPopoverPresentationControllerDelegate, FShowPasswordCellsDelegate {
 
     @IBOutlet weak var userIdTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -25,14 +25,16 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
 
     var delegate: FPassNameIdPasswordDelegate?
     var loginType: Int = 0
-
-    private var validUser = false
+    var showPswdCells = false
+    var validUser = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setUpButtons()
+
         nameCell.isHidden = false
-        tableView.separatorStyle = .none
+
         tableView.backgroundColor = UIColor.white
 
         if !LPreferences.getUserId().isEmpty {
@@ -52,12 +54,13 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
             userIdTextField.text = LPreferences.getUserId()
             userIdTextField.isEnabled = false
             nameTextField.text = LPreferences.getUserName()
+            passwordTextField.text = LPreferences.getUserPassword()
         } else {
             changePasswordButton.isHidden = true
             searchButton.isHidden = false
             checkButton.isHidden = false
 
-            passwordTextField.backgroundColor = UIColor(hexString: "#ced0d2")
+            passwordTextField.backgroundColor = LTheme.Color.row_released_color
 
         }
 
@@ -65,8 +68,8 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
         userIdTextField.delegate = self
         nameTextField.delegate = self
 
-        userIdTextField.backgroundColor = UIColor(hexString: "#ced0d2")
-        nameTextField.backgroundColor = UIColor(hexString: "#ced0d2")
+        userIdTextField.backgroundColor = LTheme.Color.row_released_color
+        nameTextField.backgroundColor = LTheme.Color.row_released_color
 
         passwordTextField.isSecureTextEntry = true
 
@@ -80,6 +83,25 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func checkDoneButton() {
+        if !(nameTextField.text! == LPreferences.getUserName() && passwordTextField.text! == LPreferences.getUserPassword()) {
+
+        }
+    }
+    func setUpButtons() {
+        changePasswordButton.setImage(#imageLiteral(resourceName: "ic_action_overflow").withRenderingMode(.alwaysOriginal), for: .normal)
+        searchButton.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
+        checkButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
+    }
+    func showPasswordCells() {
+        showPswdCells = true
+        changePasswordButton.isHidden = true
+
+        passwordTextField.text = LPreferences.getUserPassword()
+
+        tableView.reloadData()
     }
 
     @objc func updateUserName(notification: Notification) {
@@ -123,11 +145,12 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     func textFieldDidEndEditing(_ textField: UITextField) {
         if (validUser) {
             LPreferences.setUserName(nameTextField.text!)
-            UiRequest.instance.UiUpdateUserProfile(userIdTextField.text!, LPreferences.getUserPassword(), newPass: LPreferences.getUserPassword(), fullName: nameTextField.text!)
+            UiRequest.instance.UiUpdateUserProfile(userIdTextField.text!, LPreferences.getUserPassword(), newPass: passwordTextField.text!, fullName: nameTextField.text!)
+            LPreferences.setUserPassword(passwordTextField.text!)
+
         } else {
             checkTextFields()
         }
-
     }
 
     func showHideNameCell(hide: Bool) {
@@ -142,8 +165,11 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.backgroundColor = UIColor(hexString: "#ced0d2")
+        cell.backgroundColor = LTheme.Color.row_released_color
+        cell.layer.borderWidth = 1
+        cell.layer.borderColor = tableView.backgroundColor?.cgColor
     }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.row == 2) {
             if (tableView.cellForRow(at: indexPath)?.accessoryType == UITableViewCellAccessoryType.none) {
@@ -158,11 +184,11 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (validUser) && ((indexPath.row > 0) && (indexPath.row < 3)) {
+        if (validUser) && (!showPswdCells) && ((indexPath.row > 0) && (indexPath.row < 3)) {
             return 0.0
         }
 
-        return super.tableView(tableView, heightForRowAt: indexPath)
+        return 44
     }
 
     /*
@@ -233,6 +259,10 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
 
             popoverViewController.popoverPresentationController!.delegate = self
+        }
+
+        if let secondViewController = segue.destination as? CurrentPasswordViewController {
+            secondViewController.delegate = self
         }
     }
 

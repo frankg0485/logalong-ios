@@ -271,16 +271,15 @@ final class LProtocol : LServerDelegate {
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_SIGN_IN:
-                /*rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                 .ACTION_SIGN_IN));
-                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                 if (RSPS_OK == status) {
-                 LPreferences.setLoginError(false);
-                 int bytes = pkt.getShortAutoInc();
-                 String name = pkt.getStringAutoInc(bytes);
-                 rspsIntent.putExtra("userName", name);
-                 }
-                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
+                if (LProtocol.RSPS_OK == status) {
+                    LPreferences.setLoginError(false)
+                    let bytes = pkt.getShortAutoInc()
+                    let name = pkt.getStringAutoInc(Int(bytes))
+
+                    bdata["userName"] = name
+                }
+
+                LBroadcast.post(LBroadcast.ACTION_SIGN_IN, sender: nil, data: bdata)
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_GET_USER_BY_NAME:

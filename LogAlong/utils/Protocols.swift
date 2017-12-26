@@ -1,5 +1,5 @@
 //
-//  ProtocolViewController.swift
+//  Protocols.swift
 //  LogAlong
 //
 //  Created by Frank Gao on 5/31/17.
