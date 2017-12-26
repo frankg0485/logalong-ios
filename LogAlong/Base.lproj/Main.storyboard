@@ -1891,10 +1891,11 @@
         <scene sceneID="jxb-aG-izV">
             <objects>
                 <tableViewController id="vjQ-ep-ZK0" customClass="LoginInfoTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="sFR-y2-M2a">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="singleLineEtched" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="sFR-y2-M2a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="176"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="separatorInset" minX="2" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <sections>
                             <tableViewSection id="UkT-Uq-bHk">
                                 <cells>
@@ -1920,14 +1921,12 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aSw-MZ-154">
-                                                    <rect key="frame" x="301" y="6" width="25" height="33"/>
+                                                    <rect key="frame" x="293" y="6" width="33" height="33"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="ic_action_search"/>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KO8-lZ-q5z">
-                                                    <rect key="frame" x="334" y="6" width="25" height="33"/>
+                                                    <rect key="frame" x="334" y="6" width="33" height="33"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="ic_action_overflow"/>
                                                     <connections>
                                                         <segue destination="jBy-sV-aNJ" kind="popoverPresentation" identifier="ChangePassword" popoverAnchorView="KO8-lZ-q5z" id="YEN-mq-aAP">
                                                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -1935,9 +1934,8 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GZh-th-1Rq">
-                                                    <rect key="frame" x="334" y="6" width="25" height="33"/>
+                                                    <rect key="frame" x="334" y="6" width="33" height="33"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="ic_action_accept"/>
                                                 </button>
                                             </subviews>
                                         </tableViewCellContentView>
@@ -2040,40 +2038,74 @@
                         <viewControllerLayoutGuide type="bottom" id="f3B-lq-8bf"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="29l-B7-qyL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="150"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enter current password:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b9O-31-9aX">
-                                <rect key="frame" x="16" y="20" width="343" height="21"/>
+                                <rect key="frame" x="16" y="8" width="343" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jRf-9d-Ema">
+                                <rect key="frame" x="16" y="78" width="343" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <segue destination="yhv-mH-Vb8" kind="embed" id="LlK-31-Q3H"/>
+                                </connections>
+                            </containerView>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HU4-Pg-7Kh">
-                                <rect key="frame" x="16" y="49" width="318" height="30"/>
+                                <rect key="frame" x="16" y="37" width="318" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jRf-9d-Ema">
-                                <rect key="frame" x="16" y="87" width="343" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password mismatch." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9i4-hF-RFB">
+                                <rect key="frame" x="16" y="130" width="343" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eKr-HB-RcY">
+                                <rect key="frame" x="16" y="159" width="170" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Cancel"/>
                                 <connections>
-                                    <segue destination="yhv-mH-Vb8" kind="embed" id="LlK-31-Q3H"/>
+                                    <action selector="cancelButtonPressed:" destination="jBy-sV-aNJ" eventType="touchUpInside" id="pRS-w6-3KX"/>
                                 </connections>
-                            </containerView>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X7P-dL-kgP">
+                                <rect key="frame" x="194" y="159" width="170" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="OK"/>
+                                <connections>
+                                    <action selector="okButtonPressed:" destination="jBy-sV-aNJ" eventType="touchUpInside" id="VLV-kd-NDb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="2c6-J3-I5d" appends="YES" id="PJG-mg-Lgo"/>
+                        </connections>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="400" height="150"/>
-                    <size key="freeformSize" width="375" height="150"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="375" height="200"/>
+                    <size key="freeformSize" width="375" height="200"/>
                     <connections>
                         <outlet property="passwordTextField" destination="HU4-Pg-7Kh" id="Qjz-Zl-f2I"/>
+                        <outlet property="showPasswordView" destination="jRf-9d-Ema" id="nuz-ik-Vru"/>
+                        <outlet property="wrongPasswordLabel" destination="9i4-hF-RFB" id="OoU-kI-jfc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ejm-AD-fnu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="2c6-J3-I5d">
+                    <connections>
+                        <action selector="screenTapped:" destination="jBy-sV-aNJ" id="JFy-xw-N24"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="7327.1999999999998" y="-1625.4872563718143"/>
         </scene>
@@ -2154,11 +2186,6 @@
             <point key="canvasLocation" x="63" y="1282"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="ic_action_accept" width="48" height="48"/>
-        <image name="ic_action_overflow" width="48" height="48"/>
-        <image name="ic_action_search" width="48" height="48"/>
-    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="QRv-EX-8KX"/>
         <segue reference="OGp-5E-e1j"/>

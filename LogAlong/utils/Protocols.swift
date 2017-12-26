@@ -43,3 +43,7 @@ protocol FLoginTypeDelegate: class {
 protocol FNotifyShowPasswordDelegate: class {
     func showPassword(show: Bool)
 }
+
+protocol FShowPasswordCellsDelegate: class {
+    func showPasswordCells()
+}

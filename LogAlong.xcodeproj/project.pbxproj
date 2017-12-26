@@ -19,7 +19,7 @@
 		013E34ED1F4366F900EF8972 /* DBTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013E34EC1F4366F900EF8972 /* DBTransaction.swift */; };
 		014281A21FBD15870071ED8F /* LPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014281A11FBD15870071ED8F /* LPreferences.swift */; };
 		014893CF1EDE6106005E3C94 /* SelectAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */; };
-		014893D31EDFA368005E3C94 /* ProtocolViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D21EDFA368005E3C94 /* ProtocolViewController.swift */; };
+		014893D31EDFA368005E3C94 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D21EDFA368005E3C94 /* Protocols.swift */; };
 		014893D71EEB0332005E3C94 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D61EEB0332005E3C94 /* MainTabViewController.swift */; };
 		015183E71FE4911A002AC812 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B261FAEA2FF0092B184 /* SQLite.framework */; };
 		015183E81FE4911A002AC812 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B261FAEA2FF0092B184 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -203,7 +203,7 @@
 		013E34EC1F4366F900EF8972 /* DBTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBTransaction.swift; sourceTree = "<group>"; };
 		014281A11FBD15870071ED8F /* LPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPreferences.swift; sourceTree = "<group>"; };
 		014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAmountViewController.swift; sourceTree = "<group>"; };
-		014893D21EDFA368005E3C94 /* ProtocolViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolViewController.swift; sourceTree = "<group>"; };
+		014893D21EDFA368005E3C94 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		014893D61EEB0332005E3C94 /* MainTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
 		015184091FE6134C002AC812 /* ShowPasswordTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPasswordTableViewController.swift; sourceTree = "<group>"; };
 		0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPasswordViewController.swift; sourceTree = "<group>"; };
@@ -287,7 +287,7 @@
 		014281AC1FBD19720071ED8F /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				014893D21EDFA368005E3C94 /* ProtocolViewController.swift */,
+				014893D21EDFA368005E3C94 /* Protocols.swift */,
 				CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */,
 				CBC374961FBE54890098721C /* LLog.swift */,
 				014281A11FBD15870071ED8F /* LPreferences.swift */,
@@ -665,7 +665,7 @@
 				CB1BC6311FE770A100FD9D7E /* LTransactionDetails.swift in Sources */,
 				CB81316C1FCFB2CC00E33079 /* LDbBase.swift in Sources */,
 				CBB51D1F1FE49660000CD233 /* LTag.swift in Sources */,
-				014893D31EDFA368005E3C94 /* ProtocolViewController.swift in Sources */,
+				014893D31EDFA368005E3C94 /* Protocols.swift in Sources */,
 				CB1073621FCE6D0E00390032 /* DBAccount.swift in Sources */,
 				0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */,
 				CBB51D2E1FE49EDB000CD233 /* DBVendor.swift in Sources */,
