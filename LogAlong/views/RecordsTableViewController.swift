@@ -49,7 +49,6 @@ class RecordsTableViewController: UITableViewController {
     var rowsInPreviousSections
         = 0
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -389,40 +388,6 @@ class RecordsTableViewController: UITableViewController {
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
         }
     }
-
-
-    /*    private func loadSampleRecords() {
-     guard let record1 = Record(category: "Kids: Piano", amount: 54, account: "Credit: Discover", payee: "Costco", tag: "Market America", notes: nil) else {
-     fatalError("Unable to instantiate meal1")
-
-     }
-
-     guard let record2 = Record(category: "Eat Out", amount: 100, account: "Credit: Master", payee: "Chipotle", tag: "2016 Summer", notes: nil) else {
-     fatalError("Unable to instantiate meal2")
-     }
-
-     guard let record3 = Record(category: "Grocery", amount: 68, account: "Cash", payee: "Walmart", tag: "2017 Summer", notes: nil) else {
-     fatalError("Unable to instantiate meal3")
-     }
-
-     records += [record1, record2, record3]
-     }
-     */
-
-    /*    private func saveRecords() {
-     let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(records, toFile: Record.ArchiveURL.path)
-     if isSuccessfulSave {
-     os_log("Records successfully saved.", log: OSLog.default, type: .debug)
-     } else {
-     os_log("Failed to save records...", log: OSLog.default, type: .error)
-     }
-     }
-
-     private func loadRecords() -> [Record]?  {
-     return NSKeyedUnarchiver.unarchiveObject(withFile: Record.ArchiveURL.path) as? [Record]
-     }
-
-     */
 
     func reloadTableView() {
         records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
