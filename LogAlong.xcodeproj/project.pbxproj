@@ -75,6 +75,7 @@
 		CBEF97621FD25B8A00D61F79 /* DBJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF97611FD25B8A00D61F79 /* DBJournal.swift */; };
 		CBEF97711FD4654F00D61F79 /* LExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEF97701FD4654F00D61F79 /* LExtension.swift */; };
 		CBF135CE1FF0214E00E7E8AE /* LLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF135CD1FF0214E00E7E8AE /* LLayout.swift */; };
+		CBF135D71FF1E27800E7E8AE /* RecordsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF135D61FF1E27800E7E8AE /* RecordsPageViewController.swift */; };
 		CBFB1BF01FC09A5D00B0321E /* LBroadcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */; };
 /* End PBXBuildFile section */
 
@@ -261,6 +262,7 @@
 		CBEF97611FD25B8A00D61F79 /* DBJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBJournal.swift; sourceTree = "<group>"; };
 		CBEF97701FD4654F00D61F79 /* LExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LExtension.swift; sourceTree = "<group>"; };
 		CBF135CD1FF0214E00E7E8AE /* LLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLayout.swift; sourceTree = "<group>"; };
+		CBF135D61FF1E27800E7E8AE /* RecordsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsPageViewController.swift; sourceTree = "<group>"; };
 		CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LBroadcast.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -376,6 +378,7 @@
 				0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */,
 				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
 				CB15D4ED1FC3D7EE005D8B43 /* settings */,
+				CBF135D61FF1E27800E7E8AE /* RecordsPageViewController.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -708,6 +711,7 @@
 				0151840C1FE61538002AC812 /* CurrentPasswordViewController.swift in Sources */,
 				CBB51D2C1FE49EC2000CD233 /* DBTag.swift in Sources */,
 				019CCD541E748042002EF989 /* LTransaction.swift in Sources */,
+				CBF135D71FF1E27800E7E8AE /* RecordsPageViewController.swift in Sources */,
 				0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */,
 				CB1073641FCE6F6E00390032 /* DBCategory.swift in Sources */,
 				CBEF97621FD25B8A00D61F79 /* DBJournal.swift in Sources */,
