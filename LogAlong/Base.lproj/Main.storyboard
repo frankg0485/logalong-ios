@@ -2032,7 +2032,7 @@
         <!--Current Password View Controller-->
         <scene sceneID="4Z2-6P-sR6">
             <objects>
-                <viewController id="jBy-sV-aNJ" customClass="CurrentPasswordViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CurrentPassword" id="jBy-sV-aNJ" customClass="CurrentPasswordViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jOj-hy-qZf"/>
                         <viewControllerLayoutGuide type="bottom" id="f3B-lq-8bf"/>
@@ -2088,24 +2088,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="2c6-J3-I5d" appends="YES" id="PJG-mg-Lgo"/>
-                        </connections>
                     </view>
                     <value key="contentSizeForViewInPopover" type="size" width="375" height="200"/>
                     <size key="freeformSize" width="375" height="200"/>
                     <connections>
+                        <outlet property="cancelButton" destination="eKr-HB-RcY" id="i0B-PY-Fdj"/>
                         <outlet property="passwordTextField" destination="HU4-Pg-7Kh" id="Qjz-Zl-f2I"/>
                         <outlet property="showPasswordView" destination="jRf-9d-Ema" id="nuz-ik-Vru"/>
                         <outlet property="wrongPasswordLabel" destination="9i4-hF-RFB" id="OoU-kI-jfc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ejm-AD-fnu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="2c6-J3-I5d">
-                    <connections>
-                        <action selector="screenTapped:" destination="jBy-sV-aNJ" id="JFy-xw-N24"/>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="7327.1999999999998" y="-1625.4872563718143"/>
         </scene>
