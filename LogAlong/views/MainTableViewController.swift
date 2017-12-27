@@ -11,9 +11,11 @@ import UIKit
 class MainTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
 
     var accounts: [LAccount] = []
+    var dismissable = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.yellow], for: .normal)
 
         tabBarController?.tabBar.isOpaque = true
@@ -27,6 +29,7 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
 
+        LBroadcast.register(LBroadcast.ACTION_LOG_IN, cb: #selector(self.login), listener: self)
         //TODO: should we 'unregister' this listener according to viewcontroller life cycle?
         LBroadcast.register(LBroadcast.ACTION_NETWORK_CONNECTED,
                             cb: #selector(self.networkConnected),
@@ -44,6 +47,44 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
         // Dispose of any resources that can be recreated.
     }
 
+    func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
+        return dismissable
+    }
+
+    @objc func login(notification: Notification) -> Void {
+        if let bdata = notification.userInfo as? [String: Any] {
+            if let status = bdata["status"] as? Int {
+                if LProtocol.RSPS_OK == status {
+                    return
+                }
+            }
+        }
+
+        presentPasswordPopover()
+    }
+
+    func presentPasswordPopover() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CurrentPassword")
+
+        controller.modalPresentationStyle = UIModalPresentationStyle.popover
+        controller.popoverPresentationController?.delegate = self
+        controller.preferredContentSize = CGSize(width: 375, height: 200)
+
+        let popoverPresentationController = controller.popoverPresentationController
+
+        // result is an optional (but should not be nil if modalPresentationStyle is popover)
+        if let _popoverPresentationController = popoverPresentationController {
+            // set the view from which to pop up
+            _popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+            _popoverPresentationController.sourceView = self.view;
+            _popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            // present (id iPhone it is a modal automatic full screen)
+            dismissable = false
+
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -115,6 +156,8 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
 
             popoverViewController.popoverPresentationController!.delegate = self
+
+            dismissable = true
         }
 
     }

@@ -13,7 +13,9 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, FNot
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var wrongPasswordLabel: UILabel!
     @IBOutlet weak var showPasswordView: UIView!
+    @IBOutlet weak var cancelButton: UIButton!
 
+    var passwordChanged = false
     var delegate: FShowPasswordCellsDelegate?
     var signin = false {
         didSet {
@@ -23,10 +25,21 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, FNot
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if presentingViewController is MainTabViewController {
+            passwordChanged = true
+
+            cancelButton.isEnabled = false
+        }
+
         wrongPasswordLabel.isHidden = true
 
         passwordTextField.delegate = self
         passwordTextField.isSecureTextEntry = true
+
+        let tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(screenTapped(_:)))
+
+        view.addGestureRecognizer(tapGestureRecognizer)
 
         LBroadcast.register(LBroadcast.ACTION_SIGN_IN, cb: #selector(self.signIn), listener: self)
 
@@ -38,9 +51,8 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, FNot
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func screenTapped(_ sender: UITapGestureRecognizer) {
+    @objc func screenTapped(_ gestureRecognizer: UITapGestureRecognizer) {
         passwordTextField.resignFirstResponder()
-
     }
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
@@ -56,6 +68,10 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, FNot
             if let status = bdata["status"] as? Int {
                 if LProtocol.RSPS_OK == status {
                     signin = true
+
+                    if passwordChanged {
+                        LPreferences.setUserPassword(passwordTextField.text!)
+                    }
                 }
             }
         }

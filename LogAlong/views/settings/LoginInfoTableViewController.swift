@@ -8,7 +8,7 @@
 
 import UIKit
 import Foundation
-import AVFoundation
+
 class LoginInfoTableViewController: UITableViewController, FLoginViewControllerDelegate, UITextFieldDelegate, FReloadLoginScreenDelegate, FLoginTypeDelegate, UIPopoverPresentationControllerDelegate, FShowPasswordCellsDelegate {
 
     @IBOutlet weak var userIdTextField: UITextField!
@@ -188,7 +188,7 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
             return 0.0
         }
 
-        return 44
+        return CGFloat(LTheme.Dimension.table_view_cell_height)
     }
 
     /*

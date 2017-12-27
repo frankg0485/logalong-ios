@@ -56,7 +56,10 @@ class LTheme {
         static let topbar_bgd_color = UIColor(hex: 0x585c60)
         static let balance_header_bgd_color = UIColor(hex: 0xe4e6e8)
         static let row_released_color = UIColor(hex: 0xced0d2)
-
         static let records_view_top_bar_background = UIColor(hex: 0x585c60)
+    }
+
+    class Dimension {
+        static let table_view_cell_height = 44
     }
 }
