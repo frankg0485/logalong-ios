@@ -24,7 +24,6 @@
 		015183E71FE4911A002AC812 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B261FAEA2FF0092B184 /* SQLite.framework */; };
 		015183E81FE4911A002AC812 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B261FAEA2FF0092B184 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		015183F11FE57EF0002AC812 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0151840A1FE6134C002AC812 /* ShowPasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015184091FE6134C002AC812 /* ShowPasswordTableViewController.swift */; };
 		0151840C1FE61538002AC812 /* CurrentPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */; };
 		015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015367311F9D588F001BCB89 /* PieChartViewController.swift */; };
 		017BA1141FAF5DC600694E38 /* LoginInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */; };
@@ -206,7 +205,6 @@
 		014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectAmountViewController.swift; sourceTree = "<group>"; };
 		014893D21EDFA368005E3C94 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		014893D61EEB0332005E3C94 /* MainTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
-		015184091FE6134C002AC812 /* ShowPasswordTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPasswordTableViewController.swift; sourceTree = "<group>"; };
 		0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPasswordViewController.swift; sourceTree = "<group>"; };
 		015367311F9D588F001BCB89 /* PieChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewController.swift; sourceTree = "<group>"; };
 		017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInfoTableViewController.swift; sourceTree = "<group>"; };
@@ -412,7 +410,6 @@
 		CB15D4ED1FC3D7EE005D8B43 /* settings */ = {
 			isa = PBXGroup;
 			children = (
-				015184091FE6134C002AC812 /* ShowPasswordTableViewController.swift */,
 				017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */,
 				017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */,
 				0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */,
@@ -663,7 +660,6 @@
 				01FBE7F61F439D5A00A0B514 /* CreateViewController.swift in Sources */,
 				014893D71EEB0332005E3C94 /* MainTabViewController.swift in Sources */,
 				CB3154DF1FBD3AA6006F9DE4 /* Crc32.swift in Sources */,
-				0151840A1FE6134C002AC812 /* ShowPasswordTableViewController.swift in Sources */,
 				CBC374971FBE54890098721C /* LLog.swift in Sources */,
 				CB1BC6311FE770A100FD9D7E /* LTransactionDetails.swift in Sources */,
 				CB81316C1FCFB2CC00E33079 /* LDbBase.swift in Sources */,
