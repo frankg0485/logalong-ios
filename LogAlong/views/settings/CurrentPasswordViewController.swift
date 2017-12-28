@@ -12,7 +12,6 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, FNot
 
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var wrongPasswordLabel: UILabel!
-    @IBOutlet weak var showPasswordView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
 
     var passwordChanged = false
@@ -49,6 +48,14 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, FNot
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    @IBAction func switchSwitched(_ sender: UISwitch) {
+        if sender.isOn {
+            passwordTextField.isSecureTextEntry = false
+        } else {
+            passwordTextField.isSecureTextEntry = true
+        }
     }
 
     @objc func screenTapped(_ gestureRecognizer: UITapGestureRecognizer) {
@@ -96,20 +103,13 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, FNot
         return true
     }
 
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view == showPasswordView {
-            return false
-        }
-        return true
-    }
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let secondViewController = segue.destination as? ShowPasswordTableViewController {
-            secondViewController.delegate = self
-        }
-    }
+
+    }*/
 
 
 }

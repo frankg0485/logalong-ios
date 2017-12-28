@@ -95,6 +95,7 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
         searchButton.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
         checkButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
     }
+
     func showPasswordCells() {
         showPswdCells = true
         changePasswordButton.isHidden = true
