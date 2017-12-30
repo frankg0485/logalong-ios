@@ -57,6 +57,7 @@
 		CB51B55C1FBBFF11002CABA1 /* LBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB51B55B1FBBFF11002CABA1 /* LBuffer.swift */; };
 		CB81316C1FCFB2CC00E33079 /* LDbBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB81316B1FCFB2CC00E33079 /* LDbBase.swift */; };
 		CBAA495A1FC51CCA00E77834 /* UiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA49591FC51CCA00E77834 /* UiRequest.swift */; };
+		CBB161961FF80746006717C0 /* DBLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB161951FF80746006717C0 /* DBLoader.swift */; };
 		CBB51D1F1FE49660000CD233 /* LTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D1E1FE49660000CD233 /* LTag.swift */; };
 		CBB51D2A1FE496CF000CD233 /* LVendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D291FE496CF000CD233 /* LVendor.swift */; };
 		CBB51D2C1FE49EC2000CD233 /* DBTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D2B1FE49EC2000CD233 /* DBTag.swift */; };
@@ -242,6 +243,7 @@
 		CB51B55B1FBBFF11002CABA1 /* LBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LBuffer.swift; path = network/LBuffer.swift; sourceTree = "<group>"; };
 		CB81316B1FCFB2CC00E33079 /* LDbBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LDbBase.swift; sourceTree = "<group>"; };
 		CBAA49591FC51CCA00E77834 /* UiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UiRequest.swift; path = network/UiRequest.swift; sourceTree = "<group>"; };
+		CBB161951FF80746006717C0 /* DBLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBLoader.swift; sourceTree = "<group>"; };
 		CBB51D1E1FE49660000CD233 /* LTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTag.swift; sourceTree = "<group>"; };
 		CBB51D291FE496CF000CD233 /* LVendor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LVendor.swift; sourceTree = "<group>"; };
 		CBB51D2B1FE49EC2000CD233 /* DBTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBTag.swift; sourceTree = "<group>"; };
@@ -287,21 +289,22 @@
 		014281AC1FBD19720071ED8F /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				014893D21EDFA368005E3C94 /* Protocols.swift */,
+				CB1073611FCE6D0E00390032 /* DBAccount.swift */,
+				CB1073631FCE6F6E00390032 /* DBCategory.swift */,
+				CB1073651FCE735900390032 /* DBGeneric.swift */,
+				CB10735F1FCE62D900390032 /* DBHelper.swift */,
+				CBEF97611FD25B8A00D61F79 /* DBJournal.swift */,
+				CBB161951FF80746006717C0 /* DBLoader.swift */,
+				CBB51D2B1FE49EC2000CD233 /* DBTag.swift */,
+				013E34EC1F4366F900EF8972 /* DBTransaction.swift */,
+				CBB51D2D1FE49EDB000CD233 /* DBVendor.swift */,
 				CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */,
+				CBEF97701FD4654F00D61F79 /* LExtension.swift */,
+				CBF135CD1FF0214E00E7E8AE /* LLayout.swift */,
 				CBC374961FBE54890098721C /* LLog.swift */,
 				014281A11FBD15870071ED8F /* LPreferences.swift */,
-				013E34EC1F4366F900EF8972 /* DBTransaction.swift */,
-				CB10735F1FCE62D900390032 /* DBHelper.swift */,
-				CB1073611FCE6D0E00390032 /* DBAccount.swift */,
-				CBEF97611FD25B8A00D61F79 /* DBJournal.swift */,
-				CB1073651FCE735900390032 /* DBGeneric.swift */,
-				CB1073631FCE6F6E00390032 /* DBCategory.swift */,
-				CBB51D2B1FE49EC2000CD233 /* DBTag.swift */,
-				CBEF97701FD4654F00D61F79 /* LExtension.swift */,
-				CBB51D2D1FE49EDB000CD233 /* DBVendor.swift */,
 				CB3E5F9F1FEDEAD300C64CBD /* LTheme.swift */,
-				CBF135CD1FF0214E00E7E8AE /* LLayout.swift */,
+				014893D21EDFA368005E3C94 /* Protocols.swift */,
 			);
 			path = utils;
 			sourceTree = "<group>";
@@ -368,6 +371,7 @@
 				CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */,
 				014893D61EEB0332005E3C94 /* MainTabViewController.swift */,
 				01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */,
+				CBF135D61FF1E27800E7E8AE /* RecordsPageViewController.swift */,
 				019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */,
 				CBC01B501FAEAA620092B184 /* RecordsTableViewController.swift */,
 				014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */,
@@ -376,7 +380,6 @@
 				0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */,
 				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
 				CB15D4ED1FC3D7EE005D8B43 /* settings */,
-				CBF135D61FF1E27800E7E8AE /* RecordsPageViewController.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -386,14 +389,14 @@
 			children = (
 				CBC01B481FAEAA080092B184 /* LAccount.swift */,
 				010797E51F6778FA00623C04 /* LCategory.swift */,
-				019CCD531E748042002EF989 /* LTransaction.swift */,
 				CB81316B1FCFB2CC00E33079 /* LDbBase.swift */,
 				CB1073541FCE599E00390032 /* LJournal.swift */,
 				CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */,
-				CBB51D1E1FE49660000CD233 /* LTag.swift */,
-				CBB51D291FE496CF000CD233 /* LVendor.swift */,
-				CB1BC6301FE770A100FD9D7E /* LTransactionDetails.swift */,
 				CB1BC6391FE7717600FD9D7E /* LScheduledTransaction.swift */,
+				CBB51D1E1FE49660000CD233 /* LTag.swift */,
+				019CCD531E748042002EF989 /* LTransaction.swift */,
+				CB1BC6301FE770A100FD9D7E /* LTransactionDetails.swift */,
+				CBB51D291FE496CF000CD233 /* LVendor.swift */,
 			);
 			path = entities;
 			sourceTree = "<group>";
@@ -411,12 +414,12 @@
 			isa = PBXGroup;
 			children = (
 				017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */,
+				0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */,
 				017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */,
 				0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */,
 				01FA01081FBFA627002C00C0 /* LoginTimerViewController.swift */,
 				01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */,
 				0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */,
-				0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */,
 			);
 			path = settings;
 			sourceTree = "<group>";
@@ -454,13 +457,13 @@
 		CBD618011FB004D800A2B57E /* network */ = {
 			isa = PBXGroup;
 			children = (
-				CBD6180F1FB0081300A2B57E /* Server.swift */,
-				CBEDFD171FD6E6D60015E98E /* LService.swift */,
-				CB51B5571FBBDF26002CABA1 /* LProtocol.swift */,
-				CBAA49591FC51CCA00E77834 /* UiRequest.swift */,
-				CB51B5591FBBFBF6002CABA1 /* LTransport.swift */,
-				CB51B55B1FBBFF11002CABA1 /* LBuffer.swift */,
 				CB3154DE1FBD3AA6006F9DE4 /* Crc32.swift */,
+				CB51B55B1FBBFF11002CABA1 /* LBuffer.swift */,
+				CB51B5571FBBDF26002CABA1 /* LProtocol.swift */,
+				CBEDFD171FD6E6D60015E98E /* LService.swift */,
+				CB51B5591FBBFBF6002CABA1 /* LTransport.swift */,
+				CBD6180F1FB0081300A2B57E /* Server.swift */,
+				CBAA49591FC51CCA00E77834 /* UiRequest.swift */,
 			);
 			name = network;
 			sourceTree = "<group>";
@@ -690,6 +693,7 @@
 				0128AE4A1EC482B8007A999B /* CategoriesTableViewController.swift in Sources */,
 				01DE2C1B1F46764800ED5D9C /* CategoriesTableViewCell.swift in Sources */,
 				CBC01B491FAEAA080092B184 /* LAccount.swift in Sources */,
+				CBB161961FF80746006717C0 /* DBLoader.swift in Sources */,
 				014281A21FBD15870071ED8F /* LPreferences.swift in Sources */,
 				01FBE7FA1F43A00800A0B514 /* NewAdditionTableViewController.swift in Sources */,
 				0193DA1B1FB08F4800B63211 /* LoginScreenViewController.swift in Sources */,
