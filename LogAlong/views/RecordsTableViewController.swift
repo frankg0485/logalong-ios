@@ -49,10 +49,12 @@ class RecordsTableViewController: UITableViewController {
     var rowsInPreviousSections
         = 0
 
+    private var month: Int = 0
+    private var year: Int = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupNavigationBarItems()
         setupBalanceHeader()
 
         records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
@@ -69,18 +71,33 @@ class RecordsTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    func loadData(year: Int, month: Int) {
+        self.year = year
+        self.month = month
+        if (self.isViewLoaded) {
+            let fmt = DateFormatter()
+            fmt.dateFormat = "MM"
+            labelHeader!.text =  fmt.monthSymbols[month]
+            labelHeader!.sizeToFit()
+        }
+    }
+
+    private var labelHeader: UILabel?
+
     private func setupBalanceHeader() {
         let headerView = HorizontalLayout(height: 25)
         headerView.backgroundColor = LTheme.Color.balance_header_bgd_color
         //headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 25)
 
         let fontsize: CGFloat = 14
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
-        label.layoutMargins = UIEdgeInsetsMake(0, 10, 0, 0)
-        label.font = label.font.withSize(fontsize)
-        label.font = UIFont.boldSystemFont(ofSize: fontsize)
-        label.text = "December"
-        label.sizeToFit()
+        labelHeader = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
+        labelHeader!.layoutMargins = UIEdgeInsetsMake(0, 10, 0, 0)
+        labelHeader!.font = labelHeader!.font.withSize(fontsize)
+        labelHeader!.font = UIFont.boldSystemFont(ofSize: fontsize)
+        let fmt = DateFormatter()
+        fmt.dateFormat = "MM"
+        labelHeader!.text =  fmt.monthSymbols[month]
+        labelHeader!.sizeToFit()
 
         let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 25))
 
@@ -117,7 +134,7 @@ class RecordsTableViewController: UITableViewController {
         pr.text = ")"
         pr.sizeToFit()
 
-        headerView.addSubview(label)
+        headerView.addSubview(labelHeader!)
         headerView.addSubview(spacer)
         headerView.addSubview(labelBalance)
         headerView.addSubview(pl)
@@ -128,51 +145,6 @@ class RecordsTableViewController: UITableViewController {
         tableView.tableHeaderView = headerView
         tableView.tableFooterView = UIView()
     }
-
-    private func getTitle() -> String {
-        switch (LPreferences.getRecordsViewTimeInterval()) {
-        case ViewInterval.ALL_TIME.rawValue:
-            return NSLocalizedString("all", comment: "")
-        case ViewInterval.ANNUALLY.rawValue:
-            return NSLocalizedString("annually", comment: "")
-        default:
-            return NSLocalizedString("monthly", comment: "")
-        }
-    }
-    private func setupNavigationBarItems() {
-        let BTN_W: CGFloat = 30
-        let BTN_H: CGFloat = 25
-        //navigationItem.leftBarButtonItem = editButtonItem
-        navigationItem.title = getTitle()
-
-        let sortBtn = UIButton(type: .custom)
-        sortBtn.setImage(#imageLiteral(resourceName: "ic_menu_sort_by_size").withRenderingMode(.alwaysOriginal), for: .normal)
-        sortBtn.setSize(w: BTN_W, h: BTN_H)
-        sortBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5)
-
-        let searchBtn = UIButton(type: .system)
-        searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
-        searchBtn.setSize(w: BTN_W, h: BTN_H)
-        searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-
-        let rightBtn = UIButton(type: .system)
-        rightBtn.setImage(#imageLiteral(resourceName: "ic_action_right").withRenderingMode(.alwaysOriginal), for: .normal)
-        rightBtn.setSize(w: BTN_W, h: BTN_H)
-        rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-
-        let leftBtn = UIButton(type: .system)
-        leftBtn.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
-        leftBtn.setSize(w: BTN_W, h: BTN_H)
-        leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5)
-
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: sortBtn), UIBarButtonItem(customView: searchBtn)]
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightBtn), UIBarButtonItem(customView: leftBtn)]
-
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
-        navigationController?.navigationBar.barStyle = .black
-    }
-
 
     @IBAction func timeButtonClicked(_ sender: UIBarButtonItem) {
         if (sender.title == "Time: Asc") {

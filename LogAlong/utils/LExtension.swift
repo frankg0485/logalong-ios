@@ -19,6 +19,21 @@ class LA {
             $0.baseAddress!.load(as: T.self)
         }
     }
+
+    static func ymd() -> (year: Int, month: Int, day: Int) {
+        let date = Date()
+        let calendar = Calendar.current
+
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date) - 1
+        let day = calendar.component(.day, from: date)
+        return (year, month, day)
+    }
+
+    static func monthChange(_ month: Int, by: Int) -> Int {
+        let m = month + by + 12;
+        return m % 12
+    }
 }
 
 extension UIColor {

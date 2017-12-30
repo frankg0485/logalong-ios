@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataSource {
+class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 
     enum ViewInterval: Int {
         case MONTHLY = 10
@@ -16,58 +16,53 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         case ALL_TIME = 30
     }
 
+    private var viewL: RecordsTableViewController?
+    private var viewM: RecordsTableViewController?
+    private var viewR: RecordsTableViewController?
+    private var viewNext: RecordsTableViewController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
+        delegate = self
 
         setupNavigationBarItems()
+        setupViewControllers()
 
-        setViewControllers([myViewControllers[0]], direction: .forward, animated: true, completion: nil)
+        setViewControllers([viewM!], direction: .forward, animated: true, completion: nil)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let vi = myViewControllers.index(of: viewController) else {
-            return nil
-        }
-
-        let prev = vi - 1
-        guard  prev >= 0 else {
-            return myViewControllers.last
-        }
-
-        guard myViewControllers.count > prev else {
-            return nil
-        }
-
-        return myViewControllers[prev]
+        //LLog.d("\(self)", "get previous controller")
+        return getLeft() ? viewL : nil
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let vi = myViewControllers.index(of: viewController) else {
-            return nil
-        }
-
-        let next = vi + 1
-
-        guard next != myViewControllers.count else {
-            return myViewControllers.first
-        }
-
-        guard myViewControllers.count > next else {
-            return nil
-        }
-
-        return myViewControllers[next]
+        //LLog.d("\(self)", "get next controller")
+        return getRight() ? viewR : nil
     }
 
-    private lazy var myViewControllers: [UIViewController] = {
-        return [newTableViewController(),
-                newTableViewController(),
-                newTableViewController()]
-    }()
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        //LLog.d("\(self)", "going to: \(pendingViewControllers) @ \(Date())")
+        viewNext = pendingViewControllers[0] as? RecordsTableViewController
+    }
 
-    private func newTableViewController() -> UIViewController {
-        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController")
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        //LLog.d("\(self)", "finish: \(finished) prev: \(previousViewControllers) completed: \(completed) @ \(Date())")
+        if completed {
+            if viewNext == viewL {
+                viewL = viewR
+                viewR = viewM
+                navRight()
+            } else if viewNext == viewR {
+                viewR = viewL
+                viewL = viewM
+                navLeft()
+            } else {
+                LLog.e("\(self)", "unexpected state: prev: \(previousViewControllers[0]), next: \(viewNext)")
+            }
+            viewM = viewNext
+        }
     }
 
     private func getTitle() -> String {
@@ -112,5 +107,49 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
         navigationController?.navigationBar.barStyle = .black
+    }
+
+    private func setupViewControllers() {
+        viewL = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController") as? RecordsTableViewController
+        viewM = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController") as? RecordsTableViewController
+        viewR = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController") as? RecordsTableViewController
+
+
+        let (year, month, day) = LA.ymd()
+
+        navYear = year
+        navMonth = month
+        viewM!.loadData(year: 0, month: navMonth)
+    }
+
+    private var navYear = 0
+    private var navMonth = 0
+    private var startMonth = 1
+    private var endMonth = 11
+
+    private func getLeft() -> Bool {
+        var ret = false
+        if (navMonth > startMonth) {
+            viewL!.loadData(year: 0, month: LA.monthChange(navMonth, by: -1))
+            ret = true
+        }
+        return ret
+    }
+
+    private func getRight() -> Bool {
+        var ret = false
+        if (navMonth < endMonth) {
+            viewR!.loadData(year: 0, month: LA.monthChange(navMonth, by: +1))
+            ret = true
+        }
+        return ret
+    }
+
+    private func navLeft() {
+        navMonth = LA.monthChange(navMonth, by: +1)
+    }
+
+    private func navRight() {
+        navMonth = LA.monthChange(navMonth, by: -1)
     }
 }
