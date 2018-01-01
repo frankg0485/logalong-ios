@@ -26,6 +26,7 @@
 		015183F11FE57EF0002AC812 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0151840C1FE61538002AC812 /* CurrentPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */; };
 		015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015367311F9D588F001BCB89 /* PieChartViewController.swift */; };
+		01569DB71FF5BC4000D68807 /* ShareAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */; };
 		017BA1141FAF5DC600694E38 /* LoginInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */; };
 		017BA1161FAF5DE500694E38 /* CreateOrLoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */; };
 		0193DA1B1FB08F4800B63211 /* LoginScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */; };
@@ -37,6 +38,8 @@
 		019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD4D1E6DC7C5002EF989 /* MainTableViewCell.swift */; };
 		019CCD501E6DC7D0002EF989 /* RecordsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */; };
 		019CCD541E748042002EF989 /* LTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD531E748042002EF989 /* LTransaction.swift */; };
+		01B61A701FF8396600899F21 /* LUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B61A6F1FF8396600899F21 /* LUser.swift */; };
+		01B61A7B1FF8460100899F21 /* UsersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */; };
 		01DE2C121F449D8600ED5D9C /* AccountsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */; };
 		01DE2C1B1F46764800ED5D9C /* CategoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DE2C1A1F46764800ED5D9C /* CategoriesTableViewCell.swift */; };
 		01FA01091FBFA627002C00C0 /* LoginTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FA01081FBFA627002C00C0 /* LoginTimerViewController.swift */; };
@@ -208,6 +211,7 @@
 		014893D61EEB0332005E3C94 /* MainTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; tabWidth = 4; };
 		0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentPasswordViewController.swift; sourceTree = "<group>"; };
 		015367311F9D588F001BCB89 /* PieChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewController.swift; sourceTree = "<group>"; };
+		01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAccountViewController.swift; sourceTree = "<group>"; };
 		017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInfoTableViewController.swift; sourceTree = "<group>"; };
 		017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateOrLoginTableViewController.swift; sourceTree = "<group>"; };
 		0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenViewController.swift; sourceTree = "<group>"; };
@@ -223,6 +227,8 @@
 		019CCD4D1E6DC7C5002EF989 /* MainTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordsTableViewCell.swift; sourceTree = "<group>"; };
 		019CCD531E748042002EF989 /* LTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LTransaction.swift; sourceTree = "<group>"; };
+		01B61A6F1FF8396600899F21 /* LUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LUser.swift; sourceTree = "<group>"; };
+		01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersTableViewCell.swift; sourceTree = "<group>"; };
 		01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewCell.swift; sourceTree = "<group>"; };
 		01DE2C1A1F46764800ED5D9C /* CategoriesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewCell.swift; sourceTree = "<group>"; };
 		01FA01081FBFA627002C00C0 /* LoginTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTimerViewController.swift; sourceTree = "<group>"; };
@@ -379,6 +385,8 @@
 				01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */,
 				0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */,
 				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
+				01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */,
+				01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */,
 				CB15D4ED1FC3D7EE005D8B43 /* settings */,
 			);
 			path = views;
@@ -396,6 +404,7 @@
 				CBB51D1E1FE49660000CD233 /* LTag.swift */,
 				019CCD531E748042002EF989 /* LTransaction.swift */,
 				CB1BC6301FE770A100FD9D7E /* LTransactionDetails.swift */,
+				01B61A6F1FF8396600899F21 /* LUser.swift */,
 				CBB51D291FE496CF000CD233 /* LVendor.swift */,
 			);
 			path = entities;
@@ -659,6 +668,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01B61A701FF8396600899F21 /* LUser.swift in Sources */,
 				CBF135CE1FF0214E00E7E8AE /* LLayout.swift in Sources */,
 				01FBE7F61F439D5A00A0B514 /* CreateViewController.swift in Sources */,
 				014893D71EEB0332005E3C94 /* MainTabViewController.swift in Sources */,
@@ -666,6 +676,7 @@
 				CBC374971FBE54890098721C /* LLog.swift in Sources */,
 				CB1BC6311FE770A100FD9D7E /* LTransactionDetails.swift in Sources */,
 				CB81316C1FCFB2CC00E33079 /* LDbBase.swift in Sources */,
+				01B61A7B1FF8460100899F21 /* UsersTableViewCell.swift in Sources */,
 				CBB51D1F1FE49660000CD233 /* LTag.swift in Sources */,
 				014893D31EDFA368005E3C94 /* Protocols.swift in Sources */,
 				CB1073621FCE6D0E00390032 /* DBAccount.swift in Sources */,
@@ -704,6 +715,7 @@
 				CB1073551FCE599E00390032 /* LJournal.swift in Sources */,
 				CB51B5581FBBDF26002CABA1 /* LProtocol.swift in Sources */,
 				0128AE481EC4829B007A999B /* AccountsTableViewController.swift in Sources */,
+				01569DB71FF5BC4000D68807 /* ShareAccountViewController.swift in Sources */,
 				014893CF1EDE6106005E3C94 /* SelectAmountViewController.swift in Sources */,
 				CBB51D2A1FE496CF000CD233 /* LVendor.swift in Sources */,
 				01FA01091FBFA627002C00C0 /* LoginTimerViewController.swift in Sources */,
