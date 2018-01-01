@@ -20,14 +20,22 @@ class LA {
         }
     }
 
-    static func ymd() -> (year: Int, month: Int, day: Int) {
-        let date = Date()
+    static func ymd(date: Date) -> (year: Int, month: Int, day: Int) {
         let calendar = Calendar.current
 
         let year = calendar.component(.year, from: date)
         let month = calendar.component(.month, from: date) - 1
         let day = calendar.component(.day, from: date)
         return (year, month, day)
+    }
+
+    static func ymd() -> (year: Int, month: Int, day: Int) {
+        return ymd(date: Date())
+    }
+
+    static func ymd(milliseconds: Int64) -> (year: Int, month: Int, day: Int) {
+        let date = Date(milliseconds: milliseconds)
+        return ymd(date: date)
     }
 
     static func monthChange(_ month: Int, by: Int) -> Int {

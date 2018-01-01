@@ -15,6 +15,7 @@ class LPreferences {
 
     static let loginError = "LoginError"
     static let recordsViewTimeInterval = "recordsViewTimeInterval"
+    static let recordsViewSortMode = "recordsViewSortMode"
     static let userIdNum = "userIdNum"
     static let userLoginNum = "userLoginNum"
     static let userId = "userId"
@@ -22,11 +23,21 @@ class LPreferences {
     static let userPassword = "userPassword"
 
     static func getRecordsViewTimeInterval() -> Int {
-        return defaults.integer(forKey: recordsViewTimeInterval)
+        let v = defaults.integer(forKey: recordsViewTimeInterval)
+        return v == 0 ? RecordsViewInterval.MONTHLY.rawValue : v
     }
 
     static func setRecordsViewTimeInterval(_ val: Int) {
         defaults.set(val, forKey: recordsViewTimeInterval)
+    }
+
+    static func getRecordsViewSortMode() -> Int {
+        let v = defaults.integer(forKey: recordsViewSortMode)
+        return v == 0 ? RecordsViewSortMode.TIME.rawValue : v
+    }
+
+    static func setRecordsViewSortMode(_ val: Int) {
+        defaults.set(val, forKey: recordsViewSortMode)
     }
 
     static func getUserId() -> String {

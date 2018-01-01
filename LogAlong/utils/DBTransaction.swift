@@ -9,7 +9,6 @@ import SQLite
 class DBTransaction: DBGeneric<LTransaction> {
     static let instance = DBTransaction()
 
-    //private let table = DBHelper.instance.transactions
     override init() {
         super.init()
         table = DBHelper.instance.transactions

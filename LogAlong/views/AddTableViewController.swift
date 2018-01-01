@@ -307,15 +307,15 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 formatter.dateStyle = .short
 
                 let time = formatter.date(from: changeDateButton.title!)?.timeIntervalSince1970.rounded()
+                let timeMs = time! * 1000
                 /*let payee = payeeLabel.text
                  let tag = tagLabel.text
                  let notes = notesTextField.text*/
 
                 //TODO: handle type, tag, vendor etc
-                //QUESTION: is 'time' in second or millisecond?
                 record = LTransaction(accountId: accountId, accountId2: 0,
                                       amount: amount, type: TransactionType.EXPENSE,
-                                      categoryId: categoryId, tagId: 0, vendorId: 0, timestamp: Int64(time!))
+                                      categoryId: categoryId, tagId: 0, vendorId: 0, timestamp: Int64(timeMs))
             }
 
             presentingViewController?.dismiss(animated: true, completion: nil)
