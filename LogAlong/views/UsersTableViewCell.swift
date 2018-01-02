@@ -1,17 +1,16 @@
 //
-//  AccountsTableViewCell.swift
+//  UsersTableViewCell.swift
 //  LogAlong
 //
-//  Created by Frank Gao on 8/16/17.
+//  Created by Frank Gao on 12/30/17.
 //  Copyright © 2017 Swoag Technology. All rights reserved.
 //
 
 import UIKit
 
-class AccountsTableViewCell: UITableViewCell {
+class UsersTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var userLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

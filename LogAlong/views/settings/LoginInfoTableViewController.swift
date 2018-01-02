@@ -35,8 +35,6 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
 
         nameCell.isHidden = false
 
-        tableView.backgroundColor = UIColor.white
-
         if !LPreferences.getUserId().isEmpty {
             validUser = true
 

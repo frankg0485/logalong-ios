@@ -32,8 +32,13 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
         // Dispose of any resources that can be recreated.
     }
 
-    func passCreationBack(creation: NameWithId) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = LTheme.Color.row_released_color
+        cell.layer.borderWidth = 1
+        cell.layer.borderColor = tableView.backgroundColor?.cgColor
+    }
 
+    func passCreationBack(creation: NameWithId) {
         if let _ = tableView.indexPathForSelectedRow {
             DBCategory.instance.update(LCategory(id: creation.id, name: creation.name))
         } else {

@@ -64,23 +64,6 @@ class LPreferences {
         defaults.set(val, forKey: userPassword)
     }
 
-    /*
-     static func getUserIdNum() -> Int64 {
-     return defaults.object(forKey: userIdNum) as! Int64
-     }
-
-     static func setUserIdNum(_ val: Int64) {
-     return defaults.set(val, forKey: userIdNum)
-     }
-
-     static func getUserLoginNum() -> Int64 {
-     return defaults.object(forKey: userLoginNum) as! Int64
-     }
-
-     static func setUserLoginNum(_ val: Int64) {
-     return defaults.set(val, forKey: userLoginNum)
-     }
-     */
     static func getUserIdNum() -> Int {
         return defaults.integer(forKey: userIdNum)
     }

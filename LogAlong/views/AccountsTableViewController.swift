@@ -11,9 +11,11 @@ import UIKit
 class AccountsTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     var accounts: [LAccount] = []
+    var name: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         navigationItem.leftBarButtonItem = editButtonItem
 
         accounts = DBAccount.instance.getAll()
@@ -29,6 +31,43 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    @IBAction func shareButtonClicked(_ sender: UIButton) {
+        if let cell = sender.superview?.superview as? AccountsTableViewCell {
+            name = cell.nameLabel.text!
+        }
+
+        presentShareView()
+    }
+
+    func presentShareView() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ShareAccount") as! ShareAccountViewController
+
+        controller.accountName = name
+        controller.modalPresentationStyle = UIModalPresentationStyle.popover
+        controller.popoverPresentationController?.delegate = self
+        controller.preferredContentSize = CGSize(width: 375, height: 216)
+
+        let popoverPresentationController = controller.popoverPresentationController
+
+        // result is an optional (but should not be nil if modalPresentationStyle is popover)
+        if let _popoverPresentationController = popoverPresentationController {
+            // set the view from which to pop up
+            _popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+            _popoverPresentationController.sourceView = self.view;
+            _popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            // present (id iPhone it is a modal automatic full screen)
+
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = LTheme.Color.row_released_color
+        cell.layer.borderWidth = 1
+        cell.layer.borderColor = tableView.backgroundColor?.cgColor
     }
 
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
@@ -63,6 +102,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         let account = accounts[indexPath.row]
 
         cell.nameLabel.text = account.name
+        cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
 
         return cell
     }
