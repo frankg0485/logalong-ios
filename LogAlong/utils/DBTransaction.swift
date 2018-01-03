@@ -15,7 +15,7 @@ class DBTransaction: DBGeneric<LTransaction> {
         getValues = rdValues
         setValues = wrValues
     }
-
+/*
     enum sorts: Int {
         case ACCOUNT = 1
         case CATEGORY = 2
@@ -25,8 +25,8 @@ class DBTransaction: DBGeneric<LTransaction> {
         case ASC = 1
         case DESC = 2
     }
-
-    private func rdValues(_ row: Row) -> LTransaction? {
+*/
+    func rdValues(_ row: Row) -> LTransaction? {
         return LTransaction(id: row[DBHelper.id],
                             gid: row[DBHelper.gid],
                             rid: row[DBHelper.rid],
@@ -61,7 +61,7 @@ class DBTransaction: DBGeneric<LTransaction> {
                 DBHelper.timestampAccess <- value.timestampAccess]
     }
 
-    private func rdDetails(_ row: Row) -> LTransactionDetails? {
+    func rdDetails(_ row: Row) -> LTransactionDetails? {
         let details = LTransactionDetails()
         details.id = row[DBHelper.instance.transactions[DBHelper.id]]
         details.gid = row[DBHelper.instance.transactions[DBHelper.gid]]
@@ -91,54 +91,6 @@ class DBTransaction: DBGeneric<LTransaction> {
         return super.getAll(by: DBHelper.timestamp.asc)
     }
 
-    func getAll(sortBy: Int, timeAsc: Bool) -> [LTransaction] {
-        return getAll()
-
-        /* TODO: the following join helps with the 'sort', but they don't actually belong here
-         var transactions: [LTransaction] = []
-
-         var condition = table.join(.leftOuter, DBHelper.instance.accounts,
-         on: DBHelper.accountId == DBHelper.instance.accounts[DBHelper.id])
-         .join(.leftOuter, DBHelper.instance.categories,
-         on: DBHelper.categoryId == DBHelper.instance.categories[DBHelper.id])
-
-         if (timeAsc == true) {
-         condition = condition.order(DBHelper.timestamp.asc)
-         }
-         if (timeAsc == false) {
-         condition = condition.order(DBHelper.timestamp.desc)
-         }
-
-         if (sortBy == sorts.ACCOUNT.rawValue) {
-         if (timeAsc == true) {
-         condition = condition.order(DBHelper.instance.accounts[DBHelper.name].asc,
-         table[DBHelper.timestamp].asc)
-         } else {
-         condition = condition.order(DBHelper.instance.accounts[DBHelper.name].asc,
-         table[DBHelper.timestamp].desc)
-         }
-         } else if (sortBy == sorts.CATEGORY.rawValue) {
-         if (timeAsc == true) {
-         condition = condition.order(DBHelper.instance.categories[DBHelper.name].asc,
-         table[DBHelper.timestamp].asc)
-         } else {
-         condition = condition.order(DBHelper.instance.categories[DBHelper.name].asc,
-         table[DBHelper.timestamp].desc)
-         }
-         }
-
-         do {
-         for row in try DBHelper.instance.db!.prepare(condition) {
-         transactions.append(getValues(row)!)
-         }
-         } catch {
-         LLog.e("\(self)", "Select failed")
-         }
-
-         return transactions
-         */
-    }
-
     func getAllBy(id: Int64, col: Expression<Int64>) -> [LTransaction] {
         var transactions: [LTransaction] = []
 
@@ -162,6 +114,14 @@ class DBTransaction: DBGeneric<LTransaction> {
         return getAllBy(id: categoryId, col: DBHelper.categoryId)
     }
 
+    func detailsQuery() -> QueryType {
+        let query = table!.join(DBHelper.instance.accounts, on: DBHelper.accountId == DBHelper.instance.accounts[DBHelper.id])
+            .join(DBHelper.instance.categories, on: DBHelper.categoryId == DBHelper.instance.categories[DBHelper.id])
+            .join(DBHelper.instance.tags, on: DBHelper.tagId == DBHelper.instance.tags[DBHelper.id])
+            .join(DBHelper.instance.vendors, on: DBHelper.vendorId == DBHelper.instance.vendors[DBHelper.id])
+
+        return table!
+    }
 
     func getDetails(id: Int64) -> LTransactionDetails? {
         let query = table!.join(DBHelper.instance.accounts, on: DBHelper.accountId == DBHelper.instance.accounts[DBHelper.id])

@@ -10,71 +10,39 @@ import UIKit
 import os.log
 
 class RecordsTableViewController: UITableViewController {
-
-    enum sorts: Int {
-        case NONE = 0
-        case ACCOUNT = 1
-        case CATEGORY = 2
-    }
-
-    var records = [LTransaction]()
-    var sections: [LAccount] = [LAccount(id: 0, name: "All Records")]
-    let sortOptions = ["Sort By:", "Sort By: Account", "Sort By: Category"]
-    var sortCounter = 0 {
-        didSet {
-            rowsInPreviousSections = 0
-            rowsInSection = 0
-            sectionCounter = 0
-
-        }
-    }
-
-    var timeCounterAsc = true {
-        didSet {
-            rowsInPreviousSections = 0
-            rowsInSection = 0
-            sectionCounter = 0
-
-        }
-    }
-
-    var sectionCounter = 0
-    var rowsInSection = 0
-    var rowsInPreviousSections
-        = 0
-
-    private var month: Int = 0
+    private var dataLoaded = false
     private var year: Int = 0
+    private var month: Int = 0
+    private var loader: DBLoader?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupBalanceHeader()
-
-        records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        refresh()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func refresh() {
+        if (dataLoaded) {
+            loader = DBLoader(year: year, month: month, sort: LPreferences.getRecordsViewSortMode(),
+                                   interval: LPreferences.getRecordsViewTimeInterval(), search: LPreferences.getRecordsSearchControls())
+
+            if (self.isViewLoaded) {
+                let fmt = DateFormatter()
+                fmt.dateFormat = "MM"
+                labelHeader!.text =  fmt.monthSymbols[month]
+                labelHeader!.sizeToFit()
+
+                tableView.reloadData()
+            }
+        }
     }
 
-    func loadData(year: Int, month: Int, sort: Int, interval: Int, search: LRecordSearch) {
+    func loadData(year: Int, month: Int, loader: DBLoader) {
         self.year = year
         self.month = month
-
-        if (self.isViewLoaded) {
-            let fmt = DateFormatter()
-            fmt.dateFormat = "MM"
-            labelHeader!.text =  fmt.monthSymbols[month]
-            labelHeader!.sizeToFit()
-        }
+        dataLoaded = true
+        refresh()
     }
 
     private var labelHeader: UILabel?
@@ -105,9 +73,7 @@ class RecordsTableViewController: UITableViewController {
         labelHeader.layoutMargins = UIEdgeInsetsMake(0, 10, 0, 0)
         labelHeader.font = labelHeader.font.withSize(fontsize)
         labelHeader.font = UIFont.boldSystemFont(ofSize: fontsize)
-        let fmt = DateFormatter()
-        fmt.dateFormat = "MM"
-        labelHeader.text =  fmt.monthSymbols[month]
+        labelHeader.text = txt
         labelHeader.sizeToFit()
 
         let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 25))
@@ -156,59 +122,6 @@ class RecordsTableViewController: UITableViewController {
         return (headerView, labelHeader, labelBalance, labelIncome, labelExpense)
     }
 
-    @IBAction func timeButtonClicked(_ sender: UIBarButtonItem) {
-        if (sender.title == "Time: Asc") {
-            sender.title = "Time: Desc"
-
-            timeCounterAsc = false
-            records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
-
-
-        } else {
-            sender.title = "Time: Asc"
-
-            timeCounterAsc = true
-            records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
-        }
-
-
-        tableView.reloadData()
-    }
-
-    @IBAction func sortButtonClicked(_ sender: UIBarButtonItem) {
-        if (sortCounter == sorts.CATEGORY.rawValue) {
-            sortCounter = sorts.NONE.rawValue
-            sender.title = sortOptions[sortCounter]
-
-            records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
-
-            sections.removeAll()
-            sections.append(LAccount(id: 0, name: "All Records"))
-        } else {
-            sender.title = sortOptions[sortCounter + 1]
-            sortCounter += 1
-
-            if (sortCounter == sorts.ACCOUNT.rawValue) {
-                records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
-
-                sections.removeAll()
-                for account in DBAccount.instance.getAll() {
-                    sections.append(account)
-                }
-
-            } else {
-                records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
-
-                sections.removeAll()
-                for category in DBCategory.instance.getAll() {
-                    sections.append(LAccount(id: category.id, name: category.name))
-                }
-            }
-        }
-
-        tableView.reloadData()
-    }
-
     @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? AddTableViewController {
             if let record = sourceViewController.record {
@@ -230,36 +143,23 @@ class RecordsTableViewController: UITableViewController {
                     _ = navigationController?.popViewController(animated: true)
                 }
 
-                reloadTableView()
-
+                refresh()
             }
         }
     }
 
     // MARK: - Table view data source
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        rowsInPreviousSections = 0
-        rowsInSection = 0
-        sectionCounter = 0
-    }
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return loader!.getSectionCount()
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //CHANGE THIS: USE ENUMERATIONS
-        if (sortCounter == sorts.ACCOUNT.rawValue) {
-            return DBTransaction.instance.getAllByAccount(accountId: sections[section].id).count
-        } else if (sortCounter == sorts.CATEGORY.rawValue) {
-            return DBTransaction.instance.getAllByCategory(categoryId: sections[section].id).count
-        } else {
-            return records.count
-        }
+        return loader!.getSection(section).rows
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        let sect = loader!.getSection(section)
+        return (sect.rows == 0 || sect.show == false ) ? 0 : 25
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -268,31 +168,14 @@ class RecordsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let cellIdentifier = "RecordsTableViewCell"
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? RecordsTableViewCell else {
             fatalError("The dequeued cell is not an instance of RecordsTableViewCell.")
-
         }
 
-        if (indexPath.row == 0) {
-            sectionCounter += 1
-
-            if (sectionCounter > 1) {
-                rowsInPreviousSections += 1
-
-            }
-            rowsInPreviousSections += rowsInSection
-            rowsInSection = 0
-        } else {
-            rowsInSection += 1
-        }
-
-        let record = records[indexPath.row + rowsInPreviousSections]
+        let record = loader!.getRecord(section: indexPath.section, row: indexPath.row)
 
         cell.categoryLabel.text = DBCategory.instance.get(id: record.categoryId)?.name
-        /*        cell.payeelabel.text = record.payee
-         cell.tagLabel.text = record.tag*/
 
         switch (record.type) {
         case .INCOME:
@@ -323,8 +206,7 @@ class RecordsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            DBTransaction.instance.remove(id: records.remove(at: indexPath.row).id)
-
+            DBTransaction.instance.remove(id: loader!.getRecord(section: indexPath.section, row: indexPath.row).id)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -356,21 +238,11 @@ class RecordsTableViewController: UITableViewController {
                 fatalError("The selected cell is not being displayed by the table")
             }
 
-            let selectedRecord = records[indexPath.row]
+            let selectedRecord = loader!.getRecord(section: indexPath.section, row: indexPath.row)
             recordDetailViewController.record = selectedRecord
 
         default:
             fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
         }
-    }
-
-    func reloadTableView() {
-        records = DBTransaction.instance.getAll(sortBy: sortCounter, timeAsc: timeCounterAsc)
-
-        rowsInPreviousSections = 0
-        rowsInSection = 0
-        sectionCounter = 0
-
-        tableView.reloadData()
     }
 }

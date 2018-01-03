@@ -17,11 +17,20 @@ class LPreferences {
     static let recordsViewTimeInterval = "recordsViewTimeInterval"
     static let recordsViewSortMode = "recordsViewSortMode"
     static let recordsViewAscend = "recordsViewAscend"
+    static let recordsSearchControls = "recordsSearchControls"
     static let userIdNum = "userIdNum"
     static let userLoginNum = "userLoginNum"
     static let userId = "userId"
     static let userName = "userName"
     static let userPassword = "userPassword"
+
+    static func getRecordsSearchControls() -> LRecordSearch {
+        return LRecordSearch(from: 0, to: 0)
+    }
+
+    static func setRecordsSearchControls(controls: LRecordSearch) {
+
+    }
 
     static func getRecordsViewAscend() -> Bool {
         return defaults.bool(forKey: recordsViewAscend)
