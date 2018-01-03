@@ -11,12 +11,6 @@ import os.log
 
 class RecordsTableViewController: UITableViewController {
 
-    enum ViewInterval: Int {
-        case MONTHLY = 10
-        case ANNUALLY = 20
-        case ALL_TIME = 30
-    }
-
     enum sorts: Int {
         case NONE = 0
         case ACCOUNT = 1
@@ -71,9 +65,10 @@ class RecordsTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func loadData(year: Int, month: Int) {
+    func loadData(year: Int, month: Int, sort: Int, interval: Int, search: LRecordSearch) {
         self.year = year
         self.month = month
+
         if (self.isViewLoaded) {
             let fmt = DateFormatter()
             fmt.dateFormat = "MM"
@@ -83,21 +78,37 @@ class RecordsTableViewController: UITableViewController {
     }
 
     private var labelHeader: UILabel?
+    private var labelBalance: UILabel?
+    private var labelIncome: UILabel?
+    private var labelExpense: UILabel?
 
     private func setupBalanceHeader() {
+        let (view, h, b, i, e) = createHeader()
+        labelHeader = h
+        labelExpense = e
+        labelIncome = i
+        labelBalance = b
+
+        tableView.tableHeaderView = view
+        tableView.tableFooterView = UIView()
+    }
+
+    private func createHeader(txt: String = "", balance: Double = 0, income: Double = 0, expense: Double = 0)
+        -> (view: UIView, txtLabel: UILabel, balanceLabel: UILabel, incomeLabel: UILabel, expenseLabel: UILabel)
+    {
         let headerView = HorizontalLayout(height: 25)
         headerView.backgroundColor = LTheme.Color.balance_header_bgd_color
         //headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 25)
 
         let fontsize: CGFloat = 14
-        labelHeader = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
-        labelHeader!.layoutMargins = UIEdgeInsetsMake(0, 10, 0, 0)
-        labelHeader!.font = labelHeader!.font.withSize(fontsize)
-        labelHeader!.font = UIFont.boldSystemFont(ofSize: fontsize)
+        let labelHeader = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
+        labelHeader.layoutMargins = UIEdgeInsetsMake(0, 10, 0, 0)
+        labelHeader.font = labelHeader.font.withSize(fontsize)
+        labelHeader.font = UIFont.boldSystemFont(ofSize: fontsize)
         let fmt = DateFormatter()
         fmt.dateFormat = "MM"
-        labelHeader!.text =  fmt.monthSymbols[month]
-        labelHeader!.sizeToFit()
+        labelHeader.text =  fmt.monthSymbols[month]
+        labelHeader.sizeToFit()
 
         let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 25))
 
@@ -134,7 +145,7 @@ class RecordsTableViewController: UITableViewController {
         pr.text = ")"
         pr.sizeToFit()
 
-        headerView.addSubview(labelHeader!)
+        headerView.addSubview(labelHeader)
         headerView.addSubview(spacer)
         headerView.addSubview(labelBalance)
         headerView.addSubview(pl)
@@ -142,8 +153,7 @@ class RecordsTableViewController: UITableViewController {
         headerView.addSubview(labelExpense)
         headerView.addSubview(pr)
 
-        tableView.tableHeaderView = headerView
-        tableView.tableFooterView = UIView()
+        return (headerView, labelHeader, labelBalance, labelIncome, labelExpense)
     }
 
     @IBAction func timeButtonClicked(_ sender: UIBarButtonItem) {
@@ -227,8 +237,6 @@ class RecordsTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
-
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         rowsInPreviousSections = 0
         rowsInSection = 0
@@ -250,8 +258,13 @@ class RecordsTableViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].name
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let (v, h, b, i, e) = createHeader()
+        return v
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -275,24 +288,27 @@ class RecordsTableViewController: UITableViewController {
             rowsInSection += 1
         }
 
-        //print("asdfjalsdfkjasdlfkjasldkfjasldkfjasdf")
         let record = records[indexPath.row + rowsInPreviousSections]
 
-        //cell.accountLabel.text = DBAccount.instance.get(id: record.accountId)?.name
         cell.categoryLabel.text = DBCategory.instance.get(id: record.categoryId)?.name
         /*        cell.payeelabel.text = record.payee
          cell.tagLabel.text = record.tag*/
+
+        switch (record.type) {
+        case .INCOME:
+            cell.amountLabel.textColor = LTheme.Color.base_green
+        case .EXPENSE:
+            cell.amountLabel.textColor = LTheme.Color.base_red
+        default:
+            cell.amountLabel.textColor = LTheme.Color.base_blue
+        }
         cell.amountLabel.text = String(record.amount)
 
-        let date = Date(timeIntervalSince1970: TimeInterval(record.timestamp))
-
+        let date = Date(milliseconds: record.timestamp)
         let dayTimePeriodFormatter = DateFormatter()
-        dayTimePeriodFormatter.dateStyle = .short
-
+        dayTimePeriodFormatter.dateStyle = .medium
         let dateString = dayTimePeriodFormatter.string(from: date)
-
-        //cell.dateLabel.text = dateString
-
+        cell.dateLabel.text = dateString
 
         return cell
     }
@@ -315,22 +331,9 @@ class RecordsTableViewController: UITableViewController {
         }
     }
 
-
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-     }
-     */
-
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .none
+    }
 
     // MARK: - Navigation
 

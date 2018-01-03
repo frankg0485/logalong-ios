@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+struct LRecordSearch {
+    var from: Int64
+    var to: Int64
+}

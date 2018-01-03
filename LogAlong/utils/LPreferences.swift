@@ -16,11 +16,20 @@ class LPreferences {
     static let loginError = "LoginError"
     static let recordsViewTimeInterval = "recordsViewTimeInterval"
     static let recordsViewSortMode = "recordsViewSortMode"
+    static let recordsViewAscend = "recordsViewAscend"
     static let userIdNum = "userIdNum"
     static let userLoginNum = "userLoginNum"
     static let userId = "userId"
     static let userName = "userName"
     static let userPassword = "userPassword"
+
+    static func getRecordsViewAscend() -> Bool {
+        return defaults.bool(forKey: recordsViewAscend)
+    }
+
+    static func setRecordsViewAscend(_ val: Bool) {
+        defaults.set(val, forKey: recordsViewAscend)
+    }
 
     static func getRecordsViewTimeInterval() -> Int {
         let v = defaults.integer(forKey: recordsViewTimeInterval)

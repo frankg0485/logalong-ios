@@ -297,6 +297,16 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 return
             }
 
+            var recordType: TransactionType
+            switch (type) {
+            case addType.EXPENSE.rawValue:
+                recordType = TransactionType.EXPENSE
+            case addType.INCOME.rawValue:
+                recordType = TransactionType.INCOME
+            default:
+                recordType = TransactionType.TRANSFER
+            }
+
             if (type == addType.TRANSFER.rawValue) {
 
             } else {
@@ -314,7 +324,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
                 //TODO: handle type, tag, vendor etc
                 record = LTransaction(accountId: accountId, accountId2: 0,
-                                      amount: amount, type: TransactionType.EXPENSE,
+                                      amount: amount, type: recordType,
                                       categoryId: categoryId, tagId: 0, vendorId: 0, timestamp: Int64(timeMs))
             }
 

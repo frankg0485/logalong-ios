@@ -29,6 +29,9 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
     private var viewR: RecordsTableViewController?
     private var viewNext: RecordsTableViewController?
 
+    //TODO: search support
+    var searchControls: LRecordSearch = LRecordSearch(from: 0, to: 0)
+
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
@@ -196,7 +199,8 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         viewM = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController") as? RecordsTableViewController
         viewR = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController") as? RecordsTableViewController
 
-        viewM!.loadData(year: navYear, month: navMonth)
+        viewM!.loadData(year: navYear, month: navMonth, sort: LPreferences.getRecordsViewSortMode(),
+                        interval: LPreferences.getRecordsViewTimeInterval(), search: searchControls)
     }
 
     private var navYear = -1
@@ -278,7 +282,8 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         var ret = false
         let (y, m) = nextYearMonth(-1)
         if (y != navYear || m != navMonth) {
-            viewL!.loadData(year: y, month: m)
+            viewL!.loadData(year: y, month: m, sort: LPreferences.getRecordsViewSortMode(),
+                            interval: LPreferences.getRecordsViewTimeInterval(), search: searchControls)
             ret = true
         }
         return ret
@@ -288,7 +293,8 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         var ret = false
         let (y, m) = nextYearMonth(+1)
         if (y != navYear || m != navMonth) {
-            viewR!.loadData(year: y, month: m)
+            viewR!.loadData(year: y, month: m, sort: LPreferences.getRecordsViewSortMode(),
+                            interval: LPreferences.getRecordsViewTimeInterval(), search: searchControls)
             ret = true
         }
         return ret
