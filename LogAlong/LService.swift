@@ -104,7 +104,37 @@ class LService {
                             account!.gid = gid
                             dbAccount.update(account!);
                         }
-                        break;
+
+                    case LProtocol.JRQST_GET_ACCOUNTS:
+                        let gid = bdata["gid"] as! Int64
+                        let uid = bdata["uid"] as! Int64
+                        let name = bdata["name"] as! String
+
+                        var account = DBAccount.instance.get(gid: gid)
+                        if (nil != account) {
+                            //account.setOwner(uid)
+                            account!.name = name
+                            DBAccount.instance.update(account!);
+                        } else {
+                            account = LAccount();
+                            //account.setOwner(uid);
+                            account!.gid = gid
+                            account!.name = name
+                            _ = DBAccount.instance.add(&account!)
+                        }
+                        LJournal.instance.getAccountUsers(gid)
+
+                    case LProtocol.JRQST_GET_ACCOUNT_USERS:
+                        let gid = bdata["aid"] as! Int64
+
+                        let dbAccount = DBAccount.instance
+                        var account = dbAccount.get(gid: gid)
+                        if (nil != account) {
+                            //account.setSharedIdsString(intent.getStringExtra("users"))
+                            dbAccount.update(account!)
+                        } else {
+                            LLog.w("\(self)", "account: \(gid) no longer exists")
+                        }
 
                         /*
                          case LProtocol.JRQST_ADD_CATEGORY:
@@ -180,86 +210,57 @@ class LService {
                          }
                          dbSchTransaction.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid);
                          break;
-                         case LProtocol.JRQST_GET_ACCOUNTS:
-                         gid = intent.getLongExtra("gid", 0L);
-                         uid = intent.getLongExtra("uid", 0L);
-                         String name = intent.getStringExtra("name");
+                         */
 
-                         dbAccount = DBAccount.getInstance();
-                         account = dbAccount.getByGid(gid);
-                         if (null != account) {
-                         account.setOwner(uid);
-                         account.setName(name);
-                         dbAccount.update(account);
+                    case LProtocol.JRQST_GET_CATEGORIES:
+                         let gid = bdata["gid"] as! Int64
+                         let name = bdata["name"] as! String
+                         let dbCategory = DBCategory.instance
+                         var category = dbCategory.get(gid: gid)
+                         if (nil != category) {
+                            category!.name = name
+                            dbCategory.update(category!)
                          } else {
-                         account = new LAccount();
-                         account.setOwner(uid);
-                         account.setGid(gid);
-                         account.setName(name);
-                         dbAccount.add(account);
+                            category = LCategory()
+                            category!.gid = gid
+                            category!.name = name
+                            dbCategory.add(&category!)
                          }
-                         journal.getAccountUsers(gid);
-                         break;
-                         case LProtocol.JRQST_GET_ACCOUNT_USERS:
-                         gid = intent.getLongExtra("aid", 0L);
-                         dbAccount = DBAccount.getInstance();
-                         account = dbAccount.getByGid(gid);
-                         if (null != account) {
-                         account.setSharedIdsString(intent.getStringExtra("users"));
-                         dbAccount.update(account);
-                         } else {
-                         LLog.w("\(self)", "account: " + gid + " no longer exists");
-                         }
-                         break;
 
-                         case LProtocol.JRQST_GET_CATEGORIES:
-                         gid = intent.getLongExtra("gid", 0L);
-                         name = intent.getStringExtra("name");
-                         dbCategory = DBCategory.getInstance();
-                         category = dbCategory.getByGid(gid);
-                         if (null != category) {
-                         category.setName(name);
-                         dbCategory.update(category);
+                    case LProtocol.JRQST_GET_TAGS:
+                         let gid = bdata["gid"] as! Int64
+                         let name = bdata["name"] as! String
+                         let dbTag = DBTag.instance
+                         var tag = dbTag.get(gid: gid)
+                         if (nil != tag) {
+                            tag!.name = name
+                            dbTag.update(tag!)
                          } else {
-                         category = new LCategory();
-                         category.setGid(gid);
-                         category.setName(name);
-                         dbCategory.add(category);
+                            tag = LTag()
+                            tag!.gid = gid
+                            tag!.name = name
+                            dbTag.add(&tag!)
                          }
-                         break;
-                         case LProtocol.JRQST_GET_TAGS:
-                         gid = intent.getLongExtra("gid", 0L);
-                         name = intent.getStringExtra("name");
-                         dbTag = DBTag.getInstance();
-                         tag = dbTag.getByGid(gid);
-                         if (null != tag) {
-                         tag.setName(name);
-                         dbTag.update(tag);
+
+                    case LProtocol.JRQST_GET_VENDORS:
+                         let gid = bdata["gid"] as! Int64
+                         //let type = bdata["type"] as! Int
+                         let name = bdata["name"] as! String
+                         let dbVendor = DBVendor.instance
+                         var vendor = dbVendor.get(gid: gid)
+                         if (nil != vendor) {
+                            vendor!.name = name
+                            //vendor!.type = type
+                            dbVendor.update(vendor!)
                          } else {
-                         tag = new LTag();
-                         tag.setGid(gid);
-                         tag.setName(name);
-                         dbTag.add(tag);
+                            vendor = LVendor()
+                            vendor!.gid = gid
+                            vendor!.name = name
+                            //vendor!.type = type
+                            dbVendor.add(&vendor!)
                          }
-                         break;
-                         case LProtocol.JRQST_GET_VENDORS:
-                         gid = intent.getLongExtra("gid", 0L);
-                         int type = intent.getIntExtra("type", LVendor.TYPE_PAYEE);
-                         name = intent.getStringExtra("name");
-                         dbVendor = DBVendor.getInstance();
-                         vendor = dbVendor.getByGid(gid);
-                         if (null != vendor) {
-                         vendor.setName(name);
-                         vendor.setType(type);
-                         dbVendor.update(vendor);
-                         } else {
-                         vendor = new LVendor();
-                         vendor.setGid(gid);
-                         vendor.setName(name);
-                         vendor.setType(type);
-                         dbVendor.add(vendor);
-                         }
-                         break;
+
+                        /*
                          case LProtocol.JRQST_GET_RECORD:
                          case LProtocol.JRQST_GET_RECORDS:
                          case LProtocol.JRQST_GET_ACCOUNT_RECORDS:
@@ -376,23 +377,21 @@ class LService {
                          else dbSchTransaction.update(scheduledTransaction);
 
                          break;
-
-                         case LProtocol.JRQST_UPDATE_ACCOUNT:
-                         case LProtocol.JRQST_DELETE_ACCOUNT:
-                         case LProtocol.JRQST_UPDATE_CATEGORY:
-                         case LProtocol.JRQST_DELETE_CATEGORY:
-                         case LProtocol.JRQST_UPDATE_TAG:
-                         case LProtocol.JRQST_DELETE_TAG:
-                         case LProtocol.JRQST_UPDATE_VENDOR:
-                         case LProtocol.JRQST_DELETE_VENDOR:
-                         case LProtocol.JRQST_UPDATE_RECORD:
-                         case LProtocol.JRQST_DELETE_RECORD:
-                         case LProtocol.JRQST_UPDATE_SCHEDULE:
-                         case LProtocol.JRQST_DELETE_SCHEDULE:
-                         case LProtocol.JRQST_CONFIRM_ACCOUNT_SHARE:
-                         case LProtocol.JRQST_ADD_USER_TO_ACCOUNT:
-                         break;
                          */
+                    case LProtocol.JRQST_UPDATE_ACCOUNT: break
+                    case LProtocol.JRQST_DELETE_ACCOUNT: break
+                    case LProtocol.JRQST_UPDATE_CATEGORY: break
+                    case LProtocol.JRQST_DELETE_CATEGORY: break
+                    case LProtocol.JRQST_UPDATE_TAG: break
+                    case LProtocol.JRQST_DELETE_TAG: break
+                    case LProtocol.JRQST_UPDATE_VENDOR: break
+                    case LProtocol.JRQST_DELETE_VENDOR: break
+                    case LProtocol.JRQST_UPDATE_RECORD: break
+                    case LProtocol.JRQST_DELETE_RECORD: break
+                    case LProtocol.JRQST_UPDATE_SCHEDULE: break
+                    case LProtocol.JRQST_DELETE_SCHEDULE: break
+                    case LProtocol.JRQST_CONFIRM_ACCOUNT_SHARE: break
+                    case LProtocol.JRQST_ADD_USER_TO_ACCOUNT: break
                     default:
                         LLog.w("\(self)", "unknown journal request: \(jrqstId)")
                     }

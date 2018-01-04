@@ -104,8 +104,6 @@ class LoginTimerViewController: UIViewController {
                     }
 
                     UiRequest.instance.UiLogIn(userId, password)
-                    //TODO: push local database
-
                     success = true;
                 }
             }
@@ -118,11 +116,9 @@ class LoginTimerViewController: UIViewController {
         } else {
             LLog.d("\(self)", "user failed to sign in")
             connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
-
         }
 
         stopCountDown()
-
     }
 
     @objc func login(notification: Notification) -> Void {
@@ -142,10 +138,10 @@ class LoginTimerViewController: UIViewController {
             LLog.d("\(self)", "user logged in")
             connectingLabel.text = NSLocalizedString("Login Successful", comment: "")
 
+            pushLocalDb()
         } else {
             LLog.d("\(self)", "user failed to login")
             connectingLabel.text = NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
-
         }
     }
 
@@ -169,7 +165,7 @@ class LoginTimerViewController: UIViewController {
 
         if serverIsDown {
             connectingLabel.text =
-            NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
+                NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
         } else {
 
         }
@@ -182,14 +178,79 @@ class LoginTimerViewController: UIViewController {
         timer?.invalidate()
         timer = nil
     }
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func pushLocalDb() {
+        /*
+        LJournal journal = new LJournal();
+
+        // send over all account/category/tag/vendor
+        DBAccount dbAccount = DBAccount.getInstance();
+        HashSet<Long> accountIds = dbAccount.getAllActiveIds();
+        for (long id : accountIds) {
+            LAccount account = dbAccount.getById(id);
+            if (null != account) {
+                publishProgress(account.getName());
+                journal.addAccount(account.getId());
+            }
+        }
+
+        DBCategory dbCategory = DBCategory.getInstance();
+        HashSet<Long> catIds = dbCategory.getAllActiveIds();
+        for (long id : catIds) {
+            LCategory category = dbCategory.getInstance().getById(id);
+            if (null != category) {
+                publishProgress(category.getName());
+                journal.addCategory(category.getId());
+            }
+        }
+
+        DBVendor dbVendor = DBVendor.getInstance();
+        HashSet<Long> vendorIds = dbVendor.getAllActiveIds();
+        for (long id : vendorIds) {
+            LVendor vendor = dbVendor.getById(id);
+            if (null != vendor) {
+                publishProgress(vendor.getName());
+                journal.addVendor(vendor.getId());
+            }
+        }
+
+        DBTag dbTag = DBTag.getInstance();
+        HashSet<Long> tagIds = dbTag.getAllActiveIds();
+        for (long id : tagIds) {
+            LTag tag = dbTag.getById(id);
+            if (null != tag) {
+                publishProgress(tag.getName());
+                journal.addTag(tag.getId());
+            }
+        }
+         */
+
+        // get all accounts
+        _ = LJournal.instance.getAllAccounts()
+        _ = LJournal.instance.getAllCategories();
+        _ = LJournal.instance.getAllTags();
+        _ = LJournal.instance.getAllVendors();
+
+        // send all records
+        /*
+        DBTransaction dbTransaction = DBTransaction.getInstance();
+        Cursor cursor = dbTransaction.getAllCursor();
+        if (cursor != null) {
+            LTransaction transaction = new LTransaction();
+            cursor.moveToFirst();
+            do {
+                dbTransaction.getValues(cursor, transaction);
+                if (transaction.getType() != LTransaction.TRANSACTION_TYPE_TRANSFER_COPY)
+                journal.addRecord(transaction.getId());
+                LLog.d(TAG, "adding record: " + transaction.getId());
+                publishProgress(DBAccount.getInstance().getNameById(transaction.getAccount()) + " : " +
+                transaction.getValue());
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+         */
+
+        //_ = LJournal.instance.getAllRecords();
+        //_ = LJournal.instance.getAllSchedules();
     }
-    */
-
 }
