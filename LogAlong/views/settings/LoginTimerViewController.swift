@@ -250,7 +250,7 @@ class LoginTimerViewController: UIViewController {
         }
          */
 
-        //_ = LJournal.instance.getAllRecords();
+        _ = LJournal.instance.getAllRecords();
         //_ = LJournal.instance.getAllSchedules();
     }
 }

@@ -15,17 +15,7 @@ class DBTransaction: DBGeneric<LTransaction> {
         getValues = rdValues
         setValues = wrValues
     }
-/*
-    enum sorts: Int {
-        case ACCOUNT = 1
-        case CATEGORY = 2
-    }
 
-    enum timeSorts: Int {
-        case ASC = 1
-        case DESC = 2
-    }
-*/
     func rdValues(_ row: Row) -> LTransaction? {
         return LTransaction(id: row[DBHelper.id],
                             gid: row[DBHelper.gid],
@@ -112,6 +102,27 @@ class DBTransaction: DBGeneric<LTransaction> {
 
     func getAllByCategory(categoryId: Int64) -> [LTransaction] {
         return getAllBy(id: categoryId, col: DBHelper.categoryId)
+    }
+
+    func getTransfer(rid: Int64, copy: Bool) -> LTransaction? {
+        do {
+            if (copy) {
+                for row in try DBHelper.instance.db!.prepare(table!
+                    .filter(DBHelper.rid == rid && DBHelper.type == Int(TransactionType.TRANSFER_COPY.rawValue))) {
+                        //TODO: error report if multiple entries found
+                        return rdValues(row)
+                }
+            } else {
+                for row in try DBHelper.instance.db!.prepare(table!
+                    .filter(DBHelper.rid == rid && DBHelper.type == Int(TransactionType.TRANSFER.rawValue))) {
+                        //TODO: error report if multiple entries found
+                        return rdValues(row)
+                }
+            }
+        } catch {
+            LLog.e("\(self)", "unable to find row with rid: \(rid)")
+        }
+        return nil
     }
 
     func detailsQuery() -> QueryType {

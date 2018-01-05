@@ -110,28 +110,26 @@ class LService {
                         let uid = bdata["uid"] as! Int64
                         let name = bdata["name"] as! String
 
-                        var account = DBAccount.instance.get(gid: gid)
-                        if (nil != account) {
+                        if let account = DBAccount.instance.get(gid: gid) {
                             //account.setOwner(uid)
-                            account!.name = name
-                            DBAccount.instance.update(account!);
+                            account.name = name
+                            _ = DBAccount.instance.update(account);
                         } else {
-                            account = LAccount();
+                            var account = LAccount();
                             //account.setOwner(uid);
-                            account!.gid = gid
-                            account!.name = name
-                            _ = DBAccount.instance.add(&account!)
+                            account.gid = gid
+                            account.name = name
+                            _ = DBAccount.instance.add(&account)
                         }
-                        LJournal.instance.getAccountUsers(gid)
+                        _ = LJournal.instance.getAccountUsers(gid)
 
                     case LProtocol.JRQST_GET_ACCOUNT_USERS:
                         let gid = bdata["aid"] as! Int64
 
                         let dbAccount = DBAccount.instance
-                        var account = dbAccount.get(gid: gid)
-                        if (nil != account) {
+                        if let account = dbAccount.get(gid: gid) {
                             //account.setSharedIdsString(intent.getStringExtra("users"))
-                            dbAccount.update(account!)
+                            _ = dbAccount.update(account)
                         } else {
                             LLog.w("\(self)", "account: \(gid) no longer exists")
                         }
@@ -219,12 +217,12 @@ class LService {
                          var category = dbCategory.get(gid: gid)
                          if (nil != category) {
                             category!.name = name
-                            dbCategory.update(category!)
+                            _ = dbCategory.update(category!)
                          } else {
                             category = LCategory()
                             category!.gid = gid
                             category!.name = name
-                            dbCategory.add(&category!)
+                            _ = dbCategory.add(&category!)
                          }
 
                     case LProtocol.JRQST_GET_TAGS:
@@ -234,12 +232,12 @@ class LService {
                          var tag = dbTag.get(gid: gid)
                          if (nil != tag) {
                             tag!.name = name
-                            dbTag.update(tag!)
+                            _ = dbTag.update(tag!)
                          } else {
                             tag = LTag()
                             tag!.gid = gid
                             tag!.name = name
-                            dbTag.add(&tag!)
+                            _ = dbTag.add(&tag!)
                          }
 
                     case LProtocol.JRQST_GET_VENDORS:
@@ -251,71 +249,74 @@ class LService {
                          if (nil != vendor) {
                             vendor!.name = name
                             //vendor!.type = type
-                            dbVendor.update(vendor!)
+                            _ = dbVendor.update(vendor!)
                          } else {
                             vendor = LVendor()
                             vendor!.gid = gid
                             vendor!.name = name
                             //vendor!.type = type
-                            dbVendor.add(&vendor!)
+                            _ = dbVendor.add(&vendor!)
                          }
+
+                    case LProtocol.JRQST_GET_RECORD: fallthrough
+                    case LProtocol.JRQST_GET_RECORDS: fallthrough
+                    case LProtocol.JRQST_GET_ACCOUNT_RECORDS:
+                        let gid = bdata["gid"] as! Int64
+                        let aid = bdata["aid"] as! Int64
+                        let aid2 = bdata["aid2"] as! Int64
+                        let cid = bdata["cid"] as! Int64
+                        let tid = bdata["tid"] as! Int64
+                        let vid = bdata["vid"] as! Int64
+                        let type = bdata["type"] as! UInt8 //LTransaction.TRANSACTION_TYPE_EXPENSE
+                        let amount = bdata["amount"] as! Double
+                        let rid = bdata["recordId"] as! Int64
+                        let timestamp = bdata["timestamp"] as! Int64
+                        //let createUid = bdata["createBy"] as! Int64
+                        let changeUid = bdata["changeBy"] as! Int64
+                        let createTime = bdata["createTime"] as! Int64
+                        let changeTime = bdata["changeTime"] as! Int64
+                        let note = bdata["note"] as! String
+                        let dbTransaction = DBTransaction.instance
+                        var transaction = dbTransaction.get(gid: gid)
+                        var create = true;
+                         if (nil != transaction) {
+                            create = false
+                         } else {
+                            if (type == TransactionType.TRANSFER.rawValue) {
+                                transaction = dbTransaction.getTransfer(rid: rid, copy: false)
+                            } else if (type == TransactionType.TRANSFER_COPY.rawValue) {
+                                transaction = dbTransaction.getTransfer(rid: rid, copy: true)
+                            }
+                            if (nil != transaction) {
+                                create = false
+                            } else {
+                                transaction = LTransaction()
+                            }
+                        }
+                        let dbAccount = DBAccount.instance
+                        transaction!.gid = gid
+                        transaction!.accountId = dbAccount.getId(gid: aid)!
+                        transaction!.accountId2 = dbAccount.getId(gid: aid2) ?? 0
+                        transaction!.categoryId = DBCategory.instance.getId(gid: cid) ?? 0
+                        transaction!.tagId = DBTag.instance.getId(gid: tid) ?? 0
+                        transaction!.vendorId = DBVendor.instance.getId(gid: vid) ?? 0
+                        transaction!.type = TransactionType(rawValue: type)!
+                        transaction!.amount = amount
+                        //transaction!.setCreateBy(createUid);
+                        transaction!.by = changeUid
+                        transaction!.rid = rid
+                        transaction!.timestamp = timestamp
+                        transaction!.timestampCreate = createTime
+                        transaction!.timestampAccess = changeTime
+                        transaction!.note = note
+
+                        if (create) {
+                            _ = dbTransaction.add(&transaction!)
+                        } else {
+                            _ = dbTransaction.update(transaction!)
+                        }
 
                         /*
-                         case LProtocol.JRQST_GET_RECORD:
-                         case LProtocol.JRQST_GET_RECORDS:
-                         case LProtocol.JRQST_GET_ACCOUNT_RECORDS:
-                         gid = intent.getLongExtra("gid", 0L);
-                         long aid = intent.getLongExtra("aid", 0);
-                         long aid2 = intent.getLongExtra("aid2", 0);
-                         long cid = intent.getLongExtra("cid", 0);
-                         long tid = intent.getLongExtra("tid", 0);
-                         long vid = intent.getLongExtra("vid", 0);
-                         type = intent.getByteExtra("type", (byte) LTransaction.TRANSACTION_TYPE_EXPENSE);
-                         double amount = intent.getDoubleExtra("amount", 0);
-                         long rid = intent.getLongExtra("recordId", 0L);
-                         long timestamp = intent.getLongExtra("timestamp", 0L);
-                         long createUid = intent.getLongExtra("createBy", 0);
-                         long changeUid = intent.getLongExtra("changeBy", 0);
-                         long createTime = intent.getLongExtra("createTime", 0L);
-                         long changeTime = intent.getLongExtra("changeTime", 0L);
-                         String note = intent.getStringExtra("note");
-                         dbTransaction = DBTransaction.getInstance();
-                         transaction = dbTransaction.getByGid(gid);
-                         boolean create = true;
-                         if (null != transaction) {
-                         create = false;
-                         } else {
-                         if (type == LTransaction.TRANSACTION_TYPE_TRANSFER)
-                         transaction = dbTransaction.getByRid(rid, false);
-                         else if (type == LTransaction.TRANSACTION_TYPE_TRANSFER_COPY)
-                         transaction = dbTransaction.getByRid(rid, true);
-                         if (null != transaction) {
-                         create = false;
-                         } else
-                         transaction = new LTransaction();
-                         }
-                         dbAccount = DBAccount.getInstance();
-                         transaction.setGid(gid);
-                         transaction.setAccount(dbAccount.getIdByGid(aid));
-                         transaction.setAccount2(dbAccount.getIdByGid(aid2));
-                         transaction.setCategory(DBCategory.getInstance().getIdByGid(cid));
-                         transaction.setTag(DBTag.getInstance().getIdByGid(tid));
-                         transaction.setVendor(DBVendor.getInstance().getIdByGid(vid));
-                         transaction.setType(type);
-                         transaction.setValue(amount);
-                         transaction.setCreateBy(createUid);
-                         transaction.setChangeBy(changeUid);
-                         transaction.setRid(rid);
-                         transaction.setTimeStamp(timestamp);
-                         transaction.setTimeStampCreate(createTime);
-                         transaction.setTimeStampLast(changeTime);
-                         transaction.setNote(note);
-
-                         if (create) dbTransaction.add(transaction);
-                         else dbTransaction.update(transaction);
-
-                         break;
-
                          case LProtocol.JRQST_GET_SCHEDULE:
                          case LProtocol.JRQST_GET_SCHEDULES:
                          case LProtocol.JRQST_GET_ACCOUNT_SCHEDULES:
@@ -422,7 +423,7 @@ class LService {
 
             //no more active journal, start polling
             if (!moreJournal) {
-                UiRequest.instance.UiPoll()
+                _ = UiRequest.instance.UiPoll()
                 //serviceHandler.postDelayed(pollRunnable, NETWORK_IDLE_POLLING_MS);
             }
         }
@@ -438,7 +439,7 @@ class LService {
         pollingCount = 0;
 
         if !LJournal.instance.flush() {
-            UiRequest.instance.UiPoll()
+            _ = UiRequest.instance.UiPoll()
         }
     }
 
@@ -449,18 +450,309 @@ class LService {
                 let nid: UInt16 = bdata["nid"] as! UInt16
 
                 switch (nid) {
+                case LService.NOTIFICATION_ADD_ACCOUNT:
+                    let gid = bdata["int1"] as! Int64
+                    let uid = bdata["int2"] as! Int64
+                    let name = bdata["txt1"] as! String
+
+                    let dbAccount = DBAccount.instance
+                    if let account = dbAccount.get(gid: gid) {
+                        //TODO
+                        //account.setOwner(uid);
+                        account.name = name
+                        _ = dbAccount.update(account);
+                    } else {
+                        if let account = dbAccount.get(name: name) {
+                            //TODO: account.setOwner(uid)
+                            account.gid = gid
+                            _ = dbAccount.update(account)
+                        } else {
+                            var account = LAccount()
+                            //TODO: account.setOwner(uid)
+                            account.gid = gid
+                            account.name = name
+                            _ = dbAccount.add(&account)
+                        }
+                    }
+                    LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
+
+                case LService.NOTIFICATION_UPDATE_ACCOUNT:
+                    let gid = bdata["int1"] as! Int64
+                    let name = bdata["txt1"] as! String
+
+                    let dbAccount = DBAccount.instance
+                    if let account = dbAccount.get(gid: gid) {
+                        account.name = name
+                        _ = dbAccount.update(account)
+                        LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
+                    }
+
+                case LService.NOTIFICATION_DELETE_ACCOUNT:
+                    let gid = bdata["int1"] as! Int64
+                    let dbAccount = DBAccount.instance
+                    if let account = dbAccount.get(gid: gid) {
+                        //TODO: LTask.start(new DBAccount.MyAccountDeleteTask(), account.getId());
+                        _ = dbAccount.remove(id: account.id)
+                        LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
+                    }
+
+                case LService.NOTIFICATION_UPDATE_ACCOUNT_GID:
+                    let gid = bdata["int1"] as! Int64
+                    let gid2 = bdata["int2"] as! Int64
+
+                    let dbAccount = DBAccount.instance
+                    if let account = dbAccount.get(gid: gid) {
+                        account.gid = gid2
+                        _ = dbAccount.update(account)
+                        LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
+                    }
+
+                case LService.NOTIFICATION_ADD_CATEGORY:
+                    let gid = bdata["int1"] as! Int64
+                    //let pid = bdata["int2"] as! Int64
+                    let name = bdata["txt1"] as! String
+                    let dbCategory = DBCategory.instance
+                    if let category = dbCategory.get(gid: gid) {
+                        category.name = name
+                        //category.pid = pid
+                        _ = dbCategory.update(category)
+                    } else {
+                        if let category = dbCategory.get(name: name) {
+                            category.gid = gid
+                            //category.pid = pid
+                            _ = dbCategory.update(category)
+                        } else {
+                            var category = LCategory()
+                            category.gid = gid
+                            category.name = name
+                            _ = dbCategory.add(&category)
+                        }
+                    }
+                    LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_CATEGORY, sender: nil, data: bdata)
+
+                case LService.NOTIFICATION_UPDATE_CATEGORY:
+                    let gid = bdata["int1"] as! Int64
+                    //let pid = bdata["int2"] as! Int64
+                    let name = bdata["txt1"] as! String
+                    let dbCategory = DBCategory.instance
+                    if let category = dbCategory.get(gid: gid) {
+                        category.name = name
+                        //category.pid = pid
+                        _ = dbCategory.update(category)
+                        LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_CATEGORY, sender: nil, data: bdata)
+                    }
+
+                case LService.NOTIFICATION_DELETE_CATEGORY:
+                    let gid = bdata["int1"] as! Int64
+                    let dbCategory = DBCategory.instance
+                    if let category = dbCategory.get(gid: gid) {
+                        _ = dbCategory.remove(id: category.id)
+                        LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_CATEGORY, sender: nil, data: bdata)
+                    }
+
+                case LService.NOTIFICATION_ADD_TAG:
+                    let gid = bdata["int1"] as! Int64
+                    let name = bdata["txt1"] as! String
+                    let dbTag = DBTag.instance
+                    if let tag = dbTag.get(gid: gid) {
+                        tag.name = name
+                        _ = dbTag.update(tag)
+                    } else {
+                        if let tag = dbTag.get(name: name) {
+                            tag.gid = gid
+                            _ = dbTag.update(tag)
+                        } else {
+                            var tag = LTag()
+                            tag.gid = gid
+                            tag.name = name
+                            _ = dbTag.add(&tag)
+                        }
+                    }
+                    LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_TAG, sender: nil, data: bdata)
+
+                case LService.NOTIFICATION_UPDATE_TAG:
+                    let gid = bdata["int1"] as! Int64
+                    let name = bdata["txt1"] as! String
+                    let dbTag = DBTag.instance
+                    if let tag = dbTag.get(gid: gid) {
+                        tag.name = name
+                        _ = dbTag.update(tag)
+                        LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_TAG, sender: nil, data: bdata)
+                    }
+
+                case LService.NOTIFICATION_DELETE_TAG:
+                    let gid = bdata["int1"] as! Int64
+                    let dbTag = DBTag.instance
+                    if let tag = dbTag.get(gid: gid) {
+                        _ = dbTag.remove(id: tag.id)
+                        LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_TAG, sender: nil, data: bdata)
+                    }
+
+                case LService.NOTIFICATION_ADD_VENDOR:
+                    let gid = bdata["int1"] as! Int64
+                    let type = bdata["int2"] as! Int64
+                    let name = bdata["txt1"] as! String
+                    let dbVendor = DBVendor.instance
+                    if let vendor = dbVendor.get(gid: gid) {
+                        vendor.name = name
+                        vendor.type = VendorType(rawValue: UInt8(type))!
+                        _ = dbVendor.update(vendor)
+                    } else {
+                        if let vendor = dbVendor.get(name: name) {
+                            vendor.gid = gid
+                            _ = dbVendor.update(vendor)
+                        } else {
+                            var vendor = LVendor()
+                            vendor.gid = gid
+                            vendor.name = name
+                            vendor.type = VendorType(rawValue: UInt8(type))!
+                            _ = dbVendor.add(&vendor)
+                        }
+                    }
+                    LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_VENDOR, sender: nil, data: bdata)
+
+                case LService.NOTIFICATION_UPDATE_VENDOR:
+                    let gid = bdata["int1"] as! Int64
+                    let type = bdata["int2"] as! Int64
+                    let name = bdata["txt1"] as! String
+                    let dbVendor = DBVendor.instance
+                    if let vendor = dbVendor.get(gid: gid) {
+                        vendor.name = name
+                        vendor.type = VendorType(rawValue: UInt8(type))!
+                        _ = dbVendor.update(vendor)
+                        LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_VENDOR, sender: nil, data: bdata)
+                    }
+
+                case LService.NOTIFICATION_DELETE_VENDOR:
+                    let gid = bdata["int1"] as! Int64
+                    let dbVendor = DBVendor.instance
+                    if let vendor = dbVendor.get(gid: gid) {
+                        _ = dbVendor.remove(id: vendor.id)
+                        LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_VENDOR, sender: nil, data: bdata)
+                    }
+
+                case LService.NOTIFICATION_GET_RECORD: fallthrough
+                case LService.NOTIFICATION_UPDATE_RECORD:
+                    let gid = bdata["int1"] as! Int64
+                    _ = LJournal.instance.getRecord(gid)
+
+                case LService.NOTIFICATION_DELETE_RECORD:
+                    let gid = bdata["int1"] as! Int64
+                    let dbTransaction = DBTransaction.instance
+                    if let transaction = dbTransaction.get(gid: gid) {
+                        _ = dbTransaction.remove(id: transaction.id)
+                    }
+
+                case LService.NOTIFICATION_GET_RECORDS:
+                    let blob = bdata["blob"] as! [UInt8]
+                    let data = LBuffer(buf: blob);
+                    var ids = [Int64](repeating: 0, count: blob.count / 8)
+                    for ii in 0..<ids.count {
+                        ids[ii] = data.getLongAutoInc()
+                    }
+                    _ = LJournal.instance.getRecords(ids)
+
+                    /*
+                case NOTIFICATION_ADD_SCHEDULE:
+                case NOTIFICATION_UPDATE_SCHEDULE:
+                    gid = intent.getLongExtra("int1", 0L);
+                    journal.getSchedule(gid);
+                    break;
+
+                case NOTIFICATION_DELETE_SCHEDULE:
+                    gid = intent.getLongExtra("int1", 0L);
+                    DBScheduledTransaction dbScheduledTransaction = DBScheduledTransaction.getInstance();
+                    LScheduledTransaction scheduledTransaction = dbScheduledTransaction.getByGid(gid);
+                    if (null != scheduledTransaction) {
+                        dbScheduledTransaction.deleteById(scheduledTransaction.getId());
+                    }
+                    break;
+                     */
+
                 case LService.NOTIFICATION_UPDATE_USER_PROFILE:
                     LPreferences.setUserName(bdata["txt1"] as! String)
-
                     LBroadcast.post(LBroadcast.ACTION_UPDATE_USER_PROFILE, sender: nil, data: bdata)
+                    break;
 
-                    break
+                case LService.NOTIFICATION_ADD_SHARE_USER:
+                    let uid = bdata["int1"] as! Int64
+                    //TODO:
+                    //LPreferences.setShareUserId(uid, intent.getStringExtra("txt1"));
+                    //LPreferences.setShareUserName(uid, intent.getStringExtra("txt2"));
+
+                case LService.NOTIFICATION_REQUEST_ACCOUNT_SHARE:
+                    let aid = bdata["int1"] as! Int64
+                    let uid = bdata["int2"] as! Int64
+                    //TODO:
+                    /*
+                    long shareAccept = LPreferences.getShareAccept(uid);
+                    if (shareAccept != 0 && (shareAccept + 24 * 3600 * 1000 > System.currentTimeMillis())) {
+                        LJournal.instance.confirmAccountShare(aid, uid, true);
+                    } else {
+                        name = intent.getStringExtra("txt1");
+                        LAccountShareRequest shareRequest = new LAccountShareRequest(uid, LPreferences
+                            .getShareUserId(uid), LPreferences.getShareUserName(uid), name, aid);
+                        LPreferences.addAccountShareRequest(shareRequest);
+
+                        LBroadcast.post(LBroadcast.ACTION_UI_SHARE_ACCOUNT, sender: nil, data: bdata)
+                    }
+                     */
+
+                case LService.NOTIFICATION_DECLINE_ACCOUNT_SHARE:
+                    let aid = bdata["int1"] as! Int64
+                    let uid = bdata["int2"] as! Int64
+                    let dbAccount = DBAccount.instance
+                    let account = dbAccount.get(gid: aid)
+                    if (nil != account) {
+                        //only remove if share state is INVITED, in other words, do not
+                        //unshare a previously confirmed share here
+                        //TODO:
+                        /*
+                        if (LAccount.ACCOUNT_SHARE_INVITED == account.getShareUserState(uid)) {
+                            account.removeShareUser(uid);
+                            dbAccount.update(account);
+                           LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
+                        }
+                         */
+                    }
+
+                case LService.NOTIFICATION_UPDATE_ACCOUNT_USER:
+                    let aid = bdata["int1"] as! Int64
+                    let dbAccount = DBAccount.instance
+                    let account = dbAccount.get(gid: aid)
+                    if (nil != account) {
+                        //TODO:
+                        //account.setSharedIdsString(intent.getStringExtra("txt1"));
+                        _ = dbAccount.update(account!)
+                        LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
+                    }
+
+                case LService.NOTIFICATION_GET_ACCOUNT_RECORDS:
+                    let aid = bdata["int1"] as! Int64
+                    _ = LJournal.instance.getAccountRecords(aid)
+
+                case LService.NOTIFICATION_GET_ACCOUNT_SCHEDULES:
+                    let aid = bdata["int1"] as! Int64
+                    _ = LJournal.instance.getAccountSchedules(aid);
+
+                case LService.NOTIFICATION_GET_ACCOUNTS:
+                    _ = LJournal.instance.getAllAccounts()
+
+                case LService.NOTIFICATION_GET_CATEGORIES:
+                    _ = LJournal.instance.getAllCategories()
+
+                case LService.NOTIFICATION_GET_VENDORS:
+                    _ = LJournal.instance.getAllVendors()
+
+                case LService.NOTIFICATION_GET_TAGS:
+                    _ = LJournal.instance.getAllTags()
+
                 default:
                     break
                 }
 
                 //pollingCount = MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION;
-                UiRequest.instance.UiPollAck(id)
+                _ = UiRequest.instance.UiPollAck(id)
 
             } else {
                 //no more
@@ -483,422 +775,11 @@ class LService {
                 }
             }
         }
-            /*
-             case NOTIFICATION_UPDATE_USER_PROFILE:
-             LPreferences.setUserName(intent.getStringExtra("txt1"));
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_USER_PROFILE));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             break;
-             */
-            /*
-             if (LProtocol.RSPS_OK == ret) {
-             long id = intent.getLongExtra("id", 0);
-             short nid = intent.getShortExtra("nid", (short) 0);
-             switch (nid) {
-             case NOTIFICATION_ADD_ACCOUNT:
-             long gid = intent.getLongExtra("int1", 0L);
-             long uid = intent.getLongExtra("int2", 0L);
-             String name = intent.getStringExtra("txt1");
+    }
 
-             DBAccount dbAccount = DBAccount.getInstance();
-             LAccount account = dbAccount.getByGid(gid);
-             if (null != account) {
-             account.setOwner(uid);
-             account.setName(name);
-             dbAccount.update(account);
-             } else {
-             account = dbAccount.getByName(name);
-             if (null != account) {
-             account.setOwner(uid);
-             account.setGid(gid);
-             dbAccount.update(account);
-             } else {
-             account = new LAccount();
-             account.setOwner(uid);
-             account.setGid(gid);
-             account.setName(name);
-             dbAccount.add(account);
-             }
-             }
-             Intent uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_ACCOUNT));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             break;
-
-             case NOTIFICATION_UPDATE_ACCOUNT:
-             gid = intent.getLongExtra("int1", 0L);
-             name = intent.getStringExtra("txt1");
-
-             dbAccount = DBAccount.getInstance();
-             account = dbAccount.getByGid(gid);
-             if (null != account) {
-             account.setName(name);
-             dbAccount.update(account);
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_ACCOUNT));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-
-             case NOTIFICATION_DELETE_ACCOUNT:
-             gid = intent.getLongExtra("int1", 0L);
-             dbAccount = DBAccount.getInstance();
-             account = dbAccount.getByGid(gid);
-             if (null != account) {
-             LTask.start(new DBAccount.MyAccountDeleteTask(), account.getId());
-             dbAccount.deleteById(account.getId());
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_ACCOUNT));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-
-             case NOTIFICATION_UPDATE_ACCOUNT_GID:
-             gid = intent.getLongExtra("int1", 0L);
-             long gid2 = intent.getLongExtra("int2", 0L);
-
-             dbAccount = DBAccount.getInstance();
-             account = dbAccount.getByGid(gid);
-             if (null != account) {
-             account.setGid(gid2);
-             dbAccount.update(account);
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_ACCOUNT));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-
-             case NOTIFICATION_ADD_CATEGORY:
-             gid = intent.getLongExtra("int1", 0L);
-             long pid = intent.getLongExtra("int2", 0L);
-             name = intent.getStringExtra("txt1");
-             DBCategory dbCategory = DBCategory.getInstance();
-             LCategory category = dbCategory.getByGid(gid);
-             if (null != category) {
-             category.setName(name);
-             //category.setPid(pid);
-             dbCategory.update(category);
-             } else {
-             category = dbCategory.getByName(name);
-             if (null != category) {
-             category.setGid(gid);
-             //category.setPid(pid);
-             dbCategory.update(category);
-             } else {
-             category = new LCategory();
-             category.setGid(gid);
-             category.setName(name);
-             dbCategory.add(category);
-             }
-             }
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_CATEGORY));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             break;
-
-             case NOTIFICATION_UPDATE_CATEGORY:
-             gid = intent.getLongExtra("int1", 0L);
-             pid = intent.getLongExtra("int2", 0L);
-             name = intent.getStringExtra("txt1");
-             dbCategory = DBCategory.getInstance();
-             category = dbCategory.getByGid(gid);
-             if (null != category) {
-             category.setName(name);
-             //category.setPid(pid);
-             dbCategory.update(category);
-
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_CATEGORY));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-
-             case NOTIFICATION_DELETE_CATEGORY:
-             gid = intent.getLongExtra("int1", 0L);
-             dbCategory = DBCategory.getInstance();
-             category = dbCategory.getByGid(gid);
-             if (null != category) {
-             dbCategory.deleteById(category.getId());
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_CATEGORY));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-
-             case NOTIFICATION_ADD_TAG:
-             gid = intent.getLongExtra("int1", 0L);
-             name = intent.getStringExtra("txt1");
-             DBTag dbTag = DBTag.getInstance();
-             LTag tag = dbTag.getByGid(gid);
-             if (null != tag) {
-             tag.setName(name);
-             dbTag.update(tag);
-             } else {
-             tag = dbTag.getByName(name);
-             if (null != tag) {
-             tag.setGid(gid);
-             dbTag.update(tag);
-             } else {
-             tag = new LTag();
-             tag.setGid(gid);
-             tag.setName(name);
-             dbTag.add(tag);
-             }
-             }
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_TAG));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             break;
-
-             case NOTIFICATION_UPDATE_TAG:
-             gid = intent.getLongExtra("int1", 0L);
-             name = intent.getStringExtra("txt1");
-             dbTag = DBTag.getInstance();
-             tag = dbTag.getByGid(gid);
-             if (null != tag) {
-             tag.setName(name);
-             dbTag.update(tag);
-
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_TAG));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-
-             case NOTIFICATION_DELETE_TAG:
-             gid = intent.getLongExtra("int1", 0L);
-             dbTag = DBTag.getInstance();
-             tag = dbTag.getByGid(gid);
-             if (null != tag) {
-             dbTag.deleteById(tag.getId());
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_TAG));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-             case NOTIFICATION_ADD_VENDOR:
-             gid = intent.getLongExtra("int1", 0L);
-             long type = intent.getLongExtra("int2", 0L);
-             name = intent.getStringExtra("txt1");
-             DBVendor dbVendor = DBVendor.getInstance();
-             LVendor vendor = dbVendor.getByGid(gid);
-             if (null != vendor) {
-             vendor.setName(name);
-             vendor.setType((int) type);
-             dbVendor.update(vendor);
-             } else {
-             vendor = dbVendor.getByName(name);
-             if (null != vendor) {
-             vendor.setGid(gid);
-             dbVendor.update(vendor);
-             } else {
-             vendor = new LVendor();
-             vendor.setGid(gid);
-             vendor.setName(name);
-             vendor.setType((int) type);
-             dbVendor.add(vendor);
-             }
-             }
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_VENDOR));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             break;
-
-             case NOTIFICATION_UPDATE_VENDOR:
-             gid = intent.getLongExtra("int1", 0L);
-             type = intent.getLongExtra("int2", 0L);
-             name = intent.getStringExtra("txt1");
-             dbVendor = DBVendor.getInstance();
-             vendor = dbVendor.getByGid(gid);
-             if (null != vendor) {
-             vendor.setName(name);
-             vendor.setType((int) type);
-             dbVendor.update(vendor);
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_VENDOR));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-
-             case NOTIFICATION_DELETE_VENDOR:
-             gid = intent.getLongExtra("int1", 0L);
-             dbVendor = DBVendor.getInstance();
-             vendor = dbVendor.getByGid(gid);
-             if (null != vendor) {
-             dbVendor.deleteById(vendor.getId());
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_VENDOR));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-
-             case NOTIFICATION_GET_RECORD:
-             case NOTIFICATION_UPDATE_RECORD:
-             gid = intent.getLongExtra("int1", 0L);
-             journal.getRecord(gid);
-             break;
-
-             case NOTIFICATION_DELETE_RECORD:
-             gid = intent.getLongExtra("int1", 0L);
-             DBTransaction dbTransaction = DBTransaction.getInstance();
-             LTransaction transaction = dbTransaction.getByGid(gid);
-             if (null != transaction) {
-             dbTransaction.deleteById(transaction.getId());
-             }
-             break;
-
-             case NOTIFICATION_GET_RECORDS:
-             byte[] blob = intent.getByteArrayExtra("blob");
-             LBuffer data = new LBuffer(blob);
-             long[] ids = new long[blob.length / Long.BYTES];
-             for (int ii = 0; ii < ids.length; ii++) {
-             ids[ii] = data.getLongAutoInc();
-             }
-             journal.getRecords(ids);
-             break;
-
-             case NOTIFICATION_ADD_SCHEDULE:
-             case NOTIFICATION_UPDATE_SCHEDULE:
-             gid = intent.getLongExtra("int1", 0L);
-             journal.getSchedule(gid);
-             break;
-
-             case NOTIFICATION_DELETE_SCHEDULE:
-             gid = intent.getLongExtra("int1", 0L);
-             DBScheduledTransaction dbScheduledTransaction = DBScheduledTransaction.getInstance();
-             LScheduledTransaction scheduledTransaction = dbScheduledTransaction.getByGid(gid);
-             if (null != scheduledTransaction) {
-             dbScheduledTransaction.deleteById(scheduledTransaction.getId());
-             }
-             break;
-
-             case NOTIFICATION_UPDATE_USER_PROFILE:
-             LPreferences.setUserName(intent.getStringExtra("txt1"));
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_USER_PROFILE));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             break;
-
-             case NOTIFICATION_ADD_SHARE_USER:
-             uid = intent.getLongExtra("int1", 0L);
-             LPreferences.setShareUserId(uid, intent.getStringExtra("txt1"));
-             LPreferences.setShareUserName(uid, intent.getStringExtra("txt2"));
-             break;
-
-             case NOTIFICATION_REQUEST_ACCOUNT_SHARE:
-             long aid = intent.getLongExtra("int1", 0L);
-             uid = intent.getLongExtra("int2", 0L);
-
-             long shareAccept = LPreferences.getShareAccept(uid);
-             if (shareAccept != 0 && (shareAccept + 24 * 3600 * 1000 > System.currentTimeMillis())) {
-             LJournal journal = new LJournal();
-             journal.confirmAccountShare(aid, uid, true);
-             } else {
-             name = intent.getStringExtra("txt1");
-             LAccountShareRequest shareRequest = new LAccountShareRequest(uid, LPreferences
-             .getShareUserId(uid), LPreferences.getShareUserName(uid), name, aid);
-             LPreferences.addAccountShareRequest(shareRequest);
-
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_SHARE_ACCOUNT));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-
-             case NOTIFICATION_DECLINE_ACCOUNT_SHARE:
-             aid = intent.getLongExtra("int1", 0L);
-             uid = intent.getLongExtra("int2", 0L);
-             dbAccount = DBAccount.getInstance();
-             account = dbAccount.getByGid(aid);
-             if (null != account) {
-             //only remove if share state is INVITED, in other words, do not
-             //unshare a previously confirmed share here
-             if (LAccount.ACCOUNT_SHARE_INVITED == account.getShareUserState(uid)) {
-             account.removeShareUser(uid);
-             dbAccount.update(account);
-
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_ACCOUNT));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             }
-             break;
-
-             case NOTIFICATION_UPDATE_ACCOUNT_USER:
-             aid = intent.getLongExtra("int1", 0L);
-             dbAccount = DBAccount.getInstance();
-             account = dbAccount.getByGid(aid);
-             if (null != account) {
-             account.setSharedIdsString(intent.getStringExtra("txt1"));
-             dbAccount.update(account);
-
-             uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_UPDATE_ACCOUNT));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             }
-             break;
-
-             case NOTIFICATION_GET_ACCOUNT_RECORDS:
-             aid = intent.getLongExtra("int1", 0L);
-             journal.getAccountRecords(aid);
-             break;
-
-             case NOTIFICATION_GET_ACCOUNT_SCHEDULES:
-             aid = intent.getLongExtra("int1", 0L);
-             journal.getAccountSchedules(aid);
-             break;
-
-             case NOTIFICATION_GET_ACCOUNTS:
-             journal.getAllAccounts();
-             break;
-
-             case NOTIFICATION_GET_CATEGORIES:
-             journal.getAllCategories();
-             break;
-
-             case NOTIFICATION_GET_VENDORS:
-             journal.getAllVendors();
-             break;
-
-             case NOTIFICATION_GET_TAGS:
-             journal.getAllTags();
-             break;
-
-             default:
-             LLog.w(TAG, "unexpected notification id: " + nid);
-             }
-             pollingCount = MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION;
-             server.UiPollAck(id);
-             } else {
-             //no more
-             LLog.d(TAG, "flushing journal upon polling ends ...");
-             if (!journal.flush()) {
-             if (LFragmentActivity.upRunning) {
-             //server.UiUtcSync();
-             if (pollingCount++ < MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION) {
-             serviceHandler.postDelayed(pollRunnable, NETWORK_IDLE_POLLING_MS);
-             }
-
-             Intent uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-             .ACTION_UI_NET_IDLE));
-             LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
-             } else {
-             LLog.d(TAG, "no activity visible, shutdown now");
-             serviceHandler.postDelayed(serviceShutdownRunnable,
-             SERVICE_SHUTDOWN_MS);
-             }
-             }
-             }
-             break;
-
-             */
+    @objc func pollAck(notification: Notification) {
+        if (!LJournal.instance.flush()) {
+            _ = UiRequest.instance.UiPoll()
         }
-
-        @objc func pollAck(notification: Notification) {
-            if (!LJournal.instance.flush()) {
-                UiRequest.instance.UiPoll()
-            }
-        }
-
+    }
 }

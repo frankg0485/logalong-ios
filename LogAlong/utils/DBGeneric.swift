@@ -51,6 +51,30 @@ class DBGeneric<T> {
         return nil
     }
 
+    func get(name: String) -> T? {
+        do {
+            for row in try DBHelper.instance.db!.prepare(table!.filter(DBHelper.name == name)) {
+                //TODO: error report if multiple entries found
+                return getValues!(row)
+            }
+        } catch {
+            LLog.e("\(self)", "unable to find row with name: \(name)")
+        }
+        return nil
+    }
+
+    func getId(gid: Int64) -> Int64? {
+        do {
+            for row in try DBHelper.instance.db!.prepare(table!.filter(DBHelper.gid == gid)) {
+                //TODO: error report if multiple entries found
+                return row[DBHelper.id]
+            }
+        } catch {
+            LLog.e("\(self)", "unable to find row with gid: \(gid)")
+        }
+        return nil
+    }
+
     func add(_ dbase: inout T) -> Bool {
         var ret = false
 
