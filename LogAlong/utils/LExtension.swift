@@ -38,9 +38,14 @@ class LA {
         return ymd(date: date)
     }
 
-    static func monthChange(_ month: Int, by: Int) -> Int {
-        let m = month + by + 12;
-        return m % 12
+    static func nextYM(year: Int, month: Int) -> (year: Int, month: Int) {
+        var m = month + 1
+        var y = year
+        if (m > 11) {
+            y += 1
+            m = 0
+        }
+        return (y, m)
     }
 }
 
@@ -69,6 +74,18 @@ extension Date {
 
     init(milliseconds: Int64) {
         self = Date(timeIntervalSince1970: TimeInterval(milliseconds / 1000))
+    }
+
+    init (year: Int, month: Int, day: Int) {
+        let calendar = Calendar.current
+        var comp = DateComponents()
+        comp.year = year
+        comp.month = month + 1
+        comp.day = day
+        comp.hour = 0
+        comp.minute = 0
+        comp.second = 0
+        self = calendar.date(from: comp)!
     }
 }
 

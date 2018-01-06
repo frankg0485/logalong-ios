@@ -8,15 +8,16 @@
 
 import Foundation
 
-struct LSection {
+class LSection {
     var show: Bool
     var rows: Int
-    var txt: String?
-    var balance: Double?
-    var income: Double?
-    var expense: Double?
+    var txt: String
+    var balance: Double
+    var income: Double
+    var expense: Double
+    var ids = [Int64]()
 
-    init(show: Bool, rows: Int, txt: String? = nil, balance: Double? = nil, income: Double? = nil, expense: Double? = nil) {
+    init(show: Bool = true, rows: Int = 1, txt: String = "", balance: Double = 0, income: Double = 0, expense: Double = 0) {
         self.show = show
         self.rows = rows
         self.txt = txt
@@ -29,7 +30,6 @@ struct LSection {
 class Records {
     var startIndex: Int = 0
     var endIndex: Int = 0
-    //var entries: [LTransactionDetails] = [LTransactionDetails]()
     var entries = [LTransaction]()
     var sections: [LSection] = [LSection]()
 }
@@ -38,12 +38,26 @@ class DBLoader {
     private let table = DBHelper.instance.transactions
     private var records: Records = Records()
 
-    init(year: Int, month: Int, sort: Int, interval: Int, search: LRecordSearch) {
+    var year: Int = 0
+    var month: Int = 0
+    var sort: Int = 0
+    var interval: Int = 0
+    var asc = true
+    var search: LRecordSearch?
+
+    init(year: Int, month: Int, sort: Int, interval: Int, asc: Bool, search: LRecordSearch) {
+        self.year = year
+        self.month = month
+        self.sort = sort
+        self.interval = interval
+        self.asc = asc
+        self.search = search
+
         reset()
     }
 
     init(search: LRecordSearch) {
-
+        self.search = search
     }
 
     func getStartEndTime() -> (startMs: Int64, endMs: Int64) {
@@ -76,26 +90,88 @@ class DBLoader {
     }
 
     func getRecord(section: Int, row: Int) -> LTransaction {
-        return records.entries[row]
+        return DBTransaction.instance.get(id: records.sections[section].ids[row])!
     }
 
     func reset() {
         records.entries.removeAll()
         records.sections.removeAll()
+        var prevId: Int64 = -1
+        var prevTransferRid: Int64 = -1
+        var newSection = true
+        var skip = false
+        var section: LSection?
 
-        let query = DBTransaction.instance.detailsQuery()
+        let query = DBTransaction.instance.query(year: year, month: month, sort: sort, interval: interval, asc: asc, search: search)
         do {
+            var id: Int64 = 0
+            var rid: Int64 = 0
+            var accountId: Int64 = 0
+            var accountId2: Int64 = 0
+            var categoryId: Int64 = 0
+            var tagId: Int64 = 0
+            var vendorId: Int64 = 0
+            var amount: Double
+            var type: TransactionType
+            var name = ""
+
             for row in try DBHelper.instance.db!.prepare(query) {
-                //TODO: error report if multiple entries found
-                records.entries.append(DBTransaction.instance.rdValues(row)!)
+                switch (sort) {
+                case RecordsViewSortMode.ACCOUNT.rawValue:
+                    (id, rid, accountId, accountId2, amount, type, name) = DBTransaction.instance.rdValuesJoinAccount(row)
+                    newSection = (prevId == -1 || prevId != accountId)
+                    prevId = accountId
+                case RecordsViewSortMode.CATEGORY.rawValue:
+                    (id, rid, accountId, accountId2, amount, type, categoryId, name) = DBTransaction.instance.rdValuesJoinCategory(row)
+                    newSection = (prevId == -1 || prevId != categoryId)
+                    prevId = categoryId
+                case RecordsViewSortMode.TAG.rawValue:
+                    (id, rid, accountId, accountId2, amount, type, tagId, name) = DBTransaction.instance.rdValuesJoinTag(row)
+                    newSection = (prevId == -1 || prevId != tagId)
+                    prevId = tagId
+                case RecordsViewSortMode.VENDOR.rawValue:
+                    (id, rid, accountId, accountId2, amount, type, vendorId, name) = DBTransaction.instance.rdValuesJoinVendor(row)
+                    newSection = (prevId == -1 || prevId != vendorId)
+                    prevId = vendorId
+                default:
+                    (id, rid, accountId, accountId2, amount, type) = DBTransaction.instance.rdValuesJoinNone(row)
+                }
+
+                if (newSection) {
+                    section = LSection(show: true, rows: 1)
+                    section!.txt = name
+
+                    records.sections.append(section!)
+                    newSection = false
+                } else {
+                    if ((type == TransactionType.TRANSFER || type == TransactionType.TRANSFER_COPY) && (prevTransferRid == rid)) {
+                        skip = true
+                    } else {
+                        section!.rows += 1
+                        skip = false
+                    }
+                }
+                prevTransferRid = (type == TransactionType.TRANSFER || type == TransactionType.TRANSFER_COPY) ? rid : -1
+
+                if (!skip) {
+                    section!.ids.append(id)
+                    if (type == TransactionType.INCOME || type == TransactionType.TRANSFER_COPY) {
+                        section!.balance += amount
+                        section!.income += amount
+                    } else {
+                        section!.balance -= amount
+                        section!.expense += amount
+                    }
+                }
             }
         } catch {
             LLog.w("\(self)", "data not available")
         }
 
-        if (records.entries.count > 0) {
-            let sect: LSection = LSection(show: false, rows: records.entries.count)
-            records.sections.append(sect)
+        if var sect = section {
+            if (sort == RecordsViewSortMode.TIME.rawValue) {
+                sect.show = false
+            }
         }
     }
 }

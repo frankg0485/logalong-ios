@@ -16,7 +16,7 @@ class DBTransaction: DBGeneric<LTransaction> {
         setValues = wrValues
     }
 
-    func rdValues(_ row: Row) -> LTransaction? {
+    private func rdValues(_ row: Row) -> LTransaction? {
         return LTransaction(id: row[DBHelper.id],
                             gid: row[DBHelper.gid],
                             rid: row[DBHelper.rid],
@@ -49,6 +49,63 @@ class DBTransaction: DBGeneric<LTransaction> {
                 DBHelper.timestamp <- value.timestamp,
                 DBHelper.timestampCretae <- value.timestampCreate,
                 DBHelper.timestampAccess <- value.timestampAccess]
+    }
+
+    func rdValuesJoinNone(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
+        amount: Double, type: TransactionType) {
+            return (id: row[DBHelper.id],
+                    rid: row[DBHelper.rid],
+                    accountId: row[DBHelper.accountId],
+                    accountId2: row[DBHelper.accountId2],
+                    amount: row[DBHelper.amount],
+                    type: TransactionType(rawValue: UInt8(row[DBHelper.type]))!)
+    }
+
+    func rdValuesJoinAccount(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
+        amount: Double, type: TransactionType, name: String) {
+            return (id: row[table![DBHelper.id]],
+                    rid: row[DBHelper.rid],
+                    accountId: row[DBHelper.accountId],
+                    accountId2: row[DBHelper.accountId2],
+                    amount: row[DBHelper.amount],
+                    type: TransactionType(rawValue: UInt8(row[table![DBHelper.type]]))!,
+                    name: row[DBHelper.name])
+    }
+
+    func rdValuesJoinTag(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
+        amount: Double, type: TransactionType, tagId: Int64, name: String) {
+            return (id: row[table![DBHelper.id]],
+                    rid: row[DBHelper.rid],
+                    accountId: row[DBHelper.accountId],
+                    accountId2: row[DBHelper.accountId2],
+                    amount: row[DBHelper.amount],
+                    type: TransactionType(rawValue: UInt8(row[table![DBHelper.type]]))!,
+                    tagId: row[DBHelper.tagId],
+                    name: row[DBHelper.name])
+    }
+
+    func rdValuesJoinCategory(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
+        amount: Double, type: TransactionType, categoryId: Int64, name: String) {
+            return (id: row[table![DBHelper.id]],
+                    rid: row[DBHelper.rid],
+                    accountId: row[DBHelper.accountId],
+                    accountId2: row[DBHelper.accountId2],
+                    amount: row[DBHelper.amount],
+                    type: TransactionType(rawValue: UInt8(row[table![DBHelper.type]]))!,
+                    categoryId: row[DBHelper.categoryId],
+                    name: row[DBHelper.name])
+    }
+
+    func rdValuesJoinVendor(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
+        amount: Double, type: TransactionType, vendorId: Int64, name: String) {
+            return (id: row[table![DBHelper.id]],
+                    rid: row[DBHelper.rid],
+                    accountId: row[DBHelper.accountId],
+                    accountId2: row[DBHelper.accountId2],
+                    amount: row[DBHelper.amount],
+                    type: TransactionType(rawValue: UInt8(row[table![DBHelper.type]]))!,
+                    vendorId: row[DBHelper.vendorId],
+                    name: row[DBHelper.name])
     }
 
     func rdDetails(_ row: Row) -> LTransactionDetails? {
@@ -125,13 +182,55 @@ class DBTransaction: DBGeneric<LTransaction> {
         return nil
     }
 
-    func detailsQuery() -> QueryType {
-        let query = table!.join(DBHelper.instance.accounts, on: DBHelper.accountId == DBHelper.instance.accounts[DBHelper.id])
-            .join(DBHelper.instance.categories, on: DBHelper.categoryId == DBHelper.instance.categories[DBHelper.id])
-            .join(DBHelper.instance.tags, on: DBHelper.tagId == DBHelper.instance.tags[DBHelper.id])
-            .join(DBHelper.instance.vendors, on: DBHelper.vendorId == DBHelper.instance.vendors[DBHelper.id])
+    func query(year: Int, month: Int, sort: Int, interval: Int, asc: Bool, search: LRecordSearch?) -> QueryType {
+        var query = table!
+        var order: Expressible?
 
-        return table!
+        switch (sort) {
+        case RecordsViewSortMode.ACCOUNT.rawValue:
+            query = query.join(DBHelper.instance.accounts, on: DBHelper.accountId == DBHelper.instance.accounts[DBHelper.id])
+            order = DBHelper.instance.accounts[DBHelper.name].asc
+        case RecordsViewSortMode.CATEGORY.rawValue:
+            query = query.join(DBHelper.instance.categories, on: DBHelper.categoryId == DBHelper.instance.categories[DBHelper.id])
+            .order(DBHelper.instance.categories[DBHelper.name].asc)
+        case RecordsViewSortMode.TAG.rawValue:
+            query = query.join(DBHelper.instance.tags, on: DBHelper.tagId == DBHelper.instance.tags[DBHelper.id])
+            .order(DBHelper.instance.tags[DBHelper.name].asc)
+        case RecordsViewSortMode.VENDOR.rawValue:
+            query = query.join(DBHelper.instance.vendors, on: DBHelper.vendorId == DBHelper.instance.vendors[DBHelper.id])
+            .order(DBHelper.instance.vendors[DBHelper.name].asc)
+        default: break
+        }
+
+        switch (interval) {
+        case RecordsViewInterval.ALL_TIME.rawValue: break
+        case RecordsViewInterval.ANNUALLY.rawValue:
+            let startMs = Date(year: year, month: 0, day: 1).currentTimeMillis
+            let endMs = Date(year: year + 1, month: 0, day: 1).currentTimeMillis
+            query = query.filter(DBHelper.timestamp >= startMs && DBHelper.timestamp < endMs)
+
+        default:
+            let startMs = Date(year: year, month: month, day: 1).currentTimeMillis
+            let (y, m) = LA.nextYM(year: year, month: month)
+            let endMs = Date(year: y, month: m, day: 1).currentTimeMillis
+            query = query.filter(DBHelper.timestamp >= startMs && DBHelper.timestamp < endMs)
+        }
+
+        if asc {
+            if let ord = order {
+                query = query.order(ord, table![DBHelper.timestamp].asc)
+            } else {
+                query = query.order(table![DBHelper.timestamp].asc)
+            }
+        } else {
+            if let ord = order {
+                query = query.order(ord, table![DBHelper.timestamp].desc)
+            } else {
+                query = query.order(table![DBHelper.timestamp].desc)
+            }
+        }
+
+        return query
     }
 
     func getDetails(id: Int64) -> LTransactionDetails? {

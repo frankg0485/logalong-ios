@@ -25,7 +25,8 @@ class RecordsTableViewController: UITableViewController {
     func refresh() {
         if (dataLoaded) {
             loader = DBLoader(year: year, month: month, sort: LPreferences.getRecordsViewSortMode(),
-                                   interval: LPreferences.getRecordsViewTimeInterval(), search: LPreferences.getRecordsSearchControls())
+                              interval: LPreferences.getRecordsViewTimeInterval(), asc: LPreferences.getRecordsViewAscend(),
+                              search: LPreferences.getRecordsSearchControls())
 
             if (self.isViewLoaded) {
                 let fmt = DateFormatter()
@@ -164,6 +165,19 @@ class RecordsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let (v, h, b, i, e) = createHeader()
+        let sect = loader!.getSection(section)
+        h.text = sect.txt
+        h.sizeToFit()
+
+        b.textColor = (sect.balance > 0) ? LTheme.Color.base_green : LTheme.Color.base_red
+        b.text = String(sect.balance)
+        b.sizeToFit()
+
+        i.text = String(sect.income)
+        i.sizeToFit()
+        e.text = String(sect.expense)
+        e.sizeToFit()
+
         return v
     }
 
@@ -175,7 +189,41 @@ class RecordsTableViewController: UITableViewController {
 
         let record = loader!.getRecord(section: indexPath.section, row: indexPath.row)
 
-        cell.categoryLabel.text = DBCategory.instance.get(id: record.categoryId)?.name
+        if (record.type == TransactionType.TRANSFER) {
+            let acnt = DBAccount.instance.get(id: record.accountId)
+            if let acnt2 = DBAccount.instance.get(id: record.accountId2) {
+                cell.categoryLabel.text = acnt!.name + " --> " + acnt2.name
+            } else {
+                cell.categoryLabel.text = acnt!.name + " -->"
+            }
+        } else if (record.type == TransactionType.TRANSFER_COPY) {
+            let acnt = DBAccount.instance.get(id: record.accountId)
+            if let acnt2 = DBAccount.instance.get(id: record.accountId2) {
+                cell.categoryLabel.text = acnt!.name + " <-- " + acnt2.name
+            } else {
+                cell.categoryLabel.text = "--> " + acnt!.name
+            }
+        } else {
+            if  let cat = DBCategory.instance.get(id: record.categoryId) {
+                if let tag = DBTag.instance.get(id: record.tagId) {
+                    cell.categoryLabel.text = cat.name + ":" + tag.name
+                } else {
+                    cell.categoryLabel.text = cat.name
+                }
+            } else if let tag = DBTag.instance.get(id: record.tagId) {
+                cell.categoryLabel.text = tag.name
+            } else {
+                cell.categoryLabel.text = ""
+            }
+        }
+
+        if let vendor = DBVendor.instance.get(id: record.vendorId) {
+            cell.tagLabel.text = vendor.name
+        } else if !record.note.isEmpty {
+            cell.tagLabel.text = record.note
+        } else {
+            cell.tagLabel.text = ""
+        }
 
         switch (record.type) {
         case .INCOME:
