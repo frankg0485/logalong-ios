@@ -23,7 +23,7 @@ enum RecordsViewSortMode: Int {
 }
 
 class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-    private var loader: DBLoader?
+
     private var viewL: RecordsTableViewController?
     private var viewM: RecordsTableViewController?
     private var viewR: RecordsTableViewController?
@@ -75,7 +75,7 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
                 viewL = viewM
                 navLeft()
             } else {
-                LLog.e("\(self)", "unexpected state: prev: \(previousViewControllers[0]), next: \(viewNext)")
+                LLog.e("\(self)", "unexpected state: prev: \(previousViewControllers[0]), next: \(String(describing: viewNext))")
             }
             viewM = viewNext
         }
@@ -141,11 +141,31 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
     @objc func onTitleClick() {
         LPreferences.setRecordsViewTimeInterval(nextViewInterval().rawValue)
         titleBtn!.setTitle(getTitle(), for: .normal)
+
+        setupNavigationControls()
+
+        if let view = viewM {
+            view.loadData(year: navYear, month: navMonth)
+        }
+
+        // reseting data source effectively flush the internal UIPageViewer page cache
+        self.dataSource = nil
+        self.dataSource = self
     }
 
     @objc func onSortClick() {
         LPreferences.setRecordsViewSortMode(nextSortMode().rawValue)
         sortBtn!.setImage(getSortIcon(), for: .normal)
+
+        if let view = viewM {
+            view.refresh()
+        }
+        if let view = viewL {
+            view.refresh(delay: 0.5)
+        }
+        if let view = viewR {
+            view.refresh(delay: 0.5)
+        }
     }
 
     private var titleBtn: UIButton?
@@ -199,7 +219,7 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         viewM = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController") as? RecordsTableViewController
         viewR = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController") as? RecordsTableViewController
 
-        viewM!.loadData(year: navYear, month: navMonth, loader: loader!)
+        viewM!.loadData(year: navYear, month: navMonth)
     }
 
     private var navYear = -1
@@ -232,8 +252,8 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
     }
 
     private func setupNavigationControls() {
-        loader = DBLoader(search: searchControls)
-        let (startMs, endMs) = loader!.getStartEndTime()
+        let loader = DBLoader(search: searchControls)
+        let (startMs, endMs) = loader.getStartEndTime()
         let (y1, m1, _) = LA.ymd(milliseconds: startMs)
         let (y2, m2, _) = LA.ymd(milliseconds: endMs)
 
@@ -282,7 +302,7 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         var ret = false
         let (y, m) = nextYearMonth(-1)
         if (y != navYear || m != navMonth) {
-            viewL!.loadData(year: y, month: m, loader: loader!)
+            viewL!.loadData(year: y, month: m)
             ret = true
         }
         return ret
@@ -292,7 +312,7 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         var ret = false
         let (y, m) = nextYearMonth(+1)
         if (y != navYear || m != navMonth) {
-            viewR!.loadData(year: y, month: m, loader: loader!)
+            viewR!.loadData(year: y, month: m)
             ret = true
         }
         return ret

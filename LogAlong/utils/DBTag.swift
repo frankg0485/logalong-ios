@@ -20,7 +20,7 @@ class DBTag : DBGeneric<LTag> {
     private func rdValues(_ row: Row) -> LTag? {
         return LTag(id: row[DBHelper.id],
                          gid: row[DBHelper.gid],
-                         name: row[DBHelper.name],
+                         name: row[DBHelper.name]!,
                          create: row[DBHelper.timestampCretae],
                          access: row[DBHelper.timestampAccess])
     }

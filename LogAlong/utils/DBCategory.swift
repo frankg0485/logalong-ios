@@ -20,7 +20,7 @@ class DBCategory : DBGeneric<LCategory> {
     private func rdValues(_ row: Row) -> LCategory? {
         return LCategory(id: row[DBHelper.id],
                          gid: row[DBHelper.gid],
-                         name: row[DBHelper.name],
+                         name: row[DBHelper.name]!,
                          create: row[DBHelper.timestampCretae],
                          access: row[DBHelper.timestampAccess])
     }

@@ -14,6 +14,8 @@ class RecordsTableViewController: UITableViewController {
     private var year: Int = 0
     private var month: Int = 0
     private var loader: DBLoader?
+    private var loaderNew: DBLoader?
+    private var workItem: DispatchWorkItem?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,24 +24,36 @@ class RecordsTableViewController: UITableViewController {
         refresh()
     }
 
-    func refresh() {
+    func refresh(delay: Double = 0) {
         if (dataLoaded) {
-            loader = DBLoader(year: year, month: month, sort: LPreferences.getRecordsViewSortMode(),
-                              interval: LPreferences.getRecordsViewTimeInterval(), asc: LPreferences.getRecordsViewAscend(),
-                              search: LPreferences.getRecordsSearchControls())
-
-            if (self.isViewLoaded) {
-                let fmt = DateFormatter()
-                fmt.dateFormat = "MM"
-                labelHeader!.text =  fmt.monthSymbols[month]
-                labelHeader!.sizeToFit()
-
-                tableView.reloadData()
+            if let item = workItem {
+                item.cancel()
             }
+
+            workItem = DispatchWorkItem {
+                LLog.d("\(self)", "loading data")
+                self.loaderNew = DBLoader(year: self.year, month: self.month, sort: LPreferences.getRecordsViewSortMode(),
+                                          interval: LPreferences.getRecordsViewTimeInterval(), asc: LPreferences.getRecordsViewAscend(),
+                                          search: LPreferences.getRecordsSearchControls())
+
+                DispatchQueue.main.async(execute: {
+                    self.loader = self.loaderNew
+
+                    if (self.isViewLoaded) {
+                        let fmt = DateFormatter()
+                        fmt.dateFormat = "MM"
+                        self.labelHeader!.text =  fmt.monthSymbols[self.month]
+                        self.labelHeader!.sizeToFit()
+
+                        self.tableView.reloadData()
+                    }
+                })
+            }
+            DispatchQueue.global(qos: .userInteractive).asyncAfter(deadline: .now() + delay + 0.01, execute: workItem!)
         }
     }
 
-    func loadData(year: Int, month: Int, loader: DBLoader) {
+    func loadData(year: Int, month: Int) {
         self.year = year
         self.month = month
         dataLoaded = true
@@ -151,7 +165,11 @@ class RecordsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return loader!.getSectionCount()
+        if let loader = loader {
+            return loader.getSectionCount()
+        } else {
+            return 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

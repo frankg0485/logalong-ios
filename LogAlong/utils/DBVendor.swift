@@ -20,7 +20,7 @@ class DBVendor : DBGeneric<LVendor> {
     private func rdValues(_ row: Row) -> LVendor? {
         return LVendor(id: row[DBHelper.id],
                          gid: row[DBHelper.gid],
-                         name: row[DBHelper.name],
+                         name: row[DBHelper.name]!,
                          type: VendorType(rawValue: UInt8(row[DBHelper.type]))!,
                          create: row[DBHelper.timestampCretae],
                          access: row[DBHelper.timestampAccess])

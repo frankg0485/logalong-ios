@@ -25,7 +25,7 @@ class DBHelper {
     static let id = Expression<Int64>("Id")
     static let gid = Expression<Int64>("Gid")
     static let rid = Expression<Int64>("Rid")
-    static let name = Expression<String>("Name")
+    static let name = Expression<String?>("Name")
     static let accountId = Expression<Int64>("AccountId")
     static let accountId2 = Expression<Int64>("AccountId2")
     static let categoryId = Expression<Int64>("CategoryId")

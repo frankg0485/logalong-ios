@@ -20,7 +20,7 @@ class DBAccount : DBGeneric<LAccount> {
     private func rdValues(_ row: Row) -> LAccount? {
         return LAccount(id: row[DBHelper.id],
                         gid: row[DBHelper.gid],
-                        name: row[DBHelper.name],
+                        name: row[DBHelper.name]!,
                         share: row[DBHelper.share],
                         showBalance: row[DBHelper.showBalance] != 0,
                         create: row[DBHelper.timestampCretae],
