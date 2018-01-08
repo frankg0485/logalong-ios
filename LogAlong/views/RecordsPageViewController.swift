@@ -24,10 +24,10 @@ enum RecordsViewSortMode: Int {
 
 class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 
-    private var viewL: RecordsTableViewController?
-    private var viewM: RecordsTableViewController?
-    private var viewR: RecordsTableViewController?
-    private var viewNext: RecordsTableViewController?
+    private var viewL: RecordsViewController?
+    private var viewM: RecordsViewController?
+    private var viewR: RecordsViewController?
+    private var viewNext: RecordsViewController?
 
     //TODO: search support
     var searchControls: LRecordSearch = LRecordSearch(from: 0, to: 0)
@@ -60,7 +60,7 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
 
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         //LLog.d("\(self)", "going to: \(pendingViewControllers) @ \(Date())")
-        viewNext = pendingViewControllers[0] as? RecordsTableViewController
+        viewNext = pendingViewControllers[0] as? RecordsViewController
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
@@ -215,9 +215,9 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
     }
 
     private func setupViewControllers() {
-        viewL = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController") as? RecordsTableViewController
-        viewM = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController") as? RecordsTableViewController
-        viewR = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsTableViewController") as? RecordsTableViewController
+        viewL = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsViewController") as? RecordsViewController
+        viewM = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsViewController") as? RecordsViewController
+        viewR = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsViewController") as? RecordsViewController
 
         viewM!.loadData(year: navYear, month: navMonth)
     }

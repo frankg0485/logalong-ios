@@ -1,15 +1,19 @@
 //
-//  RecordsTableViewController.swift
+//  RecordsViewController.swift
 //  LogAlong
 //
-//  Created by Frank Gao on 3/6/17.
-//  Copyright © 2017 Swoag Technology. All rights reserved.
+//  Created by Michael Gao on 1/7/18.
+//  Copyright © 2018 Swoag Technology. All rights reserved.
 //
 
 import UIKit
 import os.log
 
-class RecordsTableViewController: UITableViewController {
+class RecordsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+
+    @IBOutlet weak var headerView: HorizontalLayout!
+    @IBOutlet weak var tableView: UITableView!
+
     private var dataLoaded = false
     private var year: Int = 0
     private var month: Int = 0
@@ -19,6 +23,9 @@ class RecordsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.dataSource = self
+        tableView.delegate = self
 
         setupBalanceHeader()
         refresh()
@@ -66,22 +73,26 @@ class RecordsTableViewController: UITableViewController {
     private var labelExpense: UILabel?
 
     private func setupBalanceHeader() {
-        let (view, h, b, i, e) = createHeader()
+        let (_, h, b, i, e) = createHeader(view: headerView)
         labelHeader = h
         labelExpense = e
         labelIncome = i
         labelBalance = b
 
-        tableView.tableHeaderView = view
+        //tableView.tableHeaderView = view
         tableView.tableFooterView = UIView()
     }
 
-    private func createHeader(txt: String = "", balance: Double = 0, income: Double = 0, expense: Double = 0)
+    private func createHeader(view: UIView? = nil, txt: String = "", balance: Double = 0, income: Double = 0, expense: Double = 0)
         -> (view: UIView, txtLabel: UILabel, balanceLabel: UILabel, incomeLabel: UILabel, expenseLabel: UILabel)
     {
-        let headerView = HorizontalLayout(height: 25)
-        headerView.backgroundColor = LTheme.Color.balance_header_bgd_color
-        //headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 25)
+        var hView: UIView
+        if (view == nil) {
+            hView = HorizontalLayout(height: 25)
+        } else {
+            hView = view!
+        }
+        hView.backgroundColor = LTheme.Color.balance_header_bgd_color
 
         let fontsize: CGFloat = 14
         let labelHeader = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
@@ -126,15 +137,15 @@ class RecordsTableViewController: UITableViewController {
         pr.text = ")"
         pr.sizeToFit()
 
-        headerView.addSubview(labelHeader)
-        headerView.addSubview(spacer)
-        headerView.addSubview(labelBalance)
-        headerView.addSubview(pl)
-        headerView.addSubview(labelIncome)
-        headerView.addSubview(labelExpense)
-        headerView.addSubview(pr)
+        hView.addSubview(labelHeader)
+        hView.addSubview(spacer)
+        hView.addSubview(labelBalance)
+        hView.addSubview(pl)
+        hView.addSubview(labelIncome)
+        hView.addSubview(labelExpense)
+        hView.addSubview(pr)
 
-        return (headerView, labelHeader, labelBalance, labelIncome, labelExpense)
+        return (hView, labelHeader, labelBalance, labelIncome, labelExpense)
     }
 
     @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
@@ -164,7 +175,7 @@ class RecordsTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         if let loader = loader {
             return loader.getSectionCount()
         } else {
@@ -172,16 +183,16 @@ class RecordsTableViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return loader!.getSection(section).rows
     }
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let sect = loader!.getSection(section)
         return (sect.rows == 0 || sect.show == false ) ? 0 : 25
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let (v, h, b, i, e) = createHeader()
         let sect = loader!.getSection(section)
         h.text = sect.txt
@@ -199,7 +210,7 @@ class RecordsTableViewController: UITableViewController {
         return v
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "RecordsTableViewCell"
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? RecordsTableViewCell else {
             fatalError("The dequeued cell is not an instance of RecordsTableViewCell.")
@@ -263,13 +274,13 @@ class RecordsTableViewController: UITableViewController {
     }
 
     // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
 
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             DBTransaction.instance.remove(id: loader!.getRecord(section: indexPath.section, row: indexPath.row).id)
@@ -279,7 +290,7 @@ class RecordsTableViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return .none
     }
 
