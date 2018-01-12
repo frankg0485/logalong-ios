@@ -110,4 +110,21 @@ class LPreferences {
         let uniqueId = UIDevice.current.identifierForVendor?.uuidString
         return uniqueId!
     }
+
+    static func getShareUserName(_ gid: Int64) -> String {
+        return defaults.string(forKey: "\(userName).\(String(gid))")!
+    }
+
+    static func getShareUserId(_ gid: Int64) -> String {
+        return defaults.string(forKey: "\(userId).\(String(gid))")!
+    }
+
+    static func setShareUserName(_ gid: Int64, _ fullName: String) {
+        defaults.set(fullName, forKey: "\(userName).\(String(gid))")
+    }
+
+    static func setShareUserId(_ gid: Int64, _ id: String) {
+        defaults.set(id, forKey: "\(userId).\(String(gid))")
+    }
+
 }

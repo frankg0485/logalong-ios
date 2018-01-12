@@ -11,6 +11,8 @@ import UIKit
 class UsersTableViewCell: UITableViewCell {
 
     @IBOutlet weak var userLabel: UILabel!
+    @IBOutlet weak var checkButton: UIButton!
+    @IBOutlet weak var shareStatusButton: UIButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()

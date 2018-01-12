@@ -46,9 +46,10 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         let controller = storyboard.instantiateViewController(withIdentifier: "ShareAccount") as! ShareAccountViewController
 
         controller.accountName = name
+        controller.viewHeight = 172 + CGFloat(DBAccount.instance.getAllShareUser().count * LTheme.Dimension.table_view_cell_height)
         controller.modalPresentationStyle = UIModalPresentationStyle.popover
         controller.popoverPresentationController?.delegate = self
-        controller.preferredContentSize = CGSize(width: 375, height: 216)
+        controller.preferredContentSize = CGSize(width: 375, height: 172 + (DBAccount.instance.getAllShareUser().count * LTheme.Dimension.table_view_cell_height))
 
         let popoverPresentationController = controller.popoverPresentationController
 

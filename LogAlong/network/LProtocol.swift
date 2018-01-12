@@ -283,25 +283,25 @@ final class LProtocol : LServerDelegate {
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_GET_USER_BY_NAME:
-                /*rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                 .ACTION_GET_USER_BY_NAME));
-                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
+                if (LProtocol.RSPS_OK == status) {
+                    var name: String
+                    var fullName: String
 
-                 if (RSPS_OK == status) {
-                 String name, fullName;
-                 long gid = pkt.getLongAutoInc();
-                 int bytes = pkt.getShortAutoInc();
-                 name = pkt.getStringAutoInc(bytes);
-                 bytes = pkt.getShortAutoInc();
-                 fullName = pkt.getStringAutoInc(bytes);
+                    let gid = pkt.getLongAutoInc()
+                    var bytes = pkt.getShortAutoInc()
+                    name = pkt.getStringAutoInc(Int(bytes))
+                    bytes = pkt.getShortAutoInc()
+                    fullName = pkt.getStringAutoInc(Int(bytes))
 
-                 rspsIntent.putExtra("id", gid);
-                 rspsIntent.putExtra("name", name);
-                 rspsIntent.putExtra("fullName", fullName);
-                 LPreferences.setShareUserId(gid, name);
-                 LPreferences.setShareUserName(gid, fullName);
-                 }
-                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
+                    bdata["id"] = gid
+                    bdata["name"] = name
+                    bdata["fullName"] = fullName
+
+                    LPreferences.setShareUserId(gid, name)
+                    LPreferences.setShareUserName(gid, fullName)
+                }
+
+                LBroadcast.post(LBroadcast.ACTION_GET_USER_BY_NAME, sender: nil, data: bdata)
                 break;
 
             case LProtocol.RSPS | LProtocol.RQST_RESET_PASSWORD:

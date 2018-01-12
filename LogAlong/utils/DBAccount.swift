@@ -39,4 +39,21 @@ class DBAccount : DBGeneric<LAccount> {
     func getAll() -> [LAccount] {
         return super.getAll(by: DBHelper.name.asc)
     }
+
+    func getAllShareUser() -> Set<Int64> {
+        var users: Set<Int64> = []
+
+        for account in self.getAll() {
+            let str = account.share
+            if !str.isEmpty {
+                account.setSharedIdsString(str)
+                if !account.shareIds.isEmpty {
+                    for ii in account.shareIds {
+                        users.insert(ii)
+                    }
+                }
+            }
+        }
+        return users
+    }
 }
