@@ -387,8 +387,8 @@
 				01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */,
 				0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */,
 				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
-				01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */,
 				01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */,
+				01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */,
 				CB15D4ED1FC3D7EE005D8B43 /* settings */,
 			);
 			path = views;
@@ -471,9 +471,9 @@
 			children = (
 				CB3154DE1FBD3AA6006F9DE4 /* Crc32.swift */,
 				CB51B55B1FBBFF11002CABA1 /* LBuffer.swift */,
-				CB51B5571FBBDF26002CABA1 /* LProtocol.swift */,
 				CBEDFD171FD6E6D60015E98E /* LService.swift */,
 				CB51B5591FBBFBF6002CABA1 /* LTransport.swift */,
+				CB51B5571FBBDF26002CABA1 /* LProtocol.swift */,
 				CBD6180F1FB0081300A2B57E /* Server.swift */,
 				CBAA49591FC51CCA00E77834 /* UiRequest.swift */,
 			);

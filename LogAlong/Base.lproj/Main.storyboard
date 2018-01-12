@@ -312,9 +312,7 @@
                                             <outlet property="categoryLabel" destination="aPa-5Q-4V9" id="D6r-YS-4vh"/>
                                             <outlet property="dateLabel" destination="Pfd-aQ-hzJ" id="g4x-nK-we4"/>
                                             <outlet property="tagLabel" destination="BiT-zE-6B6" id="5DF-73-N0U"/>
-                                            <segue destination="58n-ox-X6M" kind="popover" identifier="ShowDetail" popoverAnchorView="d6n-9L-DDo" id="Jhj-Ka-e6L">
-                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                            </segue>
+                                            <segue destination="58n-ox-X6M" kind="push" identifier="ShowDetail" id="Jhj-Ka-e6L"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -647,36 +645,6 @@
                                     <action selector="cancelButtonPressed:" destination="jBy-sV-aNJ" eventType="touchUpInside" id="06O-bV-PqW"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CwT-K0-jHa">
-                                <rect key="frame" x="16" y="37" width="313" height="28"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserCell" id="CXK-UN-Skb" customClass="UsersTableViewCell" customModule="LogAlong" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="313" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CXK-UN-Skb" id="Vpa-Um-2rD">
-                                            <rect key="frame" x="0.0" y="0.0" width="313" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L8x-gR-J0S">
-                                                    <rect key="frame" x="7" y="12" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="L8x-gR-J0S" secondAttribute="trailingMargin" id="9Fu-hD-jBF"/>
-                                                <constraint firstItem="L8x-gR-J0S" firstAttribute="leading" secondItem="Vpa-Um-2rD" secondAttribute="leadingMargin" constant="-1" id="DeL-eh-mjf"/>
-                                                <constraint firstItem="L8x-gR-J0S" firstAttribute="bottom" secondItem="Vpa-Um-2rD" secondAttribute="bottomMargin" id="hPt-X4-Kih"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="userLabel" destination="L8x-gR-J0S" id="alq-TX-eaJ"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="apply to all accounts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HTb-LF-ldl">
                                 <rect key="frame" x="80" y="116" width="158" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -700,6 +668,49 @@
                                     <action selector="addUserClicked:" destination="TPL-69-Auu" eventType="touchUpInside" id="HGe-cZ-MyF"/>
                                 </connections>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CwT-K0-jHa">
+                                <rect key="frame" x="16" y="37" width="313" height="71"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UserCell" id="CXK-UN-Skb" customClass="UsersTableViewCell" customModule="LogAlong" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="313" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CXK-UN-Skb" id="Vpa-Um-2rD">
+                                            <rect key="frame" x="0.0" y="0.0" width="313" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L8x-gR-J0S">
+                                                    <rect key="frame" x="45" y="12" width="42" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jVV-xM-hNN">
+                                                    <rect key="frame" x="9" y="12" width="21" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <connections>
+                                                        <action selector="checkButtonClicked:" destination="TPL-69-Auu" eventType="touchUpInside" id="pQw-Eq-Pvf"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eb9-vc-ecD">
+                                                    <rect key="frame" x="293" y="13" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="L8x-gR-J0S" secondAttribute="trailingMargin" id="9Fu-hD-jBF"/>
+                                                <constraint firstItem="L8x-gR-J0S" firstAttribute="leading" secondItem="Vpa-Um-2rD" secondAttribute="leadingMargin" constant="30" id="DeL-eh-mjf"/>
+                                                <constraint firstItem="L8x-gR-J0S" firstAttribute="bottom" secondItem="Vpa-Um-2rD" secondAttribute="bottomMargin" id="hPt-X4-Kih"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="checkButton" destination="jVV-xM-hNN" id="Hk1-RA-v1p"/>
+                                            <outlet property="shareStatusButton" destination="Eb9-vc-ecD" id="yWs-mO-oCS"/>
+                                            <outlet property="userLabel" destination="L8x-gR-J0S" id="alq-TX-eaJ"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -742,7 +753,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bxO-Ps-1Jp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5917.6000000000004" y="541.52923538230891"/>
+            <point key="canvasLocation" x="5917.5" y="541"/>
         </scene>
         <!--Create View Controller-->
         <scene sceneID="pT7-bD-ErB">
