@@ -23,7 +23,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        //LLog.d("\(self)", "view did load")
         tableView.dataSource = self
         tableView.delegate = self
 
@@ -38,7 +38,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
             }
 
             workItem = DispatchWorkItem {
-                LLog.d("\(self)", "loading data")
+                //LLog.d("\(self)", "loading data")
                 self.loaderNew = DBLoader(year: self.year, month: self.month, sort: LPreferences.getRecordsViewSortMode(),
                                           interval: LPreferences.getRecordsViewTimeInterval(), asc: LPreferences.getRecordsViewAscend(),
                                           search: LPreferences.getRecordsSearchControls())
@@ -52,6 +52,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
                         self.labelHeader!.text =  fmt.monthSymbols[self.month]
                         self.labelHeader!.sizeToFit()
 
+                        self.headerView!.refresh()
                         self.tableView.reloadData()
                     }
                 })
@@ -95,14 +96,14 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         hView.backgroundColor = LTheme.Color.balance_header_bgd_color
 
         let fontsize: CGFloat = 14
-        let labelHeader = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
+        let labelHeader = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 25))
         labelHeader.layoutMargins = UIEdgeInsetsMake(0, 10, 0, 0)
         labelHeader.font = labelHeader.font.withSize(fontsize)
         labelHeader.font = UIFont.boldSystemFont(ofSize: fontsize)
         labelHeader.text = txt
         labelHeader.sizeToFit()
 
-        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 25))
+        //let spacer = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: 25))
 
         let labelBalance = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
         labelBalance.font = labelBalance.font.withSize(fontsize)
@@ -138,7 +139,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         pr.sizeToFit()
 
         hView.addSubview(labelHeader)
-        hView.addSubview(spacer)
+        //hView.addSubview(spacer)
         hView.addSubview(labelBalance)
         hView.addSubview(pl)
         hView.addSubview(labelIncome)

@@ -137,6 +137,7 @@ class DBLoader {
                     (id, rid, accountId, accountId2, amount, type) = DBTransaction.instance.rdValuesJoinNone(row)
                 }
 
+                skip = false
                 if (newSection) {
                     section = LSection(show: true, rows: 1)
                     section!.txt = name
@@ -148,7 +149,6 @@ class DBLoader {
                         skip = true
                     } else {
                         section!.rows += 1
-                        skip = false
                     }
                 }
                 prevTransferRid = (type == TransactionType.TRANSFER || type == TransactionType.TRANSFER_COPY) ? rid : -1
@@ -168,7 +168,7 @@ class DBLoader {
             LLog.w("\(self)", "data not available")
         }
 
-        if var sect = section {
+        if let sect = section {
             if (sort == RecordsViewSortMode.TIME.rawValue) {
                 sect.show = false
             }

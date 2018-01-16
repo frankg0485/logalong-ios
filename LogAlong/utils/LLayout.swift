@@ -8,11 +8,27 @@
 
 import UIKit
 
-class HorizontalLayout : UIView {
-    var xOffsets: [CGFloat] = []
+class LLayout: UIView {
+    var weights: [CGFloat] = []
+
+    init(width: CGFloat, height: CGFloat) {
+        super.init(frame: CGRect(x: 0, y: 0, width: width, height: height))
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    public func refresh() {
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+    }
+}
+
+class HorizontalLayout : LLayout {
 
     init(height: CGFloat) {
-        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: height))
+        super.init(width: 0, height: height)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -20,32 +36,44 @@ class HorizontalLayout : UIView {
     }
 
     override func layoutSubviews() {
-        var width : CGFloat = 0
-        var fillerView: UIView?
+        if nil == superview {
+            LLog.w("\(self)", "unexpected layout request before superview presence.")
+            return
+        }
 
+        var weightSum: CGFloat = 0
+        var width : CGFloat = 0
+
+        //print("layout subviews ............")
         for ii in 0..<subviews.count {
             let view = subviews[ii] as UIView
             view.layoutSubviews()
-
-            width += xOffsets[ii]
-            if (view.frame.width > 0) {
+            if (weights[ii] == 0) {
                 width += view.frame.width + view.layoutMargins.left + view.layoutMargins.right
             } else {
-                fillerView = view
+                width += view.layoutMargins.left + view.layoutMargins.right
+                weightSum += weights[ii]
             }
         }
 
-        if (width < superview!.frame.width && fillerView != nil) {
-            fillerView!.frame.size.width = superview!.frame.width - width
-                - fillerView!.layoutMargins.left - fillerView!.layoutMargins.right
+        if (width < superview!.frame.width) {
+            let space = superview!.frame.width - width
+            for ii in 0..<subviews.count {
+                let view = subviews[ii] as UIView
+                if weights[ii] != 0 {
+                    view.frame.size.width = (space * weights[ii]) / weightSum
+                }
+            }
         }
 
         width = 0
         for ii in 0..<subviews.count {
             let view = subviews[ii] as UIView
+            view.center.y = self.center.y - self.frame.origin.y
+            //print("view center: \(self.center.y) - \(self.frame.origin.y)")
             view.layoutSubviews()
 
-            width += xOffsets[ii] + view.layoutMargins.left
+            width += view.layoutMargins.left
             view.frame.origin.x = width
             width += view.frame.width + view.layoutMargins.right
         }
@@ -54,7 +82,72 @@ class HorizontalLayout : UIView {
     }
 
     override func addSubview(_ view: UIView) {
-        xOffsets.append(view.frame.origin.x)
+        weights.append(view.frame.origin.x)
+        view.frame.origin.x = 0
+
+        super.addSubview(view)
+    }
+}
+
+class VerticalLayout : LLayout {
+
+    init(width: CGFloat) {
+        super.init(width: width, height: 0)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    override func layoutSubviews() {
+        if nil == superview {
+            LLog.w("\(self)", "unexpected layout request before superview presence.")
+            return
+        }
+
+        var weightSum: CGFloat = 0
+        var height : CGFloat = 0
+
+        //print("layout subviews ............")
+        for ii in 0..<subviews.count {
+            let view = subviews[ii] as UIView
+            view.layoutSubviews()
+            if (weights[ii] == 0) {
+                height += view.frame.height + view.layoutMargins.top + view.layoutMargins.bottom
+            } else {
+                height += view.layoutMargins.top + view.layoutMargins.bottom
+                weightSum += weights[ii]
+            }
+        }
+
+        if (height < superview!.frame.height) {
+            let space = superview!.frame.height - height
+            for ii in 0..<subviews.count {
+                let view = subviews[ii] as UIView
+                if weights[ii] != 0 {
+                    view.frame.size.height = (space * weights[ii]) / weightSum
+                }
+            }
+        }
+
+        height = 0
+        for ii in 0..<subviews.count {
+            let view = subviews[ii] as UIView
+            view.center.x = self.center.x - self.frame.origin.x
+            view.layoutSubviews()
+
+            height += view.layoutMargins.top
+            view.frame.origin.y = height
+            height += view.frame.height + view.layoutMargins.bottom
+        }
+
+        self.frame.size.height = height
+    }
+
+    override func addSubview(_ view: UIView) {
+        weights.append(view.frame.origin.y)
+        view.frame.origin.y = 0
+
         super.addSubview(view)
     }
 }

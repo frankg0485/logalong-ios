@@ -312,7 +312,7 @@
                                             <outlet property="categoryLabel" destination="aPa-5Q-4V9" id="D6r-YS-4vh"/>
                                             <outlet property="dateLabel" destination="Pfd-aQ-hzJ" id="g4x-nK-we4"/>
                                             <outlet property="tagLabel" destination="BiT-zE-6B6" id="5DF-73-N0U"/>
-                                            <segue destination="58n-ox-X6M" kind="push" identifier="ShowDetail" id="Jhj-Ka-e6L"/>
+                                            <segue destination="58n-ox-X6M" kind="show" identifier="ShowDetail" id="Jhj-Ka-e6L"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
