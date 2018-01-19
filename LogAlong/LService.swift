@@ -392,7 +392,8 @@ class LService {
                     case LProtocol.JRQST_UPDATE_SCHEDULE: break
                     case LProtocol.JRQST_DELETE_SCHEDULE: break
                     case LProtocol.JRQST_CONFIRM_ACCOUNT_SHARE: break
-                    case LProtocol.JRQST_ADD_USER_TO_ACCOUNT: break
+                    case LProtocol.JRQST_ADD_USER_TO_ACCOUNT:
+                        break
                     default:
                         LLog.w("\(self)", "unknown journal request: \(jrqstId)")
                     }

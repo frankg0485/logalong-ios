@@ -15,7 +15,12 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
     @IBOutlet weak var userIdTextField: UITextField!
     @IBOutlet weak var shareAccountLabel: UILabel!
 
-    var accountName: String = ""
+    var account: LAccount = LAccount()
+    var ownAccount: Bool = false
+    var applyToAllAccounts: Bool = false
+    var origSelectedIds: Set<Int64> = []
+    var selectedIds: Set<Int64> = []
+
     var viewHeight: CGFloat = 0 {
         didSet {
             if viewHeight >= maxHeight {
@@ -36,11 +41,12 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         usersTableView.dataSource = self
         userIdTextField.delegate = self
 
+        ownAccount = account.getOwner() == LPreferences.getUserIdNum()
         populateUsersArray()
         usersTableView.tableFooterView = UIView()
         setImageToUserButton()
         addUserToAccountButton.setSize(w: 25, h: 25)
-        shareAccountLabel.text = shareAccountLabel.text! + " \(accountName)"
+        shareAccountLabel.text = shareAccountLabel.text! + " \(account.name)"
 
         LBroadcast.register(LBroadcast.ACTION_GET_USER_BY_NAME, cb: #selector(self.getUserByName), listener: self)
         // Do any additional setup after loading the view.
@@ -51,11 +57,23 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         // Dispose of any resources that can be recreated.
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        if let accountsVC = presentingViewController as? AccountsTableViewController {
+            //accountsVC.onShareAccountDialogExit(true, applyToAllAccounts, account.id)
+        }
+    }
+
     @IBAction func checkButtonClicked(_ sender: UIButton) {
         if checkBoxClicked {
+            if let cell = sender.superview?.superview as? UsersTableViewCell {
+                selectedIds.remove(shareUsers[(usersTableView.indexPath(for: cell)?.row)!].id)
+            }
             checkBoxClicked = false
             sender.setImage(#imageLiteral(resourceName: "btn_check_off_normal_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
         } else {
+            if let cell = sender.superview?.superview as? UsersTableViewCell {
+                selectedIds.insert(shareUsers[(usersTableView.indexPath(for: cell)?.row)!].id)
+            }
             checkBoxClicked = true
             sender.setImage(#imageLiteral(resourceName: "btn_check_on_focused_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
 
@@ -70,8 +88,6 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
                         if let fullName = bdata["fullName"] as? String {
                             if let gid = bdata["id"] as? Int64 {
                                 shareUsers.append(LUser(userId, fullName, gid))
-                                LPreferences.setShareUserId(gid, userId)
-                                LPreferences.setShareUserName(gid, fullName)
 
                                 userIdTextField.text = ""
                                 viewHeight += 44
@@ -121,11 +137,18 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
     }
 
     @IBAction func okButtonClicked(_ sender: UIButton) {
+        if let accountsVC = (presentingViewController as? UINavigationController)?.topViewController as? AccountsTableViewController {
+            accountsVC.onShareAccountDialogExit(applyToAllAccounts, account.id, selectedIds, origSelections: origSelectedIds)
+        }
         dismiss(animated: true, completion: nil)
     }
 
     @IBAction func switchSwitched(_ sender: UISwitch) {
-
+        if sender.isOn {
+            applyToAllAccounts = true
+        } else {
+            applyToAllAccounts = false
+        }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

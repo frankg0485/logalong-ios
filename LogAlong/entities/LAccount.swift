@@ -7,11 +7,11 @@
 //
 
 class LAccount : LDbBase {
-    public let ACCOUNT_SHARE_PERMISSION_READ_ONLY   = 0x01
-    public let ACCOUNT_SHARE_PERMISSION_READ_WRITE  = 0x03
-    public let ACCOUNT_SHARE_PERMISSION_OWNER       = 0x08
-    public let ACCOUNT_SHARE_INVITED = 0x10
-    public let ACCOUNT_SHARE_NA = 0x20
+    public static let ACCOUNT_SHARE_PERMISSION_READ_ONLY   = 0x01
+    public static let ACCOUNT_SHARE_PERMISSION_READ_WRITE  = 0x03
+    public static let ACCOUNT_SHARE_PERMISSION_OWNER       = 0x08
+    public static let ACCOUNT_SHARE_INVITED = 0x10
+    public static let ACCOUNT_SHARE_NA = 0x20
 
     var share: String
     var showBalance: Bool
@@ -63,6 +63,24 @@ class LAccount : LDbBase {
         self.gid = gid
     }
 
+    func removeShareUser(_ id: Int64) {
+        if (shareIds.isEmpty || shareStates.isEmpty) {
+            return
+        }
+
+        for ii in 0..<shareIds.count {
+            if (shareIds[ii] == id) {
+                shareIds.remove(at: ii)
+                shareStates.remove(at: ii)
+            }
+        }
+    }
+
+    func removeAllShareUsers() {
+        shareIds.removeAll()
+        shareStates.removeAll()
+    }
+
     func getShareIdsString() -> String {
         if (shareIds.isEmpty == true || shareStates.isEmpty == true || shareIds.count < 1 || shareStates.count < 1) {
             return ""
@@ -97,12 +115,12 @@ class LAccount : LDbBase {
     }
 
     func getOwner() -> Int64 {
-        if (shareIds == nil || shareStates == nil) {
+        if (shareIds.isEmpty || shareStates.isEmpty) {
             return 0
         }
 
         for ii in 0..<shareStates.count {
-            if (shareStates[ii] == ACCOUNT_SHARE_PERMISSION_OWNER) {
+            if (shareStates[ii] == LAccount.ACCOUNT_SHARE_PERMISSION_OWNER) {
                 return shareIds[ii]
             }
         }
@@ -110,15 +128,10 @@ class LAccount : LDbBase {
     }
 
     func setOwner(_ id: Int64) {
-        addShareUser(id, ACCOUNT_SHARE_PERMISSION_OWNER)
+        addShareUser(id, LAccount.ACCOUNT_SHARE_PERMISSION_OWNER)
     }
 
     func addShareUser(_ id: Int64, _ state: Int) {
-        if (shareIds == nil || shareStates == nil) {
-            shareIds = [Int64]()
-            shareStates = [Int]()
-        }
-
         for ii in 0..<shareIds.count {
             if (shareIds[ii] == id) {
                 shareStates[ii] = state
@@ -130,5 +143,16 @@ class LAccount : LDbBase {
         shareIds.append(id)
     }
 
+    func getShareUserState(_ id: Int64) -> Int{
+        if (shareIds.isEmpty || shareStates.isEmpty) {
+            return LAccount.ACCOUNT_SHARE_NA
+        }
+        for ii in 0..<shareIds.count {
+            if (shareIds[ii] == id) {
+                return shareStates[ii]
+            }
+        }
+        return LAccount.ACCOUNT_SHARE_NA
+    }
 
 }

@@ -11,6 +11,7 @@ import UIKit
 class AccountsTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     var accounts: [LAccount] = []
+    var account: LAccount = LAccount()
     var name: String = ""
 
     override func viewDidLoad() {
@@ -33,9 +34,111 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         // Dispose of any resources that can be recreated.
     }
 
+    func unshareAllFromAccount(_ accountId: Int64) {
+        var account = DBAccount.instance.get(id: accountId)!
+        account.removeAllShareUsers()
+        account.setOwner(Int64(LPreferences.getUserIdNum()))
+        DBAccount.instance.update(account)
+
+        var journal = LJournal()
+        journal.removeUserFromAccount(uid: 0, aid: account.gid)
+    }
+
+    func unshareMyselfFromAccount(_ accountId: Int64) {
+        let account = DBAccount.instance.get(id: accountId)!
+
+        //LTask.start(DBAccount.MyAccountDeleteTask(), account.getId())
+        DBAccount.instance.remove(id: accountId)
+
+        var journal = LJournal()
+        journal.removeUserFromAccount(uid: Int64(LPreferences.getUserIdNum()), aid: account.gid)
+    }
+
+    func do_account_share_update(_ accountId: Int64, _ selections: Set<Int64>, _ origSelections: Set<Int64>) {
+        let account = DBAccount.instance.get(id: accountId)!
+        if (selections.isEmpty) {
+            if (account.getOwner() == LPreferences.getUserIdNum()) {
+                //removing everyone from shared group
+                unshareAllFromAccount(accountId)
+            } else {
+                //unshare myself
+                unshareMyselfFromAccount(accountId)
+            }
+            return
+        }
+
+        var journal = LJournal()
+        //first update all existing users if there's any removal
+        for ii in origSelections {
+            if (!selections.contains(ii)) {
+                account.removeShareUser(ii)
+                journal.removeUserFromAccount(uid: ii, aid: account.gid)
+            }
+        }
+
+        //now request for new share
+        for ii in selections {
+            var newShare = false
+            if (!origSelections.contains(ii)) {
+                newShare = true
+            } else if (account.getShareUserState(ii) > LAccount.ACCOUNT_SHARE_PERMISSION_OWNER) {
+                newShare = true
+            }
+            if (newShare) {
+                // new share request: new memeber is added to group
+                account.addShareUser(ii, LAccount.ACCOUNT_SHARE_INVITED)
+                journal.addUserToAccount(uid: ii, aid: account.gid)
+            }
+        }
+        DBAccount.instance.update(account)
+    }
+
+
+    func getAccountCurrentShares(_ account: LAccount) -> Set<Int64> {
+        var selectedUsers: Set<Int64> = []
+        if (!account.shareIds.isEmpty) {
+            for ii in account.shareIds {
+                if (ii == LPreferences.getUserIdNum()) {
+                    continue
+                }
+                if (!LPreferences.getShareUserId(ii).isEmpty) {
+                    let shareState = account.getShareUserState(ii)
+                    if (LAccount.ACCOUNT_SHARE_PERMISSION_OWNER >= shareState
+                        || LAccount.ACCOUNT_SHARE_INVITED == shareState) {
+                        selectedUsers.insert(ii)
+                    }
+                } else {
+                    LLog.w("\(self)", "unexpected: unknown shared user")
+                }
+            }
+        }
+        return selectedUsers
+    }
+
+    func onShareAccountDialogExit(_ applyToAllAccounts: Bool, _ accountId: Int64, _ selections: Set<Int64>, origSelections: Set<Int64>) {
+        var set: Set<Int64> = []
+
+        if (applyToAllAccounts) {
+            for account in DBAccount.instance.getAll() {
+                set.insert(account.id)
+            }
+
+            for id in set {
+                if (DBAccount.instance.get(id: id)?.getOwner() == Int64(LPreferences.getUserIdNum())) {
+                    let account = DBAccount.instance.get(id: id)
+                    let selectedUsers = getAccountCurrentShares(account!)
+                    do_account_share_update(id, selections, selectedUsers)
+                }
+            }
+        } else {
+            do_account_share_update(accountId, selections, origSelections)
+        }
+    }
+
     @IBAction func shareButtonClicked(_ sender: UIButton) {
         if let cell = sender.superview?.superview as? AccountsTableViewCell {
             name = cell.nameLabel.text!
+            account = DBAccount.instance.get(name: cell.nameLabel.text!)!
         }
 
         presentShareView()
@@ -45,7 +148,9 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "ShareAccount") as! ShareAccountViewController
 
-        controller.accountName = name
+        controller.account = account
+        controller.origSelectedIds = getAccountCurrentShares(account)
+
         controller.viewHeight = 172 + CGFloat(DBAccount.instance.getAllShareUser().count * LTheme.Dimension.table_view_cell_height)
         controller.modalPresentationStyle = UIModalPresentationStyle.popover
         controller.popoverPresentationController?.delegate = self
@@ -57,7 +162,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         if let _popoverPresentationController = popoverPresentationController {
             // set the view from which to pop up
             _popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
-            _popoverPresentationController.sourceView = self.view;
+            _popoverPresentationController.sourceView = self.view
             _popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
             // present (id iPhone it is a modal automatic full screen)
 
@@ -90,8 +195,6 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         // #warning Incomplete implementation, return the number of rows
         return accounts.count
     }
-
-
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "AccountCell"
@@ -180,7 +283,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             popoverViewController.popoverPresentationController!.delegate = self
 
         default:
-            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
+            fatalError("Unexpected Segue Identifier \(String(describing: segue.identifier))")
 
 
         }
