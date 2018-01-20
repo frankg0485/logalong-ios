@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -764,7 +763,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Tgl-gP-egp"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="t7E-Ll-wPP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="506"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jjc-Rl-3fB">
@@ -1251,23 +1250,17 @@
         <scene sceneID="iXq-J6-Nvp">
             <objects>
                 <tableViewController storyboardIdentifier="testID" id="58n-ox-X6M" customClass="AddTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="MS3-l5-TwK">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="-1" sectionFooterHeight="-1" id="MS3-l5-TwK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <label key="tableHeaderView" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rgy-MU-fRh">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="YIc-3h-ekF" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <gestureRecognizers/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                            <connections>
-                                <outletCollection property="gestureRecognizers" destination="EZ5-LZ-Ncy" appends="YES" id="wrH-4J-HK1"/>
-                            </connections>
-                        </label>
-                        <textField key="tableFooterView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Additional Note Here" textAlignment="natural" minimumFontSize="17" id="zvf-zc-gRp">
-                            <rect key="frame" x="0.0" y="220" width="375" height="30"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </view>
+                        <textField key="tableFooterView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Additional Note Here" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="zvf-zc-gRp">
+                            <rect key="frame" x="0.0" y="226" width="375" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1277,7 +1270,7 @@
                             <tableViewSection id="1hy-Hs-YJy">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="wP7-mJ-e3p" style="IBUITableViewCellStyleDefault" id="TKC-bZ-1ir">
-                                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="50" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TKC-bZ-1ir" id="BdD-In-hxN">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -1293,13 +1286,13 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="fif-QF-Otk" kind="popoverPresentation" identifier="ChooseAccount" popoverAnchorView="TKC-bZ-1ir" id="Ix2-bt-EAD">
+                                            <segue destination="fif-QF-Otk" kind="popoverPresentation" identifier="ChooseAccount" popoverAnchorView="TKC-bZ-1ir" id="jAp-XZ-Nj4">
                                                 <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                             </segue>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="4nh-vD-VJb" style="IBUITableViewCellStyleDefault" id="dy9-hV-10k">
-                                        <rect key="frame" x="0.0" y="88" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="94" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dy9-hV-10k" id="iQh-gr-J0F">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -1321,7 +1314,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="HoC-zQ-kve" style="IBUITableViewCellStyleDefault" id="QJJ-vA-D3J">
-                                        <rect key="frame" x="0.0" y="132" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="138" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QJJ-vA-D3J" id="2Vp-LL-NiT">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -1343,7 +1336,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Sdp-KF-VDv" style="IBUITableViewCellStyleDefault" id="49v-rs-auF">
-                                        <rect key="frame" x="0.0" y="176" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="182" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="49v-rs-auF" id="gJY-dZ-TjO">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -1372,51 +1365,24 @@
                             <outlet property="delegate" destination="58n-ox-X6M" id="3Od-D7-0Ze"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="New Record" id="hqw-Ja-TNB">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="g9I-2g-6C9">
-                            <connections>
-                                <action selector="cancel:" destination="58n-ox-X6M" id="V3u-Wm-qyh"/>
-                            </connections>
-                        </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="save" id="GtD-UE-CSO">
-                                <connections>
-                                    <segue destination="ZTN-hO-UNK" kind="unwind" unwindAction="unwindToRecordListWithSender:" id="Trd-b9-rKT"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Item" id="2Cj-yD-f89">
-                                <connections>
-                                    <segue destination="zA7-tl-XaT" kind="popoverPresentation" identifier="ChangeDate" popoverAnchorBarButtonItem="2Cj-yD-f89" id="8jU-GF-tHZ">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="New Record" id="hqw-Ja-TNB"/>
                     <connections>
                         <outlet property="accountCell" destination="TKC-bZ-1ir" id="xIy-1Y-pgE"/>
                         <outlet property="accountLabel" destination="wP7-mJ-e3p" id="CBF-f1-2sc"/>
-                        <outlet property="amountLabel" destination="rgy-MU-fRh" id="BzA-id-kmT"/>
                         <outlet property="categoryCell" destination="dy9-hV-10k" id="wXK-PD-KAo"/>
                         <outlet property="categoryLabel" destination="4nh-vD-VJb" id="E6Z-ni-aXi"/>
-                        <outlet property="changeDateButton" destination="2Cj-yD-f89" id="Qf8-XR-agh"/>
+                        <outlet property="headerView" destination="YIc-3h-ekF" id="WgK-iK-VnH"/>
                         <outlet property="notesTextField" destination="zvf-zc-gRp" id="ulh-QQ-Gzk"/>
                         <outlet property="payeeCell" destination="QJJ-vA-D3J" id="bwq-IH-iid"/>
                         <outlet property="payeeLabel" destination="HoC-zQ-kve" id="iOw-IL-PvQ"/>
-                        <outlet property="saveButton" destination="GtD-UE-CSO" id="bxz-xt-CpW"/>
                         <outlet property="tagCell" destination="49v-rs-auF" id="DTD-N2-9Hb"/>
                         <outlet property="tagLabel" destination="Sdp-KF-VDv" id="OMN-t0-ycM"/>
+                        <segue destination="ZTN-hO-UNK" kind="unwind" identifier="unwindToRecordList" unwindAction="unwindToRecordListWithSender:" id="3WL-DK-HFi"/>
+                        <segue destination="nSG-e5-vYq" kind="modal" identifier="ChooseAmount" id="gfg-vK-Hkv"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rPl-CG-lRW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ZTN-hO-UNK" userLabel="Exit" sceneMemberID="exit"/>
-                <tapGestureRecognizer id="EZ5-LZ-Ncy">
-                    <connections>
-                        <segue destination="nSG-e5-vYq" kind="popoverPresentation" identifier="ChooseAmount" popoverAnchorView="rgy-MU-fRh" id="l5v-7v-yD6">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
-                    </connections>
-                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="945" y="438"/>
         </scene>
@@ -1429,21 +1395,20 @@
                         <viewControllerLayoutGuide type="bottom" id="X4d-u3-jor"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Kf6-vL-DiH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="550"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hjf-WB-WLU">
-                                <rect key="frame" x="7" y="104" width="336" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hjf-WB-WLU">
+                                <rect key="frame" x="21" y="5" width="333" height="41.5"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YH6-Yh-W4T">
-                                <rect key="frame" x="16" y="233" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YH6-Yh-W4T">
+                                <rect key="frame" x="21" y="98.5" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="4">
@@ -1454,15 +1419,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="6qB-QA-MVr"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VSr-0m-H7B">
-                                <rect key="frame" x="16" y="333" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VSr-0m-H7B">
+                                <rect key="frame" x="21" y="145" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="7">
@@ -1473,15 +1443,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="7eL-T1-VgO"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oSj-Ny-7qe">
-                                <rect key="frame" x="16" y="142" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oSj-Ny-7qe">
+                                <rect key="frame" x="21" y="51.5" width="79.5" height="42"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="1">
@@ -1492,15 +1467,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="S7P-qm-4EB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YxV-2B-Rbp">
-                                <rect key="frame" x="99" y="233" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YxV-2B-Rbp">
+                                <rect key="frame" x="105.5" y="98.5" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="5">
@@ -1511,15 +1491,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="7O7-PH-7GV"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vb1-9h-M6Q">
-                                <rect key="frame" x="99" y="333" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vb1-9h-M6Q">
+                                <rect key="frame" x="105.5" y="145" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="8">
@@ -1530,15 +1515,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="kJ6-gV-DAo"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DrS-hk-SGb">
-                                <rect key="frame" x="99" y="142" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DrS-hk-SGb">
+                                <rect key="frame" x="105.5" y="51.5" width="79.5" height="42"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="2">
@@ -1549,15 +1539,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="3DC-Im-fqn"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qiJ-qg-zpB">
-                                <rect key="frame" x="182" y="233" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qiJ-qg-zpB">
+                                <rect key="frame" x="190" y="98.5" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="6">
@@ -1568,15 +1563,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="geb-wG-qbv"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FHz-WI-v9F">
-                                <rect key="frame" x="182" y="333" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FHz-WI-v9F">
+                                <rect key="frame" x="190" y="145" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="9">
@@ -1587,15 +1587,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="tmJ-dm-5gE"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SOR-te-ryn">
-                                <rect key="frame" x="182" y="142" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SOR-te-ryn">
+                                <rect key="frame" x="190" y="51.5" width="79.5" height="42"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="3">
@@ -1606,23 +1611,34 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="3gU-mp-Mak"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ir4-nW-rMF">
-                                <rect key="frame" x="7" y="512" width="336" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ir4-nW-rMF">
+                                <rect key="frame" x="190" y="238" width="164" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal" title="OK"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="okButtonPressed:" destination="nSG-e5-vYq" eventType="touchUpInside" id="zku-4c-rHd"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Rm-yS-YLi">
-                                <rect key="frame" x="277" y="198" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.18584576429999999" blue="0.1980395865" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Rm-yS-YLi">
+                                <rect key="frame" x="274.5" y="51.5" width="79.5" height="42"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="+">
@@ -1633,15 +1649,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="hxC-Rx-CGw"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RY7-W1-YAl">
-                                <rect key="frame" x="277" y="256" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.18584576429999999" blue="0.1980395865" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RY7-W1-YAl">
+                                <rect key="frame" x="274.5" y="98.5" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="-">
@@ -1652,15 +1673,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="aR8-ke-5cG"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HEf-Er-QT8">
-                                <rect key="frame" x="277" y="372" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.18584576429999999" blue="0.1980395865" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HEf-Er-QT8">
+                                <rect key="frame" x="274.5" y="192" width="79.5" height="42"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="/">
@@ -1671,15 +1697,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="D8B-Qs-7fz"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hlE-dm-L8M">
-                                <rect key="frame" x="277" y="314" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.18584576429999999" blue="0.1980395865" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hlE-dm-L8M">
+                                <rect key="frame" x="274.5" y="145" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="*">
@@ -1690,14 +1721,19 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="csF-mD-i5p"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tgw-Lp-IAG">
-                                <rect key="frame" x="16" y="416" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tgw-Lp-IAG">
+                                <rect key="frame" x="105.5" y="191.5" width="79.5" height="42"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content=".">
@@ -1708,14 +1744,19 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="IM4-ND-PKL"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CtU-Ey-6Ns">
-                                <rect key="frame" x="277" y="142" width="50" height="48"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CtU-Ey-6Ns">
+                                <rect key="frame" x="190" y="191" width="79.5" height="42"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="DEL">
@@ -1726,15 +1767,20 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="Gt2-50-JqR"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wfQ-lD-dOW">
-                                <rect key="frame" x="99" y="416" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wfQ-lD-dOW">
+                                <rect key="frame" x="21" y="191.5" width="79.5" height="42"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <rect key="contentStretch" x="0.29999999999999999" y="0.0" width="1" height="1"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="0">
@@ -1746,14 +1792,19 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="T8n-Dm-swd"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="69X-Dv-OCd">
-                                <rect key="frame" x="182" y="416" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.40000000600000002" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="69X-Dv-OCd">
+                                <rect key="frame" x="21" y="238.5" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="CLEAR">
@@ -1764,14 +1815,19 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="dAC-vk-DL2"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RYu-3x-get">
-                                <rect key="frame" x="261" y="438" width="82" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.60000002384185791" green="0.40000000596046448" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RYu-3x-get">
+                                <rect key="frame" x="105.5" y="238" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
                                         <fragment content="=">
@@ -1783,16 +1839,112 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="ADp-jg-s3d"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="FHz-WI-v9F" firstAttribute="baseline" secondItem="VSr-0m-H7B" secondAttribute="baseline" id="1Sh-sV-U7p"/>
+                            <constraint firstItem="6Rm-yS-YLi" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="24u-1e-0cl"/>
+                            <constraint firstItem="RYu-3x-get" firstAttribute="baseline" secondItem="69X-Dv-OCd" secondAttribute="baseline" id="2BU-Gy-BcX"/>
+                            <constraint firstItem="69X-Dv-OCd" firstAttribute="leading" secondItem="hjf-WB-WLU" secondAttribute="leading" id="2Bf-wc-Fc4"/>
+                            <constraint firstItem="RYu-3x-get" firstAttribute="leading" secondItem="69X-Dv-OCd" secondAttribute="trailing" constant="5" id="34Z-e6-UYf"/>
+                            <constraint firstItem="DrS-hk-SGb" firstAttribute="baseline" secondItem="oSj-Ny-7qe" secondAttribute="baseline" id="38v-sJ-PwH"/>
+                            <constraint firstItem="DrS-hk-SGb" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="4aP-dt-KHI"/>
+                            <constraint firstItem="HEf-Er-QT8" firstAttribute="baseline" secondItem="wfQ-lD-dOW" secondAttribute="baseline" id="4mr-XR-LPK"/>
+                            <constraint firstItem="Tgw-Lp-IAG" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="4ti-7i-KnN"/>
+                            <constraint firstItem="6Rm-yS-YLi" firstAttribute="leading" secondItem="SOR-te-ryn" secondAttribute="trailing" constant="5" id="5y9-tp-vtF"/>
+                            <constraint firstItem="HEf-Er-QT8" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="76e-fE-3UC"/>
+                            <constraint firstItem="YxV-2B-Rbp" firstAttribute="leading" secondItem="YH6-Yh-W4T" secondAttribute="trailing" constant="5" id="8TU-bO-5kk"/>
+                            <constraint firstItem="hlE-dm-L8M" firstAttribute="leading" secondItem="FHz-WI-v9F" secondAttribute="trailing" constant="5" id="9N8-en-mMR"/>
+                            <constraint firstItem="Vb1-9h-M6Q" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="9kG-36-0YR"/>
+                            <constraint firstItem="hlE-dm-L8M" firstAttribute="trailing" secondItem="hjf-WB-WLU" secondAttribute="trailing" id="AAu-xw-2pe"/>
+                            <constraint firstItem="Ir4-nW-rMF" firstAttribute="trailing" secondItem="hjf-WB-WLU" secondAttribute="trailing" id="ARh-5I-D18"/>
+                            <constraint firstItem="hjf-WB-WLU" firstAttribute="top" secondItem="AqK-QL-Wxk" secondAttribute="bottom" constant="5" id="BED-bX-ihm"/>
+                            <constraint firstItem="qiJ-qg-zpB" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="BYH-k7-PP1"/>
+                            <constraint firstItem="FHz-WI-v9F" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="CHs-Kr-WqP"/>
+                            <constraint firstItem="CtU-Ey-6Ns" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="CNn-du-33h"/>
+                            <constraint firstItem="VSr-0m-H7B" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="CaT-pg-Qke"/>
+                            <constraint firstItem="wfQ-lD-dOW" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="FC4-mV-cQ0"/>
+                            <constraint firstItem="RY7-W1-YAl" firstAttribute="leading" secondItem="qiJ-qg-zpB" secondAttribute="trailing" constant="5" id="FFV-af-WzQ"/>
+                            <constraint firstItem="Ir4-nW-rMF" firstAttribute="baseline" secondItem="69X-Dv-OCd" secondAttribute="baseline" id="FRD-Fa-XQn"/>
+                            <constraint firstItem="69X-Dv-OCd" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="FaN-3T-IG8"/>
+                            <constraint firstItem="Vb1-9h-M6Q" firstAttribute="leading" secondItem="VSr-0m-H7B" secondAttribute="trailing" constant="5" id="G1A-co-hon"/>
+                            <constraint firstItem="YH6-Yh-W4T" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="GHO-Bz-xCc"/>
+                            <constraint firstItem="Tgw-Lp-IAG" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="H98-um-8yR"/>
+                            <constraint firstItem="oSj-Ny-7qe" firstAttribute="top" secondItem="hjf-WB-WLU" secondAttribute="bottom" constant="5" id="HgY-lt-hZi"/>
+                            <constraint firstItem="YxV-2B-Rbp" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="HmO-DK-J0d"/>
+                            <constraint firstItem="6Rm-yS-YLi" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="ICv-3E-gIi"/>
+                            <constraint firstItem="DrS-hk-SGb" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="Iix-rK-V54"/>
+                            <constraint firstItem="YxV-2B-Rbp" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="JBf-jl-TFF"/>
+                            <constraint firstItem="oSj-Ny-7qe" firstAttribute="top" secondItem="hjf-WB-WLU" secondAttribute="bottom" constant="5" id="MEe-Wh-ZRP"/>
+                            <constraint firstItem="RYu-3x-get" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="MsT-lK-NnW"/>
+                            <constraint firstItem="oSj-Ny-7qe" firstAttribute="leading" secondItem="hjf-WB-WLU" secondAttribute="leading" id="MxG-xc-efh"/>
+                            <constraint firstItem="RY7-W1-YAl" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="Ofo-qu-oaG"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hjf-WB-WLU" secondAttribute="trailing" constant="5" id="QB8-gz-7NR"/>
+                            <constraint firstItem="hlE-dm-L8M" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="QOb-ze-y0M"/>
+                            <constraint firstItem="YH6-Yh-W4T" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="Qkm-9d-Mgh"/>
+                            <constraint firstItem="Vb1-9h-M6Q" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="Qpe-Sm-MsD"/>
+                            <constraint firstItem="FHz-WI-v9F" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="R5F-zo-swo"/>
+                            <constraint firstItem="hjf-WB-WLU" firstAttribute="leading" secondItem="Kf6-vL-DiH" secondAttribute="leadingMargin" constant="5" id="RSq-lw-f2a"/>
+                            <constraint firstItem="CtU-Ey-6Ns" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="Ru4-nw-e4M"/>
+                            <constraint firstItem="SOR-te-ryn" firstAttribute="leading" secondItem="DrS-hk-SGb" secondAttribute="trailing" constant="5" id="S7S-TS-Vas"/>
+                            <constraint firstItem="RYu-3x-get" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="SY1-2r-A2R"/>
+                            <constraint firstItem="VSr-0m-H7B" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="SiZ-6O-TEa"/>
+                            <constraint firstItem="YH6-Yh-W4T" firstAttribute="top" secondItem="oSj-Ny-7qe" secondAttribute="bottom" constant="5" id="Sm5-0g-7i4"/>
+                            <constraint firstItem="wfQ-lD-dOW" firstAttribute="top" secondItem="VSr-0m-H7B" secondAttribute="bottom" constant="5" id="TnE-6w-Blr"/>
+                            <constraint firstItem="qiJ-qg-zpB" firstAttribute="leading" secondItem="YxV-2B-Rbp" secondAttribute="trailing" constant="5" id="Uue-3X-hse"/>
+                            <constraint firstItem="YH6-Yh-W4T" firstAttribute="leading" secondItem="hjf-WB-WLU" secondAttribute="leading" id="Vwm-Fh-qaQ"/>
+                            <constraint firstItem="69X-Dv-OCd" firstAttribute="top" secondItem="wfQ-lD-dOW" secondAttribute="bottom" constant="5" id="WAy-wV-GR2"/>
+                            <constraint firstItem="RY7-W1-YAl" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="WXB-0H-FZd"/>
+                            <constraint firstItem="RY7-W1-YAl" firstAttribute="baseline" secondItem="YH6-Yh-W4T" secondAttribute="baseline" id="Wag-eg-nOg"/>
+                            <constraint firstItem="Ir4-nW-rMF" firstAttribute="leading" secondItem="RYu-3x-get" secondAttribute="trailing" constant="5" id="Wff-Mx-Wzv"/>
+                            <constraint firstItem="SOR-te-ryn" firstAttribute="baseline" secondItem="oSj-Ny-7qe" secondAttribute="baseline" id="YSq-4g-6Ff"/>
+                            <constraint firstItem="YxV-2B-Rbp" firstAttribute="baseline" secondItem="YH6-Yh-W4T" secondAttribute="baseline" id="YcL-Nv-qkB"/>
+                            <constraint firstItem="HEf-Er-QT8" firstAttribute="trailing" secondItem="hjf-WB-WLU" secondAttribute="trailing" id="Zub-dg-69h"/>
+                            <constraint firstItem="X4d-u3-jor" firstAttribute="top" secondItem="69X-Dv-OCd" secondAttribute="bottom" constant="20" id="b3w-Qo-ecR"/>
+                            <constraint firstItem="qiJ-qg-zpB" firstAttribute="baseline" secondItem="YH6-Yh-W4T" secondAttribute="baseline" id="b92-x5-hSf"/>
+                            <constraint firstItem="69X-Dv-OCd" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="b9J-jC-zL7"/>
+                            <constraint firstItem="VSr-0m-H7B" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="cff-EP-e1x"/>
+                            <constraint firstItem="Tgw-Lp-IAG" firstAttribute="baseline" secondItem="wfQ-lD-dOW" secondAttribute="baseline" id="crG-Rn-rMb"/>
+                            <constraint firstItem="Ir4-nW-rMF" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="d6F-qd-ZJc"/>
+                            <constraint firstItem="RY7-W1-YAl" firstAttribute="trailing" secondItem="hjf-WB-WLU" secondAttribute="trailing" id="dR3-xb-X1E"/>
+                            <constraint firstItem="FHz-WI-v9F" firstAttribute="leading" secondItem="Vb1-9h-M6Q" secondAttribute="trailing" constant="5" id="eTg-zM-a5l"/>
+                            <constraint firstItem="VSr-0m-H7B" firstAttribute="leading" secondItem="hjf-WB-WLU" secondAttribute="leading" id="fHJ-NU-8IH"/>
+                            <constraint firstItem="Tgw-Lp-IAG" firstAttribute="leading" secondItem="wfQ-lD-dOW" secondAttribute="trailing" constant="5" id="fw7-iY-THJ"/>
+                            <constraint firstItem="Vb1-9h-M6Q" firstAttribute="baseline" secondItem="VSr-0m-H7B" secondAttribute="baseline" id="hSo-5u-Ila"/>
+                            <constraint firstItem="SOR-te-ryn" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="hsA-XZ-e7Y"/>
+                            <constraint firstItem="oSj-Ny-7qe" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="is0-sV-EuG"/>
+                            <constraint firstItem="CtU-Ey-6Ns" firstAttribute="baseline" secondItem="wfQ-lD-dOW" secondAttribute="baseline" id="jCO-8K-Gbq"/>
+                            <constraint firstItem="6Rm-yS-YLi" firstAttribute="baseline" secondItem="oSj-Ny-7qe" secondAttribute="baseline" id="jld-d9-E5S"/>
+                            <constraint firstItem="qiJ-qg-zpB" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="jtA-LZ-qJ4"/>
+                            <constraint firstItem="hlE-dm-L8M" firstAttribute="baseline" secondItem="VSr-0m-H7B" secondAttribute="baseline" id="jtv-5T-OP7"/>
+                            <constraint firstItem="oSj-Ny-7qe" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="mLi-l0-raP"/>
+                            <constraint firstItem="wfQ-lD-dOW" firstAttribute="leading" secondItem="hjf-WB-WLU" secondAttribute="leading" id="mvd-xI-FWv"/>
+                            <constraint firstItem="VSr-0m-H7B" firstAttribute="top" secondItem="YH6-Yh-W4T" secondAttribute="bottom" constant="5" id="nzM-69-d9r"/>
+                            <constraint firstItem="YH6-Yh-W4T" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="oki-75-I64"/>
+                            <constraint firstItem="CtU-Ey-6Ns" firstAttribute="leading" secondItem="Tgw-Lp-IAG" secondAttribute="trailing" constant="5" id="pkA-OV-7bb"/>
+                            <constraint firstItem="HEf-Er-QT8" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="q3A-lp-N0f"/>
+                            <constraint firstItem="wfQ-lD-dOW" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="qAf-5N-U2m"/>
+                            <constraint firstItem="SOR-te-ryn" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="slR-OW-8j7"/>
+                            <constraint firstItem="69X-Dv-OCd" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="tLW-YX-hO1"/>
+                            <constraint firstItem="6Rm-yS-YLi" firstAttribute="trailing" secondItem="hjf-WB-WLU" secondAttribute="trailing" id="tqq-nt-lcg"/>
+                            <constraint firstItem="DrS-hk-SGb" firstAttribute="leading" secondItem="oSj-Ny-7qe" secondAttribute="trailing" constant="5" id="vVL-qc-DRI"/>
+                            <constraint firstItem="HEf-Er-QT8" firstAttribute="leading" secondItem="CtU-Ey-6Ns" secondAttribute="trailing" constant="5" id="vZT-oL-pd8"/>
+                            <constraint firstItem="hlE-dm-L8M" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="xJp-Xu-P84"/>
+                            <constraint firstItem="wfQ-lD-dOW" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="zFs-mY-xSe"/>
+                        </constraints>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="375" height="550"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="375" height="320"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="375" height="550"/>
+                    <size key="freeformSize" width="375" height="300"/>
                     <connections>
                         <outlet property="addButton" destination="6Rm-yS-YLi" id="Mwb-re-dox"/>
                         <outlet property="amountTextField" destination="hjf-WB-WLU" id="G8b-dX-Xug"/>
@@ -1804,7 +1956,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qEm-aR-PSV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1854" y="385"/>
+            <point key="canvasLocation" x="1853.5999999999999" y="384.10794602698655"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BEj-6B-Mf1">
@@ -2304,9 +2456,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="QRv-EX-8KX"/>
+        <segue reference="jAp-XZ-Nj4"/>
         <segue reference="OGp-5E-e1j"/>
-        <segue reference="Jhj-Ka-e6L"/>
-        <segue reference="lrW-zI-bh1"/>
+        <segue reference="XC4-P6-fUh"/>
+        <segue reference="BLW-4O-PRr"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -387,9 +387,9 @@
 				01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */,
 				0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */,
 				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
-				01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */,
-				01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */,
 				CB15D4ED1FC3D7EE005D8B43 /* settings */,
+				01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */,
+				01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
