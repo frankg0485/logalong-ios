@@ -25,23 +25,30 @@ var payees: [String] = ["Costco", "Walmart", "Chipotle", "Panera", "Biaggis"]
 var tags: [String] = ["Market America", "2014 Summer", "2015 Summer", "2016 Summer", "2017 Summer"]
 class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, FViewControllerDelegate {
 
-
+    @IBOutlet weak var headerView: HorizontalLayout!
     @IBOutlet weak var accountCell: UITableViewCell!
     @IBOutlet weak var categoryCell: UITableViewCell!
     @IBOutlet weak var payeeCell: UITableViewCell!
     @IBOutlet weak var tagCell: UITableViewCell!
 
-    @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var accountLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var payeeLabel: UILabel!
     @IBOutlet weak var tagLabel: UILabel!
-
-    @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var notesTextField: UITextField!
-    @IBOutlet weak var changeDateButton: UIBarButtonItem!
 
-    var record: LTransaction?
+    // input-output
+    var record: LTransaction!
+    // input
+    var createRecord: Bool = false
+
+    var cancelButton: UIButton!
+    var saveButton: UIButton!
+    var deleteButton: UIButton!
+    var titleButton: UIButton!
+
+    var amountButton: UIButton!
+    var dateButton: UIButton!
 
     var typePassedBack: String = ""
 
@@ -54,15 +61,20 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if (type == addType.EXPENSE.rawValue) {
-            navigationController?.navigationBar.tintColor = UIColor.red
-            amountLabel.textColor = UIColor.red
-        } else if (type == addType.INCOME.rawValue) {
-            navigationController?.navigationBar.tintColor = UIColor.green
-            amountLabel.textColor = UIColor.green
-        } else if (type == addType.TRANSFER.rawValue) {
-            navigationController?.navigationBar.tintColor = UIColor.blue
-            amountLabel.isHidden = true
+        setupNavigationBarItems()
+        createHeader()
+
+        switch (record.type) {
+        case .EXPENSE:
+            navigationController?.navigationBar.barTintColor = LTheme.Color.base_red
+            amountButton!.setTitleColor(LTheme.Color.base_red, for: .normal)
+        case .INCOME:
+            navigationController?.navigationBar.barTintColor = LTheme.Color.base_green
+            amountButton!.setTitleColor(LTheme.Color.base_green, for: .normal)
+        default:
+            navigationController?.navigationBar.barTintColor = LTheme.Color.base_blue
+            amountButton!.setTitleColor(LTheme.Color.base_blue, for: .normal)
+
             payeeCell.isHidden = true
             tagCell.isHidden = true
             notesTextField.isHidden = true
@@ -78,43 +90,93 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             dayTimePeriodFormatter.dateStyle = .short
 
             let dateString = dayTimePeriodFormatter.string(from: date)
-
-            changeDateButton.title = dateString
+            dateButton!.setTitle(dateString, for: .normal)
         }
 
-        if let record = record {
-            amountLabel.text = String(record.amount)
-            accountLabel.text = DBAccount.instance.get(id: record.accountId)?.name
-            categoryLabel.text = DBCategory.instance.get(id: record.categoryId)?.name
+        amountButton.setTitle(String(record.amount), for: .normal)
+        amountButton.sizeToFit()
+        accountLabel.text = DBAccount.instance.get(id: record.accountId)?.name
+        categoryLabel.text = DBCategory.instance.get(id: record.categoryId)?.name
 
-            let date = Date(timeIntervalSince1970: TimeInterval(record.timestamp))
+        displayDateMs(record.timestamp)
 
-            let dayTimePeriodFormatter = DateFormatter()
-            dayTimePeriodFormatter.dateStyle = .short
-
-            let dateString = dayTimePeriodFormatter.string(from: date)
-
-            changeDateButton.title = dateString
-
-            accountId = record.accountId
-            categoryId = record.categoryId
-            /*            payeeLabel.text = record.payee ?? "Payee Not Specified"
-             tagLabel.text = record.tag ?? "Tag Not Specified"
-             notesTextField.text = record.notes*/
-        }
+        accountId = record.accountId
+        categoryId = record.categoryId
+        /*            payeeLabel.text = record.payee ?? "Payee Not Specified"
+         tagLabel.text = record.tag ?? "Tag Not Specified"
+         notesTextField.text = record.notes*/
 
         updateSaveButtonState()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    private func setupNavigationBarItems() {
+        let BTN_W: CGFloat = 25
+        let BTN_H: CGFloat = 25
+
+        titleButton = UIButton(type: .custom)
+        //titleButton.addTarget(self, action: #selector(self.onTitleClick), for: .touchUpInside)
+        titleButton.setSize(w: 80, h: 30)
+        titleButton.setTitle("Expense", for: .normal)
+        navigationItem.titleView = titleButton
+
+        cancelButton = UIButton(type: .system)
+        cancelButton.addTarget(self, action: #selector(self.onCancelClick), for: .touchUpInside)
+        cancelButton.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
+        cancelButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20)
+        cancelButton.setSize(w: BTN_W + 20, h: BTN_H)
+
+        saveButton = UIButton(type: .system)
+        saveButton.addTarget(self, action: #selector(self.onSaveClick), for: .touchUpInside)
+        saveButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
+        saveButton.imageEdgeInsets = UIEdgeInsetsMake(0, 40, 0, 0)
+        saveButton.setSize(w: BTN_W + 40, h: BTN_H)
+
+        /*
+         deleteButton = UIButton(type: .system)
+         deleteButton.addTarget(self, action: #selector(self.onDeleteClick), for: .touchUpInside)
+         deleteButton.setImage(#imageLiteral(resourceName: "ic_action_discard").withRenderingMode(.alwaysOriginal), for: .normal)
+         deleteButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 15)
+         deleteButton.setSize(w: BTN_W + 20, h: BTN_H)
+         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: cancelButton),
+         UIBarButtonItem(customView: deleteButton)]
+         */
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: saveButton)
+
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barStyle = .black
+    }
+
+    private func createHeader()
+    {
+        let BTN_H: CGFloat = 50
+        let fontsize: CGFloat = 20
+
+        //headerView.backgroundColor = LTheme.Color.header_color
+
+        amountButton = UIButton(type: .custom)
+        //amountButton.translatesAutoresizingMaskIntoConstraints = false
+        amountButton.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
+        amountButton.titleLabel?.font = amountButton!.titleLabel?.font.withSize(fontsize)
+        amountButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: fontsize)
+        amountButton.contentHorizontalAlignment = .left
+        amountButton.addTarget(self, action: #selector(self.onAmountClick), for: .touchUpInside)
+        amountButton.frame = CGRect(x: 0, y: 0, width: 80, height: BTN_H)
+
+        dateButton = UIButton(type: .custom)
+        dateButton.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
+        dateButton.titleLabel?.font = dateButton!.titleLabel?.font.withSize(fontsize - 2)
+        dateButton.setTitleColor(UIColor.black, for: .normal)
+        //dateButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: fontsize - 2)
+        dateButton.contentHorizontalAlignment = .right
+        dateButton.addTarget(self, action: #selector(self.onDateClick), for: .touchUpInside)
+        dateButton.frame = CGRect(x: 0, y: 0, width: 80, height: BTN_H)
+
+        let spacer = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: 25))
+
+        headerView.addSubview(amountButton)
+        headerView.addSubview(spacer)
+        headerView.addSubview(dateButton)
     }
 
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
@@ -128,8 +190,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     func passNumberBack(_ caller: UIViewController, type: TypePassed) {
         if let _ = caller as? SelectAmountViewController {
-            amountLabel.text = String(format: "%.2lf", type.double)
-
+            record.amount = type.double
+            amountButton.setTitle(String(format: "%.2lf", type.double), for: .normal)
+            amountButton.sizeToFit()
         } else if let _ = caller as? SelectTableViewController {
 
             if (self.type == addType.TRANSFER.rawValue) {
@@ -161,27 +224,11 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
             formatter.dateStyle = .short
 
-            changeDateButton.title = formatter.string(from: date)
+            dateButton!.setTitle(formatter.string(from: date), for: .normal)
         }
 
         updateSaveButtonState()
     }
-
-    @IBAction func cancel(_ sender: UIBarButtonItem) {
-
-        if presentingViewController is NewAdditionTableViewController {
-            dismiss(animated: true, completion: nil)
-            print("In addrecord mode")
-        }
-        else if let owningNavigationController = navigationController {
-            owningNavigationController.popViewController(animated: true)
-            print (" in editing mode")
-        }
-        else {
-            fatalError("The RecordViewController is not inside a navigation controller.")
-        }
-    }
-
 
     // MARK: - Table view data source
 
@@ -197,77 +244,24 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
         }
     }
-    /*    override func numberOfSections(in tableView: UITableView) -> Int {
-     // #warning Incomplete implementation, return the number of sections
-     return 0
-     }
-
-     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-     // #warning Incomplete implementation, return the number of rows
-     return 0
-     }
-     */
-    /*
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-     // Configure the cell...
-
-     return cell
-     }
-     */
-
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-     }
-     */
-
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-
 
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "ChooseAccount")
+            || (segue.identifier == "ChooseAmount")
             || (segue.identifier == "ChooseCategory")
             || (segue.identifier == "ChoosePayee")
             || (segue.identifier == "ChooseTag")
-            || (segue.identifier == "ChooseAmount")
             || (segue.identifier == "ChangeDate") {
 
             let popoverViewController = segue.destination
 
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-
+            popoverViewController.popoverPresentationController?.sourceRect =
+                CGRect(x: self.view.bounds.midX - 6, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
             popoverViewController.popoverPresentationController!.delegate = self
         }
 
@@ -288,49 +282,59 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }  else if let secondViewController = segue.destination as? SelectTagTableViewController {
             secondViewController.delegate = self
         }  else if let secondViewController = segue.destination as? SelectAmountViewController {
+            secondViewController.popoverPresentationController?.sourceView = headerView
             secondViewController.delegate = self
+            secondViewController.initValue = record.amount
+            var color = LTheme.Color.base_blue
+            switch (record.type) {
+            case .EXPENSE:
+                color = LTheme.Color.base_red
+            case .INCOME:
+                color = LTheme.Color.base_green
+            default:
+                break;
+            }
+            secondViewController.color = color
         }  else if let secondViewController = segue.destination as? DatePickerViewController {
             secondViewController.delegate = self
         } else {
-            guard let button = sender as? UIBarButtonItem, button === saveButton else {
-                LLog.d("\(self)", "The save button was not pressed, cancelling")
-                return
-            }
-
-            var recordType: TransactionType
-            switch (type) {
-            case addType.EXPENSE.rawValue:
-                recordType = TransactionType.EXPENSE
-            case addType.INCOME.rawValue:
-                recordType = TransactionType.INCOME
-            default:
-                recordType = TransactionType.TRANSFER
-            }
-
-            if (type == addType.TRANSFER.rawValue) {
-
-            } else {
-                let amount = Double(amountLabel.text!)!
-
-                let formatter = DateFormatter()
-
-                formatter.dateStyle = .short
-
-                let time = formatter.date(from: changeDateButton.title!)?.timeIntervalSince1970.rounded()
-                let timeMs = time! * 1000
-                /*let payee = payeeLabel.text
-                 let tag = tagLabel.text
-                 let notes = notesTextField.text*/
-
-                //TODO: handle type, tag, vendor etc
-                record = LTransaction(accountId: accountId, accountId2: 0,
-                                      amount: amount, type: recordType,
-                                      categoryId: categoryId, tagId: 0, vendorId: 0, timestamp: Int64(timeMs))
-            }
-
-            presentingViewController?.dismiss(animated: true, completion: nil)
+            LLog.d("\(self)", "unwinding")
+            //presentingViewController?.dismiss(animated: true, completion: nil)
         }
     }
+
+    @objc func onAmountClick() {
+        performSegue(withIdentifier: "ChooseAmount", sender: self)
+    }
+
+    @objc func onDateClick() {
+        LLog.d("\(self)", "date click")
+    }
+
+    @objc func onSaveClick() {
+        //presentingViewController?.dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: "unwindToRecordList", sender: self)
+    }
+
+    @objc func onCancelClick() {
+        navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
+
+        if presentingViewController is NewAdditionTableViewController {
+            dismiss(animated: true, completion: nil)
+        }
+        else if let owningNavigationController = navigationController {
+            owningNavigationController.popViewController(animated: true)
+        }
+        else {
+            fatalError("The RecordViewController is not inside a navigation controller.")
+        }
+    }
+
+    /*
+     @objc func onDeleteClick() {
+     LLog.d("\(self)", "delete click")
+     }
+     */
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
@@ -344,11 +348,21 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 saveButton.isEnabled = true
             }
         } else {
-            if (amountLabel.text == "Label") || (amountLabel.text == "0.0") || (accountLabel.text == "Choose Account") {
-                saveButton.isEnabled = false
-            } else {
-                saveButton.isEnabled = true
-            }
+            //if (amountButton!.text == "Label") || (amountButton!.text == "0.0") || (accountLabel.text == "Choose Account") {
+            //    saveButton.isEnabled = false
+            //} else {
+            saveButton.isEnabled = true
+            //}
         }
+    }
+
+    private func displayDateMs(_ ms: Int64) {
+        let date = Date(milliseconds: ms)
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateStyle = .medium
+        let dateString = dayTimePeriodFormatter.string(from: date)
+        dateButton.setTitle(dateString, for: .normal)
+        //dateButton.titleLabel?.sizeToFit()
+        dateButton.sizeToFit()
     }
 }

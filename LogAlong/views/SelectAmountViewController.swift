@@ -26,6 +26,9 @@ class SelectAmountViewController: UIViewController {
         case COLLECT_SECOND_NUMBER
     }
 
+    var initValue: Double = 0
+    var color: UIColor!
+
     var state = CalculatorState.COLLECT_FIRST_NUMBER
 
     var newText: String = ""
@@ -38,13 +41,15 @@ class SelectAmountViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        amountTextField.text = "0"
+        amountTextField.text = String(initValue)
         // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(_ animated: Bool) {
+        view.superview?.layer.borderColor = color.cgColor
+        view.superview?.layer.borderWidth = 1
+        amountTextField.textColor = color
+        super.viewWillAppear(animated)
     }
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
@@ -256,13 +261,4 @@ class SelectAmountViewController: UIViewController {
         }
 
     }
-    /*
-     // MARK: - Navigation
-
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
 }

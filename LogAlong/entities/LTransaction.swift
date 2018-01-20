@@ -78,4 +78,15 @@ class LTransaction : LDbBase {
         rid |= UInt64(crc32(0, data: Data(LA.toByteArray(Date().currentTimeMillis)))) << 32
         return Int64(bitPattern: rid)
     }
+
+    static func getTypeString(_ type: TransactionType) -> String {
+        switch (type) {
+        case .EXPENSE:
+            return NSLocalizedString("Expense", comment: "")
+        case .INCOME:
+            return NSLocalizedString("Income", comment: "")
+        default:
+            return NSLocalizedString("Transfer", comment: "")
+        }
+    }
 }

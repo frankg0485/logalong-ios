@@ -149,32 +149,6 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         return (hView, labelHeader, labelBalance, labelIncome, labelExpense)
     }
 
-    @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? AddTableViewController {
-            if let record = sourceViewController.record {
-
-                if let _ = tableView.indexPathForSelectedRow {
-                    // Update an existing record.
-                    //records[selectedIndexPath.row] = record
-                    DBTransaction.instance.update(record)
-
-                    //tableView.reloadRows(at: [selectedIndexPath], with: .none)
-                } else {
-                    // Add a new record.
-                    //let newIndexPath = IndexPath(row: records.count, section: 0)
-
-                    //records.append(record)
-                    //tableView.insertRows(at: [newIndexPath], with: .automatic)
-                    var mRecord = record
-                    DBTransaction.instance.add(&mRecord)
-                    _ = navigationController?.popViewController(animated: true)
-                }
-
-                refresh()
-            }
-        }
-    }
-
     // MARK: - Table view data source
     func numberOfSections(in tableView: UITableView) -> Int {
         if let loader = loader {
@@ -284,7 +258,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            DBTransaction.instance.remove(id: loader!.getRecord(section: indexPath.section, row: indexPath.row).id)
+            _ = DBTransaction.instance.remove(id: loader!.getRecord(section: indexPath.section, row: indexPath.row).id)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -296,6 +270,27 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     // MARK: - Navigation
+    @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? AddTableViewController {
+            if let record = sourceViewController.record {
+                if (sourceViewController.createRecord) {
+                    // Add a new record.
+                    //let newIndexPath = IndexPath(row: records.count, section: 0)
+
+                    //records.append(record)
+                    //tableView.insertRows(at: [newIndexPath], with: .automatic)
+                    var mRecord = record
+                    _ = DBTransaction.instance.add(&mRecord)
+                    _ = navigationController?.popViewController(animated: true)
+                } else {
+                    _ = DBTransaction.instance.update(record)
+                }
+
+                navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
+                refresh()
+            }
+        }
+    }
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
