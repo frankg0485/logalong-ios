@@ -1086,42 +1086,55 @@
                         <viewControllerLayoutGuide type="bottom" id="HfB-vU-epJ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Cac-fu-mW4">
-                        <rect key="frame" x="0.0" y="0.0" width="350" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="k7i-M1-ckE">
-                                <rect key="frame" x="20" y="28" width="314" height="197"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="k7i-M1-ckE">
+                                <rect key="frame" x="21" y="5" width="288" height="245"/>
                                 <date key="date" timeIntervalSinceReferenceDate="528256066.51876301">
                                     <!--2017-09-28 01:47:46 +0000-->
                                 </date>
                             </datePicker>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jze-UJ-gQw">
-                                <rect key="frame" x="20" y="233" width="314" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jze-UJ-gQw">
+                                <rect key="frame" x="162.5" y="255" width="136.5" height="30"/>
                                 <state key="normal" title="OK"/>
                                 <connections>
                                     <action selector="okButtonPressed:" destination="zA7-tl-XaT" eventType="touchUpInside" id="HN3-7A-7bY"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h9h-tm-SfZ">
-                                <rect key="frame" x="20" y="262" width="314" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h9h-tm-SfZ">
+                                <rect key="frame" x="21" y="255" width="136.5" height="30"/>
                                 <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancelButtonPressed:" destination="zA7-tl-XaT" eventType="touchUpInside" id="4fE-R8-NEi"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="HfB-vU-epJ" firstAttribute="top" secondItem="h9h-tm-SfZ" secondAttribute="bottom" constant="15" id="Efi-Sv-IWg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Jze-UJ-gQw" secondAttribute="trailing" constant="5" id="PBy-O9-DkG"/>
+                            <constraint firstItem="Jze-UJ-gQw" firstAttribute="baseline" secondItem="h9h-tm-SfZ" secondAttribute="baseline" id="RXO-lL-gaJ"/>
+                            <constraint firstItem="Jze-UJ-gQw" firstAttribute="width" secondItem="h9h-tm-SfZ" secondAttribute="width" id="RdB-xl-KdL"/>
+                            <constraint firstItem="Jze-UJ-gQw" firstAttribute="leading" secondItem="h9h-tm-SfZ" secondAttribute="trailing" constant="5" id="Y3I-ZF-vp5"/>
+                            <constraint firstItem="k7i-M1-ckE" firstAttribute="leading" secondItem="Cac-fu-mW4" secondAttribute="leadingMargin" constant="5" id="cKg-Ev-MjV"/>
+                            <constraint firstItem="h9h-tm-SfZ" firstAttribute="top" secondItem="k7i-M1-ckE" secondAttribute="bottom" constant="5" id="cZj-40-hbg"/>
+                            <constraint firstItem="h9h-tm-SfZ" firstAttribute="leading" secondItem="Cac-fu-mW4" secondAttribute="leadingMargin" constant="5" id="cnq-dq-ttj"/>
+                            <constraint firstItem="k7i-M1-ckE" firstAttribute="trailing" secondItem="Cac-fu-mW4" secondAttribute="trailingMargin" constant="5" id="isE-KJ-y40"/>
+                            <constraint firstItem="k7i-M1-ckE" firstAttribute="top" secondItem="NS5-C2-jMV" secondAttribute="bottom" constant="5" id="nC2-K4-aHp"/>
+                            <constraint firstItem="Jze-UJ-gQw" firstAttribute="height" secondItem="h9h-tm-SfZ" secondAttribute="height" id="s0D-gG-Gls"/>
+                        </constraints>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="350" height="350"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="320" height="240"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="350" height="300"/>
+                    <size key="freeformSize" width="320" height="300"/>
                     <connections>
                         <outlet property="datePicker" destination="k7i-M1-ckE" id="A7y-9c-5Dn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bkj-oG-U2R" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2531.1999999999998" y="805.99700149925047"/>
+            <point key="canvasLocation" x="1780.8" y="602.69865067466276"/>
         </scene>
         <!--Select Payee Table View Controller-->
         <scene sceneID="Gqj-os-rtZ">
@@ -1259,7 +1272,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
-                        <textField key="tableFooterView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Additional Note Here" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="zvf-zc-gRp">
+                        <textField key="tableFooterView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Additional note here" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="zvf-zc-gRp">
                             <rect key="frame" x="0.0" y="226" width="375" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <nil key="textColor"/>
@@ -1276,7 +1289,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Choose Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wP7-mJ-e3p">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Choose account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wP7-mJ-e3p">
                                                     <rect key="frame" x="16" y="0.0" width="324" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1298,7 +1311,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Category Not Specified" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4nh-vD-VJb">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Category not specified" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4nh-vD-VJb">
                                                     <rect key="frame" x="16" y="0.0" width="324" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1320,7 +1333,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Payee Not Specified" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HoC-zQ-kve">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Payee not specified" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HoC-zQ-kve">
                                                     <rect key="frame" x="16" y="0.0" width="324" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1342,7 +1355,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Tag Not Specified" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Sdp-KF-VDv">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Tag not specified" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Sdp-KF-VDv">
                                                     <rect key="frame" x="16" y="0.0" width="324" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1379,6 +1392,7 @@
                         <outlet property="tagLabel" destination="Sdp-KF-VDv" id="OMN-t0-ycM"/>
                         <segue destination="ZTN-hO-UNK" kind="unwind" identifier="unwindToRecordList" unwindAction="unwindToRecordListWithSender:" id="3WL-DK-HFi"/>
                         <segue destination="nSG-e5-vYq" kind="modal" identifier="ChooseAmount" id="gfg-vK-Hkv"/>
+                        <segue destination="zA7-tl-XaT" kind="presentation" identifier="ChooseDate" id="Ygf-sO-lgk"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rPl-CG-lRW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1956,7 +1970,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qEm-aR-PSV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1853.5999999999999" y="384.10794602698655"/>
+            <point key="canvasLocation" x="1801" y="273"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="BEj-6B-Mf1">

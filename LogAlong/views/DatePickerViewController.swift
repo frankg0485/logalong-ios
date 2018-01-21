@@ -15,32 +15,30 @@ class DatePickerViewController: UIViewController {
 
     @IBOutlet weak var datePicker: UIDatePicker!
 
+    var initValue: Int64 = 0
+    var color: UIColor!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         datePicker.datePickerMode = .date
-
-        // Do any additional setup after loading the view.
+        datePicker.date = Date(milliseconds: initValue)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        view.superview?.layer.borderColor = color.cgColor
+        view.superview?.layer.borderWidth = 1
+        super.viewWillAppear(animated)
+    }
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
-
-        type.double = datePicker.date.timeIntervalSince1970.rounded()
-
+        type.int64 = datePicker.date.currentTimeMillis
         delegate?.passNumberBack(self, type: type)
 
         dismiss(animated: true, completion: nil)
     }
 
-    /*
-     // MARK: - Navigation
-
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-
+    @IBAction func cancelButtonPressed(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
 }

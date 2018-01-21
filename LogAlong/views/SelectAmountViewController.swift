@@ -84,12 +84,9 @@ class SelectAmountViewController: UIViewController {
                 if (lastChar == ".") {
                     firstDecimalButtonClicked = false
                     decimalPointButton.isEnabled = true
-
                 }
 
                 firstNumberText = deleteChar(inputStr: firstNumberText)
-
-                break
 
             case "CLEAR":
                 amountTextField.text = ""
@@ -99,7 +96,6 @@ class SelectAmountViewController: UIViewController {
                 decimalPointButton.isEnabled = true
 
                 disableOrEnableOperationButtons(state: false)
-                break
 
             case "+", "-", "*", "/":
                 operation = newText
@@ -108,7 +104,6 @@ class SelectAmountViewController: UIViewController {
                 disableOrEnableOperationButtons(state: false)
                 decimalPointButton.isEnabled = true
                 state = .COLLECT_SECOND_NUMBER
-                break
 
             case "=":
                 return
@@ -125,16 +120,11 @@ class SelectAmountViewController: UIViewController {
                 }
 
                 amountTextField.text = firstNumberText
-                break
             }
-
-
-            break
 
         case .COLLECT_SECOND_NUMBER:
             switch newText {
             case "DEL":
-
                 let lastChar = amountTextField.text?.characters.last
 
                 amountTextField.text = deleteChar(inputStr: amountTextField.text!)
@@ -150,11 +140,7 @@ class SelectAmountViewController: UIViewController {
                     state = .COLLECT_FIRST_NUMBER
                     return
                 }
-
-
                 secondNumberText = deleteChar(inputStr: secondNumberText)
-
-                break
 
             case "CLEAR":
                 amountTextField.text = ""
@@ -178,7 +164,6 @@ class SelectAmountViewController: UIViewController {
                 amountTextField.text = String(result) + newText
 
                 disableOrEnableOperationButtons(state: false)
-                break
 
             case "=":
                 let result = calculate()
@@ -191,7 +176,7 @@ class SelectAmountViewController: UIViewController {
                 decimalPointButton.isEnabled = false
 
                 state = .COLLECT_FIRST_NUMBER
-                break
+
             default:
                 secondNumberText = addDigitToNumber(oldNumberText: secondNumberText)
 
@@ -204,17 +189,8 @@ class SelectAmountViewController: UIViewController {
                 }
 
                 amountTextField.text = amountTextField.text! + newText
-
-                break
             }
-
-
-            break
-
-
-
         }
-
     }
 
     func addDigitToNumber(oldNumberText: String) -> String {

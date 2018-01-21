@@ -37,6 +37,13 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     @IBOutlet weak var tagLabel: UILabel!
     @IBOutlet weak var notesTextField: UITextField!
 
+    let accountDefaultDesc = NSLocalizedString("Choose account", comment: "")
+    let categoryDefaultDesc = NSLocalizedString("Category not specified", comment: "")
+    let payerDefaultDesc = NSLocalizedString("Payer not specified", comment: "")
+    let payeeDefaultDesc = NSLocalizedString("Payee not specified", comment: "")
+    let tagDefaultDesc = NSLocalizedString("Tag not specified", comment: "")
+    let noteDefaultDesc = NSLocalizedString("Additional note here", comment: "")
+
     // input-output
     var record: LTransaction!
     // input
@@ -77,9 +84,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
             payeeCell.isHidden = true
             tagCell.isHidden = true
-            notesTextField.isHidden = true
-            categoryLabel.text = "Choose Account"
+            categoryLabel.text = accountDefaultDesc
         }
+        titleButton.setTitle(LTransaction.getTypeString(record.type), for: .normal)
 
         notesTextField.delegate = self
 
@@ -95,16 +102,63 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
         amountButton.setTitle(String(record.amount), for: .normal)
         amountButton.sizeToFit()
-        accountLabel.text = DBAccount.instance.get(id: record.accountId)?.name
-        categoryLabel.text = DBCategory.instance.get(id: record.categoryId)?.name
+
+        if (record.type == .EXPENSE || record.type == .INCOME) {
+            if let catName = DBCategory.instance.get(id: record.categoryId)?.name {
+                categoryLabel.text = (!catName.isEmpty) ? catName : categoryDefaultDesc
+            } else {
+                categoryLabel.text = categoryDefaultDesc
+            }
+            if let tagName = DBTag.instance.get(id: record.tagId)?.name {
+                tagLabel.text = (!tagName.isEmpty) ? tagName : tagDefaultDesc
+            } else {
+                tagLabel.text = tagDefaultDesc
+            }
+
+            var vendName = ""
+            if let vname = DBVendor.instance.get(id: record.vendorId)?.name {
+                vendName = vname
+            }
+            if (record.type == .INCOME) {
+                payeeLabel.text = (!vendName.isEmpty) ? vendName : payerDefaultDesc
+            } else {
+                payeeLabel.text = (!vendName.isEmpty) ? vendName : payeeDefaultDesc
+            }
+
+            if let acntName = DBAccount.instance.get(id: record.accountId)?.name {
+                accountLabel.text = acntName
+            } else {
+                accountLabel.text = accountDefaultDesc
+            }
+        } else  {
+            var acntName1 = accountDefaultDesc
+            var acntName2 = accountDefaultDesc
+
+            if (record.type == .TRANSFER) {
+                if let acntName = DBAccount.instance.get(id: record.accountId)?.name {
+                    acntName1 = acntName
+                }
+                if let acntName = DBAccount.instance.get(id: record.accountId2)?.name {
+                    acntName2 = acntName
+                }
+            } else {
+                if let acntName = DBAccount.instance.get(id: record.accountId)?.name {
+                    acntName2 = acntName
+                }
+                if let acntName = DBAccount.instance.get(id: record.accountId2)?.name {
+                    acntName1 = acntName
+                }
+            }
+
+            accountLabel.text = acntName1
+            categoryLabel.text = acntName2
+        }
+        notesTextField.text = record.note
 
         displayDateMs(record.timestamp)
 
         accountId = record.accountId
         categoryId = record.categoryId
-        /*            payeeLabel.text = record.payee ?? "Payee Not Specified"
-         tagLabel.text = record.tag ?? "Tag Not Specified"
-         notesTextField.text = record.notes*/
 
         updateSaveButtonState()
     }
@@ -116,7 +170,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         titleButton = UIButton(type: .custom)
         //titleButton.addTarget(self, action: #selector(self.onTitleClick), for: .touchUpInside)
         titleButton.setSize(w: 80, h: 30)
-        titleButton.setTitle("Expense", for: .normal)
         navigationItem.titleView = titleButton
 
         cancelButton = UIButton(type: .system)
@@ -218,13 +271,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         } else if let _ = caller as? SelectTagTableViewController {
             tagLabel.text = tags[type.int]
         } else if let _ = caller as? DatePickerViewController {
-
-            let date = Date(timeIntervalSince1970: type.double)
-            let formatter = DateFormatter()
-
-            formatter.dateStyle = .short
-
-            dateButton!.setTitle(formatter.string(from: date), for: .normal)
+            displayDateMs(type.int64)
         }
 
         updateSaveButtonState()
@@ -254,15 +301,25 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             || (segue.identifier == "ChooseCategory")
             || (segue.identifier == "ChoosePayee")
             || (segue.identifier == "ChooseTag")
-            || (segue.identifier == "ChangeDate") {
+            || (segue.identifier == "ChooseDate") {
 
             let popoverViewController = segue.destination
 
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
             popoverViewController.popoverPresentationController?.sourceRect =
-                CGRect(x: self.view.bounds.midX - 6, y: self.view.bounds.midY, width: 0, height: 0)
+                CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
             popoverViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
             popoverViewController.popoverPresentationController!.delegate = self
+        }
+
+        var color = LTheme.Color.base_blue
+        switch (record.type) {
+        case .EXPENSE:
+            color = LTheme.Color.base_red
+        case .INCOME:
+            color = LTheme.Color.base_green
+        default:
+            break;
         }
 
         if let nextViewController = segue.destination as? UINavigationController {
@@ -285,18 +342,12 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             secondViewController.popoverPresentationController?.sourceView = headerView
             secondViewController.delegate = self
             secondViewController.initValue = record.amount
-            var color = LTheme.Color.base_blue
-            switch (record.type) {
-            case .EXPENSE:
-                color = LTheme.Color.base_red
-            case .INCOME:
-                color = LTheme.Color.base_green
-            default:
-                break;
-            }
             secondViewController.color = color
         }  else if let secondViewController = segue.destination as? DatePickerViewController {
+            secondViewController.popoverPresentationController?.sourceView = headerView
             secondViewController.delegate = self
+            secondViewController.initValue = record.timestamp
+            secondViewController.color = color
         } else {
             LLog.d("\(self)", "unwinding")
             //presentingViewController?.dismiss(animated: true, completion: nil)
@@ -308,7 +359,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     @objc func onDateClick() {
-        LLog.d("\(self)", "date click")
+        performSegue(withIdentifier: "ChooseDate", sender: self)
     }
 
     @objc func onSaveClick() {
