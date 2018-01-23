@@ -23,6 +23,7 @@ class LPreferences {
     static let userId = "userId"
     static let userName = "userName"
     static let userPassword = "userPassword"
+    static let shareAccept = "shareAccept"
 
     static func getRecordsSearchControls() -> LRecordSearch {
         return LRecordSearch(from: 0, to: 0)
@@ -127,4 +128,11 @@ class LPreferences {
         defaults.set(id, forKey: "\(userId).\(String(gid))")
     }
 
+    static func getShareAccept(_ uid: Int64) -> Int{
+        return defaults.integer(forKey: shareAccept + "." + String(uid))
+    }
+
+    static func setShareAccept(_ uid: Int64, _ acceptTimeMs: Int64) {
+        return defaults.set(acceptTimeMs, forKey: shareAccept + "." + String(uid))
+    }
 }

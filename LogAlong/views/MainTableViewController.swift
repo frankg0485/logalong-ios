@@ -34,6 +34,11 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
         LBroadcast.register(LBroadcast.ACTION_NETWORK_CONNECTED,
                             cb: #selector(self.networkConnected),
                             listener: self)
+        LBroadcast.register(LBroadcast.ACTION_UI_SHARE_ACCOUNT, cb: #selector(self.shareAccountRequest), listener: self)
+    }
+
+    @objc func shareAccountRequest(notification: Notification) -> Void {
+
     }
 
     @objc func networkConnected(notification: Notification) -> Void {

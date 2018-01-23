@@ -18,9 +18,9 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         super.viewDidLoad()
 
         navigationItem.leftBarButtonItem = editButtonItem
-
         accounts = DBAccount.instance.getAll()
 
+        LBroadcast.register(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, cb: #selector(self.uiUpdateAccount), listener: self)
         //        tableView.tableFooterView = UIView()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -34,9 +34,14 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         // Dispose of any resources that can be recreated.
     }
 
+    @objc func uiUpdateAccount(notification: Notification) -> Void {
+        accounts = DBAccount.instance.getAll()
+        tableView.reloadData()
+    }
+
     func unshareAllFromAccount(_ accountId: Int64) {
         var account = DBAccount.instance.get(id: accountId)!
-        account.removeAllShareUsers()
+        account.share = ""
         account.setOwner(Int64(LPreferences.getUserIdNum()))
         DBAccount.instance.update(account)
 
@@ -96,8 +101,8 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
     func getAccountCurrentShares(_ account: LAccount) -> Set<Int64> {
         var selectedUsers: Set<Int64> = []
-        if (!account.shareIds.isEmpty) {
-            for ii in account.shareIds {
+        if (!account.getShareIdsStates().shareIds.isEmpty) {
+            for ii in account.getShareIdsStates().shareIds {
                 if (ii == LPreferences.getUserIdNum()) {
                     continue
                 }
@@ -133,6 +138,9 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         } else {
             do_account_share_update(accountId, selections, origSelections)
         }
+
+        accounts = DBAccount.instance.getAll()
+        tableView.reloadData()
     }
 
     @IBAction func shareButtonClicked(_ sender: UIButton) {
@@ -151,10 +159,10 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         controller.account = account
         controller.origSelectedIds = getAccountCurrentShares(account)
 
-        controller.viewHeight = 172 + CGFloat(DBAccount.instance.getAllShareUser().count * LTheme.Dimension.table_view_cell_height)
+        controller.viewHeight = 172
         controller.modalPresentationStyle = UIModalPresentationStyle.popover
         controller.popoverPresentationController?.delegate = self
-        controller.preferredContentSize = CGSize(width: 375, height: 172 + (DBAccount.instance.getAllShareUser().count * LTheme.Dimension.table_view_cell_height))
+        controller.preferredContentSize = CGSize(width: 375, height: 172)
 
         let popoverPresentationController = controller.popoverPresentationController
 
@@ -206,7 +214,26 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         let account = accounts[indexPath.row]
 
         cell.nameLabel.text = account.name
-        cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+
+        let shareIds = accounts[indexPath.row].getShareIdsStates().shareIds
+        let shareStates = accounts[indexPath.row].getShareIdsStates().shareStates
+
+        var shareImageNumber = 0
+
+        for ii in 0..<shareIds.count {
+            if shareStates[ii] == LAccount.ACCOUNT_SHARE_INVITED {
+                cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share_yellow").withRenderingMode(.alwaysOriginal), for: .normal)
+                shareImageNumber = 1
+                break
+            } else if shareStates[ii] == LAccount.ACCOUNT_SHARE_PERMISSION_READ_WRITE {
+                cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share_green").withRenderingMode(.alwaysOriginal), for: .normal)
+                shareImageNumber = 2
+            }
+        }
+
+        if shareImageNumber == 0 {
+            cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+        }
 
         return cell
     }

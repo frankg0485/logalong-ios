@@ -90,7 +90,7 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
                                 shareUsers.append(LUser(userId, fullName, gid))
 
                                 userIdTextField.text = ""
-                                viewHeight += 44
+                                viewHeight += CGFloat(LTheme.Dimension.table_view_cell_height)
                                 usersTableView.reloadData()
                             }
                         }
@@ -113,6 +113,7 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
             let fullName = LPreferences.getShareUserName(ii)
             if !(userId.isEmpty) {
                 shareUsers.append(LUser(userId, fullName, ii))
+                viewHeight += CGFloat(LTheme.Dimension.table_view_cell_height)
             }
         }
     }
@@ -160,9 +161,10 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
 
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! UsersTableViewCell
 
-        cell.userLabel.text = shareUsers[indexPath.row].name
+        cell.userLabel.text = "\(shareUsers[indexPath.row].fullName)(\(shareUsers[indexPath.row].name))"
         cell.checkButton.setImage(#imageLiteral(resourceName: "btn_check_off_normal_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
         cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+        cell.backgroundColor = LTheme.Color.row_released_color
         return cell
     }
 

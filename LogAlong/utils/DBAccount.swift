@@ -44,11 +44,10 @@ class DBAccount : DBGeneric<LAccount> {
         var users: Set<Int64> = []
 
         for account in self.getAll() {
-            let str = account.share
-            if !str.isEmpty {
-                account.setSharedIdsString(str)
-                if !account.shareIds.isEmpty {
-                    for ii in account.shareIds {
+            if !account.share.isEmpty {
+                let shareIds = account.getShareIdsStates().shareIds
+                if !shareIds.isEmpty {
+                    for ii in shareIds {
                         users.insert(ii)
                     }
                 }

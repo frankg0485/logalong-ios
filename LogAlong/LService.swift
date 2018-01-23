@@ -70,7 +70,7 @@ class LService {
 
     @objc func postJournal(notification: Notification) {
         if let bdata = notification.userInfo as? [String: Any] {
-            var moreJournal = true;
+            var moreJournal = true
             let ret = bdata["status"] as! Int
             let journalId = bdata["journalId"] as! Int
             LLog.d("\(self)", "post journal: \(journalId) status: \(ret)")
@@ -100,9 +100,9 @@ class LService {
 
                         account = dbAccount.get(id: id)
                         if (nil != account) {
-                            //TODO: account!.setOwner(uid);
+                            //TODO: account!.setOwner(uid)
                             account!.gid = gid
-                            dbAccount.update(account!);
+                            dbAccount.update(account!)
                         }
 
                     case LProtocol.JRQST_GET_ACCOUNTS:
@@ -113,10 +113,10 @@ class LService {
                         if let account = DBAccount.instance.get(gid: gid) {
                             //account.setOwner(uid)
                             account.name = name
-                            _ = DBAccount.instance.update(account);
+                            _ = DBAccount.instance.update(account)
                         } else {
-                            var account = LAccount();
-                            //account.setOwner(uid);
+                            var account = LAccount()
+                            //account.setOwner(uid)
                             account.gid = gid
                             account.name = name
                             _ = DBAccount.instance.add(&account)
@@ -136,78 +136,78 @@ class LService {
 
                         /*
                          case LProtocol.JRQST_ADD_CATEGORY:
-                         id = intent.getLongExtra("id", 0L);
-                         gid = intent.getLongExtra("gid", 0L);
+                         id = intent.getLongExtra("id", 0L)
+                         gid = intent.getLongExtra("gid", 0L)
 
-                         DBCategory dbCategory = DBCategory.getInstance();
-                         LCategory category = dbCategory.getByGid(gid);
+                         DBCategory dbCategory = DBCategory.getInstance()
+                         LCategory category = dbCategory.getByGid(gid)
                          if (null != category) {
                          if (category.getId() != id) {
                          LLog.e("\(self)", "unexpected error, category GID: " + gid + " already taken " +
-                         "by " + category.getName());
-                         dbCategory.deleteById(category.getId());
+                         "by " + category.getName())
+                         dbCategory.deleteById(category.getId())
                          }
                          }
-                         dbCategory.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid);
-                         break;
+                         dbCategory.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid)
+                         break
                          case LProtocol.JRQST_ADD_TAG:
-                         id = intent.getLongExtra("id", 0L);
-                         gid = intent.getLongExtra("gid", 0L);
+                         id = intent.getLongExtra("id", 0L)
+                         gid = intent.getLongExtra("gid", 0L)
 
-                         DBTag dbTag = DBTag.getInstance();
-                         LTag tag = dbTag.getByGid(gid);
+                         DBTag dbTag = DBTag.getInstance()
+                         LTag tag = dbTag.getByGid(gid)
                          if (null != tag) {
                          if (tag.getId() != id) {
                          LLog.e("\(self)", "unexpected error, tag GID: " + gid + " already taken " +
-                         "by " + tag.getName());
-                         dbTag.deleteById(tag.getId());
+                         "by " + tag.getName())
+                         dbTag.deleteById(tag.getId())
                          }
                          }
-                         dbTag.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid);
-                         break;
+                         dbTag.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid)
+                         break
                          case LProtocol.JRQST_ADD_VENDOR:
-                         id = intent.getLongExtra("id", 0L);
-                         gid = intent.getLongExtra("gid", 0L);
+                         id = intent.getLongExtra("id", 0L)
+                         gid = intent.getLongExtra("gid", 0L)
 
-                         DBVendor dbVendor = DBVendor.getInstance();
-                         LVendor vendor = dbVendor.getByGid(gid);
+                         DBVendor dbVendor = DBVendor.getInstance()
+                         LVendor vendor = dbVendor.getByGid(gid)
                          if (null != vendor) {
                          if (vendor.getId() != id) {
                          LLog.e("\(self)", "unexpected error, vendor GID: " + gid + " already taken " +
-                         "by " + vendor.getName());
-                         dbVendor.deleteById(vendor.getId());
+                         "by " + vendor.getName())
+                         dbVendor.deleteById(vendor.getId())
                          }
                          }
-                         dbVendor.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid);
-                         break;
+                         dbVendor.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid)
+                         break
                          case LProtocol.JRQST_ADD_RECORD:
-                         DBTransaction dbTransaction = DBTransaction.getInstance();
-                         id = intent.getLongExtra("id", 0L);
-                         gid = intent.getLongExtra("gid", 0L);
+                         DBTransaction dbTransaction = DBTransaction.getInstance()
+                         id = intent.getLongExtra("id", 0L)
+                         gid = intent.getLongExtra("gid", 0L)
 
-                         LTransaction transaction = dbTransaction.getByGid(gid);
+                         LTransaction transaction = dbTransaction.getByGid(gid)
                          if (null != transaction) {
                          if (transaction.getId() == id) {
-                         LLog.e("\(self)", "unexpected error, record GID: " + gid + " already taken ");
+                         LLog.e("\(self)", "unexpected error, record GID: " + gid + " already taken ")
                          }
-                         dbTransaction.deleteById(transaction.getId());
+                         dbTransaction.deleteById(transaction.getId())
                          }
-                         dbTransaction.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid);
-                         break;
+                         dbTransaction.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid)
+                         break
                          case LProtocol.JRQST_ADD_SCHEDULE:
-                         DBScheduledTransaction dbSchTransaction = DBScheduledTransaction.getInstance();
-                         id = intent.getLongExtra("id", 0L);
-                         gid = intent.getLongExtra("gid", 0L);
+                         DBScheduledTransaction dbSchTransaction = DBScheduledTransaction.getInstance()
+                         id = intent.getLongExtra("id", 0L)
+                         gid = intent.getLongExtra("gid", 0L)
 
-                         LScheduledTransaction scheduledTransaction = dbSchTransaction.getByGid(gid);
+                         LScheduledTransaction scheduledTransaction = dbSchTransaction.getByGid(gid)
                          if (null != scheduledTransaction) {
                          if (scheduledTransaction.getId() == id) {
-                         LLog.e("\(self)", "unexpected error, schedule GID: " + gid + " already taken ");
+                         LLog.e("\(self)", "unexpected error, schedule GID: " + gid + " already taken ")
                          }
-                         dbSchTransaction.deleteById(scheduledTransaction.getId());
+                         dbSchTransaction.deleteById(scheduledTransaction.getId())
                          }
-                         dbSchTransaction.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid);
-                         break;
+                         dbSchTransaction.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid)
+                         break
                          */
 
                     case LProtocol.JRQST_GET_CATEGORIES:
@@ -278,7 +278,7 @@ class LService {
                         let note = bdata["note"] as! String
                         let dbTransaction = DBTransaction.instance
                         var transaction = dbTransaction.get(gid: gid)
-                        var create = true;
+                        var create = true
                          if (nil != transaction) {
                             create = false
                          } else {
@@ -302,7 +302,7 @@ class LService {
                         transaction!.vendorId = DBVendor.instance.getId(gid: vid) ?? 0
                         transaction!.type = TransactionType(rawValue: type)!
                         transaction!.amount = amount
-                        //transaction!.setCreateBy(createUid);
+                        //transaction!.setCreateBy(createUid)
                         transaction!.by = changeUid
                         transaction!.rid = rid
                         transaction!.timestamp = timestamp
@@ -320,64 +320,64 @@ class LService {
                          case LProtocol.JRQST_GET_SCHEDULE:
                          case LProtocol.JRQST_GET_SCHEDULES:
                          case LProtocol.JRQST_GET_ACCOUNT_SCHEDULES:
-                         gid = intent.getLongExtra("gid", 0L);
-                         aid = intent.getLongExtra("aid", 0);
-                         aid2 = intent.getLongExtra("aid2", 0);
-                         cid = intent.getLongExtra("cid", 0);
-                         tid = intent.getLongExtra("tid", 0);
-                         vid = intent.getLongExtra("vid", 0);
-                         type = intent.getByteExtra("type", (byte) LTransaction.TRANSACTION_TYPE_EXPENSE);
-                         amount = intent.getDoubleExtra("amount", 0);
-                         rid = intent.getLongExtra("recordId", 0L);
-                         timestamp = intent.getLongExtra("timestamp", 0L);
-                         createUid = intent.getLongExtra("createBy", 0);
-                         changeUid = intent.getLongExtra("changeBy", 0);
-                         createTime = intent.getLongExtra("createTime", 0L);
-                         changeTime = intent.getLongExtra("changeTime", 0L);
-                         note = intent.getStringExtra("note");
+                         gid = intent.getLongExtra("gid", 0L)
+                         aid = intent.getLongExtra("aid", 0)
+                         aid2 = intent.getLongExtra("aid2", 0)
+                         cid = intent.getLongExtra("cid", 0)
+                         tid = intent.getLongExtra("tid", 0)
+                         vid = intent.getLongExtra("vid", 0)
+                         type = intent.getByteExtra("type", (byte) LTransaction.TRANSACTION_TYPE_EXPENSE)
+                         amount = intent.getDoubleExtra("amount", 0)
+                         rid = intent.getLongExtra("recordId", 0L)
+                         timestamp = intent.getLongExtra("timestamp", 0L)
+                         createUid = intent.getLongExtra("createBy", 0)
+                         changeUid = intent.getLongExtra("changeBy", 0)
+                         createTime = intent.getLongExtra("createTime", 0L)
+                         changeTime = intent.getLongExtra("changeTime", 0L)
+                         note = intent.getStringExtra("note")
 
-                         long nextTime = intent.getLongExtra("nextTime", 0L);
-                         byte interval = intent.getByteExtra("interval", (byte) 0);
-                         byte unit = intent.getByteExtra("unit", (byte) 0);
-                         byte count = intent.getByteExtra("count", (byte) 0);
-                         boolean enabled = intent.getByteExtra("count", (byte) 0) == 0 ? false : true;
+                         long nextTime = intent.getLongExtra("nextTime", 0L)
+                         byte interval = intent.getByteExtra("interval", (byte) 0)
+                         byte unit = intent.getByteExtra("unit", (byte) 0)
+                         byte count = intent.getByteExtra("count", (byte) 0)
+                         boolean enabled = intent.getByteExtra("count", (byte) 0) == 0 ? false : true
 
-                         dbSchTransaction = DBScheduledTransaction.getInstance();
-                         scheduledTransaction = dbSchTransaction.getByGid(gid);
+                         dbSchTransaction = DBScheduledTransaction.getInstance()
+                         scheduledTransaction = dbSchTransaction.getByGid(gid)
 
-                         create = true;
+                         create = true
                          if (null != scheduledTransaction) {
-                         create = false;
+                         create = false
                          } else {
-                         scheduledTransaction = new LScheduledTransaction();
+                         scheduledTransaction = new LScheduledTransaction()
                          }
-                         dbAccount = DBAccount.getInstance();
-                         scheduledTransaction.setGid(gid);
-                         scheduledTransaction.setAccount(dbAccount.getIdByGid(aid));
-                         scheduledTransaction.setAccount2(dbAccount.getIdByGid(aid2));
-                         scheduledTransaction.setCategory(DBCategory.getInstance().getIdByGid(cid));
-                         scheduledTransaction.setTag(DBTag.getInstance().getIdByGid(tid));
-                         scheduledTransaction.setVendor(DBVendor.getInstance().getIdByGid(vid));
-                         scheduledTransaction.setType(type);
-                         scheduledTransaction.setValue(amount);
-                         scheduledTransaction.setCreateBy(createUid);
-                         scheduledTransaction.setChangeBy(changeUid);
-                         scheduledTransaction.setRid(rid);
-                         scheduledTransaction.setTimeStamp(timestamp);
-                         scheduledTransaction.setTimeStampCreate(createTime);
-                         scheduledTransaction.setTimeStampLast(changeTime);
-                         scheduledTransaction.setNote(note);
+                         dbAccount = DBAccount.getInstance()
+                         scheduledTransaction.setGid(gid)
+                         scheduledTransaction.setAccount(dbAccount.getIdByGid(aid))
+                         scheduledTransaction.setAccount2(dbAccount.getIdByGid(aid2))
+                         scheduledTransaction.setCategory(DBCategory.getInstance().getIdByGid(cid))
+                         scheduledTransaction.setTag(DBTag.getInstance().getIdByGid(tid))
+                         scheduledTransaction.setVendor(DBVendor.getInstance().getIdByGid(vid))
+                         scheduledTransaction.setType(type)
+                         scheduledTransaction.setValue(amount)
+                         scheduledTransaction.setCreateBy(createUid)
+                         scheduledTransaction.setChangeBy(changeUid)
+                         scheduledTransaction.setRid(rid)
+                         scheduledTransaction.setTimeStamp(timestamp)
+                         scheduledTransaction.setTimeStampCreate(createTime)
+                         scheduledTransaction.setTimeStampLast(changeTime)
+                         scheduledTransaction.setNote(note)
 
-                         scheduledTransaction.setNextTime(nextTime);
-                         scheduledTransaction.setRepeatInterval(interval);
-                         scheduledTransaction.setRepeatUnit(unit);
-                         scheduledTransaction.setRepeatCount(count);
-                         scheduledTransaction.setEnabled(enabled);
+                         scheduledTransaction.setNextTime(nextTime)
+                         scheduledTransaction.setRepeatInterval(interval)
+                         scheduledTransaction.setRepeatUnit(unit)
+                         scheduledTransaction.setRepeatCount(count)
+                         scheduledTransaction.setEnabled(enabled)
 
-                         if (create) dbSchTransaction.add(scheduledTransaction);
-                         else dbSchTransaction.update(scheduledTransaction);
+                         if (create) dbSchTransaction.add(scheduledTransaction)
+                         else dbSchTransaction.update(scheduledTransaction)
 
-                         break;
+                         break
                          */
                     case LProtocol.JRQST_UPDATE_ACCOUNT: break
                     case LProtocol.JRQST_DELETE_ACCOUNT: break
@@ -392,8 +392,7 @@ class LService {
                     case LProtocol.JRQST_UPDATE_SCHEDULE: break
                     case LProtocol.JRQST_DELETE_SCHEDULE: break
                     case LProtocol.JRQST_CONFIRM_ACCOUNT_SHARE: break
-                    case LProtocol.JRQST_ADD_USER_TO_ACCOUNT:
-                        break
+                    case LProtocol.JRQST_ADD_USER_TO_ACCOUNT: break
                     default:
                         LLog.w("\(self)", "unknown journal request: \(jrqstId)")
                     }
@@ -401,7 +400,7 @@ class LService {
 
                 if (LProtocol.RSPS_OK == ret) {
                     DBJournal.instance.remove(id: journalId)
-                    LLog.d("\(self)", "flushing journal upon completion ...");
+                    LLog.d("\(self)", "flushing journal upon completion ...")
                     moreJournal = LJournal.instance.flush()
                 }
             } else {
@@ -413,10 +412,10 @@ class LService {
                     //retry happens when one of the following happens
                     // - new journal request
                     // - polling timer expired
-                    moreJournal = false;
+                    moreJournal = false
                 } else {
-                    journalPostErrorCount = 0;
-                    LLog.e("\(self)", "fatal journal post error, journal skipped");
+                    journalPostErrorCount = 0
+                    LLog.e("\(self)", "fatal journal post error, journal skipped")
                     DBJournal.instance.remove(id: journalId)
                     moreJournal = LJournal.instance.flush()
                 }
@@ -425,19 +424,19 @@ class LService {
             //no more active journal, start polling
             if (!moreJournal) {
                 _ = UiRequest.instance.UiPoll()
-                //serviceHandler.postDelayed(pollRunnable, NETWORK_IDLE_POLLING_MS);
+                //serviceHandler.postDelayed(pollRunnable, NETWORK_IDLE_POLLING_MS)
             }
         }
     }
 
 
     @objc func pushNotification(notification: Notification) {
-        LLog.d("\(self)", "poll upon push notification");
+        LLog.d("\(self)", "poll upon push notification")
         //reset polling count upon receiving push notification from server
         //we'll keep polling up to MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION times, till a positive
         //polling result from server: this is to handle the case where server sends the notification
         //but underlying database hasn't got a chance to flush.
-        pollingCount = 0;
+        pollingCount = 0
 
         if !LJournal.instance.flush() {
             _ = UiRequest.instance.UiPoll()
@@ -459,9 +458,9 @@ class LService {
                     let dbAccount = DBAccount.instance
                     if let account = dbAccount.get(gid: gid) {
                         //TODO
-                        //account.setOwner(uid);
+                        //account.setOwner(uid)
                         account.name = name
-                        _ = dbAccount.update(account);
+                        _ = dbAccount.update(account)
                     } else {
                         if let account = dbAccount.get(name: name) {
                             //TODO: account.setOwner(uid)
@@ -492,7 +491,7 @@ class LService {
                     let gid = bdata["int1"] as! Int64
                     let dbAccount = DBAccount.instance
                     if let account = dbAccount.get(gid: gid) {
-                        //TODO: LTask.start(new DBAccount.MyAccountDeleteTask(), account.getId());
+                        //TODO: LTask.start(new DBAccount.MyAccountDeleteTask(), account.getId())
                         _ = dbAccount.remove(id: account.id)
                         LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
                     }
@@ -646,7 +645,7 @@ class LService {
 
                 case LService.NOTIFICATION_GET_RECORDS:
                     let blob = bdata["blob"] as! [UInt8]
-                    let data = LBuffer(buf: blob);
+                    let data = LBuffer(buf: blob)
                     var ids = [Int64](repeating: 0, count: blob.count / 8)
                     for ii in 0..<ids.count {
                         ids[ii] = data.getLongAutoInc()
@@ -656,65 +655,60 @@ class LService {
                     /*
                 case NOTIFICATION_ADD_SCHEDULE:
                 case NOTIFICATION_UPDATE_SCHEDULE:
-                    gid = intent.getLongExtra("int1", 0L);
-                    journal.getSchedule(gid);
-                    break;
+                    gid = intent.getLongExtra("int1", 0L)
+                    journal.getSchedule(gid)
+                    break
 
                 case NOTIFICATION_DELETE_SCHEDULE:
-                    gid = intent.getLongExtra("int1", 0L);
-                    DBScheduledTransaction dbScheduledTransaction = DBScheduledTransaction.getInstance();
-                    LScheduledTransaction scheduledTransaction = dbScheduledTransaction.getByGid(gid);
+                    gid = intent.getLongExtra("int1", 0L)
+                    DBScheduledTransaction dbScheduledTransaction = DBScheduledTransaction.getInstance()
+                    LScheduledTransaction scheduledTransaction = dbScheduledTransaction.getByGid(gid)
                     if (null != scheduledTransaction) {
-                        dbScheduledTransaction.deleteById(scheduledTransaction.getId());
+                        dbScheduledTransaction.deleteById(scheduledTransaction.getId())
                     }
-                    break;
+                    break
                      */
 
                 case LService.NOTIFICATION_UPDATE_USER_PROFILE:
                     LPreferences.setUserName(bdata["txt1"] as! String)
                     LBroadcast.post(LBroadcast.ACTION_UPDATE_USER_PROFILE, sender: nil, data: bdata)
-                    break;
+                    break
 
                 case LService.NOTIFICATION_ADD_SHARE_USER:
                     let uid = bdata["int1"] as! Int64
-                    //TODO:
-                    //LPreferences.setShareUserId(uid, intent.getStringExtra("txt1"));
-                    //LPreferences.setShareUserName(uid, intent.getStringExtra("txt2"));
+                    LPreferences.setShareUserId(uid, bdata["txt1"] as! String)
+                    LPreferences.setShareUserName(uid, bdata["txt2"] as! String)
 
                 case LService.NOTIFICATION_REQUEST_ACCOUNT_SHARE:
                     let aid = bdata["int1"] as! Int64
                     let uid = bdata["int2"] as! Int64
                     //TODO:
-                    /*
-                    long shareAccept = LPreferences.getShareAccept(uid);
-                    if (shareAccept != 0 && (shareAccept + 24 * 3600 * 1000 > System.currentTimeMillis())) {
-                        LJournal.instance.confirmAccountShare(aid, uid, true);
+/*                    let shareAccept = LPreferences.getShareAccept(uid)
+                    if ((shareAccept != 0) && (shareAccept + 24 * 3600 * 1000 > NSDate().timeIntervalSince1970 * 1000)) {
+                        LJournal.instance.confirmAccountShare(aid, uid, true)
                     } else {
-                        name = intent.getStringExtra("txt1");
+                        name = bdata["txt1"]
                         LAccountShareRequest shareRequest = new LAccountShareRequest(uid, LPreferences
-                            .getShareUserId(uid), LPreferences.getShareUserName(uid), name, aid);
-                        LPreferences.addAccountShareRequest(shareRequest);
-
+                            .getShareUserId(uid), LPreferences.getShareUserName(uid), name, aid)
+                        LPreferences.addAccountShareRequest(shareRequest)
+                     }
+ */
                         LBroadcast.post(LBroadcast.ACTION_UI_SHARE_ACCOUNT, sender: nil, data: bdata)
-                    }
-                     */
 
                 case LService.NOTIFICATION_DECLINE_ACCOUNT_SHARE:
                     let aid = bdata["int1"] as! Int64
                     let uid = bdata["int2"] as! Int64
                     let dbAccount = DBAccount.instance
-                    let account = dbAccount.get(gid: aid)
-                    if (nil != account) {
+
+                    if let account = dbAccount.get(gid: aid) {
                         //only remove if share state is INVITED, in other words, do not
                         //unshare a previously confirmed share here
-                        //TODO:
-                        /*
                         if (LAccount.ACCOUNT_SHARE_INVITED == account.getShareUserState(uid)) {
-                            account.removeShareUser(uid);
-                            dbAccount.update(account);
+                            account.removeShareUser(uid)
+                            dbAccount.update(account)
                            LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
                         }
-                         */
+
                     }
 
                 case LService.NOTIFICATION_UPDATE_ACCOUNT_USER:
@@ -722,9 +716,9 @@ class LService {
                     let dbAccount = DBAccount.instance
                     let account = dbAccount.get(gid: aid)
                     if (nil != account) {
-                        //TODO:
-                        //account.setSharedIdsString(intent.getStringExtra("txt1"));
+                        account!.share = bdata["txt1"] as! String
                         _ = dbAccount.update(account!)
+
                         LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
                     }
 
@@ -734,7 +728,7 @@ class LService {
 
                 case LService.NOTIFICATION_GET_ACCOUNT_SCHEDULES:
                     let aid = bdata["int1"] as! Int64
-                    _ = LJournal.instance.getAccountSchedules(aid);
+                    _ = LJournal.instance.getAccountSchedules(aid)
 
                 case LService.NOTIFICATION_GET_ACCOUNTS:
                     _ = LJournal.instance.getAllAccounts()
@@ -752,26 +746,26 @@ class LService {
                     break
                 }
 
-                //pollingCount = MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION;
+                //pollingCount = MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION
                 _ = UiRequest.instance.UiPollAck(id)
 
             } else {
                 //no more
-                LLog.d("\(self)", "flushing journal upon polling ends ...");
+                LLog.d("\(self)", "flushing journal upon polling ends ...")
                 if (!LJournal.instance.flush()) {
                     /*if (LFragmentActivity.upRunning) {
-                     //server.UiUtcSync();
+                     //server.UiUtcSync()
                      if (pollingCount++ < MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION) {
-                     serviceHandler.postDelayed(pollRunnable, NETWORK_IDLE_POLLING_MS);
+                     serviceHandler.postDelayed(pollRunnable, NETWORK_IDLE_POLLING_MS)
                      }
 
                      Intent uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                     .ACTION_UI_NET_IDLE));
-                     LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent);
+                     .ACTION_UI_NET_IDLE))
+                     LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent)
                      } else {
-                     LLog.d(TAG, "no activity visible, shutdown now");
+                     LLog.d(TAG, "no activity visible, shutdown now")
                      serviceHandler.postDelayed(serviceShutdownRunnable,
-                     SERVICE_SHUTDOWN_MS);
+                     SERVICE_SHUTDOWN_MS)
                      }*/
                 }
             }

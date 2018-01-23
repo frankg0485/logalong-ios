@@ -15,15 +15,11 @@ class LAccount : LDbBase {
 
     var share: String
     var showBalance: Bool
-    var shareIds: [Int64]
-    var shareStates: [Int]
     var shareTimeStampLast: Int64
 
     override init() {
         self.showBalance = true
         self.share = ""
-        self.shareIds = []
-        self.shareStates = []
         self.shareTimeStampLast = 0
         super.init()
     }
@@ -31,8 +27,7 @@ class LAccount : LDbBase {
     init(id: Int64, gid: Int64, name: String, share: String, showBalance: Bool, create: Int64, access: Int64) {
         self.share = share
         self.showBalance = showBalance
-        self.shareIds = []
-        self.shareStates = []
+
         self.shareTimeStampLast = 0
         super.init(id: id, gid: gid, name: name, create: create, access: access)
     }
@@ -64,6 +59,9 @@ class LAccount : LDbBase {
     }
 
     func removeShareUser(_ id: Int64) {
+        var shareIds: [Int64] = getShareIdsStates().shareIds
+        var shareStates: [Int] = getShareIdsStates().shareStates
+
         if (shareIds.isEmpty || shareStates.isEmpty) {
             return
         }
@@ -74,32 +72,16 @@ class LAccount : LDbBase {
                 shareStates.remove(at: ii)
             }
         }
+
+        setShareIdsStates(shareIds: shareIds, shareStates: shareStates)
     }
 
-    func removeAllShareUsers() {
-        shareIds.removeAll()
-        shareStates.removeAll()
-    }
+    func getShareIdsStates() -> (shareIds: [Int64], shareStates: [Int]) {
+        var shareIds = [Int64]()
+        var shareStates = [Int]()
 
-    func getShareIdsString() -> String {
-        if (shareIds.isEmpty == true || shareStates.isEmpty == true || shareIds.count < 1 || shareStates.count < 1) {
-            return ""
-        }
-
-        var str: String = ""
-        for ii in 0..<shareStates.count {
-            str += String(shareStates[ii]) + ","
-            str += String(shareIds[ii]) + ","
-        }
-        str += String(shareTimeStampLast)
-        return str
-    }
-
-    func setSharedIdsString(_ str: String) {
-        if (!str.isEmpty) {
-            let sb: [String] = str.components(separatedBy: ",")
-            shareIds.removeAll()
-            shareStates.removeAll()
+        if (!share.isEmpty) {
+            let sb: [String] = share.components(separatedBy: ",")
 
             for ii in 0..<(sb.count / 2) {
                 shareStates.append(Int(sb[2 * ii])!)
@@ -112,9 +94,29 @@ class LAccount : LDbBase {
                 shareTimeStampLast = Int64(sb[sb.count - 1])!
             }
         }
+
+        return (shareIds, shareStates)
+    }
+
+    func setShareIdsStates(shareIds: [Int64], shareStates: [Int]) {
+        if (shareIds.isEmpty == true || shareStates.isEmpty == true || shareIds.count < 1 || shareStates.count < 1) {
+            share = ""
+            return
+        }
+
+        var str: String = ""
+        for ii in 0..<shareStates.count {
+            str += String(shareStates[ii]) + ","
+            str += String(shareIds[ii]) + ","
+        }
+        str += String(shareTimeStampLast)
+        share = str
     }
 
     func getOwner() -> Int64 {
+        let shareIds: [Int64] = getShareIdsStates().shareIds
+        let shareStates: [Int] = getShareIdsStates().shareStates
+
         if (shareIds.isEmpty || shareStates.isEmpty) {
             return 0
         }
@@ -132,18 +134,27 @@ class LAccount : LDbBase {
     }
 
     func addShareUser(_ id: Int64, _ state: Int) {
+        var shareIds: [Int64] = getShareIdsStates().shareIds
+        var shareStates: [Int] = getShareIdsStates().shareStates
+
         for ii in 0..<shareIds.count {
             if (shareIds[ii] == id) {
                 shareStates[ii] = state
+                setShareIdsStates(shareIds: shareIds, shareStates: shareStates)
                 return
             }
         }
 
         shareStates.append(state)
         shareIds.append(id)
+
+        setShareIdsStates(shareIds: shareIds, shareStates: shareStates)
     }
 
-    func getShareUserState(_ id: Int64) -> Int{
+    func getShareUserState(_ id: Int64) -> Int {
+        let shareIds: [Int64] = getShareIdsStates().shareIds
+        let shareStates: [Int] = getShareIdsStates().shareStates
+
         if (shareIds.isEmpty || shareStates.isEmpty) {
             return LAccount.ACCOUNT_SHARE_NA
         }
