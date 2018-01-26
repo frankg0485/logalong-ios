@@ -15,10 +15,9 @@ struct NameWithId {
 
 class CreateViewController: UIViewController, UITextFieldDelegate {
 
-    var creation: NameWithId? = NameWithId(name: "", id: 0)
-    var delegate: FPassCreationBackDelegate?
-
-    var typeBeingAdded: String = ""
+    //var creation: NameWithId? = NameWithId(name: "", id: 0)
+    var delegate: FPassCreationBackDelegate!
+    var createType: SelectType!
 
     @IBOutlet weak var newLabel: UILabel!
     @IBOutlet weak var nameTextField: UITextField!
@@ -26,24 +25,32 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.preferredContentSize.width = LTheme.Dimension.popover_width
+        self.preferredContentSize.height = LTheme.Dimension.popover_height_small
+
         nameTextField.delegate = self
+        nameTextField.becomeFirstResponder()
 
-        if ((presentingViewController as? UINavigationController)?.topViewController is AccountsTableViewController) || (typeBeingAdded == "Account") {
-            newLabel.text = "New Account"
-            nameTextField.placeholder = "Account Name"
-
-        } else if ((presentingViewController as? UINavigationController)?.topViewController is CategoriesTableViewController) || (typeBeingAdded == "Category") {
-            newLabel.text = "New Category"
-            nameTextField.placeholder = "Category Name"
+        switch (createType!) {
+        case .ACCOUNT: fallthrough
+        case .ACCOUNT2:
+            newLabel.text = NSLocalizedString("New Account", comment: "")
+            nameTextField.placeholder = NSLocalizedString("Account Name", comment: "")
+        case .CATEGORY:
+            newLabel.text = NSLocalizedString("New Category", comment: "")
+            nameTextField.placeholder = NSLocalizedString("Category Name", comment: "")
+        default: break
         }
-
-        if let creation = creation {
-            nameTextField.text = creation.name
-        }
-
 
         checkOkButtonState()
         // Do any additional setup after loading the view.
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        view.superview?.layer.borderColor = LTheme.Color.base_orange.cgColor
+        view.superview?.layer.borderWidth = 1
+
+        super.viewWillAppear(animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,11 +58,13 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func cancelButtonClicked(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+
     @IBAction func okButtonClicked(_ sender: UIButton) {
-        creation?.name = nameTextField.text!
 
-        delegate?.passCreationBack(creation: creation!)
-
+        delegate.creationCallback(created: true)
         dismiss(animated: true, completion: nil)
     }
     

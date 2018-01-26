@@ -38,6 +38,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
         cell.layer.borderColor = tableView.backgroundColor?.cgColor
     }
 
+    /* TODO:
     func passCreationBack(creation: NameWithId) {
         if let _ = tableView.indexPathForSelectedRow {
             DBCategory.instance.update(LCategory(id: creation.id, name: creation.name))
@@ -47,6 +48,12 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
         }
 
         reloadTableView()
+    }
+*/
+    func creationCallback(created: Bool) {
+        if created {
+            reloadTableView()
+        }
     }
 
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
@@ -142,7 +149,7 @@ class CategoriesTableViewController: UITableViewController, UIPopoverPresentatio
             }
 
             let selectedCategory = categories[indexPath.row]
-            categoryDetailViewController.creation = NameWithId(name: selectedCategory.name, id: selectedCategory.id)
+            //categoryDetailViewController.creation = NameWithId(name: selectedCategory.name, id: selectedCategory.id)
 
         case "CreateCategory":
 

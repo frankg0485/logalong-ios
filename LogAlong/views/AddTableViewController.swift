@@ -15,14 +15,6 @@ struct TypePassed {
     var int64: Int64 = 0
 }
 
-enum addType: Int {
-    case EXPENSE = 1
-    case INCOME = 2
-    case TRANSFER = 3
-}
-
-var payees: [String] = ["Costco", "Walmart", "Chipotle", "Panera", "Biaggis"]
-var tags: [String] = ["Market America", "2014 Summer", "2015 Summer", "2016 Summer", "2017 Summer"]
 class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, FViewControllerDelegate {
 
     @IBOutlet weak var headerView: HorizontalLayout!
@@ -56,15 +48,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     var amountButton: UIButton!
     var dateButton: UIButton!
-
-    var typePassedBack: String = ""
-
-    var accountId: Int64 = 0
-    var categoryId: Int64 = 0
-
-    var type: Int = 0
-
-    var cellsHaveBeenSelected: [Bool] = [false, false]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -156,10 +139,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         notesTextField.text = record.note
 
         displayDateMs(record.timestamp)
-
-        accountId = record.accountId
-        categoryId = record.categoryId
-
         updateSaveButtonState()
     }
 
@@ -246,50 +225,32 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             record.amount = type.double
             amountButton.setTitle(String(format: "%.2lf", type.double), for: .normal)
             amountButton.sizeToFit()
-        } else if let _ = caller as? SelectTableViewController {
-
-            if (self.type == addType.TRANSFER.rawValue) {
-                if (cellsHaveBeenSelected[0] == true) {
-                    accountLabel.text = DBAccount.instance.get(id: type.int64)?.name
-                } else {
-                    categoryLabel.text = DBCategory.instance.get(id: type.int64)?.name
-                }
-            } else {
-
-                if (typePassedBack == "ChooseAccount") {
-                    accountLabel.text = DBAccount.instance.get(id: type.int64)?.name
-                    accountId = type.int64
-                } else {
-                    categoryLabel.text = DBCategory.instance.get(id: type.int64)?.name
-                    categoryId = type.int64
-                }
+        } else if let sv = caller as? SelectViewController {
+            switch sv.selectType {
+            case .ACCOUNT:
+                record.accountId = type.int64
+                accountLabel.text = DBAccount.instance.get(id: type.int64)?.name
+            case .ACCOUNT2:
+                record.accountId2 = type.int64
+                categoryLabel.text = DBAccount.instance.get(id: type.int64)?.name
+            case .CATEGORY:
+                record.categoryId = type.int64
+                categoryLabel.text = DBCategory.instance.get(id: type.int64)?.name
+            case .TAG:
+                record.tagId = type.int64
+                tagLabel.text = DBTag.instance.get(id: type.int64)?.name
+            case .PAYER: fallthrough
+            case .PAYEE:
+                record.vendorId = type.int64
+                payeeLabel.text = DBVendor.instance.get(id: type.int64)?.name
+            default:
+                LLog.e("\(self)", "unknown request type")
             }
-
-        } else if let _ = caller as? SelectPayeeTableViewController {
-            payeeLabel.text = payees[type.int]
-
-        } else if let _ = caller as? SelectTagTableViewController {
-            tagLabel.text = tags[type.int]
         } else if let _ = caller as? DatePickerViewController {
             displayDateMs(type.int64)
         }
 
         updateSaveButtonState()
-    }
-
-    // MARK: - Table view data source
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (type == addType.TRANSFER.rawValue) {
-            if (indexPath.row == 0) {
-                cellsHaveBeenSelected[indexPath.row] = true
-                cellsHaveBeenSelected[1] = false
-            } else {
-                cellsHaveBeenSelected[indexPath.row] = true
-                cellsHaveBeenSelected[0] = false
-            }
-
-        }
     }
 
     // MARK: - Navigation
@@ -307,7 +268,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
             popoverViewController.popoverPresentationController?.sourceRect =
-                CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 300, height: 0)
             popoverViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
             popoverViewController.popoverPresentationController!.delegate = self
         }
@@ -323,21 +284,43 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }
 
         if let nextViewController = segue.destination as? UINavigationController {
-            if let secondViewController = nextViewController.topViewController as? SelectTableViewController {
-                if (type == addType.TRANSFER.rawValue) {
-                    secondViewController.selectionType = "ChooseAccount"
-                    typePassedBack = "ChooseAccount"
-                } else {
-                    secondViewController.selectionType = segue.identifier!
-                    typePassedBack = segue.identifier!
+            nextViewController.popoverPresentationController?.sourceView = headerView
+
+            if let secondViewController = nextViewController.topViewController as? SelectViewController {
+                if segue.identifier == "ChooseAccount" {
+                    if record.type == .TRANSFER_COPY {
+                        secondViewController.selectType = .ACCOUNT2
+                        secondViewController.initValue = record.accountId2
+                    } else {
+                        secondViewController.selectType = .ACCOUNT
+                        secondViewController.initValue = record.accountId
+                    }
+                } else if segue.identifier == "ChooseCategory" {
+                    if record.type == .TRANSFER {
+                        secondViewController.selectType = .ACCOUNT2
+                        secondViewController.initValue = record.accountId2
+                    } else if record.type == .TRANSFER_COPY {
+                        secondViewController.selectType = .ACCOUNT
+                        secondViewController.initValue = record.accountId
+                    } else {
+                        secondViewController.selectType = .CATEGORY
+                        secondViewController.initValue = record.categoryId
+                    }
+                } else if segue.identifier == "ChooseTag" {
+                    secondViewController.selectType = .TAG
+                    secondViewController.initValue = record.tagId
+                } else if segue.identifier == "ChoosePayee" {
+                    if (record.type == .INCOME) {
+                        secondViewController.selectType = .PAYER
+                    } else {
+                        secondViewController.selectType = .PAYEE
+                    }
+                    secondViewController.initValue = record.vendorId
                 }
 
                 secondViewController.delegate = self
+                secondViewController.color = color
             }
-        } else if let secondViewController = segue.destination as? SelectPayeeTableViewController {
-            secondViewController.delegate = self
-        }  else if let secondViewController = segue.destination as? SelectTagTableViewController {
-            secondViewController.delegate = self
         }  else if let secondViewController = segue.destination as? SelectAmountViewController {
             secondViewController.popoverPresentationController?.sourceView = headerView
             secondViewController.delegate = self
@@ -392,7 +375,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     private func updateSaveButtonState() {
-        if (type == addType.TRANSFER.rawValue) {
+        if (record.type == .TRANSFER || record.type == .TRANSFER_COPY) {
             if (accountLabel.text == "Choose Account") || (categoryLabel.text == "Choose Account") || (accountLabel.text == categoryLabel.text) {
                 saveButton.isEnabled = false
             } else {

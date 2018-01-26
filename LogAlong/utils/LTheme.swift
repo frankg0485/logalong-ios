@@ -61,5 +61,9 @@ class LTheme {
 
     class Dimension {
         static let table_view_cell_height = 44
+        static let popover_anchor_width: CGFloat = 300
+        static let popover_width: CGFloat = 375
+        static let popover_height: CGFloat = 320
+        static let popover_height_small: CGFloat = 200
     }
 }

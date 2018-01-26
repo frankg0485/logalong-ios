@@ -299,7 +299,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             }
 
             let selectedAccount = accounts[indexPath.row]
-            accountDetailViewController.creation = NameWithId(name: selectedAccount.name, id: selectedAccount.id)
+            //accountDetailViewController.creation = NameWithId(name: selectedAccount.name, id: selectedAccount.id)
 
         case "CreateAccount":
 
@@ -324,7 +324,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         return UIModalPresentationStyle.none
     }
 
-
+/* TODO:
     func passCreationBack(creation: NameWithId) {
         if let _ = tableView.indexPathForSelectedRow {
             DBAccount.instance.update(LAccount(id: creation.id, name: creation.name))
@@ -335,6 +335,12 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         }
 
         reloadTableView()
+    }
+*/
+    func creationCallback(created: Bool) {
+        if created {
+            reloadTableView()
+        }
     }
 
     func reloadTableView() {
