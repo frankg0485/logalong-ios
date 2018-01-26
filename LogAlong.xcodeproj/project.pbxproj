@@ -12,9 +12,6 @@
 		0128AE481EC4829B007A999B /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE471EC4829B007A999B /* AccountsTableViewController.swift */; };
 		0128AE4A1EC482B8007A999B /* CategoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE491EC482B8007A999B /* CategoriesTableViewController.swift */; };
 		0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */; };
-		0128AE4E1EC7BBFE007A999B /* SelectTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */; };
-		0128AE521EC7BD98007A999B /* SelectPayeeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */; };
-		0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */; };
 		012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */; };
 		013E34ED1F4366F900EF8972 /* DBTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013E34EC1F4366F900EF8972 /* DBTransaction.swift */; };
 		014281A21FBD15870071ED8F /* LPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014281A11FBD15870071ED8F /* LPreferences.swift */; };
@@ -55,6 +52,7 @@
 		CB1BC63A1FE7717600FD9D7E /* LScheduledTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1BC6391FE7717600FD9D7E /* LScheduledTransaction.swift */; };
 		CB3154DF1FBD3AA6006F9DE4 /* Crc32.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3154DE1FBD3AA6006F9DE4 /* Crc32.swift */; };
 		CB3E5FA01FEDEAD300C64CBD /* LTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3E5F9F1FEDEAD300C64CBD /* LTheme.swift */; };
+		CB4118F020157AA80087E8AE /* SelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4118EF20157AA80087E8AE /* SelectViewController.swift */; };
 		CB4DAC581FFC828F00B8C664 /* LRecordSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4DAC571FFC828F00B8C664 /* LRecordSearch.swift */; };
 		CB51B5581FBBDF26002CABA1 /* LProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB51B5571FBBDF26002CABA1 /* LProtocol.swift */; };
 		CB51B55A1FBBFBF6002CABA1 /* LTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB51B5591FBBFBF6002CABA1 /* LTransport.swift */; };
@@ -201,9 +199,6 @@
 		0128AE471EC4829B007A999B /* AccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		0128AE491EC482B8007A999B /* CategoriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewController.swift; sourceTree = "<group>"; };
 		0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewController.swift; sourceTree = "<group>"; };
-		0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTableViewController.swift; sourceTree = "<group>"; };
-		0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectPayeeTableViewController.swift; sourceTree = "<group>"; };
-		0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTagTableViewController.swift; sourceTree = "<group>"; };
 		012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
 		013E34EC1F4366F900EF8972 /* DBTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBTransaction.swift; sourceTree = "<group>"; };
 		014281A11FBD15870071ED8F /* LPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPreferences.swift; sourceTree = "<group>"; };
@@ -245,6 +240,7 @@
 		CB1BC6391FE7717600FD9D7E /* LScheduledTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LScheduledTransaction.swift; sourceTree = "<group>"; };
 		CB3154DE1FBD3AA6006F9DE4 /* Crc32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Crc32.swift; path = network/Crc32.swift; sourceTree = "<group>"; };
 		CB3E5F9F1FEDEAD300C64CBD /* LTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTheme.swift; sourceTree = "<group>"; };
+		CB4118EF20157AA80087E8AE /* SelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectViewController.swift; sourceTree = "<group>"; };
 		CB4DAC571FFC828F00B8C664 /* LRecordSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRecordSearch.swift; sourceTree = "<group>"; };
 		CB51B5571FBBDF26002CABA1 /* LProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LProtocol.swift; path = network/LProtocol.swift; sourceTree = "<group>"; };
 		CB51B5591FBBFBF6002CABA1 /* LTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LTransport.swift; path = network/LTransport.swift; sourceTree = "<group>"; };
@@ -383,10 +379,8 @@
 				019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */,
 				CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */,
 				014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */,
-				0128AE511EC7BD98007A999B /* SelectPayeeTableViewController.swift */,
 				01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */,
-				0128AE4D1EC7BBFE007A999B /* SelectTableViewController.swift */,
-				0128AE531EC7BDAA007A999B /* SelectTagTableViewController.swift */,
+				CB4118EF20157AA80087E8AE /* SelectViewController.swift */,
 				CB15D4ED1FC3D7EE005D8B43 /* settings */,
 				01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */,
 				01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */,
@@ -684,7 +678,6 @@
 				014893D31EDFA368005E3C94 /* Protocols.swift in Sources */,
 				CB4DAC581FFC828F00B8C664 /* LRecordSearch.swift in Sources */,
 				CB1073621FCE6D0E00390032 /* DBAccount.swift in Sources */,
-				0128AE541EC7BDAA007A999B /* SelectTagTableViewController.swift in Sources */,
 				CBB51D2E1FE49EDB000CD233 /* DBVendor.swift in Sources */,
 				019CCD501E6DC7D0002EF989 /* RecordsTableViewCell.swift in Sources */,
 				015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */,
@@ -703,7 +696,6 @@
 				CBC01B4F1FAEAA4D0092B184 /* MainTableViewController.swift in Sources */,
 				CB1BC63A1FE7717600FD9D7E /* LScheduledTransaction.swift in Sources */,
 				010797E61F6778FA00623C04 /* LCategory.swift in Sources */,
-				0128AE521EC7BD98007A999B /* SelectPayeeTableViewController.swift in Sources */,
 				01DE2C121F449D8600ED5D9C /* AccountsTableViewCell.swift in Sources */,
 				0128AE4A1EC482B8007A999B /* CategoriesTableViewController.swift in Sources */,
 				01DE2C1B1F46764800ED5D9C /* CategoriesTableViewCell.swift in Sources */,
@@ -735,8 +727,8 @@
 				019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */,
 				CBD618101FB0081300A2B57E /* Server.swift in Sources */,
 				CB51B55C1FBBFF11002CABA1 /* LBuffer.swift in Sources */,
+				CB4118F020157AA80087E8AE /* SelectViewController.swift in Sources */,
 				CB3E5FA01FEDEAD300C64CBD /* LTheme.swift in Sources */,
-				0128AE4E1EC7BBFE007A999B /* SelectTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
