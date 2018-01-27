@@ -80,17 +80,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
          dismiss(animated: true, completion: nil)
          popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(popoverPresentationController!)*/
     }
-/*
-    func passCreationBack(creation: NameWithId) {
-        var account = LAccount(name: creation.name)
-        DBAccount.instance.add(&account)
-        LJournal.instance.addAccount(account.id)
 
-        _ = navigationController?.popViewController(animated: true)
-
-        reloadTableView()
-    }
-*/
     func creationCallback(created: Bool) {
         if (created) {
             reloadTableView()
@@ -127,6 +117,8 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
     }
 
     func checkIdentifierAndPopulateArray() {
+        selections.removeAll()
+
         var ii = 0
         switch (selectType) {
         case .ACCOUNT: fallthrough

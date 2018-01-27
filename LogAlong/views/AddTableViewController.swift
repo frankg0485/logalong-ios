@@ -37,7 +37,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     let noteDefaultDesc = NSLocalizedString("Additional note here", comment: "")
 
     // input-output
-    var record: LTransaction!
+    var record: LTransaction?
     // input
     var createRecord: Bool = false
 
@@ -54,7 +54,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         setupNavigationBarItems()
         createHeader()
 
-        switch (record.type) {
+        switch (record!.type) {
         case .EXPENSE:
             navigationController?.navigationBar.barTintColor = LTheme.Color.base_red
             amountButton!.setTitleColor(LTheme.Color.base_red, for: .normal)
@@ -69,7 +69,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             tagCell.isHidden = true
             categoryLabel.text = accountDefaultDesc
         }
-        titleButton.setTitle(LTransaction.getTypeString(record.type), for: .normal)
+        titleButton.setTitle(LTransaction.getTypeString(record!.type), for: .normal)
 
         notesTextField.delegate = self
 
@@ -83,32 +83,32 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             dateButton!.setTitle(dateString, for: .normal)
         }
 
-        amountButton.setTitle(String(record.amount), for: .normal)
+        amountButton.setTitle(String(record!.amount), for: .normal)
         amountButton.sizeToFit()
 
-        if (record.type == .EXPENSE || record.type == .INCOME) {
-            if let catName = DBCategory.instance.get(id: record.categoryId)?.name {
+        if (record!.type == .EXPENSE || record!.type == .INCOME) {
+            if let catName = DBCategory.instance.get(id: record!.categoryId)?.name {
                 categoryLabel.text = (!catName.isEmpty) ? catName : categoryDefaultDesc
             } else {
                 categoryLabel.text = categoryDefaultDesc
             }
-            if let tagName = DBTag.instance.get(id: record.tagId)?.name {
+            if let tagName = DBTag.instance.get(id: record!.tagId)?.name {
                 tagLabel.text = (!tagName.isEmpty) ? tagName : tagDefaultDesc
             } else {
                 tagLabel.text = tagDefaultDesc
             }
 
             var vendName = ""
-            if let vname = DBVendor.instance.get(id: record.vendorId)?.name {
+            if let vname = DBVendor.instance.get(id: record!.vendorId)?.name {
                 vendName = vname
             }
-            if (record.type == .INCOME) {
+            if (record!.type == .INCOME) {
                 payeeLabel.text = (!vendName.isEmpty) ? vendName : payerDefaultDesc
             } else {
                 payeeLabel.text = (!vendName.isEmpty) ? vendName : payeeDefaultDesc
             }
 
-            if let acntName = DBAccount.instance.get(id: record.accountId)?.name {
+            if let acntName = DBAccount.instance.get(id: record!.accountId)?.name {
                 accountLabel.text = acntName
             } else {
                 accountLabel.text = accountDefaultDesc
@@ -117,18 +117,18 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             var acntName1 = accountDefaultDesc
             var acntName2 = accountDefaultDesc
 
-            if (record.type == .TRANSFER) {
-                if let acntName = DBAccount.instance.get(id: record.accountId)?.name {
+            if (record!.type == .TRANSFER) {
+                if let acntName = DBAccount.instance.get(id: record!.accountId)?.name {
                     acntName1 = acntName
                 }
-                if let acntName = DBAccount.instance.get(id: record.accountId2)?.name {
+                if let acntName = DBAccount.instance.get(id: record!.accountId2)?.name {
                     acntName2 = acntName
                 }
             } else {
-                if let acntName = DBAccount.instance.get(id: record.accountId)?.name {
+                if let acntName = DBAccount.instance.get(id: record!.accountId)?.name {
                     acntName2 = acntName
                 }
-                if let acntName = DBAccount.instance.get(id: record.accountId2)?.name {
+                if let acntName = DBAccount.instance.get(id: record!.accountId2)?.name {
                     acntName1 = acntName
                 }
             }
@@ -136,9 +136,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             accountLabel.text = acntName1
             categoryLabel.text = acntName2
         }
-        notesTextField.text = record.note
+        notesTextField.text = record!.note
 
-        displayDateMs(record.timestamp)
+        displayDateMs(record!.timestamp)
         updateSaveButtonState()
     }
 
@@ -222,26 +222,26 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     func passNumberBack(_ caller: UIViewController, type: TypePassed) {
         if let _ = caller as? SelectAmountViewController {
-            record.amount = type.double
+            record!.amount = type.double
             amountButton.setTitle(String(format: "%.2lf", type.double), for: .normal)
             amountButton.sizeToFit()
         } else if let sv = caller as? SelectViewController {
             switch sv.selectType {
             case .ACCOUNT:
-                record.accountId = type.int64
+                record!.accountId = type.int64
                 accountLabel.text = DBAccount.instance.get(id: type.int64)?.name
             case .ACCOUNT2:
-                record.accountId2 = type.int64
+                record!.accountId2 = type.int64
                 categoryLabel.text = DBAccount.instance.get(id: type.int64)?.name
             case .CATEGORY:
-                record.categoryId = type.int64
+                record!.categoryId = type.int64
                 categoryLabel.text = DBCategory.instance.get(id: type.int64)?.name
             case .TAG:
-                record.tagId = type.int64
+                record!.tagId = type.int64
                 tagLabel.text = DBTag.instance.get(id: type.int64)?.name
             case .PAYER: fallthrough
             case .PAYEE:
-                record.vendorId = type.int64
+                record!.vendorId = type.int64
                 payeeLabel.text = DBVendor.instance.get(id: type.int64)?.name
             default:
                 LLog.e("\(self)", "unknown request type")
@@ -268,13 +268,13 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
             popoverViewController.popoverPresentationController?.sourceRect =
-                CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 300, height: 0)
+                CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: LTheme.Dimension.popover_anchor_width, height: 0)
             popoverViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
             popoverViewController.popoverPresentationController!.delegate = self
         }
 
         var color = LTheme.Color.base_blue
-        switch (record.type) {
+        switch (record!.type) {
         case .EXPENSE:
             color = LTheme.Color.base_red
         case .INCOME:
@@ -288,34 +288,34 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
             if let secondViewController = nextViewController.topViewController as? SelectViewController {
                 if segue.identifier == "ChooseAccount" {
-                    if record.type == .TRANSFER_COPY {
+                    if record!.type == .TRANSFER_COPY {
                         secondViewController.selectType = .ACCOUNT2
-                        secondViewController.initValue = record.accountId2
+                        secondViewController.initValue = record!.accountId2
                     } else {
                         secondViewController.selectType = .ACCOUNT
-                        secondViewController.initValue = record.accountId
+                        secondViewController.initValue = record!.accountId
                     }
                 } else if segue.identifier == "ChooseCategory" {
-                    if record.type == .TRANSFER {
+                    if record!.type == .TRANSFER {
                         secondViewController.selectType = .ACCOUNT2
-                        secondViewController.initValue = record.accountId2
-                    } else if record.type == .TRANSFER_COPY {
+                        secondViewController.initValue = record!.accountId2
+                    } else if record!.type == .TRANSFER_COPY {
                         secondViewController.selectType = .ACCOUNT
-                        secondViewController.initValue = record.accountId
+                        secondViewController.initValue = record!.accountId
                     } else {
                         secondViewController.selectType = .CATEGORY
-                        secondViewController.initValue = record.categoryId
+                        secondViewController.initValue = record!.categoryId
                     }
                 } else if segue.identifier == "ChooseTag" {
                     secondViewController.selectType = .TAG
-                    secondViewController.initValue = record.tagId
+                    secondViewController.initValue = record!.tagId
                 } else if segue.identifier == "ChoosePayee" {
-                    if (record.type == .INCOME) {
+                    if (record!.type == .INCOME) {
                         secondViewController.selectType = .PAYER
                     } else {
                         secondViewController.selectType = .PAYEE
                     }
-                    secondViewController.initValue = record.vendorId
+                    secondViewController.initValue = record!.vendorId
                 }
 
                 secondViewController.delegate = self
@@ -324,12 +324,12 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }  else if let secondViewController = segue.destination as? SelectAmountViewController {
             secondViewController.popoverPresentationController?.sourceView = headerView
             secondViewController.delegate = self
-            secondViewController.initValue = record.amount
+            secondViewController.initValue = record!.amount
             secondViewController.color = color
         }  else if let secondViewController = segue.destination as? DatePickerViewController {
             secondViewController.popoverPresentationController?.sourceView = headerView
             secondViewController.delegate = self
-            secondViewController.initValue = record.timestamp
+            secondViewController.initValue = record!.timestamp
             secondViewController.color = color
         } else {
             LLog.d("\(self)", "unwinding")
@@ -346,8 +346,22 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     @objc func onSaveClick() {
-        //presentingViewController?.dismiss(animated: true, completion: nil)
-        performSegue(withIdentifier: "unwindToRecordList", sender: self)
+        if createRecord {
+            if DBTransaction.instance.add(&record!) {
+                _ = LJournal.instance.addRecord(id: record!.id)
+            }
+            _ = navigationController?.popViewController(animated: true)
+        } else {
+            if DBTransaction.instance.update(record!) {
+                _ = LJournal.instance.updateRecord(id: record!.id)
+            }
+        }
+
+        if presentingViewController is NewAdditionTableViewController {
+            dismiss(animated: true, completion: nil)
+        } else {
+            performSegue(withIdentifier: "unwindToRecordList", sender: self)
+        }
     }
 
     @objc func onCancelClick() {
@@ -375,7 +389,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     private func updateSaveButtonState() {
-        if (record.type == .TRANSFER || record.type == .TRANSFER_COPY) {
+        if (record!.type == .TRANSFER || record!.type == .TRANSFER_COPY) {
             if (accountLabel.text == "Choose Account") || (categoryLabel.text == "Choose Account") || (accountLabel.text == categoryLabel.text) {
                 saveButton.isEnabled = false
             } else {

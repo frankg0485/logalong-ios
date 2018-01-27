@@ -20,6 +20,8 @@ class DatePickerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.preferredContentSize.width = LTheme.Dimension.popover_width
+        self.preferredContentSize.height = LTheme.Dimension.popover_height_small
 
         datePicker.datePickerMode = .date
         datePicker.date = Date(milliseconds: initValue)

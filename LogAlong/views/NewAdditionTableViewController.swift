@@ -33,6 +33,8 @@ class NewAdditionTableViewController: UITableViewController {
             if let nextViewController = secondViewController.topViewController as? AddTableViewController {
                 let record = LTransaction()
                 nextViewController.record = record
+                nextViewController.createRecord = true
+
                 switch (segue.identifier ?? "") {
                 case "AddExpense":
                     record.type = .EXPENSE

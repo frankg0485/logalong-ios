@@ -272,23 +272,8 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     // MARK: - Navigation
     @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? AddTableViewController {
-            if let record = sourceViewController.record {
-                if (sourceViewController.createRecord) {
-                    // Add a new record.
-                    //let newIndexPath = IndexPath(row: records.count, section: 0)
-
-                    //records.append(record)
-                    //tableView.insertRows(at: [newIndexPath], with: .automatic)
-                    var mRecord = record
-                    _ = DBTransaction.instance.add(&mRecord)
-                    _ = navigationController?.popViewController(animated: true)
-                } else {
-                    _ = DBTransaction.instance.update(record)
-                }
-
-                navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
-                refresh()
-            }
+            navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
+            refresh()
         }
     }
 

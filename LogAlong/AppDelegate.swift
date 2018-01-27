@@ -37,9 +37,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
 
+    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    func registerBackgroundTask() {
+        backgroundTask = UIApplication.shared.beginBackgroundTask {
+            self.endBackgroundTask()
+        }
+    }
+
+    func endBackgroundTask() {
+        LLog.d("\(self)", "Background task ended.")
+        UIApplication.shared.endBackgroundTask(backgroundTask)
+        backgroundTask = UIBackgroundTaskInvalid
+    }
+
+    var workItem: DispatchWorkItem?
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        LLog.d("\(self)", "going to background, remaining: \(UIApplication.shared.backgroundTimeRemaining)")
+
+        workItem = DispatchWorkItem {
+            LLog.d("\(self)", "loading data")
+
+            DispatchQueue.main.async(execute: {
+                self.endBackgroundTask()
+            })
+        }
+
+        DispatchQueue.global(qos: .default).async(execute: workItem!)
+
+        registerBackgroundTask()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -52,5 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        LLog.d("\(self)", "going to terminate")
     }
 }
