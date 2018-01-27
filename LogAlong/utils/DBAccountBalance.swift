@@ -59,6 +59,96 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
         }
         return ret
     }
+
+    func removeAll() {
+        do {
+            try DBHelper.instance.db!.run(table!.delete())
+        } catch {
+            LLog.e("\(self)", "DB delete all failed")
+        }
+    }
+
+    private static func addUpdateAccountBalance(_ doubles: [Double], _ accountId: Int64, _ year: Int) {
+        var newEntry = false
+        var balance = DBAccountBalance.instance.get(accountId: accountId, year: year)
+        if (balance == nil) {
+            balance = LAccountYearBalance(id: 0, accountId: accountId, year: year, balance: "")
+            newEntry = true;
+        }
+        balance!.setBalanceValues(doubles)
+        if (newEntry) {
+            _ = DBAccountBalance.instance.add(&balance!)
+        } else {
+            _ = DBAccountBalance.instance.update(balance!)
+        }
+    }
+
+    private static var cancel = false
+    static func rescallCancel() {
+        cancel = true
+    }
+    static func rescan() {
+        cancel = false
+
+        let acnts = DBAccount.instance.getAll()
+        var accounts: Set<Int64> = Set<Int64>()
+        for a in acnts {
+            accounts.insert(a.id)
+        }
+
+        if (accounts.count == 0) {
+            LLog.d("\(self)", "no account left, deleting all balances");
+            DBAccountBalance.instance.removeAll() //clean up balances if all accounts are removed.
+            return
+        }
+
+        var doubles = [Double](repeating: 0, count: 12)
+        var lastAccountId: Int64 = 0
+        var lastYear: Int = 0
+
+        do {
+            for row in try DBHelper.instance.db!.prepare(DBTransaction.instance.table!.order(DBHelper.accountId.asc)) {
+                if cancel {
+                    return
+                }
+
+                let accountId = row[DBHelper.accountId]
+                if accountId == 0 {
+                    LLog.w("\(self)", "unexpected invalid account id")
+                    continue
+                }
+                accounts.remove(accountId)
+
+                let amount = row[DBHelper.amount]
+                let type = TransactionType(rawValue: UInt8(row[DBHelper.type]))!
+                let (year, month, _) = LA.ymd(milliseconds: row[DBHelper.timestamp])
+
+                if (lastAccountId == 0) {
+                    lastAccountId = accountId
+                    lastYear = year
+                } else if (lastAccountId != accountId || lastYear != year) {
+                    addUpdateAccountBalance(doubles, lastAccountId, lastYear)
+
+                    lastAccountId = accountId
+                    lastYear = year
+                    for ii in 0..<12 {
+                        doubles[ii] = 0.0
+                    }
+                }
+                doubles[month] += (type == .INCOME || type == .TRANSFER_COPY) ? amount : -amount;
+            }
+        } catch {
+            LLog.e("\(self)", "unable to find row")
+        }
+
+        if (lastYear != 0) {
+            addUpdateAccountBalance(doubles, lastAccountId, lastYear)
+        }
+
+        for a in accounts {
+            _ = DBAccountBalance.instance.remove(accountId: a)
+        }
+    }
 }
 
 

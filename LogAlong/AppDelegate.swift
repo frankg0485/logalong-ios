@@ -46,8 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func endBackgroundTask() {
         LLog.d("\(self)", "Background task ended.")
-        UIApplication.shared.endBackgroundTask(backgroundTask)
-        backgroundTask = UIBackgroundTaskInvalid
+        if (backgroundTask != UIBackgroundTaskInvalid) {
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = UIBackgroundTaskInvalid
+        }
     }
 
     var workItem: DispatchWorkItem?
@@ -55,15 +57,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         LLog.d("\(self)", "going to background, remaining: \(UIApplication.shared.backgroundTimeRemaining)")
-
+        if let wi = workItem {
+            wi.cancel()
+        }
         workItem = DispatchWorkItem {
-            LLog.d("\(self)", "loading data")
+            DBAccountBalance.rescan()
 
             DispatchQueue.main.async(execute: {
                 self.endBackgroundTask()
             })
         }
-
         DispatchQueue.global(qos: .default).async(execute: workItem!)
 
         registerBackgroundTask()
@@ -71,6 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        DBAccountBalance.rescallCancel()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
