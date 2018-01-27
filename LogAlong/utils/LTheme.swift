@@ -61,6 +61,9 @@ class LTheme {
 
     class Dimension {
         static let table_view_cell_height = 44
+        static let bar_button_width: CGFloat = 25
+        static let bar_button_height: CGFloat = 25
+        static let bar_button_space: CGFloat = 5
         static let popover_anchor_width: CGFloat = 300
         static let popover_width: CGFloat = 375
         static let popover_height: CGFloat = 320

@@ -168,11 +168,19 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         }
     }
 
+    @objc func onChartClick() {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PieChartViewController")
+            as? PieChartViewController {
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+
     private var titleBtn: UIButton?
     private var sortBtn: UIButton?
     private func setupNavigationBarItems() {
-        let BTN_W: CGFloat = 25
-        let BTN_H: CGFloat = 25
+        let BTN_W: CGFloat = LTheme.Dimension.bar_button_width
+        let BTN_H: CGFloat = LTheme.Dimension.bar_button_height
+        let BTN_S: CGFloat = LTheme.Dimension.bar_button_space
 
         titleBtn = UIButton(type: .custom)
         titleBtn!.addTarget(self, action: #selector(self.onTitleClick), for: .touchUpInside)
@@ -183,30 +191,33 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         sortBtn = UIButton(type: .system)
         sortBtn?.addTarget(self, action: #selector(self.onSortClick), for: .touchUpInside)
         sortBtn!.setImage(getSortIcon(), for: .normal)
-        sortBtn!.setSize(w: BTN_W, h: BTN_H)
-        //sortBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5)
+        sortBtn!.setSize(w: BTN_W + BTN_S, h: BTN_H)
+        sortBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S)
+
+        let chartBtn = UIButton(type: .system)
+        chartBtn.addTarget(self, action: #selector(self.onChartClick), for: .touchUpInside)
+        chartBtn.setImage(#imageLiteral(resourceName: "pie_chart_dark").withRenderingMode(.alwaysOriginal), for: .normal)
+        chartBtn.setSize(w: BTN_W - 2 + BTN_S, h: BTN_H - 2)
+        chartBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
 
         let searchBtn = UIButton(type: .system)
         searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
         searchBtn.setSize(w: BTN_W, h: BTN_H)
-        /*
-         searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+        //searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
 
+        /*
          let rightBtn = UIButton(type: .system)
          rightBtn.setImage(#imageLiteral(resourceName: "ic_action_right").withRenderingMode(.alwaysOriginal), for: .normal)
          rightBtn.setSize(w: BTN_W, h: BTN_H)
-         rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
+         rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
 
          let leftBtn = UIButton(type: .system)
          leftBtn.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
          leftBtn.setSize(w: BTN_W, h: BTN_H)
-         leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 5)
-
-         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: sortBtn!), UIBarButtonItem(customView: searchBtn)]
-         navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: rightBtn), UIBarButtonItem(customView: leftBtn)]
+         leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S)
          */
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: sortBtn!)
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: sortBtn!), UIBarButtonItem(customView: chartBtn)]
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBtn)
 
         navigationController?.navigationBar.isTranslucent = false

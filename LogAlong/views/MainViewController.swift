@@ -1,5 +1,5 @@
 //
-//  MainTableViewController.swift
+//  MainViewController.swift
 //  LogAlong
 //
 //  Created by Frank Gao on 3/6/17.
@@ -8,13 +8,19 @@
 
 import UIKit
 
-class MainTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
+class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate {
+
+    @IBOutlet weak var headerView: HorizontalLayout!
+    @IBOutlet weak var tableView: UITableView!
 
     var accounts: [LAccount] = []
     var dismissable = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.dataSource = self
+        tableView.delegate = self
+        setupNavigationBarItems()
 
         navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.yellow], for: .normal)
 
@@ -35,6 +41,60 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
                             cb: #selector(self.networkConnected),
                             listener: self)
         LBroadcast.register(LBroadcast.ACTION_UI_SHARE_ACCOUNT, cb: #selector(self.shareAccountRequest), listener: self)
+    }
+
+    private func setupNavigationBarItems() {
+        let BTN_W: CGFloat = LTheme.Dimension.bar_button_width
+        let BTN_H: CGFloat = LTheme.Dimension.bar_button_height
+        //let BTN_S: CGFloat = LTheme.Dimension.bar_button_space
+
+        navigationItem.titleView = UIView()
+
+        let addBtn = UIButton(type: .system)
+        addBtn.addTarget(self, action: #selector(self.onAddClick), for: .touchUpInside)
+        addBtn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
+        addBtn.setSize(w: BTN_W, h: BTN_H)
+
+        let scheduleBtn = UIButton(type: .system)
+        scheduleBtn.addTarget(self, action: #selector(self.onScheduleClick), for: .touchUpInside)
+        scheduleBtn.setImage(#imageLiteral(resourceName: "ic_action_alarms").withRenderingMode(.alwaysOriginal), for: .normal)
+        scheduleBtn.setSize(w: BTN_W, h: BTN_H)
+        //scheduleBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: scheduleBtn)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addBtn)
+        //UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.onAddClick))
+
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
+        navigationController?.navigationBar.barStyle = .black
+    }
+
+    @objc func onAddClick() {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NewAdditionTableViewController")
+            as? NewAdditionTableViewController {
+
+            //FIXME: place-holder code for now
+            vc.modalPresentationStyle = UIModalPresentationStyle.popover
+            vc.popoverPresentationController?.delegate = self
+            vc.preferredContentSize = CGSize(width: 375, height: 200)
+
+            let popoverPresentationController = vc.popoverPresentationController
+
+            // result is an optional (but should not be nil if modalPresentationStyle is popover)
+            if let _popoverPresentationController = popoverPresentationController {
+                // set the view from which to pop up
+                _popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+                _popoverPresentationController.sourceView = self.view;
+                _popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                dismissable = true
+            }
+
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+
+    @objc func onScheduleClick() {
     }
 
     @objc func shareAccountRequest(notification: Notification) -> Void {
@@ -92,19 +152,17 @@ class MainTableViewController: UITableViewController, UIPopoverPresentationContr
     }
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return accounts.count
     }
 
-
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountBalance", for: indexPath) as? MainTableViewCell
 
         let account = accounts[indexPath.row]
