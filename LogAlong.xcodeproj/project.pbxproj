@@ -69,7 +69,10 @@
 		CBC01B4B1FAEAA270092B184 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */; };
 		CBC01B4D1FAEAA420092B184 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */; };
 		CBC01B4F1FAEAA4D0092B184 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */; };
+		CBC13E1B201B23EF000DCF98 /* DBAccountBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC13E1A201B23EF000DCF98 /* DBAccountBalance.swift */; };
 		CBC374971FBE54890098721C /* LLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC374961FBE54890098721C /* LLog.swift */; };
+		CBCE73CA201B2563009C66C7 /* LAccountBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE73C9201B2563009C66C7 /* LAccountBalance.swift */; };
+		CBCE73D3201B2D92009C66C7 /* LAccountYearBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE73D2201B2D92009C66C7 /* LAccountYearBalance.swift */; };
 		CBD618101FB0081300A2B57E /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD6180F1FB0081300A2B57E /* Server.swift */; };
 		CBE058901FD33367002B2F08 /* LJournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */; };
 		CBEB3E5F2002BE7C00A34432 /* RecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */; };
@@ -258,7 +261,10 @@
 		CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
 		CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
+		CBC13E1A201B23EF000DCF98 /* DBAccountBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBAccountBalance.swift; sourceTree = "<group>"; };
 		CBC374961FBE54890098721C /* LLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLog.swift; sourceTree = "<group>"; };
+		CBCE73C9201B2563009C66C7 /* LAccountBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAccountBalance.swift; sourceTree = "<group>"; };
+		CBCE73D2201B2D92009C66C7 /* LAccountYearBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAccountYearBalance.swift; sourceTree = "<group>"; };
 		CBD6180F1FB0081300A2B57E /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Server.swift; path = LogAlong/network/Server.swift; sourceTree = SOURCE_ROOT; };
 		CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LJournalEntry.swift; sourceTree = "<group>"; };
 		CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsViewController.swift; sourceTree = "<group>"; };
@@ -294,6 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				CB1073611FCE6D0E00390032 /* DBAccount.swift */,
+				CBC13E1A201B23EF000DCF98 /* DBAccountBalance.swift */,
 				CB1073631FCE6F6E00390032 /* DBCategory.swift */,
 				CB1073651FCE735900390032 /* DBGeneric.swift */,
 				CB10735F1FCE62D900390032 /* DBHelper.swift */,
@@ -392,6 +399,8 @@
 			isa = PBXGroup;
 			children = (
 				CBC01B481FAEAA080092B184 /* LAccount.swift */,
+				CBCE73C9201B2563009C66C7 /* LAccountBalance.swift */,
+				CBCE73D2201B2D92009C66C7 /* LAccountYearBalance.swift */,
 				010797E51F6778FA00623C04 /* LCategory.swift */,
 				CB81316B1FCFB2CC00E33079 /* LDbBase.swift */,
 				CB1073541FCE599E00390032 /* LJournal.swift */,
@@ -684,7 +693,9 @@
 				012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */,
 				CBFB1BF01FC09A5D00B0321E /* LBroadcast.swift in Sources */,
 				CBE058901FD33367002B2F08 /* LJournalEntry.swift in Sources */,
+				CBCE73CA201B2563009C66C7 /* LAccountBalance.swift in Sources */,
 				01253CF41F5318BE005B4D8C /* SelectTableViewCell.swift in Sources */,
+				CBC13E1B201B23EF000DCF98 /* DBAccountBalance.swift in Sources */,
 				013E34ED1F4366F900EF8972 /* DBTransaction.swift in Sources */,
 				CB1073661FCE735900390032 /* DBGeneric.swift in Sources */,
 				017BA1161FAF5DE500694E38 /* CreateOrLoginTableViewController.swift in Sources */,
@@ -696,6 +707,7 @@
 				CBC01B4F1FAEAA4D0092B184 /* MainTableViewController.swift in Sources */,
 				CB1BC63A1FE7717600FD9D7E /* LScheduledTransaction.swift in Sources */,
 				010797E61F6778FA00623C04 /* LCategory.swift in Sources */,
+				CBCE73D3201B2D92009C66C7 /* LAccountYearBalance.swift in Sources */,
 				01DE2C121F449D8600ED5D9C /* AccountsTableViewCell.swift in Sources */,
 				0128AE4A1EC482B8007A999B /* CategoriesTableViewController.swift in Sources */,
 				01DE2C1B1F46764800ED5D9C /* CategoriesTableViewCell.swift in Sources */,
