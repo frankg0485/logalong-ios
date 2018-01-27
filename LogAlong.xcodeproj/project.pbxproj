@@ -68,11 +68,11 @@
 		CBC01B491FAEAA080092B184 /* LAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B481FAEAA080092B184 /* LAccount.swift */; };
 		CBC01B4B1FAEAA270092B184 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */; };
 		CBC01B4D1FAEAA420092B184 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */; };
-		CBC01B4F1FAEAA4D0092B184 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */; };
 		CBC13E1B201B23EF000DCF98 /* DBAccountBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC13E1A201B23EF000DCF98 /* DBAccountBalance.swift */; };
 		CBC374971FBE54890098721C /* LLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC374961FBE54890098721C /* LLog.swift */; };
 		CBCE73CA201B2563009C66C7 /* LAccountBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE73C9201B2563009C66C7 /* LAccountBalance.swift */; };
 		CBCE73D3201B2D92009C66C7 /* LAccountYearBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE73D2201B2D92009C66C7 /* LAccountYearBalance.swift */; };
+		CBCE73D5201CE079009C66C7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE73D4201CE079009C66C7 /* MainViewController.swift */; };
 		CBD618101FB0081300A2B57E /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD6180F1FB0081300A2B57E /* Server.swift */; };
 		CBE058901FD33367002B2F08 /* LJournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */; };
 		CBEB3E5F2002BE7C00A34432 /* RecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */; };
@@ -260,11 +260,11 @@
 		CBC01B481FAEAA080092B184 /* LAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LAccount.swift; sourceTree = "<group>"; };
 		CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
-		CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		CBC13E1A201B23EF000DCF98 /* DBAccountBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBAccountBalance.swift; sourceTree = "<group>"; };
 		CBC374961FBE54890098721C /* LLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LLog.swift; sourceTree = "<group>"; };
 		CBCE73C9201B2563009C66C7 /* LAccountBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAccountBalance.swift; sourceTree = "<group>"; };
 		CBCE73D2201B2D92009C66C7 /* LAccountYearBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAccountYearBalance.swift; sourceTree = "<group>"; };
+		CBCE73D4201CE079009C66C7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		CBD6180F1FB0081300A2B57E /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Server.swift; path = LogAlong/network/Server.swift; sourceTree = SOURCE_ROOT; };
 		CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LJournalEntry.swift; sourceTree = "<group>"; };
 		CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsViewController.swift; sourceTree = "<group>"; };
@@ -379,8 +379,8 @@
 				01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */,
 				CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */,
 				019CCD4D1E6DC7C5002EF989 /* MainTableViewCell.swift */,
-				CBC01B4E1FAEAA4D0092B184 /* MainTableViewController.swift */,
 				014893D61EEB0332005E3C94 /* MainTabViewController.swift */,
+				CBCE73D4201CE079009C66C7 /* MainViewController.swift */,
 				01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */,
 				CBF135D61FF1E27800E7E8AE /* RecordsPageViewController.swift */,
 				019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */,
@@ -681,6 +681,7 @@
 				CB3154DF1FBD3AA6006F9DE4 /* Crc32.swift in Sources */,
 				CBC374971FBE54890098721C /* LLog.swift in Sources */,
 				CB1BC6311FE770A100FD9D7E /* LTransactionDetails.swift in Sources */,
+				CBCE73D5201CE079009C66C7 /* MainViewController.swift in Sources */,
 				CB81316C1FCFB2CC00E33079 /* LDbBase.swift in Sources */,
 				01B61A7B1FF8460100899F21 /* UsersTableViewCell.swift in Sources */,
 				CBB51D1F1FE49660000CD233 /* LTag.swift in Sources */,
@@ -704,7 +705,6 @@
 				CBEB3E5F2002BE7C00A34432 /* RecordsViewController.swift in Sources */,
 				017BA1141FAF5DC600694E38 /* LoginInfoTableViewController.swift in Sources */,
 				CB51B55A1FBBFBF6002CABA1 /* LTransport.swift in Sources */,
-				CBC01B4F1FAEAA4D0092B184 /* MainTableViewController.swift in Sources */,
 				CB1BC63A1FE7717600FD9D7E /* LScheduledTransaction.swift in Sources */,
 				010797E61F6778FA00623C04 /* LCategory.swift in Sources */,
 				CBCE73D3201B2D92009C66C7 /* LAccountYearBalance.swift in Sources */,
