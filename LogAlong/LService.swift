@@ -683,17 +683,17 @@ class LService {
                     let aid = bdata["int1"] as! Int64
                     let uid = bdata["int2"] as! Int64
                     //TODO:
-/*                    let shareAccept = LPreferences.getShareAccept(uid)
-                    if ((shareAccept != 0) && (shareAccept + 24 * 3600 * 1000 > NSDate().timeIntervalSince1970 * 1000)) {
-                        LJournal.instance.confirmAccountShare(aid, uid, true)
+                    let shareAccept = LPreferences.getShareAccept(uid)
+                    if ((shareAccept != 0) && (shareAccept + 24 * 3600 > Int64(NSDate().timeIntervalSince1970))) {
+                        LJournal.instance.confirmAccountShare(aid: aid, uid: uid, yes: true)
                     } else {
-                        name = bdata["txt1"]
-                        LAccountShareRequest shareRequest = new LAccountShareRequest(uid, LPreferences
-                            .getShareUserId(uid), LPreferences.getShareUserName(uid), name, aid)
+                        let name = bdata["txt1"]
+                        let shareRequest = LAccountShareRequest(userId: uid, userName: LPreferences
+                            .getShareUserId(uid), userFullName: LPreferences.getShareUserName(uid), accountName: name as! String, accountGid: aid)
                         LPreferences.addAccountShareRequest(shareRequest)
-                     }
- */
-                        LBroadcast.post(LBroadcast.ACTION_UI_SHARE_ACCOUNT, sender: nil, data: bdata)
+                    }
+
+                    LBroadcast.post(LBroadcast.ACTION_UI_SHARE_ACCOUNT, sender: nil, data: bdata)
 
                 case LService.NOTIFICATION_DECLINE_ACCOUNT_SHARE:
                     let aid = bdata["int1"] as! Int64

@@ -24,6 +24,7 @@ class LPreferences {
     static let userName = "userName"
     static let userPassword = "userPassword"
     static let shareAccept = "shareAccept"
+    static let shareAccountRequest = "shareAccountRequest"
 
     static func getRecordsSearchControls() -> LRecordSearch {
         return LRecordSearch(from: 0, to: 0)
@@ -128,11 +129,88 @@ class LPreferences {
         defaults.set(id, forKey: "\(userId).\(String(gid))")
     }
 
-    static func getShareAccept(_ uid: Int64) -> Int{
-        return defaults.integer(forKey: shareAccept + "." + String(uid))
+    static func getShareAccept(_ uid: Int64) -> Int64 {
+        return defaults.object(forKey: shareAccept + "." + String(uid)) as! Int64
     }
 
-    static func setShareAccept(_ uid: Int64, _ acceptTimeMs: Int64) {
-        return defaults.set(acceptTimeMs, forKey: shareAccept + "." + String(uid))
+    static func setShareAccept(_ uid: Int64, _ acceptTimeS: Int64) {
+        return defaults.set(acceptTimeS, forKey: shareAccept + "." + String(uid))
     }
+
+    static func getEmptyAccountShareRequest() -> Int {
+        let shares = defaults.integer(forKey: shareAccountRequest + ".total")
+
+        var ii = 0
+        while ii < shares {
+            if (defaults.integer(forKey: shareAccountRequest + String(ii) + ".state") == 0) {
+                return ii
+            }
+            ii += 1
+        }
+
+        defaults.set(shares + 1, forKey: shareAccountRequest + ".total")
+        return ii
+    }
+
+    static func addAccountShareRequest(_ request: LAccountShareRequest) {
+        let share = getEmptyAccountShareRequest()
+
+        defaults.set(request.accountName, forKey: shareAccountRequest + String(share) + ".accountName")
+        defaults.set(request.accountGid, forKey: shareAccountRequest + String(share) + ".accountGid")
+        defaults.set(request.userId, forKey: shareAccountRequest + String(share) + ".userId")
+        defaults.set(request.userName, forKey: shareAccountRequest + String(share) + ".userName")
+        defaults.set(request.userFullName, forKey: shareAccountRequest + String(share) + ".userFullName")
+        defaults.set(1, forKey: shareAccountRequest + String(share) + ".state")
+    }
+
+    static func deleteAccountShareRequest(request: LAccountShareRequest) {
+        let shares = defaults.integer(forKey: shareAccountRequest + ".total")
+
+        var ii = 0
+        while ii < shares {
+            if defaults.integer(forKey: shareAccountRequest + String(ii) + ".state") == 1 {
+                if (defaults.integer(forKey: shareAccountRequest + String(ii) + "userId") == Int(request.userId))
+                    && (defaults.string(forKey: shareAccountRequest + String(ii) + "userName") == request.userName)
+                    && (defaults.string(forKey: shareAccountRequest + String(ii) + "userFullName") == request.userFullName)
+                    && (defaults.string(forKey: shareAccountRequest + String(ii) + "accountName") == request.accountName)
+                    && (defaults.integer(forKey: shareAccountRequest + String(ii) + "userId") == Int(request.accountGid)) {
+                    defaults.set(0, forKey: shareAccountRequest + String(ii) + ".state")
+                }
+            }
+            ii += 1
+        }
+    }
+
+    static func getAccountShareRequest() -> LAccountShareRequest {
+        var request: LAccountShareRequest?
+        let shares = defaults.integer(forKey: shareAccountRequest + ".total")
+
+        var ii = 0
+        while ii < shares {
+            if defaults.integer(forKey: shareAccountRequest + String(ii) + ".state") == 1 {
+                request = LAccountShareRequest(userId: Int64(defaults.integer(forKey: shareAccountRequest + String(ii) + "userId")), userName: defaults.string(forKey: shareAccountRequest + String(ii) + "userName")!, userFullName: defaults.string(forKey: shareAccountRequest + String(ii) + "userFullName")!, accountName: defaults.string(forKey: shareAccountRequest + String(ii) + "accountName")!, accountGid: Int64(defaults.integer(forKey: shareAccountRequest + String(ii) + "userId")))
+            }
+            ii += 1
+        }
+
+        return request!
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

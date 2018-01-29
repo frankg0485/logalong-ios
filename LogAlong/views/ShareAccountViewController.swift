@@ -57,12 +57,6 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         // Dispose of any resources that can be recreated.
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        if let accountsVC = presentingViewController as? AccountsTableViewController {
-            //accountsVC.onShareAccountDialogExit(true, applyToAllAccounts, account.id)
-        }
-    }
-
     @IBAction func checkButtonClicked(_ sender: UIButton) {
         if checkBoxClicked {
             if let cell = sender.superview?.superview as? UsersTableViewCell {
@@ -161,7 +155,7 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
 
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! UsersTableViewCell
 
-        cell.userLabel.text = "\(shareUsers[indexPath.row].fullName)(\(shareUsers[indexPath.row].name))"
+        cell.userLabel.text = "\(shareUsers[indexPath.row].fullName) (\(shareUsers[indexPath.row].name))"
         cell.checkButton.setImage(#imageLiteral(resourceName: "btn_check_off_normal_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
         cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
         cell.backgroundColor = LTheme.Color.row_released_color

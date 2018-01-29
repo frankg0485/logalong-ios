@@ -306,7 +306,6 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             let popoverViewController = segue.destination
 
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-
             popoverViewController.popoverPresentationController!.delegate = self
 
         default:
@@ -317,6 +316,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         if let secondViewController = segue.destination as? CreateViewController {
             secondViewController.delegate = self
+            secondViewController.createType = SelectType.ACCOUNT
         }
     }
 

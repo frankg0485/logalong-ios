@@ -43,6 +43,37 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         LBroadcast.register(LBroadcast.ACTION_UI_SHARE_ACCOUNT, cb: #selector(self.shareAccountRequest), listener: self)
     }
 
+    func onShareAccountConfirmDialogExit(_ ok: Bool, _ request: LAccountShareRequest) {
+        let journal = LJournal()
+        journal.confirmAccountShare(aid: request.accountGid, uid: request.userId, yes: ok)
+
+        LPreferences.deleteAccountShareRequest(request: request)
+    }
+
+    func presentShareView(_ request: LAccountShareRequest) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "AccountShareRequest") as! ShareAccountConfirmViewController
+
+        controller.modalPresentationStyle = UIModalPresentationStyle.popover
+        controller.popoverPresentationController?.delegate = self
+        controller.preferredContentSize = CGSize(width: 375, height: 230)
+
+        controller.accountUserLabelText = "\(request.accountName) : \(request.userName) (\(request.userFullName))"
+        controller.request = request
+
+        let popoverPresentationController = controller.popoverPresentationController
+
+        if let _popoverPresentationController = popoverPresentationController {
+            // set the view from which to pop up
+            _popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+            _popoverPresentationController.sourceView = self.view;
+            _popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            // present (id iPhone it is a modal automatic full screen)
+            dismissable = false
+
+            self.present(controller, animated: true, completion: nil)
+        }
+    }
     private func setupNavigationBarItems() {
         let BTN_W: CGFloat = LTheme.Dimension.bar_button_width
         let BTN_H: CGFloat = LTheme.Dimension.bar_button_height
@@ -98,7 +129,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     @objc func shareAccountRequest(notification: Notification) -> Void {
-
+        if let bdata = notification.userInfo as? [String: Any] {
+            if let status = bdata["status"] as? Int {
+                if LProtocol.RSPS_OK == status {
+                    let request = LAccountShareRequest(userId: bdata["int2"] as! Int64, userName: LPreferences.getShareUserId(bdata["int2"] as! Int64), userFullName: LPreferences.getShareUserName(bdata["int2"] as! Int64), accountName: bdata["txt1"] as! String, accountGid: bdata["int1"] as! Int64)
+                    presentShareView(request)
+                }
+            }
+        }
     }
 
     @objc func networkConnected(notification: Notification) -> Void {
