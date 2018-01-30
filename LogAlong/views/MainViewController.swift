@@ -13,20 +13,24 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var headerView: HorizontalLayout!
     @IBOutlet weak var tableView: UITableView!
 
-    var accounts: [LAccount] = []
+    var labelBalance: UILabel!
     var dismissable = false
+    var accountBalances = LAccountBalances()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
         setupNavigationBarItems()
+        createHeader()
 
         navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.yellow], for: .normal)
-
         tabBarController?.tabBar.isOpaque = true
 
-        accounts = DBAccount.instance.getAll()
+        accountBalances.scan()
+        labelBalance.textColor = accountBalances.total >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
+        labelBalance.text = String(format: "%.2f", accountBalances.total)
+        labelBalance.sizeToFit()
 
         tableView.tableFooterView = UIView()
         // Uncomment the following line to preserve selection between presentations
@@ -99,6 +103,28 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
         navigationController?.navigationBar.barStyle = .black
+    }
+
+    private func createHeader()
+    {
+        headerView.backgroundColor = LTheme.Color.balance_header_bgd_color
+
+        let fontsize: CGFloat = LTheme.Dimension.balance_header_font_size
+        let labelHeader = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
+        labelHeader.layoutMargins = UIEdgeInsetsMake(0, LTheme.Dimension.balance_header_left_margin, 0, 0)
+        labelHeader.font = labelHeader.font.withSize(fontsize)
+        labelHeader.font = UIFont.boldSystemFont(ofSize: fontsize)
+        labelHeader.text = NSLocalizedString("Balance", comment: "")
+        labelHeader.sizeToFit()
+
+        labelBalance = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 25))
+        labelBalance.textAlignment = .right
+        labelBalance.layoutMargins = UIEdgeInsetsMake(0, 0, 0, LTheme.Dimension.balance_header_right_margin)
+        labelBalance.font = labelBalance.font.withSize(fontsize)
+        labelBalance.sizeToFit()
+
+        headerView.addSubview(labelHeader)
+        headerView.addSubview(labelBalance)
     }
 
     @objc func onAddClick() {
@@ -197,14 +223,22 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return accounts.count
+        return accountBalances.accounts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AccountBalance", for: indexPath) as? MainTableViewCell
 
-        let account = accounts[indexPath.row]
-        cell?.nameLabel.text = account.name
+        let ab = accountBalances.balances[indexPath.row]
+        let a = accountBalances.accounts[indexPath.row]
+        cell?.nameLabel.text = a.name
+        cell?.nameLabel.sizeToFit()
+
+        let balanceLabel = cell?.balance
+        let amount = ab.getLatestBalance()
+        balanceLabel?.textColor = (amount > 0) ? LTheme.Color.base_green : LTheme.Color.base_red
+        balanceLabel?.text = String(format: "%.2f", ab.getLatestBalance())
+        balanceLabel?.sizeToFit()
         return cell!
     }
 

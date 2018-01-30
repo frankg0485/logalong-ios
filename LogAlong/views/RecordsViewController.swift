@@ -20,6 +20,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     private var loader: DBLoader?
     private var loaderNew: DBLoader?
     private var workItem: DispatchWorkItem?
+    private var accountBalances = LAccountBalances()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,15 +43,49 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
                 self.loaderNew = DBLoader(year: self.year, month: self.month, sort: LPreferences.getRecordsViewSortMode(),
                                           interval: LPreferences.getRecordsViewTimeInterval(), asc: LPreferences.getRecordsViewAscend(),
                                           search: LPreferences.getRecordsSearchControls())
+                self.accountBalances.scan()
 
                 DispatchQueue.main.async(execute: {
                     self.loader = self.loaderNew
 
                     if (self.isViewLoaded) {
-                        let fmt = DateFormatter()
-                        fmt.dateFormat = "MM"
-                        self.labelHeader!.text =  fmt.monthSymbols[self.month]
+                        var income: Double = 0
+                        var expense: Double = 0
+                        var balance: Double = 0
+                        for ii in 0..<self.loader!.getSectionCount() {
+                            let s = self.loader!.getSection(ii)
+                            income += s.income
+                            expense += s.expense
+                            balance += s.balance
+                        }
+
+                        var txt: String
+                        switch (LPreferences.getRecordsViewTimeInterval()) {
+                        case RecordsViewInterval.MONTHLY.rawValue:
+                            let fmt = DateFormatter()
+                            fmt.dateFormat = "MM"
+                            txt =  fmt.monthSymbols[self.month]
+                            balance = self.accountBalances.getBalance(year: self.year, month: self.month)
+                        case RecordsViewInterval.ANNUALLY.rawValue:
+                            txt = String(self.year)
+                            balance = self.accountBalances.getBalance(year: self.year, month: 11)
+                        default:
+                            txt = NSLocalizedString("Balance", comment: "")
+                        }
+
+                        //TODO: check search mode and update balance header accordingly
+
+                        self.labelHeader!.text = txt
                         self.labelHeader!.sizeToFit()
+
+                        self.labelBalance!.textColor = balance >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
+                        self.labelBalance!.text = String(format: "%.2f", balance)
+                        self.labelBalance!.sizeToFit()
+
+                        self.labelIncome!.text = String(format: "%.2f", income)
+                        self.labelIncome!.sizeToFit()
+                        self.labelExpense!.text = String(format: "%.2f", expense)
+                        self.labelExpense!.sizeToFit()
 
                         self.headerView!.refresh()
                         self.tableView.reloadData()
@@ -95,9 +130,9 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         }
         hView.backgroundColor = LTheme.Color.balance_header_bgd_color
 
-        let fontsize: CGFloat = 14
+        let fontsize: CGFloat = LTheme.Dimension.balance_header_font_size
         let labelHeader = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 25))
-        labelHeader.layoutMargins = UIEdgeInsetsMake(0, 10, 0, 0)
+        labelHeader.layoutMargins = UIEdgeInsetsMake(0, LTheme.Dimension.balance_header_left_margin, 0, 0)
         labelHeader.font = labelHeader.font.withSize(fontsize)
         labelHeader.font = UIFont.boldSystemFont(ofSize: fontsize)
         labelHeader.text = txt
@@ -107,7 +142,6 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
 
         let labelBalance = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
         labelBalance.font = labelBalance.font.withSize(fontsize)
-        labelBalance.text = "123.45"
         //labelBalance.translatesAutoresizingMaskIntoConstraints = false
         labelBalance.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 2)
         labelBalance.sizeToFit()
@@ -121,20 +155,18 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         let labelIncome = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
         labelIncome.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 5)
         labelIncome.font = labelIncome.font.withSize(fontsize)
-        labelIncome.text = "123.45"
         labelIncome.textColor = LTheme.Color.base_green
         labelIncome.sizeToFit()
 
         let labelExpense = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
         labelExpense.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 2)
         labelExpense.font = labelExpense.font.withSize(fontsize)
-        labelExpense.text = "123.45"
         labelExpense.textColor = LTheme.Color.base_red
         labelExpense.sizeToFit()
 
         let pr = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 25))
         pr.font = pr.font.withSize(fontsize)
-        pr.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 10)
+        pr.layoutMargins = UIEdgeInsetsMake(0, 0, 0, LTheme.Dimension.balance_header_right_margin)
         pr.text = ")"
         pr.sizeToFit()
 
@@ -173,13 +205,13 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         h.text = sect.txt
         h.sizeToFit()
 
-        b.textColor = (sect.balance > 0) ? LTheme.Color.base_green : LTheme.Color.base_red
-        b.text = String(sect.balance)
+        b.textColor = (sect.balance >= 0) ? LTheme.Color.base_green : LTheme.Color.base_red
+        b.text = String(format: "%.2f", sect.balance)
         b.sizeToFit()
 
-        i.text = String(sect.income)
+        i.text = String(format: "%.2f", sect.income)
         i.sizeToFit()
-        e.text = String(sect.expense)
+        e.text = String(format: "%.2f", sect.expense)
         e.sizeToFit()
 
         return v
@@ -237,7 +269,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         default:
             cell.amountLabel.textColor = LTheme.Color.base_blue
         }
-        cell.amountLabel.text = String(record.amount)
+        cell.amountLabel.text = String(format: "%.2f", record.amount)
 
         let date = Date(milliseconds: record.timestamp)
         let dayTimePeriodFormatter = DateFormatter()

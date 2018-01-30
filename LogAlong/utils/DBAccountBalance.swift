@@ -47,6 +47,20 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
         return nil
     }
 
+    func get(accountId: Int64) -> [LAccountYearBalance]? {
+        var yb = [LAccountYearBalance]()
+        do {
+            for row in try DBHelper.instance.db!.prepare(table!.filter(DBHelper.accountId == accountId)) {
+                if let b = rdValues(row) {
+                    yb.append(b)
+                }
+            }
+        } catch {
+            LLog.e("\(self)", "unable to find row with accountId: \(accountId)")
+        }
+        return yb.isEmpty ? nil : yb
+    }
+
     func remove(accountId: Int64) -> Bool {
         var ret = false
 

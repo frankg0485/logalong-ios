@@ -68,5 +68,8 @@ class LTheme {
         static let popover_width: CGFloat = 375
         static let popover_height: CGFloat = 320
         static let popover_height_small: CGFloat = 200
+        static let balance_header_font_size: CGFloat = 14
+        static let balance_header_right_margin: CGFloat = 16
+        static let balance_header_left_margin: CGFloat = 16
     }
 }

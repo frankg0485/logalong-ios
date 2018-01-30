@@ -74,3 +74,60 @@ class LAccountBalance {
         return value
     }
 }
+
+class LAccountBalances {
+    var balances = [LAccountBalance]()
+    var accounts = [LAccount]()
+    var total: Double = 0
+
+    func scan() {
+        accounts.removeAll()
+        balances.removeAll()
+        total = 0
+        for account in DBAccount.instance.getAll() {
+            if let ayb = DBAccountBalance.instance.get(accountId: account.id) {
+                let ab = LAccountBalance(accountId: account.id)
+                for b in ayb {
+                    ab.setYearBalance(year: b.year, balance: b.balance)
+                }
+
+                balances.append(ab)
+                accounts.append(account)
+                total += ab.getLatestBalance()
+            }
+        }
+    }
+
+    func getBalance(year: Int, month: Int) -> Double {
+        var val: Double = 0
+        for b in balances {
+            let yba = b.getYearBalanceAccumulated(year: year)
+            val += yba[month]
+        }
+        return val
+    }
+
+    func getBalance(accountId: Int64, year: Int, month: Int) -> Double {
+        var val: Double = 0
+
+        for b in balances {
+            if b.accountId == accountId {
+                let yba = b.getYearBalanceAccumulated(year: year)
+                val = yba[month]
+            }
+        }
+        return val
+    }
+
+    func getBalance() -> Double {
+        return total
+    }
+
+    func getBalance(accountIds: [Int64], year: Int, month: Int) -> Double {
+        var val: Double  = 0
+        for aid in accountIds {
+            val += getBalance(accountId: aid, year: year, month: month)
+        }
+        return val
+    }
+}
