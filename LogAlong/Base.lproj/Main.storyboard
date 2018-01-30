@@ -759,21 +759,26 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gW6-Z6-yb7">
-                                                    <rect key="frame" x="8" y="11" width="309" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gW6-Z6-yb7">
+                                                    <rect key="frame" x="15" y="11" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kN7-d7-43Z">
-                                                    <rect key="frame" x="325" y="11" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kN7-d7-43Z">
+                                                    <rect key="frame" x="318" y="11" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="kN7-d7-43Z" firstAttribute="leading" secondItem="gW6-Z6-yb7" secondAttribute="trailing" priority="250" constant="5" id="MyR-mM-59i"/>
+                                                <constraint firstItem="kN7-d7-43Z" firstAttribute="baseline" secondItem="gW6-Z6-yb7" secondAttribute="baseline" id="Y6z-L5-P8R"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="kN7-d7-43Z" secondAttribute="trailing" id="ojF-En-fUL"/>
+                                                <constraint firstItem="gW6-Z6-yb7" firstAttribute="leading" secondItem="d5y-4c-IIw" secondAttribute="leadingMargin" id="wAh-fV-M3a"/>
+                                                <constraint firstItem="gW6-Z6-yb7" firstAttribute="centerY" secondItem="d5y-4c-IIw" secondAttribute="centerY" id="zr4-jW-qPT"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="balance" destination="kN7-d7-43Z" id="MhC-ys-MA2"/>
