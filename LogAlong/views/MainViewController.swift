@@ -14,6 +14,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var tableView: UITableView!
 
     var labelBalance: UILabel!
+    var addBtn: UIButton!
     var dismissable = false
     var accountBalances = LAccountBalances()
 
@@ -85,7 +86,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         navigationItem.titleView = UIView()
 
-        let addBtn = UIButton(type: .system)
+        addBtn = UIButton(type: .system)
         addBtn.addTarget(self, action: #selector(self.onAddClick), for: .touchUpInside)
         addBtn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
         addBtn.setSize(w: BTN_W, h: BTN_H)
@@ -131,19 +132,21 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NewAdditionTableViewController")
             as? NewAdditionTableViewController {
 
-            //FIXME: place-holder code for now
             vc.modalPresentationStyle = UIModalPresentationStyle.popover
             vc.popoverPresentationController?.delegate = self
-            vc.preferredContentSize = CGSize(width: 375, height: 200)
+            vc.myNavigationController = self.navigationController
+            //149 = 3 * 50 (cell height) - 1 (cell separator height): so to hide the last cell separator
+            vc.preferredContentSize = CGSize(width: 140, height: 149)
 
             let popoverPresentationController = vc.popoverPresentationController
 
             // result is an optional (but should not be nil if modalPresentationStyle is popover)
             if let _popoverPresentationController = popoverPresentationController {
                 // set the view from which to pop up
-                _popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
-                _popoverPresentationController.sourceView = self.view;
-                _popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                _popoverPresentationController.permittedArrowDirections = .up
+                _popoverPresentationController.sourceView = addBtn
+                _popoverPresentationController.sourceRect = CGRect(x: addBtn.bounds.midX, y: addBtn.bounds.maxY, width: 0, height: 0)
+
                 dismissable = true
             }
 

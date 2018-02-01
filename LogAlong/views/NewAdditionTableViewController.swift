@@ -9,6 +9,7 @@
 import UIKit
 
 class NewAdditionTableViewController: UITableViewController {
+    var myNavigationController: UINavigationController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,29 +28,26 @@ class NewAdditionTableViewController: UITableViewController {
 
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let secondViewController = segue.destination as? UINavigationController {
-            if let nextViewController = secondViewController.topViewController as? AddTableViewController {
-                let record = LTransaction()
-                nextViewController.record = record
-                nextViewController.createRecord = true
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let record = LTransaction()
 
-                switch (segue.identifier ?? "") {
-                case "AddExpense":
-                    record.type = .EXPENSE
+        if let mnc = self.myNavigationController {
+            if let nvc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddTableViewController")
+                as? AddTableViewController {
+                nvc.record = record
+                nvc.createRecord = true
 
-                case "AddIncome":
-                    record.type = .INCOME
-
-                case "AddTransfer":
-                    record.type = .TRANSFER
-
+                switch indexPath.row {
+                case 1: record.type = .INCOME
+                case 2: record.type = .TRANSFER
+                case 0: fallthrough
                 default:
-                    fatalError()
+                     record.type = .EXPENSE
                 }
+                mnc.pushViewController(nvc, animated: true)
             }
         }
-    }
 
+        dismiss(animated: true, completion: nil)
+    }
 }
