@@ -14,22 +14,23 @@
         <scene sceneID="0Jf-Wd-zGi">
             <objects>
                 <tableViewController storyboardIdentifier="NewAdditionTableViewController" id="Fhp-gV-GDC" customClass="NewAdditionTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="F5y-tX-l7K">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="static" style="plain" separatorStyle="singleLineEtched" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="F5y-tX-l7K">
                         <rect key="frame" x="0.0" y="0.0" width="131" height="131"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="separatorColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <sections>
                             <tableViewSection id="Dg4-g1-JFD">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="br8-Wu-OpA" style="IBUITableViewCellStyleDefault" id="oXV-b0-QDV">
-                                        <rect key="frame" x="0.0" y="0.0" width="131" height="44"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="131" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oXV-b0-QDV" id="rbP-cT-8YD">
-                                            <rect key="frame" x="0.0" y="0.0" width="97" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="97" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Expense" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="br8-Wu-OpA">
-                                                    <rect key="frame" x="16" y="0.0" width="80" height="43.5"/>
+                                                    <rect key="frame" x="16" y="0.0" width="80" height="49.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -37,19 +38,16 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="sgu-vt-JEI" kind="presentation" identifier="AddExpense" id="pWN-xB-sQh"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Qhi-uP-Fy6" style="IBUITableViewCellStyleDefault" id="RFQ-Zk-I0T">
-                                        <rect key="frame" x="0.0" y="44" width="131" height="44"/>
+                                        <rect key="frame" x="0.0" y="50" width="131" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RFQ-Zk-I0T" id="9ss-DG-tQK">
-                                            <rect key="frame" x="0.0" y="0.0" width="97" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="97" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Income" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qhi-uP-Fy6">
-                                                    <rect key="frame" x="16" y="0.0" width="80" height="43.5"/>
+                                                    <rect key="frame" x="16" y="0.0" width="80" height="49.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -57,19 +55,16 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="sgu-vt-JEI" kind="presentation" identifier="AddIncome" id="CJ7-Kj-Djb"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="zSA-Sb-6CW" style="IBUITableViewCellStyleDefault" id="efw-I7-pJ8">
-                                        <rect key="frame" x="0.0" y="88" width="131" height="44"/>
+                                        <rect key="frame" x="0.0" y="100" width="131" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="efw-I7-pJ8" id="JHl-hU-VDY">
-                                            <rect key="frame" x="0.0" y="0.0" width="97" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="97" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Transfer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zSA-Sb-6CW">
-                                                    <rect key="frame" x="16" y="0.0" width="80" height="43.5"/>
+                                                    <rect key="frame" x="16" y="0.0" width="80" height="49.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -77,9 +72,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="sgu-vt-JEI" kind="presentation" identifier="AddTransfer" id="OGp-5E-e1j"/>
-                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -96,7 +88,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YfE-mO-bql" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1046" y="438"/>
+            <point key="canvasLocation" x="335" y="242"/>
         </scene>
         <!--Records Page View Controller-->
         <scene sceneID="lVZ-xg-KzZ">
@@ -1005,7 +997,7 @@
         <!--New Record-->
         <scene sceneID="iXq-J6-Nvp">
             <objects>
-                <tableViewController storyboardIdentifier="testID" id="58n-ox-X6M" customClass="AddTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="AddTableViewController" id="58n-ox-X6M" customClass="AddTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="-1" sectionFooterHeight="-1" id="MS3-l5-TwK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1708,24 +1700,6 @@
             <point key="canvasLocation" x="1577" y="1158"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="BEj-6B-Mf1">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sgu-vt-JEI" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wIG-yn-7Nz">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="58n-ox-X6M" kind="relationship" relationship="rootViewController" id="XC4-P6-fUh"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jjB-DM-5Dj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="12" y="438"/>
-        </scene>
-        <!--Navigation Controller-->
         <scene sceneID="WWh-T6-z1R">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zpe-CT-Leg" sceneMemberID="viewController">
@@ -2423,7 +2397,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mmb-8x-cBl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1690.4000000000001" y="437.18140929535235"/>
+            <point key="canvasLocation" x="-908" y="287"/>
         </scene>
     </scenes>
     <resources>
@@ -2431,8 +2405,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="l1s-fC-FxU"/>
-        <segue reference="CJ7-Kj-Djb"/>
-        <segue reference="Jhj-Ka-e6L"/>
         <segue reference="Jao-C5-gDT"/>
     </inferredMetricsTieBreakers>
 </document>
