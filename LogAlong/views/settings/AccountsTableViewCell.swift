@@ -10,6 +10,7 @@ import UIKit
 
 class AccountsTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var shareIconConstraint: NSLayoutConstraint!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var shareButton: UIButton!
 

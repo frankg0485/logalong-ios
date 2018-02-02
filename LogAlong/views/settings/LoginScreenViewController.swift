@@ -50,7 +50,8 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
     }
 
     @IBAction func cancelButtonClicked(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
 
     @IBAction func doneButtonClicked(_ sender: UIBarButtonItem) {

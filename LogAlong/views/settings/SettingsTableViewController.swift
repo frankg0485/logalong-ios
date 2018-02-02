@@ -10,10 +10,16 @@ import UIKit
 
 class SettingsTableViewController: UITableViewController {
 
+    @IBOutlet weak var versionLabel: UILabel!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tabBarController?.tabBar.isOpaque = true
+
+        let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        versionLabel.text = appVersionString
+        versionLabel.sizeToFit()
 
         tableView.tableFooterView = UIView()
         // Do any additional setup after loading the view.
@@ -24,15 +30,20 @@ class SettingsTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
-    /*
-     // MARK: - Navigation
-
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let nvc = segue.destination as? AccountsTableViewController {
+            switch(segue.identifier ?? "") {
+            case "ManageAccounts":
+                nvc.listType = .ACCOUNT
+            case "ManageCategories":
+                nvc.listType = .CATEGORY
+            case "ManageVendors":
+                nvc.listType = .VENDOR
+            case "ManageTags":
+                nvc.listType = .TAG
+            default: break
+            }
+        }
+    }
 }

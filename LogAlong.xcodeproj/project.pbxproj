@@ -10,8 +10,6 @@
 		010797E61F6778FA00623C04 /* LCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010797E51F6778FA00623C04 /* LCategory.swift */; };
 		01253CF41F5318BE005B4D8C /* SelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */; };
 		0128AE481EC4829B007A999B /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE471EC4829B007A999B /* AccountsTableViewController.swift */; };
-		0128AE4A1EC482B8007A999B /* CategoriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE491EC482B8007A999B /* CategoriesTableViewController.swift */; };
-		0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */; };
 		012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */; };
 		013E34ED1F4366F900EF8972 /* DBTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013E34EC1F4366F900EF8972 /* DBTransaction.swift */; };
 		014281A21FBD15870071ED8F /* LPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014281A11FBD15870071ED8F /* LPreferences.swift */; };
@@ -39,7 +37,6 @@
 		01B61A7B1FF8460100899F21 /* UsersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */; };
 		01CEE4DF201E9C17008F447A /* ShareAccountConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CEE4DE201E9C17008F447A /* ShareAccountConfirmViewController.swift */; };
 		01DE2C121F449D8600ED5D9C /* AccountsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */; };
-		01DE2C1B1F46764800ED5D9C /* CategoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DE2C1A1F46764800ED5D9C /* CategoriesTableViewCell.swift */; };
 		01E13D46201945A000A9B375 /* LAccountShareRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E13D45201945A000A9B375 /* LAccountShareRequest.swift */; };
 		01FA01091FBFA627002C00C0 /* LoginTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FA01081FBFA627002C00C0 /* LoginTimerViewController.swift */; };
 		01FBE7F61F439D5A00A0B514 /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */; };
@@ -202,8 +199,6 @@
 		010797E51F6778FA00623C04 /* LCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCategory.swift; sourceTree = "<group>"; };
 		01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTableViewCell.swift; sourceTree = "<group>"; };
 		0128AE471EC4829B007A999B /* AccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
-		0128AE491EC482B8007A999B /* CategoriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewController.swift; sourceTree = "<group>"; };
-		0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewController.swift; sourceTree = "<group>"; };
 		012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
 		013E34EC1F4366F900EF8972 /* DBTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBTransaction.swift; sourceTree = "<group>"; };
 		014281A11FBD15870071ED8F /* LPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LPreferences.swift; sourceTree = "<group>"; };
@@ -232,7 +227,6 @@
 		01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersTableViewCell.swift; sourceTree = "<group>"; };
 		01CEE4DE201E9C17008F447A /* ShareAccountConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAccountConfirmViewController.swift; sourceTree = "<group>"; };
 		01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewCell.swift; sourceTree = "<group>"; };
-		01DE2C1A1F46764800ED5D9C /* CategoriesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesTableViewCell.swift; sourceTree = "<group>"; };
 		01E13D45201945A000A9B375 /* LAccountShareRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LAccountShareRequest.swift; sourceTree = "<group>"; };
 		01FA01081FBFA627002C00C0 /* LoginTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTimerViewController.swift; sourceTree = "<group>"; };
 		01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
@@ -374,11 +368,7 @@
 		CB15D4E11FC3D731005D8B43 /* views */ = {
 			isa = PBXGroup;
 			children = (
-				01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */,
-				0128AE471EC4829B007A999B /* AccountsTableViewController.swift */,
 				CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */,
-				01DE2C1A1F46764800ED5D9C /* CategoriesTableViewCell.swift */,
-				0128AE491EC482B8007A999B /* CategoriesTableViewController.swift */,
 				CB15D4EC1FC3D7E7005D8B43 /* charts */,
 				01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */,
 				CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */,
@@ -393,8 +383,8 @@
 				01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */,
 				CB4118EF20157AA80087E8AE /* SelectViewController.swift */,
 				CB15D4ED1FC3D7EE005D8B43 /* settings */,
-				01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */,
 				01CEE4DE201E9C17008F447A /* ShareAccountConfirmViewController.swift */,
+				01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */,
 				01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */,
 			);
 			path = views;
@@ -434,13 +424,14 @@
 		CB15D4ED1FC3D7EE005D8B43 /* settings */ = {
 			isa = PBXGroup;
 			children = (
+				01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */,
+				0128AE471EC4829B007A999B /* AccountsTableViewController.swift */,
 				017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */,
 				0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */,
 				017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */,
 				0193DA1A1FB08F4800B63211 /* LoginScreenViewController.swift */,
 				01FA01081FBFA627002C00C0 /* LoginTimerViewController.swift */,
 				01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */,
-				0128AE4B1EC482D6007A999B /* TagsTableViewController.swift */,
 			);
 			path = settings;
 			sourceTree = "<group>";
@@ -715,8 +706,6 @@
 				010797E61F6778FA00623C04 /* LCategory.swift in Sources */,
 				CBCE73D3201B2D92009C66C7 /* LAccountYearBalance.swift in Sources */,
 				01DE2C121F449D8600ED5D9C /* AccountsTableViewCell.swift in Sources */,
-				0128AE4A1EC482B8007A999B /* CategoriesTableViewController.swift in Sources */,
-				01DE2C1B1F46764800ED5D9C /* CategoriesTableViewCell.swift in Sources */,
 				CBC01B491FAEAA080092B184 /* LAccount.swift in Sources */,
 				CBB161961FF80746006717C0 /* DBLoader.swift in Sources */,
 				01CEE4DF201E9C17008F447A /* ShareAccountConfirmViewController.swift in Sources */,
@@ -739,7 +728,6 @@
 				CBB51D2C1FE49EC2000CD233 /* DBTag.swift in Sources */,
 				019CCD541E748042002EF989 /* LTransaction.swift in Sources */,
 				CBF135D71FF1E27800E7E8AE /* RecordsPageViewController.swift in Sources */,
-				0128AE4C1EC482D6007A999B /* TagsTableViewController.swift in Sources */,
 				CB1073641FCE6F6E00390032 /* DBCategory.swift in Sources */,
 				CBEF97621FD25B8A00D61F79 /* DBJournal.swift in Sources */,
 				CBEDFD181FD6E6D60015E98E /* LService.swift in Sources */,

@@ -8,17 +8,25 @@
 
 import UIKit
 
+enum SettingsListType {
+    case ACCOUNT
+    case CATEGORY
+    case VENDOR
+    case TAG
+}
 class AccountsTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
+    var listType: SettingsListType!
     var accounts: [LAccount] = []
-    var account: LAccount = LAccount()
-    var name: String = ""
+    var categories: [LCategory] = []
+    var vendors: [LVendor] = []
+    var tags: [LTag] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.leftBarButtonItem = editButtonItem
-        accounts = DBAccount.instance.getAll()
+        getEntries()
 
         LBroadcast.register(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, cb: #selector(self.uiUpdateAccount), listener: self)
         //        tableView.tableFooterView = UIView()
@@ -34,6 +42,20 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         // Dispose of any resources that can be recreated.
     }
 
+    private func getEntries() {
+        switch (listType!) {
+        case .ACCOUNT:
+            accounts = DBAccount.instance.getAll()
+        case .CATEGORY:
+            categories = DBCategory.instance.getAll()
+        case .VENDOR:
+            vendors = DBVendor.instance.getAll()
+        case .TAG:
+            tags = DBTag.instance.getAll()
+        }
+    }
+
+    //------------------ ACCOUNT --------------------------
     @objc func uiUpdateAccount(notification: Notification) -> Void {
         accounts = DBAccount.instance.getAll()
         tableView.reloadData()
@@ -145,14 +167,13 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
     @IBAction func shareButtonClicked(_ sender: UIButton) {
         if let cell = sender.superview?.superview as? AccountsTableViewCell {
-            name = cell.nameLabel.text!
-            account = DBAccount.instance.get(name: cell.nameLabel.text!)!
+            let name = cell.nameLabel.text!
+            let account = DBAccount.instance.get(name: cell.nameLabel.text!)!
+            presentShareView(account)
         }
-
-        presentShareView()
     }
 
-    func presentShareView() {
+    func presentShareView(_ account: LAccount) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "ShareAccount") as! ShareAccountViewController
 
@@ -178,6 +199,10 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         }
     }
 
+    //------------------ CATEGORY -------------------------
+    //------------------ VENDOR ---------------------------
+    //------------------ TAG ------------------------------
+
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = LTheme.Color.row_released_color
         cell.layer.borderWidth = 1
@@ -200,8 +225,16 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return accounts.count
+        switch (listType!) {
+        case .ACCOUNT:
+            return accounts.count
+        case .CATEGORY:
+            return categories.count
+        case .VENDOR:
+            return vendors.count
+        case .TAG:
+            return tags.count
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -211,28 +244,49 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             fatalError("The dequeued cell is not an instance of AccountsTableViewCell.")
         }
 
-        let account = accounts[indexPath.row]
+        cell.shareButton.isHidden = true
+        cell.shareIconConstraint.constant = -50
 
-        cell.nameLabel.text = account.name
+        switch (listType!) {
+        case .ACCOUNT:
+            cell.shareButton.isHidden = false
+            cell.shareIconConstraint.constant = 5
 
-        let shareIds = accounts[indexPath.row].getShareIdsStates().shareIds
-        let shareStates = accounts[indexPath.row].getShareIdsStates().shareStates
+            let account = accounts[indexPath.row]
 
-        var shareImageNumber = 0
+            cell.nameLabel.text = account.name
 
-        for ii in 0..<shareIds.count {
-            if shareStates[ii] == LAccount.ACCOUNT_SHARE_INVITED {
-                cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share_yellow").withRenderingMode(.alwaysOriginal), for: .normal)
-                shareImageNumber = 1
-                break
-            } else if shareStates[ii] == LAccount.ACCOUNT_SHARE_PERMISSION_READ_WRITE {
-                cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share_green").withRenderingMode(.alwaysOriginal), for: .normal)
-                shareImageNumber = 2
+            let shareIds = accounts[indexPath.row].getShareIdsStates().shareIds
+            let shareStates = accounts[indexPath.row].getShareIdsStates().shareStates
+
+            var shareImageNumber = 0
+
+            for ii in 0..<shareIds.count {
+                if shareStates[ii] == LAccount.ACCOUNT_SHARE_INVITED {
+                    cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share_yellow").withRenderingMode(.alwaysOriginal), for: .normal)
+                    shareImageNumber = 1
+                    break
+                } else if shareStates[ii] == LAccount.ACCOUNT_SHARE_PERMISSION_READ_WRITE {
+                    cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share_green").withRenderingMode(.alwaysOriginal), for: .normal)
+                    shareImageNumber = 2
+                }
             }
-        }
 
-        if shareImageNumber == 0 {
-            cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+            if shareImageNumber == 0 {
+                cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+
+        case .CATEGORY:
+            let category = categories[indexPath.row]
+            cell.nameLabel.text = category.name
+
+        case .VENDOR:
+            let vendor = vendors[indexPath.row]
+            cell.nameLabel.text = vendor.name
+
+        case .TAG:
+            let tag = tags[indexPath.row]
+            cell.nameLabel.text = tag.name
         }
 
         return cell
@@ -252,7 +306,16 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            DBAccount.instance.remove(id: accounts.remove(at: indexPath.row).id)
+            switch (listType!) {
+            case .ACCOUNT:
+                _ = DBAccount.instance.remove(id: accounts.remove(at: indexPath.row).id)
+            case .CATEGORY:
+                _ = DBCategory.instance.remove(id: categories.remove(at: indexPath.row).id)
+            case .VENDOR:
+                _ = DBVendor.instance.remove(id: vendors.remove(at: indexPath.row).id)
+            case .TAG:
+                _ = DBTag.instance.remove(id: tags.remove(at: indexPath.row).id)
+            }
 
             tableView.deleteRows(at: [indexPath], with: .fade)
 
@@ -344,9 +407,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     }
 
     func reloadTableView() {
-        accounts = DBAccount.instance.getAll()
-
+        getEntries()
         tableView.reloadData()
     }
-
 }
