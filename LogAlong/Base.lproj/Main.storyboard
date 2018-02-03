@@ -379,13 +379,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AccountCell" id="7ow-GY-leA" customClass="AccountsTableViewCell" customModule="LogAlong" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountCell" id="7ow-GY-leA" customClass="AccountsTableViewCell" customModule="LogAlong" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7ow-GY-leA" id="roV-om-ymx">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aSn-bu-MwN">
+                                            <rect key="frame" x="329" y="9" width="30" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="30" id="9wj-25-yNK"/>
+                                                <constraint firstAttribute="height" constant="30" id="wyH-UK-zxP"/>
+                                            </constraints>
+                                            <state key="normal" title="Button" image="ic_action_overflow"/>
+                                            <connections>
+                                                <action selector="onOptionClicked:" destination="i53-PD-xbT" eventType="touchUpInside" id="IxW-om-E0M"/>
+                                            </connections>
+                                        </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uWC-bR-dAq">
                                             <rect key="frame" x="40" y="14.5" width="42" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -405,10 +416,11 @@
                                         </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="aSn-bu-MwN" firstAttribute="centerY" secondItem="roV-om-ymx" secondAttribute="centerY" id="4Yu-a4-avH"/>
                                         <constraint firstItem="uWC-bR-dAq" firstAttribute="leading" secondItem="roV-om-ymx" secondAttribute="leadingMargin" priority="900" id="DEH-2e-mUY"/>
                                         <constraint firstItem="nH9-Mg-5nf" firstAttribute="leading" secondItem="roV-om-ymx" secondAttribute="leading" constant="5" id="PPj-nr-XVp"/>
                                         <constraint firstItem="nH9-Mg-5nf" firstAttribute="centerY" secondItem="roV-om-ymx" secondAttribute="centerY" id="SgX-Ey-YE0"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="uWC-bR-dAq" secondAttribute="trailing" priority="250" id="nOn-er-za2"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="aSn-bu-MwN" secondAttribute="trailing" id="iQl-Ao-BIT"/>
                                         <constraint firstItem="uWC-bR-dAq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="nH9-Mg-5nf" secondAttribute="trailing" constant="5" id="vNm-cy-VOP"/>
                                         <constraint firstItem="uWC-bR-dAq" firstAttribute="centerY" secondItem="roV-om-ymx" secondAttribute="centerY" id="w2x-e8-cgu"/>
                                     </constraints>
@@ -417,7 +429,6 @@
                                     <outlet property="nameLabel" destination="uWC-bR-dAq" id="dpT-sn-39z"/>
                                     <outlet property="shareButton" destination="nH9-Mg-5nf" id="RCr-Xx-0Iq"/>
                                     <outlet property="shareIconConstraint" destination="vNm-cy-VOP" id="zB1-e3-mE3"/>
-                                    <segue destination="3Vq-Ai-miU" kind="show" identifier="ShowDetail" id="lrW-zI-bh1"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -427,15 +438,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Manage Accounts" id="5jk-BO-kXT">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="jg2-Bm-Z9R">
-                            <connections>
-                                <segue destination="3Vq-Ai-miU" kind="popoverPresentation" identifier="CreateAccount" popoverAnchorBarButtonItem="jg2-Bm-Z9R" id="ZvW-kO-GW1">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Manage Accounts" id="5jk-BO-kXT"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ecE-wb-B6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -593,7 +596,7 @@
         <!--Create View Controller-->
         <scene sceneID="pT7-bD-ErB">
             <objects>
-                <viewController id="3Vq-Ai-miU" customClass="CreateViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CreateViewController" id="3Vq-Ai-miU" customClass="CreateViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5sd-UU-8Ea"/>
                         <viewControllerLayoutGuide type="bottom" id="Tgl-gP-egp"/>
@@ -720,13 +723,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gW6-Z6-yb7">
-                                                    <rect key="frame" x="15" y="11" width="42" height="21"/>
+                                                    <rect key="frame" x="15" y="14.5" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kN7-d7-43Z">
-                                                    <rect key="frame" x="318" y="11" width="42" height="21"/>
+                                                    <rect key="frame" x="318" y="14.5" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2190,11 +2193,13 @@
             </objects>
             <point key="canvasLocation" x="2129" y="483"/>
         </scene>
-        <!--LogAlong-->
+        <!--Logalong-->
         <scene sceneID="I5o-w2-MeR">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="X6j-Qz-UaF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="LogAlong" id="qmn-gt-j9P"/>
+                    <tabBarItem key="tabBarItem" title="Logalong" id="qmn-gt-j9P">
+                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-12"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="a0v-HE-PcE">
                         <autoresizingMask key="autoresizingMask"/>
@@ -2311,11 +2316,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="ic_action_overflow" width="48" height="48"/>
         <image name="ic_action_share" width="48" height="48"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="l1s-fC-FxU"/>
-        <segue reference="ZvW-kO-GW1"/>
         <segue reference="C8h-Q6-f0e"/>
     </inferredMetricsTieBreakers>
 </document>
