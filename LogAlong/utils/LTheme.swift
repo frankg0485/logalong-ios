@@ -56,7 +56,7 @@ class LTheme {
         static let topbar_bgd_color = UIColor(hex: 0x585c60)
         static let balance_header_bgd_color = UIColor(hex: 0xe4e6e8)
         static let row_released_color = UIColor(hex: 0xced0d2)
-        static let records_view_top_bar_background = UIColor(hex: 0x585c60)
+        static let top_bar_background = UIColor(hex: 0x585c60)
     }
 
     class Dimension {
@@ -68,6 +68,8 @@ class LTheme {
         static let popover_width: CGFloat = 375
         static let popover_height: CGFloat = 320
         static let popover_height_small: CGFloat = 200
+        static let tab_bar_icon_width: CGFloat = 32
+        static let tab_bar_icon_height: CGFloat = 32
         static let balance_header_font_size: CGFloat = 14
         static let balance_header_right_margin: CGFloat = 16
         static let balance_header_left_margin: CGFloat = 16

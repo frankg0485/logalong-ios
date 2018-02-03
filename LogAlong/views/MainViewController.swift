@@ -20,13 +20,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupSwipe()
         tableView.dataSource = self
         tableView.delegate = self
         setupNavigationBarItems()
         createHeader()
 
-        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.yellow], for: .normal)
-        tabBarController?.tabBar.isOpaque = true
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.warn_text_color], for: .normal)
 
         accountBalances.scan()
         labelBalance.textColor = accountBalances.total >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
@@ -79,6 +79,24 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             self.present(controller, animated: true, completion: nil)
         }
     }
+
+    @objc func handleGestureLeft(_ gesture: UIGestureRecognizer) {
+        tabBarController?.selectedIndex = 2
+    }
+    @objc func handleGestureRight(_ gesture: UIGestureRecognizer) {
+        tabBarController?.selectedIndex = 0
+    }
+
+    private func setupSwipe() {
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleGestureLeft(_:)))
+        swipeLeft.direction = .left
+        self.view.addGestureRecognizer(swipeLeft)
+
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleGestureRight(_:)))
+        swipeRight.direction = .right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+
     private func setupNavigationBarItems() {
         let BTN_W: CGFloat = LTheme.Dimension.bar_button_width
         let BTN_H: CGFloat = LTheme.Dimension.bar_button_height
@@ -102,7 +120,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         //UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.onAddClick))
 
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
+        navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
         navigationController?.navigationBar.barStyle = .black
     }
 
@@ -113,7 +131,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let fontsize: CGFloat = LTheme.Dimension.balance_header_font_size
         let labelHeader = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
         labelHeader.layoutMargins = UIEdgeInsetsMake(0, LTheme.Dimension.balance_header_left_margin, 0, 0)
-        labelHeader.font = labelHeader.font.withSize(fontsize)
+        //labelHeader.font = labelHeader.font.withSize(fontsize)
         labelHeader.font = UIFont.boldSystemFont(ofSize: fontsize)
         labelHeader.text = NSLocalizedString("Balance", comment: "")
         labelHeader.sizeToFit()
@@ -169,8 +187,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     @objc func networkConnected(notification: Notification) -> Void {
-        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.blue], for: .normal)
-
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18)], for: .normal)
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_white_text_color], for: .selected)
         LLog.d("\(self)", "network connected")
     }
 

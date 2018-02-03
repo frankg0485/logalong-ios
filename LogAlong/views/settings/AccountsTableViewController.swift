@@ -17,6 +17,8 @@ enum SettingsListType {
 class AccountsTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     var listType: SettingsListType!
+    var titleButton: UIButton!
+
     var accounts: [LAccount] = []
     var categories: [LCategory] = []
     var vendors: [LVendor] = []
@@ -24,8 +26,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationItem.leftBarButtonItem = editButtonItem
+        setupNavigationBarItems()
         getEntries()
 
         LBroadcast.register(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, cb: #selector(self.uiUpdateAccount), listener: self)
@@ -42,16 +43,55 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         // Dispose of any resources that can be recreated.
     }
 
+    private func setupNavigationBarItems() {
+        //navigationItem.leftBarButtonItem = editButtonItem
+        let BTN_W: CGFloat = LTheme.Dimension.bar_button_width
+        let BTN_H: CGFloat = LTheme.Dimension.bar_button_height
+
+        titleButton = UIButton(type: .custom)
+        //titleButton.addTarget(self, action: #selector(self.onTitleClick), for: .touchUpInside)
+        titleButton.setSize(w: 180, h: 30)
+        navigationItem.titleView = titleButton
+
+        let cancelButton = UIButton(type: .system)
+        cancelButton.addTarget(self, action: #selector(self.onCancelClick), for: .touchUpInside)
+        cancelButton.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
+        cancelButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20)
+        cancelButton.setSize(w: BTN_W + 20, h: BTN_H)
+
+        let addButton = UIButton(type: .system)
+        addButton.addTarget(self, action: #selector(self.onAddClick), for: .touchUpInside)
+        addButton.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
+        addButton.imageEdgeInsets = UIEdgeInsetsMake(0, 40, 0, 0)
+        addButton.setSize(w: BTN_W + 40, h: BTN_H)
+
+        let deleteButton = UIButton(type: .system)
+        deleteButton.addTarget(self, action: #selector(self.onDeleteClick), for: .touchUpInside)
+        deleteButton.setImage(#imageLiteral(resourceName: "ic_action_discard").withRenderingMode(.alwaysOriginal), for: .normal)
+        deleteButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 15)
+        deleteButton.setSize(w: BTN_W + 20, h: BTN_H)
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: cancelButton),
+                                             UIBarButtonItem(customView: deleteButton)]
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
+
+        //navigationController?.navigationBar.isTranslucent = false
+        //navigationController?.navigationBar.barStyle = .black
+    }
+
     private func getEntries() {
         switch (listType!) {
         case .ACCOUNT:
             accounts = DBAccount.instance.getAll()
+            titleButton.setTitle(NSLocalizedString("Accounts", comment: ""), for: .normal)
         case .CATEGORY:
             categories = DBCategory.instance.getAll()
+            titleButton.setTitle(NSLocalizedString("Categories", comment: ""), for: .normal)
         case .VENDOR:
             vendors = DBVendor.instance.getAll()
+            titleButton.setTitle(NSLocalizedString("Payee/Payers", comment: ""), for: .normal)
         case .TAG:
             tags = DBTag.instance.getAll()
+            titleButton.setTitle(NSLocalizedString("Tags", comment: ""), for: .normal)
         }
     }
 
@@ -213,10 +253,6 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         return false
     }
 
-    @IBAction func okButtonPressed(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -343,71 +379,77 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    @objc func onCancelClick() {
+        tableView.setEditing(false, animated: true)
+        tableView.endEditing(true)
 
-        switch (segue.identifier ?? "") {
+        navigationController?.popViewController(animated: true)
+    }
 
-        case "ShowDetail":
-            guard let accountDetailViewController = segue.destination as? CreateViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
-            }
+    @objc func onAddClick() {
+        presentCreateEditViewController(create: true)
+    }
 
-            guard let selectedAccountCell = sender as? AccountsTableViewCell else {
-                fatalError("Unexpected sender: \(String(describing: sender))")
-            }
+    @objc func onDeleteClick() {
+        if tableView.isEditing {
+            tableView.setEditing(false, animated: true)
+            tableView.endEditing(true)
+        } else {
+            tableView.setEditing(true, animated: true)
+        }
+    }
 
-            guard let indexPath = tableView.indexPath(for: selectedAccountCell) else {
-                fatalError("The selected cell is not being displayed by the table")
-            }
+    @IBAction func onOptionClicked(_ sender: UIButton) {
+        if let cell = sender.superview?.superview as? AccountsTableViewCell {
+            let name = cell.nameLabel.text!
+            presentCreateEditViewController(create: false, name: name)
+        }
+    }
 
-            let selectedAccount = accounts[indexPath.row]
-            //accountDetailViewController.creation = NameWithId(name: selectedAccount.name, id: selectedAccount.id)
+    private func presentCreateEditViewController(create: Bool, name: String? = nil) {
+        tableView.setEditing(false, animated: true)
+        tableView.endEditing(true)
 
-        case "CreateAccount":
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CreateViewController") as! CreateViewController
 
-            let popoverViewController = segue.destination
+        controller.isCreate = create
+        controller.entryName = name
 
-            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-            popoverViewController.popoverPresentationController!.delegate = self
-
-        default:
-            fatalError("Unexpected Segue Identifier \(String(describing: segue.identifier))")
-
-
+        switch (listType!) {
+        case .ACCOUNT:
+            controller.createType = SelectType.ACCOUNT
+        case .CATEGORY:
+            controller.createType = SelectType.CATEGORY
+        case .VENDOR:
+            controller.createType = SelectType.VENDOR
+        case .TAG:
+            controller.createType = SelectType.TAG
         }
 
-        if let secondViewController = segue.destination as? CreateViewController {
-            secondViewController.delegate = self
-            secondViewController.createType = SelectType.ACCOUNT
+        controller.delegate = self
+
+        controller.modalPresentationStyle = UIModalPresentationStyle.popover
+        controller.popoverPresentationController?.delegate = self
+
+        if let popoverPresentationController = controller.popoverPresentationController {
+            popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+            popoverPresentationController.sourceView = self.view
+            popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+
+            self.present(controller, animated: true, completion: nil)
         }
+
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
     }
 
-/* TODO:
-    func passCreationBack(creation: NameWithId) {
-        if let _ = tableView.indexPathForSelectedRow {
-            DBAccount.instance.update(LAccount(id: creation.id, name: creation.name))
-        } else {
-            var account = LAccount(name: creation.name)
-            DBAccount.instance.add(&account)
-            LJournal.instance.addAccount(account.id)
-        }
-
-        reloadTableView()
-    }
-*/
     func creationCallback(created: Bool) {
         if created {
-            reloadTableView()
+            getEntries()
+            tableView.reloadData()
         }
-    }
-
-    func reloadTableView() {
-        getEntries()
-        tableView.reloadData()
     }
 }

@@ -304,7 +304,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     // MARK: - Navigation
     @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
         if let sourceViewController = sender.source as? AddTableViewController {
-            navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
+            navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
             refresh()
         }
     }

@@ -14,8 +14,8 @@ class SettingsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tabBarController?.tabBar.isOpaque = true
+        setupSwipe()
+        setupNavigationBarItems()
 
         let appVersionString: String = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
         versionLabel.text = appVersionString
@@ -28,6 +28,27 @@ class SettingsTableViewController: UITableViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    private func setupNavigationBarItems() {
+        let titleBtn = UIButton(type: .custom)
+        titleBtn.setSize(w: 80, h: 30)
+        titleBtn.setTitle(NSLocalizedString("Settings", comment: ""), for: .normal)
+        navigationItem.titleView = titleBtn
+
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
+        navigationController?.navigationBar.barStyle = .black
+    }
+
+    @objc func handleGestureRight(_ gesture: UIGestureRecognizer) {
+        tabBarController?.selectedIndex = 1
+    }
+
+    private func setupSwipe() {
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleGestureRight(_:)))
+        swipeRight.direction = .right
+        self.view.addGestureRecognizer(swipeRight)
     }
 
     // MARK: - Navigation

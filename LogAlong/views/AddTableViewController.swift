@@ -365,7 +365,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     @objc func onCancelClick() {
-        navigationController?.navigationBar.barTintColor = LTheme.Color.records_view_top_bar_background
+        navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
 
         if presentingViewController is NewAdditionTableViewController {
             dismiss(animated: true, completion: nil)

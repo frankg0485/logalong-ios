@@ -18,6 +18,12 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     //var creation: NameWithId? = NameWithId(name: "", id: 0)
     var delegate: FPassCreationBackDelegate!
     var createType: SelectType!
+    var isCreate: Bool = true
+    var entryName: String?
+    var account: LAccount?
+    var category: LCategory?
+    var vendor: LVendor?
+    var tag: LTag?
 
     @IBOutlet weak var newLabel: UILabel!
     @IBOutlet weak var nameTextField: UITextField!
@@ -35,23 +41,47 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         switch (createType!) {
         case .ACCOUNT: fallthrough
         case .ACCOUNT2:
-            newLabel.text = NSLocalizedString("New Account", comment: "")
-            nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+            if isCreate {
+                newLabel.text = NSLocalizedString("New Account", comment: "")
+                nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+            } else {
+                newLabel.text = NSLocalizedString("Edit Account", comment: "")
+                account = DBAccount.instance.get(name: entryName!)
+                nameTextField.placeholder = account?.name
+            }
         case .CATEGORY:
-            newLabel.text = NSLocalizedString("New Category", comment: "")
-            nameTextField.placeholder = NSLocalizedString("Category : Sub-category", comment: "")
+            if isCreate {
+                newLabel.text = NSLocalizedString("New Category", comment: "")
+                nameTextField.placeholder = NSLocalizedString("Category : Sub-category", comment: "")
+            } else {
+                newLabel.text = NSLocalizedString("Edit Category", comment: "")
+                category = DBCategory.instance.get(name: entryName!)
+                nameTextField.placeholder = category?.name
+            }
         case .PAYEE:
-            newLabel.text = NSLocalizedString("New Payer/Payee", comment: "")
+            newLabel.text = NSLocalizedString("New Payee", comment: "")
             nameTextField.placeholder = NSLocalizedString("Name", comment: "")
         case .PAYER:
-            newLabel.text = NSLocalizedString("New Payer/Payee", comment: "")
+            newLabel.text = NSLocalizedString("New Payer", comment: "")
             nameTextField.placeholder = NSLocalizedString("Name", comment: "")
         case .VENDOR:
-            newLabel.text = NSLocalizedString("New Payer/Payee", comment: "")
+            if isCreate {
+            newLabel.text = NSLocalizedString("New Payee/Payer", comment: "")
             nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+            } else {
+                newLabel.text = NSLocalizedString("Edit Payee/Payer", comment: "")
+                vendor = DBVendor.instance.get(name: entryName!)
+                nameTextField.placeholder = vendor?.name
+            }
         case .TAG:
-            newLabel.text = NSLocalizedString("New Tag", comment: "")
-            nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+            if isCreate {
+                newLabel.text = NSLocalizedString("New Tag", comment: "")
+                nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+            } else {
+                newLabel.text = NSLocalizedString("Edit Tag", comment: "")
+                tag = DBTag.instance.get(name: entryName!)
+                nameTextField.placeholder = tag?.name
+            }
         }
 
         checkOkButtonState()
@@ -79,26 +109,50 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             switch (createType!) {
             case .ACCOUNT: fallthrough
             case .ACCOUNT2:
-                var account = LAccount(name: name)
-                if DBAccount.instance.add(&account) {
-                    _ = LJournal.instance.addAccount(account.id)
+                if isCreate {
+                    var account = LAccount(name: name)
+                    if DBAccount.instance.add(&account) {
+                        _ = LJournal.instance.addAccount(account.id)
+                    }
+                } else {
+                    if DBAccount.instance.update(account!) {
+                        _ = LJournal.instance.updateAccount(account!.id)
+                    }
                 }
             case .CATEGORY:
-                var category = LCategory(name: name)
-                if DBCategory.instance.add(&category) {
-                    _ = LJournal.instance.addCategory(category.id)
+                if isCreate {
+                    var category = LCategory(name: name)
+                    if DBCategory.instance.add(&category) {
+                        _ = LJournal.instance.addCategory(category.id)
+                    }
+                } else {
+                    if DBCategory.instance.update(category!) {
+                        _ = LJournal.instance.updateCategory(category!.id)
+                    }
                 }
             case .PAYER: fallthrough
             case .PAYEE: fallthrough
             case .VENDOR:
-                var vendor = LVendor(name: name)
-                if DBVendor.instance.add(&vendor) {
-                    _ = LJournal.instance.addVendor(vendor.id)
+                if isCreate {
+                    var vendor = LVendor(name: name)
+                    if DBVendor.instance.add(&vendor) {
+                        _ = LJournal.instance.addVendor(vendor.id)
+                    }
+                } else {
+                    if DBVendor.instance.update(vendor!) {
+                        _ = LJournal.instance.updateVendor(vendor!.id)
+                    }
                 }
             case .TAG:
-                var tag = LTag(name: name)
-                if DBTag.instance.add(&tag) {
-                    _ = LJournal.instance.addTag(tag.id)
+                if isCreate {
+                    var tag = LTag(name: name)
+                    if DBTag.instance.add(&tag) {
+                        _ = LJournal.instance.addTag(tag.id)
+                    }
+                } else {
+                    if DBTag.instance.update(tag!) {
+                        _ = LJournal.instance.updateTag(tag!.id)
+                    }
                 }
             }
 
@@ -121,6 +175,11 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     }
 
     func checkOkButtonState() {
+        if !isCreate {
+            okButton.isEnabled = true
+            return
+        }
+
         var state = false
         if let name = nameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
             if !name.isEmpty && name.count > 1 {
