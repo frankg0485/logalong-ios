@@ -12,6 +12,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     @IBOutlet weak var headerView: HorizontalLayout!
     @IBOutlet weak var tableView: UITableView!
+    let ADD_BUTTON_EXTRA_SPACE: CGFloat = 120
 
     var labelBalance: UILabel!
     var addBtn: UIButton!
@@ -107,7 +108,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         addBtn = UIButton(type: .system)
         addBtn.addTarget(self, action: #selector(self.onAddClick), for: .touchUpInside)
         addBtn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
-        addBtn.setSize(w: BTN_W, h: BTN_H)
+        addBtn.setSize(w: BTN_W + ADD_BUTTON_EXTRA_SPACE, h: BTN_H)
+        addBtn.imageEdgeInsets = UIEdgeInsetsMake(0, ADD_BUTTON_EXTRA_SPACE, 0, 0)
 
         let scheduleBtn = UIButton(type: .system)
         scheduleBtn.addTarget(self, action: #selector(self.onScheduleClick), for: .touchUpInside)
@@ -163,7 +165,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 // set the view from which to pop up
                 _popoverPresentationController.permittedArrowDirections = .up
                 _popoverPresentationController.sourceView = addBtn
-                _popoverPresentationController.sourceRect = CGRect(x: addBtn.bounds.midX, y: addBtn.bounds.maxY, width: 0, height: 0)
+                _popoverPresentationController.sourceRect = CGRect(x: addBtn.bounds.midX + ADD_BUTTON_EXTRA_SPACE,
+                                                                   y: addBtn.bounds.maxY, width: 0, height: 0)
 
                 dismissable = true
             }
@@ -188,7 +191,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     @objc func networkConnected(notification: Notification) -> Void {
         navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18)], for: .normal)
-        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_white_text_color], for: .selected)
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.blue], for: .selected)
         LLog.d("\(self)", "network connected")
     }
 

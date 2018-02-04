@@ -25,6 +25,10 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     var vendor: LVendor?
     var tag: LTag?
 
+    @IBOutlet weak var payerSwitch: UISwitch!
+    @IBOutlet weak var payerLabel: UILabel!
+    @IBOutlet weak var optionalLabel: UILabel!
+    @IBOutlet weak var optionalSwitch: UISwitch!
     @IBOutlet weak var newLabel: UILabel!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var okButton: UIButton!
@@ -33,6 +37,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         self.preferredContentSize.width = LTheme.Dimension.popover_width
         self.preferredContentSize.height = LTheme.Dimension.popover_height_small
+
+        optionalLabel.textColor = LTheme.Color.dark_gray_text_color
+        payerLabel.textColor = LTheme.Color.dark_gray_text_color
 
         nameTextField.delegate = self
         nameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -44,6 +51,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             if isCreate {
                 newLabel.text = NSLocalizedString("New Account", comment: "")
                 nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+                account = LAccount()
+                account?.showBalance = true
             } else {
                 newLabel.text = NSLocalizedString("Edit Account", comment: "")
                 account = DBAccount.instance.get(name: entryName!)
@@ -53,6 +62,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             if isCreate {
                 newLabel.text = NSLocalizedString("New Category", comment: "")
                 nameTextField.placeholder = NSLocalizedString("Category : Sub-category", comment: "")
+                category = LCategory()
             } else {
                 newLabel.text = NSLocalizedString("Edit Category", comment: "")
                 category = DBCategory.instance.get(name: entryName!)
@@ -61,13 +71,19 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         case .PAYEE:
             newLabel.text = NSLocalizedString("New Payee", comment: "")
             nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+            vendor = LVendor()
+            vendor?.type = .PAYEE
         case .PAYER:
             newLabel.text = NSLocalizedString("New Payer", comment: "")
             nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+            vendor = LVendor()
+            vendor?.type = .PAYER
         case .VENDOR:
             if isCreate {
-            newLabel.text = NSLocalizedString("New Payee/Payer", comment: "")
-            nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+                newLabel.text = NSLocalizedString("New Payee/Payer", comment: "")
+                nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+                vendor = LVendor()
+                vendor?.type = .PAYEE_PAYER
             } else {
                 newLabel.text = NSLocalizedString("Edit Payee/Payer", comment: "")
                 vendor = DBVendor.instance.get(name: entryName!)
@@ -77,6 +93,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             if isCreate {
                 newLabel.text = NSLocalizedString("New Tag", comment: "")
                 nameTextField.placeholder = NSLocalizedString("Name", comment: "")
+                tag = LTag()
             } else {
                 newLabel.text = NSLocalizedString("Edit Tag", comment: "")
                 tag = DBTag.instance.get(name: entryName!)
@@ -84,6 +101,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             }
         }
 
+        setOptionalDisplay()
         checkOkButtonState()
         // Do any additional setup after loading the view.
     }
@@ -110,9 +128,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             case .ACCOUNT: fallthrough
             case .ACCOUNT2:
                 if isCreate {
-                    var account = LAccount(name: name)
-                    if DBAccount.instance.add(&account) {
-                        _ = LJournal.instance.addAccount(account.id)
+                    account!.name = name
+                    if DBAccount.instance.add(&account!) {
+                        _ = LJournal.instance.addAccount(account!.id)
                     }
                 } else {
                     if DBAccount.instance.update(account!) {
@@ -121,9 +139,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                 }
             case .CATEGORY:
                 if isCreate {
-                    var category = LCategory(name: name)
-                    if DBCategory.instance.add(&category) {
-                        _ = LJournal.instance.addCategory(category.id)
+                    category!.name = name
+                    if DBCategory.instance.add(&category!) {
+                        _ = LJournal.instance.addCategory(category!.id)
                     }
                 } else {
                     if DBCategory.instance.update(category!) {
@@ -134,9 +152,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             case .PAYEE: fallthrough
             case .VENDOR:
                 if isCreate {
-                    var vendor = LVendor(name: name)
-                    if DBVendor.instance.add(&vendor) {
-                        _ = LJournal.instance.addVendor(vendor.id)
+                    vendor!.name = name
+                    if DBVendor.instance.add(&vendor!) {
+                        _ = LJournal.instance.addVendor(vendor!.id)
                     }
                 } else {
                     if DBVendor.instance.update(vendor!) {
@@ -145,9 +163,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                 }
             case .TAG:
                 if isCreate {
-                    var tag = LTag(name: name)
-                    if DBTag.instance.add(&tag) {
-                        _ = LJournal.instance.addTag(tag.id)
+                    tag!.name = name
+                    if DBTag.instance.add(&tag!) {
+                        _ = LJournal.instance.addTag(tag!.id)
                     }
                 } else {
                     if DBTag.instance.update(tag!) {
@@ -174,7 +192,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         checkOkButtonState()
     }
 
-    func checkOkButtonState() {
+    private func checkOkButtonState() {
         if !isCreate {
             okButton.isEnabled = true
             return
@@ -217,5 +235,70 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             }
         }
         okButton.isEnabled = state
+    }
+
+    @IBAction func onOptionalSwitchClick(_ sender: Any) {
+        if createType == .ACCOUNT || createType == .ACCOUNT2 {
+            account!.showBalance = optionalSwitch.isOn
+        } else {
+            if optionalSwitch.isOn {
+                if payerSwitch.isOn {
+                    vendor!.type = .PAYEE_PAYER
+                } else {
+                    vendor!.type = .PAYEE
+                }
+            } else {
+                vendor!.type = .PAYER
+                payerSwitch.isOn = true
+            }
+        }
+    }
+
+    @IBAction func onPayerSwitchClick(_ sender: Any) {
+        if payerSwitch.isOn {
+            if optionalSwitch.isOn {
+                vendor!.type = .PAYEE_PAYER
+            } else {
+                vendor!.type = .PAYER
+            }
+        } else {
+            vendor!.type = .PAYEE
+            optionalSwitch.isOn = true
+        }
+    }
+
+    private func setOptionalDisplay() {
+        switch (createType!) {
+        case .ACCOUNT: fallthrough
+        case .ACCOUNT2:
+            optionalLabel.text = NSLocalizedString("Show balance", comment: "")
+            payerLabel.isHidden = true
+            payerSwitch.isHidden = true
+            optionalSwitch.isOn = account!.showBalance
+        case .PAYEE: fallthrough
+        case .PAYER:
+            payerSwitch.isEnabled = false
+            optionalSwitch.isEnabled = false
+            fallthrough
+        case .VENDOR:
+            optionalLabel.text = NSLocalizedString("Payee", comment: "")
+            payerLabel.text = NSLocalizedString("Payer", comment: "")
+            if vendor!.type == .PAYEE {
+                payerSwitch.isOn = false
+                optionalSwitch.isOn = true
+            } else if vendor!.type == .PAYER {
+                payerSwitch.isOn = true
+                optionalSwitch.isOn = false
+            } else {
+                payerSwitch.isOn = true
+                optionalSwitch.isOn = true
+            }
+        case .TAG: fallthrough
+        case .CATEGORY:
+            optionalLabel.isHidden = true
+            optionalSwitch.isHidden = true
+            payerLabel.isHidden = true
+            payerSwitch.isHidden = true
+        }
     }
 }
