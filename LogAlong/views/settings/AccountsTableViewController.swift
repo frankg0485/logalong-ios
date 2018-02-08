@@ -29,6 +29,8 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         setupNavigationBarItems()
         getEntries()
 
+        tableView.tableFooterView = UIView()
+
         LBroadcast.register(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, cb: #selector(self.uiUpdateAccount), listener: self)
         //        tableView.tableFooterView = UIView()
         // Uncomment the following line to preserve selection between presentations
@@ -151,6 +153,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             } else if (account.getShareUserState(ii) > LAccount.ACCOUNT_SHARE_PERMISSION_OWNER) {
                 newShare = true
             }
+
             if (newShare) {
                 // new share request: new memeber is added to group
                 account.addShareUser(ii, LAccount.ACCOUNT_SHARE_INVITED)
@@ -219,6 +222,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         controller.account = account
         controller.origSelectedIds = getAccountCurrentShares(account)
+        controller.accountsVC = self
 
         controller.viewHeight = 172
         controller.modalPresentationStyle = UIModalPresentationStyle.popover
@@ -337,6 +341,13 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
      }
      */
 
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if tableView.isEditing {
+            return .delete
+        }
+
+        return .none
+    }
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

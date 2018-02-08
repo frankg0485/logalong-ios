@@ -688,9 +688,10 @@ class LService {
                         LJournal.instance.confirmAccountShare(aid: aid, uid: uid, yes: true)
                     } else {
                         let name = bdata["txt1"]
-                        let shareRequest = LAccountShareRequest(userId: uid, userName: LPreferences
-                            .getShareUserId(uid), userFullName: LPreferences.getShareUserName(uid), accountName: name as! String, accountGid: aid)
-                        LPreferences.addAccountShareRequest(shareRequest)
+                        if let shareRequest = LAccountShareRequest(userId: uid, userName: LPreferences
+                            .getShareUserId(uid), userFullName: LPreferences.getShareUserName(uid), accountName: name as? String, accountGid: aid) {
+                            LPreferences.addAccountShareRequest(shareRequest)
+                        }
                     }
 
                     LBroadcast.post(LBroadcast.ACTION_UI_SHARE_ACCOUNT, sender: nil, data: bdata)

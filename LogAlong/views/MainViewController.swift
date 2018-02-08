@@ -18,6 +18,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var addBtn: UIButton!
     var dismissable = false
     var accountBalances = LAccountBalances()
+    var timer = Timer()
+    var shareViewPresented = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +43,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
 
+
         LBroadcast.register(LBroadcast.ACTION_LOG_IN, cb: #selector(self.login), listener: self)
         //TODO: should we 'unregister' this listener according to viewcontroller life cycle?
         LBroadcast.register(LBroadcast.ACTION_NETWORK_CONNECTED,
@@ -49,14 +52,35 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         LBroadcast.register(LBroadcast.ACTION_UI_SHARE_ACCOUNT, cb: #selector(self.shareAccountRequest), listener: self)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let request = LPreferences.getAccountShareRequest() {
+            presentShareView(request)
+        }
+    }
+
     func onShareAccountConfirmDialogExit(_ ok: Bool, _ request: LAccountShareRequest) {
+        shareViewPresented = false
+
         let journal = LJournal()
         journal.confirmAccountShare(aid: request.accountGid, uid: request.userId, yes: ok)
 
         LPreferences.deleteAccountShareRequest(request: request)
+
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkForRequest), userInfo: nil, repeats: false)
+    }
+
+    @objc func checkForRequest() {
+        if let request = LPreferences.getAccountShareRequest() {
+            presentShareView(request)
+        }
     }
 
     func presentShareView(_ request: LAccountShareRequest) {
+        if shareViewPresented {
+            return
+        }
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "AccountShareRequest") as! ShareAccountConfirmViewController
 
@@ -77,6 +101,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             // present (id iPhone it is a modal automatic full screen)
             dismissable = false
 
+            shareViewPresented = true
             self.present(controller, animated: true, completion: nil)
         }
     }
@@ -182,8 +207,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let bdata = notification.userInfo as? [String: Any] {
             if let status = bdata["status"] as? Int {
                 if LProtocol.RSPS_OK == status {
-                    let request = LAccountShareRequest(userId: bdata["int2"] as! Int64, userName: LPreferences.getShareUserId(bdata["int2"] as! Int64), userFullName: LPreferences.getShareUserName(bdata["int2"] as! Int64), accountName: bdata["txt1"] as! String, accountGid: bdata["int1"] as! Int64)
-                    presentShareView(request)
+                    if let request = LPreferences.getAccountShareRequest() {
+                        presentShareView(request)
+                    }
                 }
             }
         }

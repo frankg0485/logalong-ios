@@ -15,11 +15,15 @@ class LAccountShareRequest {
     var accountName: String
     var accountGid: Int64
 
-    init(userId: Int64, userName: String, userFullName: String, accountName: String, accountGid: Int64) {
+    init?(userId: Int64, userName: String?, userFullName: String?, accountName: String?, accountGid: Int64) {
+        if (userName == nil) || (userFullName == nil) || (accountName == nil) || (userId <= 0) || (accountGid <= 0) {
+            return nil
+        }
+
         self.userId = userId
-        self.userName = userName
-        self.userFullName = userFullName
-        self.accountName = accountName
+        self.userName = userName!
+        self.userFullName = userFullName!
+        self.accountName = accountName!
         self.accountGid = accountGid
     }
 }

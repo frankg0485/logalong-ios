@@ -10,16 +10,21 @@ import UIKit
 
 class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var allAccountsSwitch: UISwitch!
     @IBOutlet weak var addUserToAccountButton: UIButton!
     @IBOutlet weak var usersTableView: UITableView!
     @IBOutlet weak var userIdTextField: UITextField!
     @IBOutlet weak var shareAccountLabel: UILabel!
+    @IBOutlet weak var okButton: UIButton!
+    @IBOutlet weak var allAccountsLabel: UILabel!
 
     var account: LAccount = LAccount()
     var ownAccount: Bool = false
     var applyToAllAccounts: Bool = false
     var origSelectedIds: Set<Int64> = []
     var selectedIds: Set<Int64> = []
+
+    weak var accountsVC: AccountsTableViewController? = nil
 
     var viewHeight: CGFloat = 0 {
         didSet {
@@ -32,8 +37,13 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
     }
     let maxHeight = UIScreen.main.bounds.height
 
-    var shareUsers: [LUser] = []
-    var checkBoxClicked = false
+    var shareUsers: [LUser] = [] {
+        didSet {
+            checkBoxClicked.append(false)
+        }
+    }
+
+    var checkBoxClicked: [Bool] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,12 +51,30 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         usersTableView.dataSource = self
         userIdTextField.delegate = self
 
-        ownAccount = account.getOwner() == LPreferences.getUserIdNum()
+        if account.getShareIdsStates().shareIds.isEmpty {
+            ownAccount = true
+        } else {
+            ownAccount = account.getOwner() == LPreferences.getUserIdNum()
+        }
+
+        if !ownAccount {
+            usersTableView.isUserInteractionEnabled = false
+            okButton.setTitle("Unshare", for: .normal)
+
+            viewHeight -= userIdTextField.frame.size.height
+
+            userIdTextField.setSize(w: 0, h: 0)
+            allAccountsLabel.isHidden = true
+            allAccountsSwitch.isHidden = true
+        }
+
         populateUsersArray()
         usersTableView.tableFooterView = UIView()
         setImageToUserButton()
         addUserToAccountButton.setSize(w: 25, h: 25)
         shareAccountLabel.text = shareAccountLabel.text! + " \(account.name)"
+
+        if ownAccount { okButton.isEnabled = false } else { checkOkButtonState() }
 
         LBroadcast.register(LBroadcast.ACTION_GET_USER_BY_NAME, cb: #selector(self.getUserByName), listener: self)
         // Do any additional setup after loading the view.
@@ -57,21 +85,31 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func checkButtonClicked(_ sender: UIButton) {
-        if checkBoxClicked {
-            if let cell = sender.superview?.superview as? UsersTableViewCell {
-                selectedIds.remove(shareUsers[(usersTableView.indexPath(for: cell)?.row)!].id)
+    func checkOkButtonState() {
+        if ownAccount {
+            if (origSelectedIds == selectedIds) || (shareUsers.isEmpty && (!checkBoxClicked.contains(true))) {
+                okButton.isEnabled = false
+            } else {
+                okButton.isEnabled = true
             }
-            checkBoxClicked = false
+        } else {
+            okButton.isEnabled = true
+        }
+    }
+
+    @IBAction func checkButtonClicked(_ sender: UIButton) {
+        let userCell = sender.superview?.superview as! UsersTableViewCell
+        if checkBoxClicked[(usersTableView.indexPath(for: userCell)?.row)!] {
+            selectedIds.remove(shareUsers[(usersTableView.indexPath(for: userCell)?.row)!].id)
+            checkBoxClicked[(usersTableView.indexPath(for: userCell)?.row)!] = false
             sender.setImage(#imageLiteral(resourceName: "btn_check_off_normal_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
         } else {
-            if let cell = sender.superview?.superview as? UsersTableViewCell {
-                selectedIds.insert(shareUsers[(usersTableView.indexPath(for: cell)?.row)!].id)
-            }
-            checkBoxClicked = true
+            selectedIds.insert(shareUsers[(usersTableView.indexPath(for: userCell)?.row)!].id)
+            checkBoxClicked[(usersTableView.indexPath(for: userCell)?.row)!] = true
             sender.setImage(#imageLiteral(resourceName: "btn_check_on_focused_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
-
         }
+
+        checkOkButtonState()
     }
 
     @objc func getUserByName(notification: Notification) -> Void {
@@ -132,9 +170,7 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
     }
 
     @IBAction func okButtonClicked(_ sender: UIButton) {
-        if let accountsVC = (presentingViewController as? UINavigationController)?.topViewController as? AccountsTableViewController {
-            accountsVC.onShareAccountDialogExit(applyToAllAccounts, account.id, selectedIds, origSelections: origSelectedIds)
-        }
+        accountsVC?.onShareAccountDialogExit(applyToAllAccounts, account.id, selectedIds, origSelections: origSelectedIds)
         dismiss(animated: true, completion: nil)
     }
 
@@ -152,24 +188,57 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "UserCell"
-
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! UsersTableViewCell
 
         cell.userLabel.text = "\(shareUsers[indexPath.row].fullName) (\(shareUsers[indexPath.row].name))"
-        cell.checkButton.setImage(#imageLiteral(resourceName: "btn_check_off_normal_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
-        cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+
+        let shareStates = account.getShareIdsStates().shareStates
+        let shareIds = account.getShareIdsStates().shareIds
+
+        if !shareIds.isEmpty {
+            if account.getShareUserState(shareUsers[indexPath.row].id) == LAccount.ACCOUNT_SHARE_INVITED {
+                checkBoxClicked[indexPath.row] = true
+
+                cell.checkButton.setImage(#imageLiteral(resourceName: "btn_check_on_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
+                cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share_yellow").withRenderingMode(.alwaysOriginal), for: .normal)
+                if ownAccount { selectedIds.insert(shareUsers[indexPath.row].id) }
+            } else if account.getShareUserState(shareUsers[indexPath.row].id) == LAccount.ACCOUNT_SHARE_PERMISSION_READ_WRITE {
+                checkBoxClicked[indexPath.row] = true
+
+                cell.checkButton.setImage(#imageLiteral(resourceName: "btn_check_on_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
+                cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share_green").withRenderingMode(.alwaysOriginal), for: .normal)
+                if ownAccount { selectedIds.insert(shareUsers[indexPath.row].id) }
+            } else if account.getShareUserState(shareUsers[indexPath.row].id) == LAccount.ACCOUNT_SHARE_NA {
+                cell.checkButton.setImage(#imageLiteral(resourceName: "btn_check_off_normal_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
+                cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+
+            if account.getShareUserState(shareUsers[indexPath.row].id) == LAccount.ACCOUNT_SHARE_PERMISSION_OWNER {
+                checkBoxClicked[indexPath.row] = true
+
+                cell.ownerButton.setImage(#imageLiteral(resourceName: "preferences_system").withRenderingMode(.alwaysOriginal), for: .normal)
+                cell.checkButton.setImage(#imageLiteral(resourceName: "btn_check_on_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
+                cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share_green").withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+
+        } else {
+            cell.checkButton.setImage(#imageLiteral(resourceName: "btn_check_off_normal_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
+            cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+
+        }
+
         cell.backgroundColor = LTheme.Color.row_released_color
         return cell
     }
 
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
 
 }

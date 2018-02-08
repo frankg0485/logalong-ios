@@ -66,11 +66,14 @@ class LAccount : LDbBase {
             return
         }
 
-        for ii in 0..<shareIds.count {
-            if (shareIds[ii] == id) {
-                shareIds.remove(at: ii)
-                shareStates.remove(at: ii)
+        var iicpy = 0
+        for _ in 0..<shareIds.count {
+            if (shareIds[iicpy] == id) {
+                shareIds.remove(at: iicpy)
+                shareStates.remove(at: iicpy)
+                iicpy -= 1
             }
+            iicpy += 1
         }
 
         setShareIdsStates(shareIds: shareIds, shareStates: shareStates)

@@ -130,7 +130,7 @@ class LPreferences {
     }
 
     static func getShareAccept(_ uid: Int64) -> Int64 {
-        return defaults.object(forKey: shareAccept + "." + String(uid)) as! Int64
+        return (defaults.object(forKey: shareAccept + "." + String(uid)) ?? Int64(0)) as! Int64
     }
 
     static func setShareAccept(_ uid: Int64, _ acceptTimeS: Int64) {
@@ -169,48 +169,34 @@ class LPreferences {
         var ii = 0
         while ii < shares {
             if defaults.integer(forKey: shareAccountRequest + String(ii) + ".state") == 1 {
-                if (defaults.integer(forKey: shareAccountRequest + String(ii) + "userId") == Int(request.userId))
-                    && (defaults.string(forKey: shareAccountRequest + String(ii) + "userName") == request.userName)
-                    && (defaults.string(forKey: shareAccountRequest + String(ii) + "userFullName") == request.userFullName)
-                    && (defaults.string(forKey: shareAccountRequest + String(ii) + "accountName") == request.accountName)
-                    && (defaults.integer(forKey: shareAccountRequest + String(ii) + "userId") == Int(request.accountGid)) {
+                if (defaults.integer(forKey: shareAccountRequest + String(ii) + ".userId") == Int(request.userId))
+                    && (defaults.string(forKey: shareAccountRequest + String(ii) + ".userName") == request.userName)
+                    && (defaults.string(forKey: shareAccountRequest + String(ii) + ".userFullName") == request.userFullName)
+                    && (defaults.string(forKey: shareAccountRequest + String(ii) + ".accountName") == request.accountName)
+                    && (defaults.integer(forKey: shareAccountRequest + String(ii) + ".accountGid") == Int(request.accountGid)) {
                     defaults.set(0, forKey: shareAccountRequest + String(ii) + ".state")
+                    //TODO: fix multiple poll problem here
+                    //break
                 }
             }
             ii += 1
         }
     }
 
-    static func getAccountShareRequest() -> LAccountShareRequest {
-        var request: LAccountShareRequest?
+    static func getAccountShareRequest() -> LAccountShareRequest? {
+        var request: LAccountShareRequest? = nil
         let shares = defaults.integer(forKey: shareAccountRequest + ".total")
 
         var ii = 0
         while ii < shares {
             if defaults.integer(forKey: shareAccountRequest + String(ii) + ".state") == 1 {
-                request = LAccountShareRequest(userId: Int64(defaults.integer(forKey: shareAccountRequest + String(ii) + "userId")), userName: defaults.string(forKey: shareAccountRequest + String(ii) + "userName")!, userFullName: defaults.string(forKey: shareAccountRequest + String(ii) + "userFullName")!, accountName: defaults.string(forKey: shareAccountRequest + String(ii) + "accountName")!, accountGid: Int64(defaults.integer(forKey: shareAccountRequest + String(ii) + "userId")))
+                request = LAccountShareRequest(userId: Int64(defaults.integer(forKey: shareAccountRequest + String(ii) + ".userId")), userName: defaults.string(forKey: shareAccountRequest + String(ii) + ".userName"), userFullName: defaults.string(forKey: shareAccountRequest + String(ii) + ".userFullName"), accountName: defaults.string(forKey: shareAccountRequest + String(ii) + ".accountName"), accountGid: Int64(defaults.integer(forKey: shareAccountRequest + String(ii) + ".accountGid")))
+                if request != nil {
+                    break
+                }
             }
             ii += 1
         }
-
-        return request!
+        return request
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
