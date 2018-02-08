@@ -534,6 +534,10 @@
                                                     <rect key="frame" x="293" y="13" width="20" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </button>
+                                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wa9-qt-xRw">
+                                                    <rect key="frame" x="265" y="13" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="L8x-gR-J0S" secondAttribute="trailingMargin" id="9Fu-hD-jBF"/>
@@ -543,6 +547,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="checkButton" destination="jVV-xM-hNN" id="Hk1-RA-v1p"/>
+                                            <outlet property="ownerButton" destination="Wa9-qt-xRw" id="5H2-sV-9qz"/>
                                             <outlet property="shareStatusButton" destination="Eb9-vc-ecD" id="yWs-mO-oCS"/>
                                             <outlet property="userLabel" destination="L8x-gR-J0S" id="alq-TX-eaJ"/>
                                         </connections>
@@ -584,6 +589,9 @@
                     <size key="freeformSize" width="345" height="200"/>
                     <connections>
                         <outlet property="addUserToAccountButton" destination="bnb-Uo-5RG" id="UhN-XH-gtb"/>
+                        <outlet property="allAccountsLabel" destination="HTb-LF-ldl" id="woY-ON-HhF"/>
+                        <outlet property="allAccountsSwitch" destination="dhJ-Vp-zyT" id="od8-Na-Xbb"/>
+                        <outlet property="okButton" destination="fMp-2f-uYZ" id="wi0-61-Tr5"/>
                         <outlet property="shareAccountLabel" destination="8mv-Fp-2fa" id="9Xu-kp-jAr"/>
                         <outlet property="userIdTextField" destination="SnL-Gj-hYn" id="unK-mB-jaH"/>
                         <outlet property="usersTableView" destination="CwT-K0-jHa" id="VJb-Zb-SEK"/>

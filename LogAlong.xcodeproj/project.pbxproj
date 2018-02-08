@@ -424,8 +424,8 @@
 		CB15D4ED1FC3D7EE005D8B43 /* settings */ = {
 			isa = PBXGroup;
 			children = (
-				01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */,
 				0128AE471EC4829B007A999B /* AccountsTableViewController.swift */,
+				01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */,
 				017BA1151FAF5DE500694E38 /* CreateOrLoginTableViewController.swift */,
 				0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */,
 				017BA1131FAF5DC600694E38 /* LoginInfoTableViewController.swift */,
