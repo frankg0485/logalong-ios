@@ -814,6 +814,14 @@
             </objects>
             <point key="canvasLocation" x="2412" y="-1066"/>
         </scene>
+        <!--Charts Page View Controller-->
+        <scene sceneID="Tb6-OK-EOh">
+            <objects>
+                <pageViewController storyboardIdentifier="ChartsPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="hBn-JR-T9t" customClass="ChartsPageViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="plf-sU-yuh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-884" y="-968"/>
+        </scene>
         <!--Main Tab View Controller-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
@@ -842,7 +850,7 @@
         <!--Bar Chart View Controller-->
         <scene sceneID="yMB-bH-hxS">
             <objects>
-                <viewController id="EAT-As-eoM" customClass="BarChartViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BarChartViewController" id="EAT-As-eoM" customClass="BarChartViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0uM-XP-ZnO"/>
                         <viewControllerLayoutGuide type="bottom" id="sju-GM-0yf"/>
@@ -851,13 +859,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cpz-a8-GxO" customClass="BarChartView" customModule="Charts">
-                                <rect key="frame" x="0.0" y="28" width="375" height="619"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cpz-a8-GxO" customClass="BarChartView" customModule="Charts">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="637"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Cpz-a8-GxO" secondAttribute="trailing" id="6f9-2l-Ve8"/>
+                            <constraint firstItem="Cpz-a8-GxO" firstAttribute="top" secondItem="XK8-JF-22Q" secondAttribute="top" id="XGK-Y6-w3q"/>
+                            <constraint firstItem="Cpz-a8-GxO" firstAttribute="leading" secondItem="XK8-JF-22Q" secondAttribute="leading" id="xxr-qV-PeM"/>
+                            <constraint firstItem="Cpz-a8-GxO" firstAttribute="bottom" secondItem="sju-GM-0yf" secondAttribute="top" constant="-30" id="zgh-QO-lY3"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="barChartView" destination="Cpz-a8-GxO" id="9s6-bU-9XM"/>
@@ -865,9 +878,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uzU-jI-C1q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-884" y="-270"/>
+            <point key="canvasLocation" x="-884" y="-270.31484257871068"/>
         </scene>
-        <!--Charts-->
+        <!--Pie Chart View Controller-->
         <scene sceneID="jKN-ke-XxS">
             <objects>
                 <viewController storyboardIdentifier="PieChartViewController" id="PO8-Nx-dSe" customClass="PieChartViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
@@ -879,40 +892,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qAM-zp-jjT" customClass="PieChartView" customModule="Charts">
-                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yq4-n9-zjl">
-                                        <rect key="frame" x="0.0" y="619" width="375" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </view>
-                                </subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qAM-zp-jjT" customClass="PieChartView" customModule="Charts">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7YZ-Vd-qOa">
-                                <rect key="frame" x="637" y="0.0" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="X"/>
-                                <connections>
-                                    <action selector="xButtonClicked:" destination="PO8-Nx-dSe" eventType="touchUpInside" id="X4h-QG-Zrg"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="fiX-HG-8mQ" firstAttribute="top" secondItem="qAM-zp-jjT" secondAttribute="bottom" id="3k1-JI-IBf"/>
+                            <constraint firstItem="qAM-zp-jjT" firstAttribute="top" secondItem="cAE-Rh-zJI" secondAttribute="top" id="KCm-OW-Ykq"/>
+                            <constraint firstAttribute="trailing" secondItem="qAM-zp-jjT" secondAttribute="trailing" id="SCW-km-msz"/>
+                            <constraint firstItem="qAM-zp-jjT" firstAttribute="leading" secondItem="cAE-Rh-zJI" secondAttribute="leading" id="ixB-V0-cDj"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Charts" id="h4q-eo-me3">
-                        <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="0.0"/>
-                    </tabBarItem>
-                    <navigationItem key="navigationItem" id="Ubm-4B-PoU"/>
                     <connections>
                         <outlet property="pieChartView" destination="qAM-zp-jjT" id="d4U-jV-D3N"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ONU-Vr-fAX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-190" y="-270"/>
+            <point key="canvasLocation" x="-191.19999999999999" y="-270.31484257871068"/>
         </scene>
         <!--Settings-->
         <scene sceneID="ke7-jc-aAm">
