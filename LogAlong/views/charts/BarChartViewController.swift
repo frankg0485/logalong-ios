@@ -24,6 +24,8 @@ class BarChartViewController: UIViewController {
 
         createBarChart(accounts: accounts, values: amounts)
         // Do any additional setup after loading the view.
+
+        barChartView.superview!.backgroundColor = LTheme.Color.base_bgd_color
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,42 +33,84 @@ class BarChartViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    class MyAxisValueFormatter: NSObject, IAxisValueFormatter {
+        private let months: [String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+            if let axis = axis {
+                let percent = value / (axis.axisRange)
+                if (percent >= 0 && value >= 0) {
+                    let mp = Double(months.count) * percent
+                    if mp >= 0 && mp <= 11 {
+                        return months[Int(mp)]
+                    }
+                }
+            }
+            return ""
+        }
+    }
+
     func createBarChart(accounts: [LAccount], values: [Double]) {
-        var entries = [BarChartDataEntry]()
+        barChartView.chartDescription?.text =  ""
 
-        for i in 0..<accounts.count {
-            let dataPoint = BarChartDataEntry(x: Double(i), y: values[i])
-            entries.append(dataPoint)
+        // scaling can now only be done on x- and y-axis separately
+        barChartView.pinchZoomEnabled = false
+        //barChart.setTouchEnabled(false);
+        barChartView.scaleXEnabled = false
+        barChartView.doubleTapToZoomEnabled = false
+        barChartView.highlightPerTapEnabled = false
+        barChartView.highlightPerDragEnabled = false
+
+        let xAxis = barChartView.xAxis
+        xAxis.labelPosition = .bottom
+        xAxis.drawGridLinesEnabled = false
+        xAxis.granularity = 1
+        xAxis.centerAxisLabelsEnabled = true
+        //xAxis.setLabelRotationAngle(15f);
+        xAxis.labelCount = 13
+        //xAxis.setLabelCount(13, true);
+        xAxis.valueFormatter = MyAxisValueFormatter()
+
+        barChartView.leftAxis.drawGridLinesEnabled = false
+        barChartView.drawBarShadowEnabled = false
+        barChartView.drawGridBackgroundEnabled = false
+
+        let legend = barChartView.legend
+        legend.verticalAlignment = .top
+        legend.horizontalAlignment = .left
+        legend.orientation = .horizontal
+        legend.drawInside = true
+
+        var yVals1 = [BarChartDataEntry]()
+        var yVals2 = [BarChartDataEntry]();
+        for ii in 0..<12 {
+            yVals1.append(BarChartDataEntry(x: Double(ii), y: Double(arc4random_uniform(10000))))
+            yVals2.append(BarChartDataEntry(x: Double(ii), y: Double(arc4random_uniform(10000))))
         }
 
-        let set = BarChartDataSet(values: entries, label: "")
+        let dataSet1 = BarChartDataSet(values: yVals1, label: "Expense");
+        let dataSet2 = BarChartDataSet(values: yVals2, label: "Income - 2018")
 
-        var colors: [UIColor] = []
+        dataSet1.colors = [UIColor.red]
+        dataSet1.drawValuesEnabled = false
 
-        for _ in 0..<values.count {
-            let red = Double(arc4random_uniform(256))
-            let green = Double(arc4random_uniform(256))
-            let blue = Double(arc4random_uniform(256))
-            let color = UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
-            colors.append(color)
-        }
-        set.colors = colors
+        dataSet2.colors = [UIColor.green]
+        dataSet2.drawValuesEnabled = false
 
-        let data = BarChartData(dataSet: set)
+        var dataSets = [BarChartDataSet]();
+        dataSets.append(dataSet1);
+        dataSets.append(dataSet2);
+
+        let data = BarChartData(dataSets: dataSets)
 
         barChartView.data = data
-        barChartView.chartDescription?.text = ""
-        //barChartView.legend.formSize = 15
+
+        let groupSpace = 0.25
+        let barSpace = 0.0 // x2 DataSet
+        let barWidth = 0.375 // x2 DataSet
+        // (barSpace + barWidth) * 2 + groupSpace = 1.00 -> interval per "group"
+        barChartView.barData?.barWidth = barWidth
+        barChartView.xAxis.axisMinimum = 0
+        barChartView.xAxis.axisMaximum = 12
+        barChartView.groupBars(fromX: 0, groupSpace: groupSpace, barSpace: barSpace)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

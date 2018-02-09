@@ -169,8 +169,8 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
     }
 
     @objc func onChartClick() {
-        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PieChartViewController")
-            as? PieChartViewController {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChartsPageViewController")
+            as? ChartsPageViewController {
             self.present(vc, animated: true, completion: nil)
         }
     }

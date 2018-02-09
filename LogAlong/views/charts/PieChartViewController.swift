@@ -9,7 +9,7 @@
 import UIKit
 import Charts
 
-class PieChartViewController: UIViewController {
+class PieChartViewController: UIViewController, ChartViewDelegate {
 
     @IBOutlet weak var pieChartView: PieChartView!
 
@@ -19,11 +19,13 @@ class PieChartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        pieChartView.legend.orientation = .vertical
-        pieChartView.legend.horizontalAlignment = Legend.HorizontalAlignment.left
-        pieChartView.legend.verticalAlignment = Legend.VerticalAlignment.top
+        pieChartView.backgroundColor = LTheme.Color.base_bgd_color
+        pieChartView.delegate = self
+    }
 
-        createButtons()
+    func chartValueNothingSelected(_ chartView: ChartViewBase) {
+    }
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -41,56 +43,91 @@ class PieChartViewController: UIViewController {
         }
 
         createPieChart(accounts: accounts, values: amounts)
-
-       // pieChartView.frame = CGRect(x: 0, y: 0, width: 375, height: 639)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    private func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.landscapeLeft
-    }
-
-    private func shouldAutorotate() -> Bool {
-        return true
-    }
-
-    func createButtons() {
-        let leftButton = UIButton(frame: CGRect(x: 0, y: 317, width: 50, height: 50))
-        let rightButton = UIButton(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-
-        leftButton.backgroundColor = .black
-        leftButton.setTitle("<", for: .normal)
-        leftButton.setTitleColor(UIColor.blue, for: .normal)
-        leftButton.addTarget(self, action: Selector(("buttonAction:")), for: .touchUpInside)
-
-        self.view.addSubview(leftButton)
-    }
-
-    func buttonAction(sender: UIButton!) {
-        //present(UIViewController as BarChartViewController, animated: true, completion: nil)
-    }
-
-    @IBAction func xButtonClicked(_ sender: UIButton) {
-        tabBarController?.tabBar.isHidden = false
-        tabBarController?.selectedIndex = 3
     }
 
     func createPieChart(accounts: [LAccount], values: [Double]) {
-        var entries = [PieChartDataEntry]()
+        pieChartView.centerText = "Expense - 2018"
+        pieChartView.drawSlicesUnderHoleEnabled = true
+        pieChartView.usePercentValuesEnabled = true
+
+        /*
+        currentExpenseCats.clear();
+        currentCharData = chartData;
+        // group all sub-categories
+        double sum = 0;
+        for (String key : chartData.expenseCategories.keySet()) {
+            sum += chartData.expenseCategories.get(key);
+            String mainCat = key.split(":", -1)[0];
+            Double v = currentExpenseCats.get(mainCat);
+            if (v == null) {
+                currentExpenseCats.put(mainCat, chartData.expenseCategories.get(key));
+            } else {
+                v += chartData.expenseCategories.get(key);
+                currentExpenseCats.put(mainCat, v);
+            }
+        }
+        piechartExpenseSumTV.setText(String.format("$%.2f", sum));
+
+        // group tiny entries
+        pieEntries = new ArrayList<>();
+        extraPieEntries = new ArrayList<>();
+        lastPieEntry = currentExpenseCats.size() - 1;
+
+        int count = 0;
+        String lastGroup = null;
+        double lastGroupValue = 0;
+
+        List list = new ArrayList<String>();
+        double threshold = sum * 0.005;
+        String lastKey = "";
+        Double lastValue = 0.0;
+
+        for (Map.Entry<String, Double> entry : entriesSortedByValues(currentExpenseCats)) {
+            if (count < MAX_PIE_CHART_ITEMS && entry.getValue() > threshold) {
+                list.add(entry.getKey());
+            } else {
+                if (null == lastGroup) {
+                    list.remove(lastKey);
+                    extraPieEntries.add(new PieEntry(lastValue.floatValue(), lastKey));
+
+                    lastGroup = lastKey + " ...";
+                    lastGroupValue = lastValue;
+                    lastPieEntry = count - 1;
+                }
+
+                extraPieEntries.add(new PieEntry(entry.getValue().floatValue(), entry.getKey()));
+                lastGroupValue += entry.getValue();
+            }
+
+            lastKey = entry.getKey();
+            lastValue = entry.getValue();
+            count++;
+        }
+
+        if (currentExpenseCats.size() <= list.size()) {
+            for (String key : currentExpenseCats.keySet()) {
+                pieEntries.add(new PieEntry(currentExpenseCats.get(key).floatValue(), key));
+            }
+        } else {
+            count = 0;
+            for (String key : currentExpenseCats.keySet()) {
+                if (list.contains(key)) {
+                    pieEntries.add(new PieEntry(currentExpenseCats.get(key).floatValue(), key));
+                    count++;
+                    if (count >= list.size()) break;
+                }
+            }
+            pieEntries.add(new PieEntry((float) lastGroupValue, lastGroup));
+        }
+        */
+        var pieEntries = [PieChartDataEntry]()
 
         for i in 0..<values.count {
             let entry = PieChartDataEntry()
             entry.y = values[i]
             entry.label = accounts[i].name
-            entries.append(entry)
+            pieEntries.append(entry)
         }
-
-        let set = PieChartDataSet(values: entries, label: "")
-
         var colors: [UIColor] = []
 
         for _ in 0..<values.count {
@@ -100,22 +137,42 @@ class PieChartViewController: UIViewController {
             let color = UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
             colors.append(color)
         }
+
+        let set = PieChartDataSet(values: pieEntries, label: "")
+        set.sliceSpace = 1.0
+        set.selectionShift = 5.0
         set.colors = colors
 
-        let data = PieChartData(dataSet: set)
+        /*
+         set.setValueLinePart1OffsetPercentage(80.f);
+         set.setValueLinePart1Length(0.2f);
+         set.setValueLinePart2Length(0.4f);
+         //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+         set.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+         */
 
-        pieChartView.data = data
+        let pieData = PieChartData(dataSet: set)
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        formatter.maximumFractionDigits = 1
+        formatter.multiplier = 1.0
+        pieData.setValueFormatter(DefaultValueFormatter(formatter: formatter))
+
+        pieData.setValueTextColor(UIColor.white)
+        //pieData.setValueTextSize(10.0f);
+        pieChartView.data = pieData
+
+        let legend = pieChartView.legend
+        //legend.setPosition(Legend.LegendPosition.LEFT_OF_CHART); //deprecated
+        legend.verticalAlignment = .top
+        legend.horizontalAlignment = .left
+        legend.orientation = .vertical
+        legend.drawInside = false
+        legend.enabled = true
+        //legend.setTextSize(11.0f);
+        legend.xOffset = LTheme.Dimension.pie_chart_legend_offset
+        legend.yOffset = LTheme.Dimension.pie_chart_legend_offset
+
         pieChartView.chartDescription?.text = ""
-        pieChartView.legend.formSize = 15
     }
-    /*
-     // MARK: - Navigation
-
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-
 }

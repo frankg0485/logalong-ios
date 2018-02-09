@@ -73,5 +73,7 @@ class LTheme {
         static let balance_header_font_size: CGFloat = 14
         static let balance_header_right_margin: CGFloat = 16
         static let balance_header_left_margin: CGFloat = 16
+
+        static let pie_chart_legend_offset: CGFloat = 10
     }
 }
