@@ -74,6 +74,7 @@
 		CBCE73D5201CE079009C66C7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCE73D4201CE079009C66C7 /* MainViewController.swift */; };
 		CBD618101FB0081300A2B57E /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD6180F1FB0081300A2B57E /* Server.swift */; };
 		CBE058901FD33367002B2F08 /* LJournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */; };
+		CBE85FF5202F280100D4C749 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE85FF4202F280100D4C749 /* SearchViewController.swift */; };
 		CBEAFF35202BD4BC00866790 /* ChartsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEAFF34202BD4BC00866790 /* ChartsPageViewController.swift */; };
 		CBEB3E5F2002BE7C00A34432 /* RecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */; };
 		CBEDFD181FD6E6D60015E98E /* LService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEDFD171FD6E6D60015E98E /* LService.swift */; };
@@ -266,6 +267,7 @@
 		CBCE73D4201CE079009C66C7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		CBD6180F1FB0081300A2B57E /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Server.swift; path = LogAlong/network/Server.swift; sourceTree = SOURCE_ROOT; };
 		CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LJournalEntry.swift; sourceTree = "<group>"; };
+		CBE85FF4202F280100D4C749 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		CBEAFF34202BD4BC00866790 /* ChartsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsPageViewController.swift; sourceTree = "<group>"; };
 		CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsViewController.swift; sourceTree = "<group>"; };
 		CBEDFD171FD6E6D60015E98E /* LService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LService.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				CBF135D61FF1E27800E7E8AE /* RecordsPageViewController.swift */,
 				019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */,
 				CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */,
+				CBE85FF4202F280100D4C749 /* SearchViewController.swift */,
 				014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */,
 				01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */,
 				CB4118EF20157AA80087E8AE /* SelectViewController.swift */,
@@ -728,6 +731,7 @@
 				CBB51D2A1FE496CF000CD233 /* LVendor.swift in Sources */,
 				01FA01091FBFA627002C00C0 /* LoginTimerViewController.swift in Sources */,
 				CBAA495A1FC51CCA00E77834 /* UiRequest.swift in Sources */,
+				CBE85FF5202F280100D4C749 /* SearchViewController.swift in Sources */,
 				0151840C1FE61538002AC812 /* CurrentPasswordViewController.swift in Sources */,
 				CBB51D2C1FE49EC2000CD233 /* DBTag.swift in Sources */,
 				019CCD541E748042002EF989 /* LTransaction.swift in Sources */,
