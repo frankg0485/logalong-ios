@@ -22,7 +22,7 @@ enum RecordsViewSortMode: Int {
     case VENDOR = 50
 }
 
-class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
 
     private var viewL: RecordsViewController?
     private var viewM: RecordsViewController?
@@ -175,6 +175,23 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         }
     }
 
+    @objc func onSearchClick() {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchViewController")
+
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.popoverPresentationController?.sourceView = self.view
+        vc.popoverPresentationController?.sourceRect =
+            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY - 22, width: 0, height: 0)
+        vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+        vc.popoverPresentationController!.delegate = self
+
+        self.present(vc, animated: true, completion: nil)
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+
     private var titleBtn: UIButton?
     private var sortBtn: UIButton?
     private func setupNavigationBarItems() {
@@ -201,6 +218,7 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         chartBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
 
         let searchBtn = UIButton(type: .system)
+        searchBtn.addTarget(self, action: #selector(self.onSearchClick), for: .touchUpInside)
         searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
         searchBtn.setSize(w: BTN_W, h: BTN_H)
         //searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
