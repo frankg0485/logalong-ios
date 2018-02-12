@@ -827,88 +827,113 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C59-Og-LU5" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="40"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="KjU-Ne-551"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lux-98-aTY" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
-                                <rect key="frame" x="16" y="40" width="343" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Vn-Rv-Av9">
+                                <rect key="frame" x="0.0" y="60" width="375" height="607"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" restorationIdentifier="ContentView" translatesAutoresizingMaskIntoConstraints="NO" id="TcE-EL-p4M">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lux-98-aTY" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="8" width="359" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="wtF-LI-yhM"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oDd-yF-tcL">
+                                                <rect key="frame" x="8" y="58" width="359" height="1"/>
+                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="C7o-mf-bJY"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="roO-TN-PoH" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="59" width="359" height="200"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="200" id="qy5-g0-rF4"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O2s-cg-CRt" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="259" width="359" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="wpd-Nu-a2E"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iMb-EU-ZwS">
+                                                <rect key="frame" x="8" y="309" width="359" height="1"/>
+                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="dXJ-66-3Yc"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rpl-A7-4jb" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="310" width="359" height="100"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="100" id="Z6m-dp-8CN"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjM-Kt-WbX" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="410" width="359" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="2EC-O6-If4"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailingMargin" secondItem="roO-TN-PoH" secondAttribute="trailing" id="25I-bS-2Sm"/>
+                                            <constraint firstItem="roO-TN-PoH" firstAttribute="top" secondItem="oDd-yF-tcL" secondAttribute="bottom" id="2FC-Kb-Xby"/>
+                                            <constraint firstItem="MjM-Kt-WbX" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="5EL-dY-Ecz"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="O2s-cg-CRt" secondAttribute="trailing" id="9Dm-OK-M1H"/>
+                                            <constraint firstItem="Rpl-A7-4jb" firstAttribute="top" secondItem="iMb-EU-ZwS" secondAttribute="bottom" id="9d2-u4-jDQ"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="Lux-98-aTY" secondAttribute="trailing" id="9gk-V0-tQ1"/>
+                                            <constraint firstItem="O2s-cg-CRt" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="CZK-3O-rVf"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="Rpl-A7-4jb" secondAttribute="trailing" id="DyO-94-0KQ"/>
+                                            <constraint firstItem="iMb-EU-ZwS" firstAttribute="top" secondItem="O2s-cg-CRt" secondAttribute="bottom" id="MzW-RK-KBl"/>
+                                            <constraint firstItem="O2s-cg-CRt" firstAttribute="top" secondItem="roO-TN-PoH" secondAttribute="bottom" id="OxY-kn-hgp"/>
+                                            <constraint firstItem="oDd-yF-tcL" firstAttribute="top" secondItem="Lux-98-aTY" secondAttribute="bottom" id="P9T-hy-B3Q"/>
+                                            <constraint firstItem="Lux-98-aTY" firstAttribute="top" secondItem="TcE-EL-p4M" secondAttribute="topMargin" id="R5z-pS-Dci"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="oDd-yF-tcL" secondAttribute="trailing" id="YUJ-5Z-2Pl"/>
+                                            <constraint firstAttribute="height" constant="800" id="ZDt-78-JE9"/>
+                                            <constraint firstItem="MjM-Kt-WbX" firstAttribute="top" secondItem="Rpl-A7-4jb" secondAttribute="bottom" id="bb2-YQ-0GE"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="iMb-EU-ZwS" secondAttribute="trailing" id="hTZ-6C-ZOG"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="MjM-Kt-WbX" secondAttribute="trailing" id="iwv-y7-tAF"/>
+                                            <constraint firstItem="roO-TN-PoH" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="lQ0-ax-BRr"/>
+                                            <constraint firstItem="Rpl-A7-4jb" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="lSd-qT-tuW"/>
+                                            <constraint firstItem="oDd-yF-tcL" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="rJs-o1-seJ"/>
+                                            <constraint firstItem="iMb-EU-ZwS" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="vcl-rP-Etb"/>
+                                            <constraint firstItem="Lux-98-aTY" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="weA-cZ-ZrD"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="wtF-LI-yhM"/>
+                                    <constraint firstAttribute="bottom" secondItem="TcE-EL-p4M" secondAttribute="bottom" id="4W2-Yt-w3k"/>
+                                    <constraint firstItem="TcE-EL-p4M" firstAttribute="top" secondItem="0Vn-Rv-Av9" secondAttribute="top" id="EeL-81-r4t"/>
+                                    <constraint firstItem="TcE-EL-p4M" firstAttribute="leading" secondItem="0Vn-Rv-Av9" secondAttribute="leading" id="N3o-Tn-2Bh"/>
+                                    <constraint firstAttribute="trailing" secondItem="TcE-EL-p4M" secondAttribute="trailing" id="Tup-e9-mMA"/>
                                 </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oDd-yF-tcL">
-                                <rect key="frame" x="16" y="90" width="343" height="1"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="C7o-mf-bJY"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="roO-TN-PoH" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
-                                <rect key="frame" x="16" y="91" width="343" height="200"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="qy5-g0-rF4"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O2s-cg-CRt" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
-                                <rect key="frame" x="16" y="291" width="343" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="wpd-Nu-a2E"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iMb-EU-ZwS">
-                                <rect key="frame" x="16" y="341" width="343" height="1"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="dXJ-66-3Yc"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rpl-A7-4jb" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
-                                <rect key="frame" x="16" y="342" width="343" height="100"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="Z6m-dp-8CN"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjM-Kt-WbX" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
-                                <rect key="frame" x="16" y="442" width="343" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="2EC-O6-If4"/>
-                                </constraints>
-                            </view>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="iMb-EU-ZwS" secondAttribute="trailing" id="2fp-bl-GKm"/>
-                            <constraint firstItem="iMb-EU-ZwS" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leadingMargin" id="5oa-Gh-OTu"/>
-                            <constraint firstItem="MjM-Kt-WbX" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leadingMargin" id="5rN-ms-pPN"/>
-                            <constraint firstAttribute="trailing" secondItem="C59-Og-LU5" secondAttribute="trailing" id="BOF-bx-pzQ"/>
-                            <constraint firstItem="Lux-98-aTY" firstAttribute="top" secondItem="C59-Og-LU5" secondAttribute="bottom" id="Ezr-A5-Xmb"/>
-                            <constraint firstItem="Rpl-A7-4jb" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leadingMargin" id="HTl-Qg-OS2"/>
-                            <constraint firstItem="O2s-cg-CRt" firstAttribute="top" secondItem="roO-TN-PoH" secondAttribute="bottom" id="KFM-dw-YTC"/>
-                            <constraint firstItem="roO-TN-PoH" firstAttribute="top" secondItem="oDd-yF-tcL" secondAttribute="bottom" id="MJA-nO-F7Y"/>
-                            <constraint firstItem="iMb-EU-ZwS" firstAttribute="top" secondItem="O2s-cg-CRt" secondAttribute="bottom" id="Mis-qu-3Iy"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="oDd-yF-tcL" secondAttribute="trailing" id="PTE-kd-cJ4"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Rpl-A7-4jb" secondAttribute="trailing" id="RXg-aN-f9j"/>
-                            <constraint firstItem="MjM-Kt-WbX" firstAttribute="top" secondItem="Rpl-A7-4jb" secondAttribute="bottom" id="YLx-Mh-koH"/>
-                            <constraint firstItem="roO-TN-PoH" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leadingMargin" id="ZTU-jU-i7m"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="roO-TN-PoH" secondAttribute="trailing" id="aKX-2t-Ktw"/>
-                            <constraint firstItem="oDd-yF-tcL" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leadingMargin" id="b7p-21-F9C"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Lux-98-aTY" secondAttribute="trailing" id="ery-q6-6Ot"/>
-                            <constraint firstItem="oDd-yF-tcL" firstAttribute="top" secondItem="Lux-98-aTY" secondAttribute="bottom" id="f9V-2o-zAU"/>
-                            <constraint firstItem="Lux-98-aTY" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leadingMargin" id="h6e-IV-CeS"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="O2s-cg-CRt" secondAttribute="trailing" id="lVg-uD-C3A"/>
-                            <constraint firstItem="C59-Og-LU5" firstAttribute="top" secondItem="V2Y-IO-t7F" secondAttribute="top" id="mK5-xS-WbK"/>
-                            <constraint firstItem="O2s-cg-CRt" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leadingMargin" id="mcR-9m-Oew"/>
-                            <constraint firstItem="Rpl-A7-4jb" firstAttribute="top" secondItem="iMb-EU-ZwS" secondAttribute="bottom" id="oPf-dg-PJF"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="MjM-Kt-WbX" secondAttribute="trailing" id="uOJ-09-5wk"/>
-                            <constraint firstItem="C59-Og-LU5" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leading" id="uqT-p5-Mmn"/>
+                            <constraint firstAttribute="width" secondItem="TcE-EL-p4M" secondAttribute="width" id="8SB-VG-huh"/>
+                            <constraint firstItem="0Vn-Rv-Av9" firstAttribute="bottom" secondItem="V2Y-IO-t7F" secondAttribute="bottom" id="Fdy-Hq-PHK"/>
+                            <constraint firstAttribute="trailing" secondItem="0Vn-Rv-Av9" secondAttribute="trailing" id="Pog-f7-Yyr"/>
+                            <constraint firstItem="C59-Og-LU5" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leading" id="ewQ-pk-gAB"/>
+                            <constraint firstItem="0Vn-Rv-Av9" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leading" id="k58-AZ-o20"/>
+                            <constraint firstItem="C59-Og-LU5" firstAttribute="top" secondItem="K4x-ba-1SJ" secondAttribute="bottom" id="toI-JL-TRS"/>
+                            <constraint firstAttribute="trailing" secondItem="C59-Og-LU5" secondAttribute="trailing" id="tok-R3-cmF"/>
+                            <constraint firstItem="0Vn-Rv-Av9" firstAttribute="top" secondItem="C59-Og-LU5" secondAttribute="bottom" id="y0e-Ov-ghc"/>
                         </constraints>
                     </view>
                     <connections>
@@ -916,7 +941,11 @@
                         <outlet property="allTimeGroupView" destination="Rpl-A7-4jb" id="jkE-Lp-BmL"/>
                         <outlet property="allTimeView" destination="O2s-cg-CRt" id="mQo-wZ-Ozb"/>
                         <outlet property="byValueView" destination="MjM-Kt-WbX" id="6Ax-d4-Hyb"/>
+                        <outlet property="contentView" destination="TcE-EL-p4M" id="g3n-Zl-1en"/>
                         <outlet property="headerView" destination="C59-Og-LU5" id="u0s-Mq-ItM"/>
+                        <outlet property="scrollContentHeightConstraint" destination="ZDt-78-JE9" id="H2S-Ah-XKC"/>
+                        <outlet property="separator1" destination="oDd-yF-tcL" id="Fzn-sF-ZIT"/>
+                        <outlet property="separator2" destination="iMb-EU-ZwS" id="ClJ-kd-M8M"/>
                         <outlet property="showAllGroupHeightConstraint" destination="qy5-g0-rF4" id="SjH-LQ-2Ip"/>
                         <outlet property="showAllGroupView" destination="roO-TN-PoH" id="7kp-Ax-1DF"/>
                         <outlet property="showAllView" destination="Lux-98-aTY" id="n39-jT-iO1"/>
@@ -2469,6 +2498,10 @@
         <scene sceneID="yzH-KA-qi7">
             <objects>
                 <viewController id="aLn-pr-8oz" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="uHT-iI-mRD"/>
+                        <viewControllerLayoutGuide type="bottom" id="bEQ-dT-4KU"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="9c7-3C-YGO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
