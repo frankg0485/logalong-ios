@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ChartsPageViewController: UIPageViewController/*, UIPageViewControllerDataSource, UIPageViewControllerDelegate*/ {
+class ChartsPageViewController: UIPageViewController/*, UIPageViewControllerDataSource, UIPageViewControllerDelegate*/,
+UIPopoverPresentationControllerDelegate {
 
     var pieVC: PieChartViewController!
     var barVC: BarChartViewController!
@@ -53,6 +54,23 @@ class ChartsPageViewController: UIPageViewController/*, UIPageViewControllerData
         })
     }
 
+    @objc func onSearchClick() {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchViewController")
+
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.popoverPresentationController?.sourceView = self.view
+        vc.popoverPresentationController?.sourceRect =
+            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY - 22, width: 0, height: 0)
+        vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+        vc.popoverPresentationController!.delegate = self
+
+        self.present(vc, animated: true, completion: nil)
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+
     @objc func onCancelClick() {
         dismiss(animated: true, completion: nil)
     }
@@ -72,6 +90,7 @@ class ChartsPageViewController: UIPageViewController/*, UIPageViewControllerData
         chartBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
 
         let searchBtn = UIButton(type: .system)
+        searchBtn.addTarget(self, action: #selector(self.onSearchClick), for: .touchUpInside)
         searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
         searchBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S, height: BTN_H)
         searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)

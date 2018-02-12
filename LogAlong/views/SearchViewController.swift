@@ -9,6 +9,9 @@
 import UIKit
 
 class SearchViewController: UIViewController {
+    @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var separator1: UIView!
+    @IBOutlet weak var separator2: UIView!
     @IBOutlet weak var headerView: HorizontalLayout!
     @IBOutlet weak var showAllView: HorizontalLayout!
     @IBOutlet weak var allTimeView: HorizontalLayout!
@@ -17,6 +20,7 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var allTimeGroupView: VerticalLayout!
     @IBOutlet weak var showAllGroupHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var allTimeGroupHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollContentHeightConstraint: NSLayoutConstraint!
 
     var allViewSwitch: UISwitch!
     var timeSwitch: UISwitch!
@@ -31,9 +35,13 @@ class SearchViewController: UIViewController {
     var toTimeBtn: UIButton!
     var filterByBtn: UIButton!
 
-    let contentSizeBaseHeight: CGFloat = 200
-    let showAllGroupHeight: CGFloat = 202
-    let allTimeGroupHeight: CGFloat = 102
+    let headerHeight: CGFloat = 40 //constraint set in storyboard
+    let entryHeight: CGFloat = 45
+    let entryBottomMargin: CGFloat = 5
+    let sectionHeaderHeight: CGFloat = 50
+    let contentSizeBaseHeight: CGFloat = 210 // headerHeight + 3 * sectionHeaderHeight + overhead
+    let showAllGroupHeight: CGFloat = 202 //4 * (entryHeight + entryBottomMargin) + 2
+    let allTimeGroupHeight: CGFloat = 102 //2 * (entryHeight + entryBottomMargin) + 2
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +52,7 @@ class SearchViewController: UIViewController {
         createByValue()
 
         preferredContentSize.height = contentSizeBaseHeight + showAllGroupHeight + allTimeGroupHeight
+        scrollContentHeightConstraint.constant = preferredContentSize.height - headerHeight
     }
 
     @objc func onShowAllClick() {
@@ -68,6 +77,10 @@ class SearchViewController: UIViewController {
         setContentHeight()
     }
 
+    @objc func onCancelClick() {
+        dismiss(animated: true, completion: nil)
+    }
+
     private func setContentHeight() {
         var height = contentSizeBaseHeight
         if !allViewSwitch.isOn {
@@ -77,6 +90,7 @@ class SearchViewController: UIViewController {
             height += allTimeGroupHeight
         }
         preferredContentSize.height = height
+        scrollContentHeightConstraint.constant = height - headerHeight
     }
 
     private func createHeader() {
@@ -88,6 +102,7 @@ class SearchViewController: UIViewController {
         headerView.addSubview(label)
 
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 25 + 10, height: 25))
+        btn.addTarget(self, action: #selector(onCancelClick), for: .touchUpInside)
         btn.setImage(#imageLiteral(resourceName: "ic_action_cancel").withRenderingMode(.alwaysOriginal), for: .normal)
         btn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10)
         headerView.addSubview(btn)
@@ -96,9 +111,9 @@ class SearchViewController: UIViewController {
     }
 
     private func createShowAllEntry(_ str: String) -> (HorizontalLayout, UIButton) {
-        let layout = HorizontalLayout(height: 45)
+        let layout = HorizontalLayout(height: entryHeight)
         layout.layoutMargins.top = 0
-        layout.layoutMargins.bottom = 5
+        layout.layoutMargins.bottom = entryBottomMargin
 
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 40))
         label.textColor = LTheme.Color.gray_text_color
@@ -116,7 +131,7 @@ class SearchViewController: UIViewController {
     }
 
     private func createShowAll() {
-        let hlayout = HorizontalLayout(height: 50)
+        let hlayout = HorizontalLayout(height: sectionHeaderHeight)
         hlayout.layoutMargins.top = 0
         hlayout.layoutMargins.bottom = 0
         hlayout.layoutMargins.left = 0
@@ -150,7 +165,7 @@ class SearchViewController: UIViewController {
     }
 
     private func createAllTime() {
-        let hlayout = HorizontalLayout(height: 50)
+        let hlayout = HorizontalLayout(height: sectionHeaderHeight)
         hlayout.layoutMargins.top = 0
         hlayout.layoutMargins.bottom = 0
         hlayout.layoutMargins.left = 0
@@ -165,9 +180,9 @@ class SearchViewController: UIViewController {
         hlayout.addSubview(label)
         allTimeView.addSubview(hlayout)
 
-        let layout = HorizontalLayout(height: 45)
+        let layout = HorizontalLayout(height: entryHeight)
         layout.layoutMargins.top = 0
-        layout.layoutMargins.bottom = 5
+        layout.layoutMargins.bottom = entryBottomMargin
 
         fromTimeBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
         fromTimeBtn.setTitle(NSLocalizedString("Jan 10, 2018", comment: ""), for: .normal)
@@ -197,7 +212,7 @@ class SearchViewController: UIViewController {
     }
 
     private func createByValue() {
-        let hlayout = HorizontalLayout(height: 50)
+        let hlayout = HorizontalLayout(height: sectionHeaderHeight)
         hlayout.layoutMargins.top = 0
         hlayout.layoutMargins.bottom = 0
         hlayout.layoutMargins.left = 0
