@@ -264,13 +264,13 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             || (segue.identifier == "ChooseTag")
             || (segue.identifier == "ChooseDate") {
 
-            let popoverViewController = segue.destination
-
-            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-            popoverViewController.popoverPresentationController?.sourceRect =
-                CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: LTheme.Dimension.popover_anchor_width, height: 0)
-            popoverViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
-            popoverViewController.popoverPresentationController!.delegate = self
+            let vc = segue.destination
+            vc.modalPresentationStyle = UIModalPresentationStyle.popover
+            vc.popoverPresentationController?.sourceView = self.view
+            vc.popoverPresentationController?.sourceRect =
+                CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+            vc.popoverPresentationController!.delegate = self
         }
 
         var color = LTheme.Color.base_blue
@@ -283,57 +283,50 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             break;
         }
 
-        if let nextViewController = segue.destination as? UINavigationController {
-            nextViewController.popoverPresentationController?.sourceView = headerView
-
-            if let secondViewController = nextViewController.topViewController as? SelectViewController {
-                if segue.identifier == "ChooseAccount" {
-                    if record!.type == .TRANSFER_COPY {
-                        secondViewController.selectType = .ACCOUNT2
-                        secondViewController.initValue = record!.accountId2
-                    } else {
-                        secondViewController.selectType = .ACCOUNT
-                        secondViewController.initValue = record!.accountId
-                    }
-                } else if segue.identifier == "ChooseCategory" {
-                    if record!.type == .TRANSFER {
-                        secondViewController.selectType = .ACCOUNT2
-                        secondViewController.initValue = record!.accountId2
-                    } else if record!.type == .TRANSFER_COPY {
-                        secondViewController.selectType = .ACCOUNT
-                        secondViewController.initValue = record!.accountId
-                    } else {
-                        secondViewController.selectType = .CATEGORY
-                        secondViewController.initValue = record!.categoryId
-                    }
-                } else if segue.identifier == "ChooseTag" {
-                    secondViewController.selectType = .TAG
-                    secondViewController.initValue = record!.tagId
-                } else if segue.identifier == "ChoosePayee" {
-                    if (record!.type == .INCOME) {
-                        secondViewController.selectType = .PAYER
-                    } else {
-                        secondViewController.selectType = .PAYEE
-                    }
-                    secondViewController.initValue = record!.vendorId
+        if let vc = segue.destination as? SelectViewController {
+            if segue.identifier == "ChooseAccount" {
+                if record!.type == .TRANSFER_COPY {
+                    vc.selectType = .ACCOUNT2
+                    vc.initValue = record!.accountId2
+                } else {
+                    vc.selectType = .ACCOUNT
+                    vc.initValue = record!.accountId
                 }
-
-                secondViewController.delegate = self
-                secondViewController.color = color
+            } else if segue.identifier == "ChooseCategory" {
+                if record!.type == .TRANSFER {
+                    vc.selectType = .ACCOUNT2
+                    vc.initValue = record!.accountId2
+                } else if record!.type == .TRANSFER_COPY {
+                    vc.selectType = .ACCOUNT
+                    vc.initValue = record!.accountId
+                } else {
+                    vc.selectType = .CATEGORY
+                    vc.initValue = record!.categoryId
+                }
+            } else if segue.identifier == "ChooseTag" {
+                vc.selectType = .TAG
+                vc.initValue = record!.tagId
+            } else if segue.identifier == "ChoosePayee" {
+                if (record!.type == .INCOME) {
+                    vc.selectType = .PAYER
+                } else {
+                    vc.selectType = .PAYEE
+                }
+                vc.initValue = record!.vendorId
             }
-        }  else if let secondViewController = segue.destination as? SelectAmountViewController {
-            secondViewController.popoverPresentationController?.sourceView = headerView
-            secondViewController.delegate = self
-            secondViewController.initValue = record!.amount
-            secondViewController.color = color
-        }  else if let secondViewController = segue.destination as? DatePickerViewController {
-            secondViewController.popoverPresentationController?.sourceView = headerView
-            secondViewController.delegate = self
-            secondViewController.initValue = record!.timestamp
-            secondViewController.color = color
+
+            vc.delegate = self
+            vc.color = color
+        }  else if let vc = segue.destination as? SelectAmountViewController {
+            vc.delegate = self
+            vc.initValue = record!.amount
+            vc.color = color
+        }  else if let vc = segue.destination as? DatePickerViewController {
+            vc.delegate = self
+            vc.initValue = record!.timestamp
+            vc.color = color
         } else {
             LLog.d("\(self)", "unwinding")
-            //presentingViewController?.dismiss(animated: true, completion: nil)
         }
     }
 

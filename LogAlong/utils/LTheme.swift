@@ -64,8 +64,8 @@ class LTheme {
         static let bar_button_width: CGFloat = 25
         static let bar_button_height: CGFloat = 25
         static let bar_button_space: CGFloat = 5
-        static let popover_anchor_width: CGFloat = 300
-        static let popover_width: CGFloat = 375
+
+        static let popover_width: CGFloat = 320
         static let popover_height: CGFloat = 320
         static let popover_height_small: CGFloat = 200
         static let tab_bar_icon_width: CGFloat = 32

@@ -21,14 +21,18 @@ enum SelectType {
 class SelectViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
 UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
+    @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var okButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
+
+    let headerHeight: CGFloat = 45 //constraint set in storyboard
 
     var initValue: Int64!
     var color: UIColor!
     var selectType: SelectType!
+    var multiSelection: Bool = false
 
-    var myIndexPath: Int = 0
+    var myIndexPath: Int = -1
     var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0)
 
     weak var delegate: FViewControllerDelegate?
@@ -37,29 +41,106 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        headerView.backgroundColor = LTheme.Color.dialog_border_color
+        createHeader()
+
         self.preferredContentSize.width = LTheme.Dimension.popover_width
-        self.preferredContentSize.height = LTheme.Dimension.popover_height
 
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.tableFooterView = UIView()
 
         checkIdentifierAndPopulateArray()
 
         //tableView.reloadData()
-        if selections.count > 0 {
+        if selections.count > 0 && myIndexPath >= 0 {
             DispatchQueue.main.async(execute: {
                 let indexPath = IndexPath(row: self.myIndexPath, section: 0)
                 self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
             })
         }
 
+        if (selections.count > 4) {
+            self.preferredContentSize.height = 105 + CGFloat(selections.count * 51)
+        } else {
+            self.preferredContentSize.height = LTheme.Dimension.popover_height
+        }
+
         okButton.isEnabled = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.view.superview?.layer.borderColor = color.cgColor
-        navigationController?.view.superview?.layer.borderWidth = 1
+        view.superview?.layer.borderColor = color.cgColor
+        view.superview?.layer.borderWidth = 1
         super.viewWillAppear(animated)
+    }
+
+    private func getHeaderTitle() -> String {
+        switch (selectType) {
+        case .ACCOUNT: fallthrough
+        case .ACCOUNT2:
+            return multiSelection ? NSLocalizedString("Select Accounts", comment: "") : NSLocalizedString("Select Account", comment: "")
+        case .CATEGORY:
+            return multiSelection ? NSLocalizedString("Select Categories", comment: "") : NSLocalizedString("Select Category", comment: "")
+        case .TAG:
+            return multiSelection ? NSLocalizedString("Select Tags", comment: "") : NSLocalizedString("Select Tag", comment: "")
+        case .PAYER:
+            return multiSelection ? NSLocalizedString("Select Payers", comment: "") : NSLocalizedString("Select Payer", comment: "")
+        case .PAYEE:
+            return NSLocalizedString("Select Payee", comment: "")
+        case .VENDOR:
+            return multiSelection ? NSLocalizedString("Select Payee/Payers", comment: "") : NSLocalizedString("Select Payee/Payer", comment: "")
+        default:
+            return ""
+        }
+    }
+
+    private func createHeader() {
+        let layout = HorizontalLayout(height: headerHeight)
+
+        let spacer = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 30))
+        layout.addSubview(spacer)
+
+        let label = UILabel(frame: CGRect(x: 1, y: 0, width: 60, height: 30))
+        label.text = NSLocalizedString(getHeaderTitle(), comment: "")
+        layout.addSubview(label)
+
+        if multiSelection {
+            let allSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 40, height: 25))
+            allSwitch.addTarget(self, action: #selector(onSelectAllClick), for: .touchUpInside)
+            layout.addSubview(allSwitch)
+
+            let label = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            label.text = NSLocalizedString("all", comment: "")
+            layout.addSubview(label)
+        } else {
+            let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 25 + 10, height: 25))
+            btn.addTarget(self, action: #selector(onAddClick), for: .touchUpInside)
+            btn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
+            btn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10)
+            layout.addSubview(btn)
+        }
+        headerView.addSubview(layout)
+    }
+
+    @objc func onSelectAllClick() {
+
+    }
+
+    @objc func onAddClick() {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateViewController") as! CreateViewController
+
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.popoverPresentationController?.sourceView = self.view
+        vc.popoverPresentationController?.sourceRect =
+            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+        vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+        vc.popoverPresentationController!.delegate = self
+
+        vc.delegate = self
+        vc.createType = selectType
+
+        self.present(vc, animated: true, completion: nil)
     }
 
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
@@ -98,8 +179,20 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+            cell.accessoryType = .checkmark
+        }
         okButton.isEnabled = true
         myIndexPath = indexPath.row
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+            cell.accessoryType = .none
+        }
+        if (myIndexPath == indexPath.row) {
+            myIndexPath = -1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -113,6 +206,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         let selection = selections[indexPath.row]
         cell.nameLabel.text = selection.name
 
+        cell.accessoryType = myIndexPath == indexPath.row ? .checkmark : .none
         return cell
     }
 
@@ -148,7 +242,8 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
             }
         //TODO: separate payer/payee support
         case .PAYER: fallthrough
-        case .PAYEE:
+        case .PAYEE: fallthrough
+        case .VENDOR:
             for vendor in DBVendor.instance.getAll() {
                 selections.append(NameWithId(name: vendor.name, id: vendor.id))
                 if (vendor.id == initValue) {
@@ -159,28 +254,6 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
             break
         default:
             LLog.e("\(self)", "unknown request type")
-        }
-    }
-
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "CreateNew" {
-            let popoverViewController = segue.destination
-
-            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-            popoverViewController.popoverPresentationController?.sourceRect =
-                CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: LTheme.Dimension.popover_anchor_width, height: 0)
-            popoverViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
-            popoverViewController.popoverPresentationController!.delegate = self
-
-            popoverViewController.popoverPresentationController?.sourceView = view
-        }
-
-        if let secondViewController = segue.destination as? CreateViewController {
-            secondViewController.delegate = self
-            secondViewController.createType = selectType
         }
     }
 

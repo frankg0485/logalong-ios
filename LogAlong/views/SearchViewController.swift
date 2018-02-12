@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var separator1: UIView!
     @IBOutlet weak var separator2: UIView!
@@ -35,7 +35,7 @@ class SearchViewController: UIViewController {
     var toTimeBtn: UIButton!
     var filterByBtn: UIButton!
 
-    let headerHeight: CGFloat = 40 //constraint set in storyboard
+    let headerHeight: CGFloat = 45 //constraint set in storyboard
     let entryHeight: CGFloat = 45
     let entryBottomMargin: CGFloat = 5
     let sectionHeaderHeight: CGFloat = 50
@@ -53,6 +53,10 @@ class SearchViewController: UIViewController {
 
         preferredContentSize.height = contentSizeBaseHeight + showAllGroupHeight + allTimeGroupHeight
         scrollContentHeightConstraint.constant = preferredContentSize.height - headerHeight
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
     }
 
     @objc func onShowAllClick() {
@@ -75,6 +79,40 @@ class SearchViewController: UIViewController {
             allTimeGroupHeightConstraint.constant = allTimeGroupHeight
         }
         setContentHeight()
+    }
+
+    private func presentSelection(_ type: SelectType) {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SelectViewController") as! SelectViewController
+
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.popoverPresentationController?.sourceView = self.view
+        vc.popoverPresentationController?.sourceRect =
+            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY - 22, width: 0, height: 0)
+        vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+        vc.popoverPresentationController!.delegate = self
+
+        vc.selectType = type
+        vc.initValue = 0
+        vc.color = LTheme.Color.base_orange
+        vc.multiSelection = true
+
+        self.present(vc, animated: true, completion: nil)
+    }
+
+    @objc func onClickAccounts() {
+        presentSelection(.ACCOUNT)
+    }
+
+    @objc func onClickCategories() {
+        presentSelection(.CATEGORY)
+    }
+
+    @objc func onClickVendors() {
+        presentSelection(.VENDOR)
+    }
+
+    @objc func onClickTags() {
+        presentSelection(.TAG)
     }
 
     @objc func onCancelClick() {
@@ -148,18 +186,22 @@ class SearchViewController: UIViewController {
 
         var (layout, btn) = createShowAllEntry(NSLocalizedString("Accounts", comment: ""))
         accountsBtn = btn
+        accountsBtn.addTarget(self, action: #selector(onClickAccounts), for: .touchUpInside)
         showAllGroupView.addSubview(layout)
 
         (layout, btn) = createShowAllEntry(NSLocalizedString("Categories", comment: ""))
         categoriesBtn = btn
+        categoriesBtn.addTarget(self, action: #selector(onClickCategories), for: .touchUpInside)
         showAllGroupView.addSubview(layout)
 
         (layout, btn) = createShowAllEntry(NSLocalizedString("Payee/Payers", comment: ""))
         vendorsBtn = btn
+        vendorsBtn.addTarget(self, action: #selector(onClickVendors), for: .touchUpInside)
         showAllGroupView.addSubview(layout)
 
         (layout, btn) = createShowAllEntry(NSLocalizedString("Tags", comment: ""))
         tagsBtn = btn
+        tagsBtn.addTarget(self, action: #selector(onClickTags), for: .touchUpInside)
         showAllGroupView.addSubview(layout)
         showAllGroupHeightConstraint.constant = showAllGroupHeight
     }
