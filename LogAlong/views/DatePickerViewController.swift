@@ -11,7 +11,7 @@ import UIKit
 class DatePickerViewController: UIViewController {
 
     var delegate: FViewControllerDelegate?
-    var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0)
+    var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0, array64: nil, allSelected: false)
 
     @IBOutlet weak var datePicker: UIDatePicker!
 

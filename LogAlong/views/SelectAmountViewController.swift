@@ -12,7 +12,7 @@ class SelectAmountViewController: UIViewController {
 
     @IBOutlet weak var amountTextField: UITextField!
     weak var delegate: FViewControllerDelegate?
-    var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0)
+    var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0, array64: nil, allSelected: false)
 
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var subtractButton: UIButton!

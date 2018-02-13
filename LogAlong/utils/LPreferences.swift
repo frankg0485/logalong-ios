@@ -27,11 +27,35 @@ class LPreferences {
     static let shareAccountRequest = "shareAccountRequest"
 
     static func getRecordsSearchControls() -> LRecordSearch {
-        return LRecordSearch(from: 0, to: 0)
+        let all: Bool = defaults.bool(forKey: recordsSearchControls + ".all")
+        let allTime: Bool = defaults.bool(forKey: recordsSearchControls + ".allTime")
+        let from: Int64 = (defaults.object(forKey: recordsSearchControls + ".from") ?? Int64(0)) as! Int64
+        let to: Int64 = (defaults.object(forKey: recordsSearchControls + ".to") ?? Int64(0)) as! Int64
+        let byEditTime: Bool = defaults.bool(forKey: recordsSearchControls + ".byEditTime")
+        let byValue: Bool = defaults.bool(forKey: recordsSearchControls + ".byValue")
+        let value: Double = defaults.double(forKey: recordsSearchControls + ".value")
+
+        let accounts: [Int64] = (defaults.array(forKey: recordsSearchControls + ".accounts") ?? [Int64]()) as! [Int64]
+        let categories: [Int64] = (defaults.array(forKey: recordsSearchControls + ".categories") ?? [Int64]()) as! [Int64]
+        let vendors: [Int64] = (defaults.array(forKey: recordsSearchControls + ".vendors") ?? [Int64]()) as! [Int64]
+        let tags: [Int64] = (defaults.array(forKey: recordsSearchControls + ".tags") ?? [Int64]()) as! [Int64]
+
+        return LRecordSearch(all: all, allTime: allTime, from: from, to: to, byEditTime: byEditTime, byValue: byValue, value: value, accounts: accounts, categories: categories, vendors: vendors, tags: tags)
     }
 
     static func setRecordsSearchControls(controls: LRecordSearch) {
+        defaults.set(controls.all, forKey: recordsSearchControls + ".all")
+        defaults.set(controls.allTime, forKey: recordsSearchControls + ".allTime")
+        defaults.set(controls.from, forKey: recordsSearchControls + ".from")
+        defaults.set(controls.to, forKey: recordsSearchControls + ".to")
+        defaults.set(controls.byEditTime, forKey: recordsSearchControls + ".byEditTime")
+        defaults.set(controls.byValue, forKey: recordsSearchControls + ".byValue")
+        defaults.set(controls.value, forKey: recordsSearchControls + ".value")
 
+        defaults.set(controls.accounts, forKey: recordsSearchControls + ".accounts")
+        defaults.set(controls.categories, forKey: recordsSearchControls + ".categories")
+        defaults.set(controls.vendors, forKey: recordsSearchControls + ".vendors")
+        defaults.set(controls.tags, forKey: recordsSearchControls + ".tags")
     }
 
     static func getRecordsViewAscend() -> Bool {

@@ -24,20 +24,23 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var okButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
+    var allSwitch: UISwitch?
 
     let headerHeight: CGFloat = 45 //constraint set in storyboard
 
-    var initValue: Int64!
+    var initValues: [Int64]!
     var color: UIColor!
     var selectType: SelectType!
     var multiSelection: Bool = false
 
+    // carries the first selection if any, upon entering this menu.
+    // if single selection, this also carries the active selection
     var myIndexPath: Int = -1
-    var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0)
 
     weak var delegate: FViewControllerDelegate?
 
     var selections: [NameWithId] = []
+    var checked: [Bool] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +69,9 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
             self.preferredContentSize.height = LTheme.Dimension.popover_height
         }
 
+        if multiSelection {
+            allSwitch?.isOn = isAllChecked()
+        }
         okButton.isEnabled = false
     }
 
@@ -79,17 +85,21 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         switch (selectType) {
         case .ACCOUNT: fallthrough
         case .ACCOUNT2:
-            return multiSelection ? NSLocalizedString("Select Accounts", comment: "") : NSLocalizedString("Select Account", comment: "")
+            //return multiSelection ? NSLocalizedString("Select Accounts", comment: "") : NSLocalizedString("Select Account", comment: "")
+            return NSLocalizedString("Account", comment: "")
         case .CATEGORY:
-            return multiSelection ? NSLocalizedString("Select Categories", comment: "") : NSLocalizedString("Select Category", comment: "")
+            //return multiSelection ? NSLocalizedString("Select Categories", comment: "") : NSLocalizedString("Select Category", comment: "")
+            return NSLocalizedString("Category", comment: "")
         case .TAG:
-            return multiSelection ? NSLocalizedString("Select Tags", comment: "") : NSLocalizedString("Select Tag", comment: "")
+            //return multiSelection ? NSLocalizedString("Select Tags", comment: "") : NSLocalizedString("Select Tag", comment: "")
+            return NSLocalizedString("Tag", comment: "")
         case .PAYER:
-            return multiSelection ? NSLocalizedString("Select Payers", comment: "") : NSLocalizedString("Select Payer", comment: "")
+            return NSLocalizedString("Payer", comment: "")
         case .PAYEE:
-            return NSLocalizedString("Select Payee", comment: "")
+            return NSLocalizedString("Payee", comment: "")
         case .VENDOR:
-            return multiSelection ? NSLocalizedString("Select Payee/Payers", comment: "") : NSLocalizedString("Select Payee/Payer", comment: "")
+            //return multiSelection ? NSLocalizedString("Select Payee/Payers", comment: "") : NSLocalizedString("Select Payee/Payer", comment: "")
+            return NSLocalizedString("Payee/Payer", comment: "")
         default:
             return ""
         }
@@ -106,9 +116,9 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         layout.addSubview(label)
 
         if multiSelection {
-            let allSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 40, height: 25))
-            allSwitch.addTarget(self, action: #selector(onSelectAllClick), for: .touchUpInside)
-            layout.addSubview(allSwitch)
+            allSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 40, height: 25))
+            allSwitch!.addTarget(self, action: #selector(onSelectAllClick), for: .touchUpInside)
+            layout.addSubview(allSwitch!)
 
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             label.text = NSLocalizedString("all", comment: "")
@@ -124,7 +134,14 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
     }
 
     @objc func onSelectAllClick() {
-
+        if multiSelection {
+            let on = allSwitch!.isOn
+            for ii in 0..<checked.count {
+                checked[ii] = on
+            }
+            tableView.reloadData()
+            okButton.isEnabled = true
+        }
     }
 
     @objc func onAddClick() {
@@ -148,18 +165,26 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
     }
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
-        type.int64 = selections[myIndexPath].id
+        let ids = getCheckedIds()
+        var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0, array64: nil, allSelected: false)
 
-        delegate?.passNumberBack(self, type: type)
+        if ids.isEmpty {
+            LLog.e("\(self)", "unexpected empty selection")
+        } else {
+            if multiSelection {
+                type.array64 = ids
+                type.allSelected = isAllChecked()
+            } else {
+                if ids.count != 1 {
+                    LLog.e("\(self)", "unexpected multiple selection")
+                }
+                type.int64 = ids[0]
+            }
+
+            delegate?.passNumberBack(self, type: type)
+        }
+
         dismiss(animated: true, completion: nil)
-        /*       let myVC = storyboard?.instantiateViewController(withIdentifier: "testID") as! AddTableViewController
-         myVC.intPassed = myIndexPath
-
-         print("jsnfsjnfjfnkdjf: \(myVC.intPassed)")
-
-         navigationController?.pushViewController(myVC, animated: true)
-         dismiss(animated: true, completion: nil)
-         popoverPresentationController?.delegate?.popoverPresentationControllerDidDismissPopover?(popoverPresentationController!)*/
     }
 
     func creationCallback(created: Bool) {
@@ -182,16 +207,32 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
             cell.accessoryType = .checkmark
         }
-        okButton.isEnabled = true
-        myIndexPath = indexPath.row
+        checked[indexPath.row] = true
+
+        if multiSelection {
+            okButton.isEnabled = isAnyChecked()
+            allSwitch?.isOn = isAllChecked()
+        } else {
+            okButton.isEnabled = true
+
+            if (myIndexPath != indexPath.row && myIndexPath != -1) {
+                checked[myIndexPath] = false
+                if let cell = tableView.cellForRow(at: IndexPath(row: myIndexPath, section: 0)) {
+                    cell.accessoryType = .none
+                }
+            }
+            myIndexPath = indexPath.row
+        }
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-            cell.accessoryType = .none
-        }
-        if (myIndexPath == indexPath.row) {
-            myIndexPath = -1
+        if multiSelection {
+            if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+                cell.accessoryType = .none
+            }
+            checked[indexPath.row] = false
+            okButton.isEnabled = isAnyChecked()
+            allSwitch?.isOn = isAllChecked()
         }
     }
 
@@ -206,8 +247,63 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         let selection = selections[indexPath.row]
         cell.nameLabel.text = selection.name
 
-        cell.accessoryType = myIndexPath == indexPath.row ? .checkmark : .none
+        cell.accessoryType = checked[indexPath.row] ? .checkmark : .none
         return cell
+    }
+
+    private func getCheckedIds() -> [Int64] {
+        var chked: [Int64] = []
+
+        var index = 0
+        if !checked.isEmpty {
+            for chk in checked {
+                if chk {
+                    chked.append(selections[index].id)
+                }
+                index += 1
+            }
+        }
+
+        return chked
+    }
+
+    private func isAnyChecked() -> Bool {
+        if !checked.isEmpty {
+            for chk in checked {
+                if chk {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    private func isAllChecked() -> Bool {
+        if !checked.isEmpty {
+            for chk in checked {
+                if !chk {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+    private func wasChecked(id: Int64) -> Bool {
+        for val in initValues {
+            if val == id {
+                return true
+            }
+        }
+        return false
+    }
+
+    private func initChecked(id: Int64, index: Int) {
+        let chk = wasChecked(id: id)
+        checked.append(chk)
+        if (myIndexPath == -1 && chk) {
+            myIndexPath = index
+        }
     }
 
     func checkIdentifierAndPopulateArray() {
@@ -219,25 +315,19 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         case .ACCOUNT2:
             for account in DBAccount.instance.getAll() {
                 selections.append(NameWithId(name: account.name, id: account.id))
-                if (account.id == initValue) {
-                    myIndexPath = ii
-                }
+                initChecked(id: account.id, index: ii)
                 ii += 1
             }
         case .CATEGORY:
             for category in DBCategory.instance.getAll() {
                 selections.append(NameWithId(name: category.name, id: category.id))
-                if (category.id == initValue) {
-                    myIndexPath = ii
-                }
+                initChecked(id: category.id, index: ii)
                 ii += 1
             }
         case .TAG:
             for tag in DBTag.instance.getAll() {
                 selections.append(NameWithId(name: tag.name, id: tag.id))
-                if (tag.id == initValue) {
-                    myIndexPath = ii
-                }
+                initChecked(id: tag.id, index: ii)
                 ii += 1
             }
         //TODO: separate payer/payee support
@@ -246,9 +336,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         case .VENDOR:
             for vendor in DBVendor.instance.getAll() {
                 selections.append(NameWithId(name: vendor.name, id: vendor.id))
-                if (vendor.id == initValue) {
-                    myIndexPath = ii
-                }
+                initChecked(id: vendor.id, index: ii)
                 ii += 1
             }
             break

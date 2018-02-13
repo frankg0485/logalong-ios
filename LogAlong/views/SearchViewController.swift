@@ -8,7 +8,18 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, UIPopoverPresentationControllerDelegate {
+enum SearchSelectType {
+    case ACCOUNT
+    case CATEGORY
+    case VENDOR
+    case TAG
+    case FROM
+    case TO
+    case VALUE
+}
+
+class SearchViewController: UIViewController, UIPopoverPresentationControllerDelegate, FViewControllerDelegate {
+
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var separator1: UIView!
     @IBOutlet weak var separator2: UIView!
@@ -34,6 +45,8 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     var fromTimeBtn: UIButton!
     var toTimeBtn: UIButton!
     var filterByBtn: UIButton!
+
+    var searchSelectType: SearchSelectType!
 
     let headerHeight: CGFloat = 45 //constraint set in storyboard
     let entryHeight: CGFloat = 45
@@ -92,31 +105,94 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         vc.popoverPresentationController!.delegate = self
 
         vc.selectType = type
-        vc.initValue = 0
+        vc.initValues = [0]
         vc.color = LTheme.Color.base_orange
         vc.multiSelection = true
+        vc.delegate = self
 
         self.present(vc, animated: true, completion: nil)
     }
 
     @objc func onClickAccounts() {
+        searchSelectType = .ACCOUNT
         presentSelection(.ACCOUNT)
     }
 
     @objc func onClickCategories() {
+        searchSelectType = .CATEGORY
         presentSelection(.CATEGORY)
     }
 
     @objc func onClickVendors() {
+        searchSelectType = .VENDOR
         presentSelection(.VENDOR)
     }
 
     @objc func onClickTags() {
+        searchSelectType = .TAG
         presentSelection(.TAG)
     }
 
     @objc func onCancelClick() {
         dismiss(animated: true, completion: nil)
+    }
+
+    func passNumberBack(_ caller: UIViewController, type: TypePassed) {
+        switch searchSelectType {
+        case .ACCOUNT:
+            if (type.allSelected || type.array64!.isEmpty) {
+                accountsBtn.setTitle(NSLocalizedString("all", comment: ""), for: .normal)
+            } else {
+                var str: String = ""
+                for acnt in type.array64! {
+                    if let db = DBAccount.instance.get(id: acnt) {
+                        str.append(db.name)
+                        str.append(",")
+                    }
+                }
+                accountsBtn.setTitle(String(str.dropLast()), for: .normal)
+            }
+        case .CATEGORY:
+            if (type.allSelected || type.array64!.isEmpty) {
+                categoriesBtn.setTitle(NSLocalizedString("all", comment: ""), for: .normal)
+            } else {
+                var str: String = ""
+                for acnt in type.array64! {
+                    if let db = DBCategory.instance.get(id: acnt) {
+                        str.append(db.name)
+                        str.append(",")
+                    }
+                }
+                categoriesBtn.setTitle(String(str.dropLast()), for: .normal)
+            }
+        case .VENDOR:
+            if (type.allSelected || type.array64!.isEmpty) {
+                vendorsBtn.setTitle(NSLocalizedString("all", comment: ""), for: .normal)
+            } else {
+                var str: String = ""
+                for acnt in type.array64! {
+                    if let db = DBVendor.instance.get(id: acnt) {
+                        str.append(db.name)
+                        str.append(",")
+                    }
+                }
+                vendorsBtn.setTitle(String(str.dropLast()), for: .normal)
+            }
+        case .TAG:
+            if (type.allSelected || type.array64!.isEmpty) {
+                tagsBtn.setTitle(NSLocalizedString("all", comment: ""), for: .normal)
+            } else {
+                var str: String = ""
+                for acnt in type.array64! {
+                    if let db = DBTag.instance.get(id: acnt) {
+                        str.append(db.name)
+                        str.append(",")
+                    }
+                }
+                tagsBtn.setTitle(String(str.dropLast()), for: .normal)
+            }
+        default: break
+        }
     }
 
     private func setContentHeight() {

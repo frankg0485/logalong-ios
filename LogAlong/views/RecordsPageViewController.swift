@@ -29,8 +29,7 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
     private var viewR: RecordsViewController?
     private var viewNext: RecordsViewController?
 
-    //TODO: search support
-    var searchControls: LRecordSearch = LRecordSearch(from: 0, to: 0)
+    var searchControls: LRecordSearch = LPreferences.getRecordsSearchControls()
 
     override func viewDidLoad() {
         super.viewDidLoad()

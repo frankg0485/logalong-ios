@@ -13,6 +13,8 @@ struct TypePassed {
     var double: Double = 0
     var int: Int = 0
     var int64: Int64 = 0
+    var array64: [Int64]?
+    var allSelected: Bool = false
 }
 
 class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, FViewControllerDelegate {
@@ -287,32 +289,32 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             if segue.identifier == "ChooseAccount" {
                 if record!.type == .TRANSFER_COPY {
                     vc.selectType = .ACCOUNT2
-                    vc.initValue = record!.accountId2
+                    vc.initValues = [record!.accountId2]
                 } else {
                     vc.selectType = .ACCOUNT
-                    vc.initValue = record!.accountId
+                    vc.initValues = [record!.accountId]
                 }
             } else if segue.identifier == "ChooseCategory" {
                 if record!.type == .TRANSFER {
                     vc.selectType = .ACCOUNT2
-                    vc.initValue = record!.accountId2
+                    vc.initValues = [record!.accountId2]
                 } else if record!.type == .TRANSFER_COPY {
                     vc.selectType = .ACCOUNT
-                    vc.initValue = record!.accountId
+                    vc.initValues = [record!.accountId]
                 } else {
                     vc.selectType = .CATEGORY
-                    vc.initValue = record!.categoryId
+                    vc.initValues = [record!.categoryId]
                 }
             } else if segue.identifier == "ChooseTag" {
                 vc.selectType = .TAG
-                vc.initValue = record!.tagId
+                vc.initValues = [record!.tagId]
             } else if segue.identifier == "ChoosePayee" {
                 if (record!.type == .INCOME) {
                     vc.selectType = .PAYER
                 } else {
                     vc.selectType = .PAYEE
                 }
-                vc.initValue = record!.vendorId
+                vc.initValues = [record!.vendorId]
             }
 
             vc.delegate = self
