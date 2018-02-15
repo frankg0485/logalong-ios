@@ -79,6 +79,7 @@ class SchedulesTableViewController: UITableViewController {
             as! AddTableViewController
         let selectedRecord = schedules[indexPath.row]
         vc.record = selectedRecord
+        vc.isSchedule = true
 
         self.navigationController?.pushViewController(vc, animated: true)
     }

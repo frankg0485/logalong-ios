@@ -19,7 +19,9 @@ struct TypePassed {
 
 class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, FViewControllerDelegate {
 
-    @IBOutlet weak var headerView: HorizontalLayout!
+    @IBOutlet weak var repeatCountView: UIView!
+    @IBOutlet weak var repeatIntervalView: UIView!
+    @IBOutlet weak var amountDateView: UIView!
     @IBOutlet weak var accountCell: UITableViewCell!
     @IBOutlet weak var categoryCell: UITableViewCell!
     @IBOutlet weak var payeeCell: UITableViewCell!
@@ -42,6 +44,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     var record: LTransaction?
     // input
     var createRecord: Bool = false
+    var isSchedule: Bool = false
 
     var cancelButton: UIButton!
     var saveButton: UIButton!
@@ -181,12 +184,72 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         navigationController?.navigationBar.barStyle = .black
     }
 
+    let entryHeight: CGFloat = 45
+    let entryBottomMargin: CGFloat = 5
+
+    private func createRepeatEntry() {
+        let layout = HorizontalLayout(height: entryHeight)
+        layout.layoutMargins.top = 0
+        layout.layoutMargins.bottom = entryBottomMargin
+
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 40))
+        label.textColor = LTheme.Color.gray_text_color
+        label.text = NSLocalizedString("Repeat", comment: "")
+        label.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
+        layout.addSubview(label)
+
+        let valueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        valueBtn.setTitle(NSLocalizedString("Unlimited", comment: ""), for: .normal)
+        valueBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        valueBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        valueBtn.contentHorizontalAlignment = .right
+        valueBtn.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
+        layout.addSubview(valueBtn)
+
+        repeatCountView.addSubview(layout)
+    }
+
+    private func createRepeatIntervalEntry() {
+        let layout = HorizontalLayout(height: entryHeight)
+        layout.layoutMargins.top = 0
+        layout.layoutMargins.bottom = entryBottomMargin
+
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 40))
+        label.textColor = LTheme.Color.gray_text_color
+        label.text = NSLocalizedString("Repeat every", comment: "")
+        label.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
+        layout.addSubview(label)
+
+        let intBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        intBtn.setTitle(NSLocalizedString("1", comment: ""), for: .normal)
+        intBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        intBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        intBtn.contentHorizontalAlignment = .right
+        intBtn.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 5)
+        layout.addSubview(intBtn)
+
+        let valueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        valueBtn.setTitle(NSLocalizedString("month", comment: ""), for: .normal)
+        valueBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        valueBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        valueBtn.contentHorizontalAlignment = .right
+        valueBtn.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
+        layout.addSubview(valueBtn)
+
+        repeatIntervalView.addSubview(layout)
+    }
+
     private func createHeader()
     {
         let BTN_H: CGFloat = 50
         let fontsize: CGFloat = 20
 
-        //headerView.backgroundColor = LTheme.Color.header_color
+        if isSchedule {
+            createRepeatEntry()
+            createRepeatIntervalEntry()
+        }
+
+        let valueTimeHeader = HorizontalLayout(height: BTN_H)
 
         amountButton = UIButton(type: .custom)
         //amountButton.translatesAutoresizingMaskIntoConstraints = false
@@ -208,9 +271,26 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
         let spacer = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: 25))
 
-        headerView.addSubview(amountButton)
-        headerView.addSubview(spacer)
-        headerView.addSubview(dateButton)
+        valueTimeHeader.addSubview(amountButton)
+        valueTimeHeader.addSubview(spacer)
+        valueTimeHeader.addSubview(dateButton)
+
+        amountDateView.addSubview(valueTimeHeader)
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.row == 0 || indexPath.row == 1) && !isSchedule {
+            return 0
+        }
+        return super.tableView(tableView, heightForRowAt: indexPath)
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        if (indexPath.row == 0 || indexPath.row == 1) && !isSchedule {
+            cell.isHidden = true
+        }
+        return cell
     }
 
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
@@ -341,21 +421,26 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     @objc func onSaveClick() {
-        if createRecord {
-            if DBTransaction.instance.add(&record!) {
-                _ = LJournal.instance.addRecord(id: record!.id)
-            }
-            _ = navigationController?.popViewController(animated: true)
+        if isSchedule {
+            navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
+            navigationController?.popViewController(animated: true)
         } else {
-            if DBTransaction.instance.update(record!) {
-                _ = LJournal.instance.updateRecord(id: record!.id)
+            if createRecord {
+                if DBTransaction.instance.add(&record!) {
+                    _ = LJournal.instance.addRecord(id: record!.id)
+                }
+                _ = navigationController?.popViewController(animated: true)
+            } else {
+                if DBTransaction.instance.update(record!) {
+                    _ = LJournal.instance.updateRecord(id: record!.id)
+                }
             }
-        }
 
-        if presentingViewController is NewAdditionTableViewController {
-            dismiss(animated: true, completion: nil)
-        } else {
-            performSegue(withIdentifier: "unwindToRecordList", sender: self)
+            if presentingViewController is NewAdditionTableViewController {
+                dismiss(animated: true, completion: nil)
+            } else {
+                performSegue(withIdentifier: "unwindToRecordList", sender: self)
+            }
         }
     }
 
