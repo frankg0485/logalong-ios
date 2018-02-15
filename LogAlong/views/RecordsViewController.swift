@@ -218,64 +218,10 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = "RecordsTableViewCell"
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? RecordsTableViewCell else {
-            fatalError("The dequeued cell is not an instance of RecordsTableViewCell.")
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RecordsTableViewCell", for: indexPath) as! RecordsTableViewCell
 
         let record = loader!.getRecord(section: indexPath.section, row: indexPath.row)
-
-        if (record.type == TransactionType.TRANSFER) {
-            let acnt = DBAccount.instance.get(id: record.accountId)
-            if let acnt2 = DBAccount.instance.get(id: record.accountId2) {
-                cell.categoryLabel.text = acnt!.name + " --> " + acnt2.name
-            } else {
-                cell.categoryLabel.text = acnt!.name + " -->"
-            }
-        } else if (record.type == TransactionType.TRANSFER_COPY) {
-            let acnt = DBAccount.instance.get(id: record.accountId)
-            if let acnt2 = DBAccount.instance.get(id: record.accountId2) {
-                cell.categoryLabel.text = acnt!.name + " <-- " + acnt2.name
-            } else {
-                cell.categoryLabel.text = "--> " + acnt!.name
-            }
-        } else {
-            if  let cat = DBCategory.instance.get(id: record.categoryId) {
-                if let tag = DBTag.instance.get(id: record.tagId) {
-                    cell.categoryLabel.text = cat.name + ":" + tag.name
-                } else {
-                    cell.categoryLabel.text = cat.name
-                }
-            } else if let tag = DBTag.instance.get(id: record.tagId) {
-                cell.categoryLabel.text = tag.name
-            } else {
-                cell.categoryLabel.text = ""
-            }
-        }
-
-        if let vendor = DBVendor.instance.get(id: record.vendorId) {
-            cell.tagLabel.text = vendor.name
-        } else if !record.note.isEmpty {
-            cell.tagLabel.text = record.note
-        } else {
-            cell.tagLabel.text = ""
-        }
-
-        switch (record.type) {
-        case .INCOME:
-            cell.amountLabel.textColor = LTheme.Color.base_green
-        case .EXPENSE:
-            cell.amountLabel.textColor = LTheme.Color.base_red
-        default:
-            cell.amountLabel.textColor = LTheme.Color.base_blue
-        }
-        cell.amountLabel.text = String(format: "%.2f", record.amount)
-
-        let date = Date(milliseconds: record.timestamp)
-        let dayTimePeriodFormatter = DateFormatter()
-        dayTimePeriodFormatter.dateStyle = .medium
-        let dateString = dayTimePeriodFormatter.string(from: date)
-        cell.dateLabel.text = dateString
+        cell.showRecord(record)
 
         return cell
     }

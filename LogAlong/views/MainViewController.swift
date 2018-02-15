@@ -201,6 +201,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     @objc func onScheduleClick() {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SchedulesTableViewController")
+            as! SchedulesTableViewController
+
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     @objc func shareAccountRequest(notification: Notification) -> Void {

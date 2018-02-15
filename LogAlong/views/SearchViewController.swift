@@ -45,8 +45,10 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     var fromTimeBtn: UIButton!
     var toTimeBtn: UIButton!
     var filterByBtn: UIButton!
+    var valueBtn: UIButton!
 
     var searchSelectType: SearchSelectType!
+    var search: LRecordSearch!
 
     let headerHeight: CGFloat = 45 //constraint set in storyboard
     let entryHeight: CGFloat = 45
@@ -64,8 +66,14 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         createAllTime()
         createByValue()
 
-        preferredContentSize.height = contentSizeBaseHeight + showAllGroupHeight + allTimeGroupHeight
-        scrollContentHeightConstraint.constant = preferredContentSize.height - headerHeight
+        search = LPreferences.getRecordsSearchControls()
+        allViewSwitch.isOn = search.all
+        timeSwitch.isOn = search.allTime
+        valueSwitch.isOn = search.byValue
+
+        onShowAllClick()
+        onAllTimeClick()
+        displayValues()
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
@@ -81,6 +89,8 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
             showAllGroupHeightConstraint.constant = showAllGroupHeight
         }
         setContentHeight()
+
+        search.all = allViewSwitch.isOn
     }
 
     @objc func onAllTimeClick() {
@@ -92,11 +102,11 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
             allTimeGroupHeightConstraint.constant = allTimeGroupHeight
         }
         setContentHeight()
+
+        search.allTime = timeSwitch.isOn
     }
 
-    private func presentSelection(_ type: SelectType) {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SelectViewController") as! SelectViewController
-
+    private func presentPopOver(_ vc: UIViewController) {
         vc.modalPresentationStyle = UIModalPresentationStyle.popover
         vc.popoverPresentationController?.sourceView = self.view
         vc.popoverPresentationController?.sourceRect =
@@ -104,93 +114,208 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
         vc.popoverPresentationController!.delegate = self
 
+        self.present(vc, animated: true, completion: nil)
+    }
+
+    private func presentSelection(_ type: SelectType, values: [Int64]) {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SelectViewController")
+            as! SelectViewController
+
         vc.selectType = type
-        vc.initValues = [0]
+        vc.initValues = values
         vc.color = LTheme.Color.base_orange
         vc.multiSelection = true
         vc.delegate = self
 
-        self.present(vc, animated: true, completion: nil)
+        presentPopOver(vc)
     }
 
     @objc func onClickAccounts() {
         searchSelectType = .ACCOUNT
-        presentSelection(.ACCOUNT)
+        presentSelection(.ACCOUNT, values: search.accounts)
     }
 
     @objc func onClickCategories() {
         searchSelectType = .CATEGORY
-        presentSelection(.CATEGORY)
+        presentSelection(.CATEGORY, values: search.categories)
     }
 
     @objc func onClickVendors() {
         searchSelectType = .VENDOR
-        presentSelection(.VENDOR)
+        presentSelection(.VENDOR, values: search.vendors)
     }
 
     @objc func onClickTags() {
         searchSelectType = .TAG
-        presentSelection(.TAG)
+        presentSelection(.TAG, values: search.tags)
+    }
+
+    private func presentTime(_ initValue: Int64) {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DatePickerViewController")
+            as! DatePickerViewController
+
+        vc.initValue = initValue
+        vc.color = LTheme.Color.base_orange
+        vc.delegate = self
+
+        presentPopOver(vc)
+    }
+
+    @objc func onClickFromTime() {
+        searchSelectType = .FROM
+        presentTime(search.from)
+    }
+
+    @objc func onClickToTime() {
+        searchSelectType = .TO
+        presentTime(search.to)
+    }
+
+    @objc func onClickFilterBy() {
+        search.byEditTime = !search.byEditTime
+        displayFilterBy()
+    }
+
+    @objc func onClickValue() {
+        if search.byValue {
+            searchSelectType = .VALUE
+
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SelectAmountViewController")
+                as! SelectAmountViewController
+            vc.initValue = search.value
+            vc.color = LTheme.Color.base_orange
+            vc.delegate = self
+
+            presentPopOver(vc)
+        }
+    }
+
+    @objc func onClickValueSwitch() {
+        search.byValue = valueSwitch.isOn
     }
 
     @objc func onCancelClick() {
         dismiss(animated: true, completion: nil)
+
+        LPreferences.setRecordsSearchControls(controls: search)
+    }
+
+    private func displayMe(ids: [Int64], btn: UIButton, name: (Int64) -> String?) {
+        if (ids.isEmpty) {
+            btn.setTitle(NSLocalizedString("all", comment: ""), for: .normal)
+        } else {
+            var str: String = ""
+            var found = false
+            for id in ids {
+                if let nm = name(id) {
+                    if found {
+                        str.append(", ")
+                    }
+                    str.append(nm)
+                    found = true
+                }
+            }
+            btn.setTitle(str, for: .normal)
+        }
+    }
+
+    private func displayAccounts() {
+        displayMe(ids: search.accounts, btn: accountsBtn) {DBAccount.instance.get(id: $0)?.name}
+    }
+
+    private func displayCategories() {
+        displayMe(ids: search.categories, btn: categoriesBtn) {DBCategory.instance.get(id: $0)?.name}
+    }
+
+    private func displayVendors() {
+        displayMe(ids: search.vendors, btn: vendorsBtn) {DBVendor.instance.get(id: $0)?.name}
+    }
+
+    private func displayTags() {
+        displayMe(ids: search.tags, btn: tagsBtn) {DBTag.instance.get(id: $0)?.name}
+    }
+
+    private func displayTime(ms: Int64, btn: UIButton) {
+        let date = Date(milliseconds: ms)
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateStyle = .medium
+        let dateString = dayTimePeriodFormatter.string(from: date)
+        btn.setTitle(dateString, for: .normal)
+        btn.sizeToFit()
+    }
+
+    private func displayFromTime() {
+        displayTime(ms: search.from, btn: fromTimeBtn)
+    }
+
+    private func displayToTime() {
+        displayTime(ms: search.to, btn: toTimeBtn)
+    }
+
+    private func displayFilterBy() {
+        if search.byEditTime {
+            filterByBtn.setTitle(NSLocalizedString("Edit Time", comment: ""), for: .normal)
+        } else {
+            filterByBtn.setTitle(NSLocalizedString("Record Time", comment: ""), for: .normal)
+        }
+        filterByBtn.sizeToFit()
+    }
+
+    private func displayValue() {
+        valueBtn.setTitle(String(search.value), for: .normal)
+        valueBtn.sizeToFit()
+    }
+
+    private func displayValues() {
+        displayAccounts()
+        displayCategories()
+        displayVendors()
+        displayTags()
+        displayFromTime()
+        displayToTime()
+        displayFilterBy()
+        displayValue()
     }
 
     func passNumberBack(_ caller: UIViewController, type: TypePassed) {
         switch searchSelectType {
         case .ACCOUNT:
             if (type.allSelected || type.array64!.isEmpty) {
-                accountsBtn.setTitle(NSLocalizedString("all", comment: ""), for: .normal)
+                search.accounts = [];
             } else {
-                var str: String = ""
-                for acnt in type.array64! {
-                    if let db = DBAccount.instance.get(id: acnt) {
-                        str.append(db.name)
-                        str.append(",")
-                    }
-                }
-                accountsBtn.setTitle(String(str.dropLast()), for: .normal)
+                search.accounts = type.array64!
             }
+            displayAccounts()
         case .CATEGORY:
             if (type.allSelected || type.array64!.isEmpty) {
-                categoriesBtn.setTitle(NSLocalizedString("all", comment: ""), for: .normal)
+                search.categories = [];
             } else {
-                var str: String = ""
-                for acnt in type.array64! {
-                    if let db = DBCategory.instance.get(id: acnt) {
-                        str.append(db.name)
-                        str.append(",")
-                    }
-                }
-                categoriesBtn.setTitle(String(str.dropLast()), for: .normal)
+                search.categories = type.array64!
             }
+            displayCategories()
         case .VENDOR:
             if (type.allSelected || type.array64!.isEmpty) {
-                vendorsBtn.setTitle(NSLocalizedString("all", comment: ""), for: .normal)
+                search.vendors = []
             } else {
-                var str: String = ""
-                for acnt in type.array64! {
-                    if let db = DBVendor.instance.get(id: acnt) {
-                        str.append(db.name)
-                        str.append(",")
-                    }
-                }
-                vendorsBtn.setTitle(String(str.dropLast()), for: .normal)
+                search.vendors = type.array64!
             }
+            displayVendors()
         case .TAG:
             if (type.allSelected || type.array64!.isEmpty) {
-                tagsBtn.setTitle(NSLocalizedString("all", comment: ""), for: .normal)
+                search.tags = []
             } else {
-                var str: String = ""
-                for acnt in type.array64! {
-                    if let db = DBTag.instance.get(id: acnt) {
-                        str.append(db.name)
-                        str.append(",")
-                    }
-                }
-                tagsBtn.setTitle(String(str.dropLast()), for: .normal)
+                search.tags = type.array64!
             }
+            displayTags()
+        case .FROM:
+            search.from = type.int64
+            displayFromTime()
+        case .TO:
+            search.to = type.int64
+            displayToTime()
+        case .VALUE:
+            search.value = type.double
+            displayValue()
         default: break
         }
     }
@@ -303,7 +428,8 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         layout.layoutMargins.bottom = entryBottomMargin
 
         fromTimeBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
-        fromTimeBtn.setTitle(NSLocalizedString("Jan 10, 2018", comment: ""), for: .normal)
+        fromTimeBtn.addTarget(self, action: #selector(onClickFromTime), for: .touchUpInside)
+        //fromTimeBtn.setTitle(NSLocalizedString("Jan 10, 2018", comment: ""), for: .normal)
         fromTimeBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
         fromTimeBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         fromTimeBtn.contentHorizontalAlignment = .left
@@ -315,7 +441,8 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         layout.addSubview(toLabel)
 
         toTimeBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
-        toTimeBtn.setTitle(NSLocalizedString("Feb 10, 2018", comment: ""), for: .normal)
+        toTimeBtn.addTarget(self, action: #selector(onClickToTime), for: .touchUpInside)
+        //toTimeBtn.setTitle(NSLocalizedString("Feb 10, 2018", comment: ""), for: .normal)
         toTimeBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
         toTimeBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         toTimeBtn.contentHorizontalAlignment = .right
@@ -324,6 +451,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
 
         let (layout2, btn) = createShowAllEntry(NSLocalizedString("Filter by", comment: ""))
         filterByBtn = btn
+        filterByBtn.addTarget(self, action: #selector(onClickFilterBy), for: .touchUpInside)
         allTimeGroupView.addSubview(layout2)
 
         allTimeGroupHeightConstraint.constant = allTimeGroupHeight
@@ -336,15 +464,17 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         hlayout.layoutMargins.left = 0
         hlayout.layoutMargins.right = 0
 
-        let allViewSitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
-        hlayout.addSubview(allViewSitch)
+        valueSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
+        valueSwitch.addTarget(self, action: #selector(onClickValueSwitch), for: .touchUpInside)
+        hlayout.addSubview(valueSwitch)
 
         let label = UILabel(frame: CGRect(x: 1, y: 0, width: 80, height: 30))
         label.text = NSLocalizedString("By Value", comment: "")
         hlayout.addSubview(label)
 
-        let valueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 30))
-        valueBtn.setTitle("1234.78", for: .normal)
+        valueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 30))
+        valueBtn.addTarget(self, action: #selector(onClickValue), for: .touchUpInside)
+        //valueBtn.setTitle("1234.78", for: .normal)
         valueBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
         valueBtn.contentHorizontalAlignment = .right
         //valueBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 32)

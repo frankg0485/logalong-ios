@@ -42,7 +42,9 @@ class SelectAmountViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         amountTextField.text = String(initValue)
-        // Do any additional setup after loading the view.
+
+        self.preferredContentSize.width = LTheme.Dimension.amount_picker_width
+        self.preferredContentSize.height = LTheme.Dimension.amount_picker_height
     }
 
     override func viewWillAppear(_ animated: Bool) {
