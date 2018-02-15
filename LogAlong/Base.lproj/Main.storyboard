@@ -88,7 +88,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YfE-mO-bql" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1262" y="242"/>
+            <point key="canvasLocation" x="486" y="1057"/>
         </scene>
         <!--Records Page View Controller-->
         <scene sceneID="lVZ-xg-KzZ">
@@ -599,7 +599,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bxO-Ps-1Jp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5233" y="483"/>
+            <point key="canvasLocation" x="5572" y="482.15892053973016"/>
         </scene>
         <!--Create View Controller-->
         <scene sceneID="pT7-bD-ErB">
@@ -732,7 +732,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vJq-Jc-41v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3809" y="483"/>
+            <point key="canvasLocation" x="4148" y="482.15892053973016"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="76k-Hi-T1c">
@@ -1072,10 +1072,89 @@
             </objects>
             <point key="canvasLocation" x="2710" y="-270"/>
         </scene>
+        <!--Schedules Table View Controller-->
+        <scene sceneID="N6R-hQ-ZcE">
+            <objects>
+                <tableViewController storyboardIdentifier="SchedulesTableViewController" id="FWV-94-ONy" customClass="SchedulesTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" id="1dk-S6-keQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="RecordsTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecordsTableViewCell" id="0Wu-Nt-CkV" customClass="RecordsTableViewCell" customModule="LogAlong" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="55"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0Wu-Nt-CkV" id="DvG-yw-QLH">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="54.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sAN-Zw-tHk">
+                                            <rect key="frame" x="16" y="10" width="207" height="19"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="207" id="u7n-9B-Nrl"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name=".SFNSDisplay" family=".SF NS Display" pointSize="16"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dec 24,2017" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QX8-ex-GTo">
+                                            <rect key="frame" x="16" y="29" width="86" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="86" id="3vN-XK-pLV"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1.23" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WVy-EL-fE5">
+                                            <rect key="frame" x="320.5" y="15.5" width="38.5" height="24"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ryb-x4-7dp">
+                                            <rect key="frame" x="99" y="29" width="22" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="QX8-ex-GTo" firstAttribute="leading" secondItem="DvG-yw-QLH" secondAttribute="leadingMargin" id="7ed-hh-Aow"/>
+                                        <constraint firstItem="Ryb-x4-7dp" firstAttribute="trailing" secondItem="WVy-EL-fE5" secondAttribute="leading" priority="250" id="ENn-ol-eEN"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="WVy-EL-fE5" secondAttribute="trailing" id="IAd-pO-tQo"/>
+                                        <constraint firstItem="sAN-Zw-tHk" firstAttribute="leading" secondItem="DvG-yw-QLH" secondAttribute="leadingMargin" id="ZEI-rk-VTX"/>
+                                        <constraint firstItem="WVy-EL-fE5" firstAttribute="centerY" secondItem="DvG-yw-QLH" secondAttribute="centerY" id="fkP-St-tHJ"/>
+                                        <constraint firstItem="sAN-Zw-tHk" firstAttribute="trailing" secondItem="WVy-EL-fE5" secondAttribute="leading" priority="250" id="ipy-AC-iet"/>
+                                        <constraint firstItem="Ryb-x4-7dp" firstAttribute="leading" secondItem="QX8-ex-GTo" secondAttribute="trailing" priority="750" constant="-3" id="lA5-uA-3wp"/>
+                                        <constraint firstItem="Ryb-x4-7dp" firstAttribute="baseline" secondItem="QX8-ex-GTo" secondAttribute="baseline" id="nvh-2x-UzN"/>
+                                        <constraint firstItem="sAN-Zw-tHk" firstAttribute="top" secondItem="DvG-yw-QLH" secondAttribute="topMargin" constant="-1" id="qyj-PC-RPh"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="QX8-ex-GTo" secondAttribute="bottom" constant="-1" id="s1j-af-ony"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="amountLabel" destination="WVy-EL-fE5" id="XLe-JQ-l5K"/>
+                                    <outlet property="categoryLabel" destination="sAN-Zw-tHk" id="twg-In-FF3"/>
+                                    <outlet property="dateLabel" destination="QX8-ex-GTo" id="zlh-OU-h5V"/>
+                                    <outlet property="tagLabel" destination="Ryb-x4-7dp" id="PfZ-tm-h9p"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="FWV-94-ONy" id="Jkq-jP-4wX"/>
+                            <outlet property="delegate" destination="FWV-94-ONy" id="Plt-E5-hTD"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="3kZ-VE-Y7d"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ry3-Gf-reJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1262" y="483"/>
+        </scene>
         <!--Date Picker View Controller-->
         <scene sceneID="ufU-oQ-tZG">
             <objects>
-                <viewController id="zA7-tl-XaT" customClass="DatePickerViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DatePickerViewController" id="zA7-tl-XaT" customClass="DatePickerViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NS5-C2-jMV"/>
                         <viewControllerLayoutGuide type="bottom" id="HfB-vU-epJ"/>
@@ -1120,7 +1199,6 @@
                             <constraint firstItem="Jze-UJ-gQw" firstAttribute="height" secondItem="h9h-tm-SfZ" secondAttribute="height" id="s0D-gG-Gls"/>
                         </constraints>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="320" height="240"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="300"/>
                     <connections>
@@ -1267,7 +1345,7 @@
         <!--Select Amount View Controller-->
         <scene sceneID="oe5-zl-rDu">
             <objects>
-                <viewController id="nSG-e5-vYq" customClass="SelectAmountViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SelectAmountViewController" id="nSG-e5-vYq" customClass="SelectAmountViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="AqK-QL-Wxk"/>
                         <viewControllerLayoutGuide type="bottom" id="X4d-u3-jor"/>
@@ -1820,7 +1898,6 @@
                             <constraint firstItem="wfQ-lD-dOW" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="zFs-mY-xSe"/>
                         </constraints>
                     </view>
-                    <value key="contentSizeForViewInPopover" type="size" width="375" height="320"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="300"/>
                     <connections>
@@ -2343,7 +2420,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Udj-hv-cR9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2978" y="484"/>
+            <point key="canvasLocation" x="3316" y="483.50824587706148"/>
         </scene>
         <!--Records-->
         <scene sceneID="YvP-kE-XVf">
@@ -2491,6 +2568,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Ion-X4-MwX"/>
-        <segue reference="C8h-Q6-f0e"/>
+        <segue reference="SZK-ke-e8S"/>
     </inferredMetricsTieBreakers>
 </document>

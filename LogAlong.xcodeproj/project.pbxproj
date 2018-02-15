@@ -75,6 +75,7 @@
 		CBD618101FB0081300A2B57E /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD6180F1FB0081300A2B57E /* Server.swift */; };
 		CBE058901FD33367002B2F08 /* LJournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */; };
 		CBE85FF5202F280100D4C749 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE85FF4202F280100D4C749 /* SearchViewController.swift */; };
+		CBEA021A2034DBED0064F3B7 /* SchedulesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEA02192034DBED0064F3B7 /* SchedulesTableViewController.swift */; };
 		CBEAFF35202BD4BC00866790 /* ChartsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEAFF34202BD4BC00866790 /* ChartsPageViewController.swift */; };
 		CBEB3E5F2002BE7C00A34432 /* RecordsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */; };
 		CBEDFD181FD6E6D60015E98E /* LService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBEDFD171FD6E6D60015E98E /* LService.swift */; };
@@ -268,6 +269,7 @@
 		CBD6180F1FB0081300A2B57E /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Server.swift; path = LogAlong/network/Server.swift; sourceTree = SOURCE_ROOT; };
 		CBE0588F1FD33367002B2F08 /* LJournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LJournalEntry.swift; sourceTree = "<group>"; };
 		CBE85FF4202F280100D4C749 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		CBEA02192034DBED0064F3B7 /* SchedulesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulesTableViewController.swift; sourceTree = "<group>"; };
 		CBEAFF34202BD4BC00866790 /* ChartsPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsPageViewController.swift; sourceTree = "<group>"; };
 		CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordsViewController.swift; sourceTree = "<group>"; };
 		CBEDFD171FD6E6D60015E98E /* LService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LService.swift; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 				CBF135D61FF1E27800E7E8AE /* RecordsPageViewController.swift */,
 				019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */,
 				CBEB3E5E2002BE7C00A34432 /* RecordsViewController.swift */,
+				CBEA02192034DBED0064F3B7 /* SchedulesTableViewController.swift */,
 				CBE85FF4202F280100D4C749 /* SearchViewController.swift */,
 				014893CE1EDE6106005E3C94 /* SelectAmountViewController.swift */,
 				01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */,
@@ -687,6 +690,7 @@
 				CBCE73D5201CE079009C66C7 /* MainViewController.swift in Sources */,
 				CB81316C1FCFB2CC00E33079 /* LDbBase.swift in Sources */,
 				01B61A7B1FF8460100899F21 /* UsersTableViewCell.swift in Sources */,
+				CBEA021A2034DBED0064F3B7 /* SchedulesTableViewController.swift in Sources */,
 				CBB51D1F1FE49660000CD233 /* LTag.swift in Sources */,
 				014893D31EDFA368005E3C94 /* Protocols.swift in Sources */,
 				CB4DAC581FFC828F00B8C664 /* LRecordSearch.swift in Sources */,
