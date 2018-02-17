@@ -143,8 +143,8 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
 
             let userId = LPreferences.getShareUserId(ii)
             let fullName = LPreferences.getShareUserName(ii)
-            if !(userId.isEmpty) {
-                shareUsers.append(LUser(userId, fullName, ii))
+            if userId != nil {
+                shareUsers.append(LUser(userId!, fullName ?? "", ii))
                 viewHeight += CGFloat(LTheme.Dimension.table_view_cell_height)
             }
         }

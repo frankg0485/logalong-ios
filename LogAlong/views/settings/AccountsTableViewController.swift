@@ -171,7 +171,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
                 if (ii == LPreferences.getUserIdNum()) {
                     continue
                 }
-                if (!LPreferences.getShareUserId(ii).isEmpty) {
+                if (LPreferences.getShareUserId(ii) != nil) {
                     let shareState = account.getShareUserState(ii)
                     if (LAccount.ACCOUNT_SHARE_PERMISSION_OWNER >= shareState
                         || LAccount.ACCOUNT_SHARE_INVITED == shareState) {

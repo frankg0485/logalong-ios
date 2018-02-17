@@ -137,12 +137,12 @@ class LPreferences {
         return uniqueId!
     }
 
-    static func getShareUserName(_ gid: Int64) -> String {
-        return defaults.string(forKey: "\(userName).\(String(gid))")!
+    static func getShareUserName(_ gid: Int64) -> String? {
+        return defaults.string(forKey: "\(userName).\(String(gid))")
     }
 
-    static func getShareUserId(_ gid: Int64) -> String {
-        return defaults.string(forKey: "\(userId).\(String(gid))")!
+    static func getShareUserId(_ gid: Int64) -> String? {
+        return defaults.string(forKey: "\(userId).\(String(gid))")
     }
 
     static func setShareUserName(_ gid: Int64, _ fullName: String) {
