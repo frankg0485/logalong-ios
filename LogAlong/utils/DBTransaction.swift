@@ -230,6 +230,61 @@ class DBTransaction: DBGeneric<LTransaction> {
             }
         }
 
+        return filter(by: search, with: query)
+    }
+
+    func filter(by: LRecordSearch?, with: QueryType?) -> QueryType {
+        var query: QueryType
+
+        if with != nil {
+            query = with!
+        } else {
+            query = table!
+        }
+
+        if let search = by {
+            if !search.all {
+                if !search.accounts.isEmpty {
+                    for acnt in search.accounts {
+                        query = query.filter(table![DBHelper.accountId] == acnt
+                            || table![DBHelper.accountId2] == acnt)
+                    }
+                }
+
+                if !search.categories.isEmpty {
+                    for cat in search.categories {
+                        query = query.filter(table![DBHelper.categoryId] == cat)
+                    }
+                }
+
+                if !search.vendors.isEmpty {
+                    for ven in search.vendors {
+                        query = query.filter(table![DBHelper.vendorId] == ven)
+                    }
+                }
+
+                if !search.tags.isEmpty {
+                    for tag in search.tags {
+                        query = query.filter(table![DBHelper.tagId] == tag)
+                    }
+                }
+            }
+
+            if !search.allTime {
+                if search.byEditTime {
+                    query = query.filter(table![DBHelper.timestampAccess] >= search.from
+                        && table![DBHelper.timestampAccess] <= search.to)
+                } else {
+                    query = query.filter(table![DBHelper.timestamp] >= search.from
+                        && table![DBHelper.timestamp] <= search.to)
+                }
+            }
+
+            if search.byValue {
+                query = query.filter(table![DBHelper.amount] == search.value)
+            }
+        }
+
         return query
     }
 

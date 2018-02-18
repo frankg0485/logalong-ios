@@ -49,45 +49,51 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
                     self.loader = self.loaderNew
 
                     if (self.isViewLoaded) {
-                        var income: Double = 0
-                        var expense: Double = 0
-                        var balance: Double = 0
-                        for ii in 0..<self.loader!.getSectionCount() {
-                            let s = self.loader!.getSection(ii)
-                            income += s.income
-                            expense += s.expense
-                            balance += s.balance
+                        if self.loader!.getSectionCount() > 0 {
+                            self.headerView!.isHidden = false
+
+                            var income: Double = 0
+                            var expense: Double = 0
+                            var balance: Double = 0
+                            for ii in 0..<self.loader!.getSectionCount() {
+                                let s = self.loader!.getSection(ii)
+                                income += s.income
+                                expense += s.expense
+                                balance += s.balance
+                            }
+
+                            var txt: String
+                            switch (LPreferences.getRecordsViewTimeInterval()) {
+                            case RecordsViewInterval.MONTHLY.rawValue:
+                                let fmt = DateFormatter()
+                                fmt.dateFormat = "MM"
+                                txt =  fmt.monthSymbols[self.month]
+                                balance = self.accountBalances.getBalance(year: self.year, month: self.month)
+                            case RecordsViewInterval.ANNUALLY.rawValue:
+                                txt = String(self.year)
+                                balance = self.accountBalances.getBalance(year: self.year, month: 11)
+                            default:
+                                txt = NSLocalizedString("Balance", comment: "")
+                            }
+
+                            //TODO: check search mode and update balance header accordingly
+
+                            self.labelHeader!.text = txt
+                            self.labelHeader!.sizeToFit()
+
+                            self.labelBalance!.textColor = balance >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
+                            self.labelBalance!.text = String(format: "%.2f", abs(balance))
+                            self.labelBalance!.sizeToFit()
+
+                            self.labelIncome!.text = String(format: "%.2f", income)
+                            self.labelIncome!.sizeToFit()
+                            self.labelExpense!.text = String(format: "%.2f", expense)
+                            self.labelExpense!.sizeToFit()
+
+                            self.headerView!.refresh()
+                        } else {
+                            self.headerView!.isHidden = true
                         }
-
-                        var txt: String
-                        switch (LPreferences.getRecordsViewTimeInterval()) {
-                        case RecordsViewInterval.MONTHLY.rawValue:
-                            let fmt = DateFormatter()
-                            fmt.dateFormat = "MM"
-                            txt =  fmt.monthSymbols[self.month]
-                            balance = self.accountBalances.getBalance(year: self.year, month: self.month)
-                        case RecordsViewInterval.ANNUALLY.rawValue:
-                            txt = String(self.year)
-                            balance = self.accountBalances.getBalance(year: self.year, month: 11)
-                        default:
-                            txt = NSLocalizedString("Balance", comment: "")
-                        }
-
-                        //TODO: check search mode and update balance header accordingly
-
-                        self.labelHeader!.text = txt
-                        self.labelHeader!.sizeToFit()
-
-                        self.labelBalance!.textColor = balance >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
-                        self.labelBalance!.text = String(format: "%.2f", balance)
-                        self.labelBalance!.sizeToFit()
-
-                        self.labelIncome!.text = String(format: "%.2f", income)
-                        self.labelIncome!.sizeToFit()
-                        self.labelExpense!.text = String(format: "%.2f", expense)
-                        self.labelExpense!.sizeToFit()
-
-                        self.headerView!.refresh()
                         self.tableView.reloadData()
                     }
                 })
@@ -206,7 +212,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         h.sizeToFit()
 
         b.textColor = (sect.balance >= 0) ? LTheme.Color.base_green : LTheme.Color.base_red
-        b.text = String(format: "%.2f", sect.balance)
+        b.text = String(format: "%.2f", abs(sect.balance))
         b.sizeToFit()
 
         i.text = String(format: "%.2f", sect.income)

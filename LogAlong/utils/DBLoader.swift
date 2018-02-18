@@ -28,14 +28,14 @@ class LSection {
 }
 
 class Records {
-    var startIndex: Int = 0
-    var endIndex: Int = 0
-    var entries = [LTransaction]()
+    //var startIndex: Int = 0
+    //var endIndex: Int = 0
+    //var entries = [LTransaction]()
     var sections: [LSection] = [LSection]()
 }
 
 class DBLoader {
-    private let table = DBHelper.instance.transactions
+    //private let table = DBHelper.instance.transactions
     private var records: Records = Records()
 
     var year: Int = 0
@@ -61,8 +61,9 @@ class DBLoader {
     }
 
     func getStartEndTime() -> (startMs: Int64, endMs: Int64) {
-        let queryStart = table.select(DBHelper.timestamp).order(DBHelper.timestamp.asc).limit(1)
-        let queryEnd = table.select(DBHelper.timestamp).order(DBHelper.timestamp.desc).limit(1)
+        let query = DBTransaction.instance.filter(by: LPreferences.getRecordsSearchControls(), with: nil)
+        let queryStart = query.order(DBHelper.timestamp.asc).limit(1)
+        let queryEnd = query.order(DBHelper.timestamp.desc).limit(1)
         var start: Int64 = 0
         var end: Int64 = 0
 
@@ -94,7 +95,7 @@ class DBLoader {
     }
 
     func reset() {
-        records.entries.removeAll()
+        //records.entries.removeAll()
         records.sections.removeAll()
         var prevId: Int64 = -1
         var prevTransferRid: Int64 = -1

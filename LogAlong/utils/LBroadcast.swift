@@ -36,6 +36,7 @@ class LBroadcast {
     static let ACTION_UI_NET_BUSY = 512
     static let ACTION_UI_RESET_PASSWORD = 515
     static let ACTION_UI_DB_DATA_CHANGED = 600
+    static let ACTION_UI_DB_SEARCH_CHANGED = 601
 
     static let ACTION_REQUESTED_TO_SET_ACCOUNT_GID = 100
     static let ACTION_REQUESTED_TO_UPDATE_ACCOUNT_SHARE = 101

@@ -33,7 +33,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         accountBalances.scan()
         labelBalance.textColor = accountBalances.total >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
-        labelBalance.text = String(format: "%.2f", accountBalances.total)
+        labelBalance.text = String(format: "%.2f", abs(accountBalances.total))
         labelBalance.sizeToFit()
 
         tableView.tableFooterView = UIView()
@@ -291,47 +291,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let balanceLabel = cell?.balance
         let amount = ab.getLatestBalance()
         balanceLabel?.textColor = (amount > 0) ? LTheme.Color.base_green : LTheme.Color.base_red
-        balanceLabel?.text = String(format: "%.2f", ab.getLatestBalance())
+        balanceLabel?.text = String(format: "%.2f", abs(amount))
         balanceLabel?.sizeToFit()
         return cell!
     }
-
-
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-     }
-     */
-
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-
 
     // MARK: - Navigation
 
@@ -339,36 +302,16 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         if segue.identifier == "TypeOfAddition" {
-
             let popoverViewController = segue.destination
 
             popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-
             popoverViewController.popoverPresentationController!.delegate = self
 
             dismissable = true
         }
-
     }
-
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
     }
-
-
-    /*    @IBAction func addPressed(_ sender: UIBarButtonItem) {
-
-     let tableViewController = UITableViewController()
-     tableViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-     tableViewController.preferredContentSize = CGSize(width: 400, height: 400)
-
-     present(tableViewController, animated: true, completion: nil)
-
-     let popoverPresentationController = tableViewController.popoverPresentationController
-     popoverPresentationController?.sourceView = sender
-     popoverPresentationController?.sourceRect = CGRect(x: 0, y: 0, width: sender.frame.size.width, height: sender.frame.size.height)
-
-     }*/
-
 }

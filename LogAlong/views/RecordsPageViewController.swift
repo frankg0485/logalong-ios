@@ -29,15 +29,23 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
     private var viewR: RecordsViewController?
     private var viewNext: RecordsViewController?
 
-    var searchControls: LRecordSearch = LPreferences.getRecordsSearchControls()
+    private var isVisible: Bool = false
+    private var isRefreshPending: Bool = false
+    private var searchControls: LRecordSearch = LPreferences.getRecordsSearchControls()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
         delegate = self
 
+        isVisible = false
+        isRefreshPending = false
+
         LBroadcast.register(LBroadcast.ACTION_UI_DB_DATA_CHANGED,
                             cb: #selector(self.dbDataChanged),
+                            listener: self)
+        LBroadcast.register(LBroadcast.ACTION_UI_DB_SEARCH_CHANGED,
+                            cb: #selector(self.dbSearchChanged),
                             listener: self)
 
         setupNavigationControls()
@@ -45,6 +53,23 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         setupViewControllers()
 
         setViewControllers([viewM!], direction: .forward, animated: true, completion: nil)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        if isRefreshPending {
+            refreshAll()
+        }
+        super.viewWillAppear(animated)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        isVisible = true
+        super.viewDidAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        isVisible = false
+        super.viewDidDisappear(animated)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -82,7 +107,28 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
 
     @objc func dbDataChanged(notification: Notification) -> Void {
         LLog.d("\(self)", "db changed")
-        setupNavigationControls()
+        refreshAll()
+    }
+
+    @objc func dbSearchChanged(notification: Notification) -> Void {
+        refreshAll()
+    }
+
+    private func refreshAll() {
+        if isVisible {
+            isRefreshPending = false
+            setupNavigationControls()
+
+            if let view = viewM {
+                view.loadData(year: navYear, month: navMonth)
+            }
+
+            // reseting data source effectively flush the internal UIPageViewer page cache
+            self.dataSource = nil
+            self.dataSource = self
+        } else {
+            isRefreshPending = true
+        }
     }
 
     private func nextViewInterval() -> RecordsViewInterval {
@@ -141,15 +187,7 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         LPreferences.setRecordsViewTimeInterval(nextViewInterval().rawValue)
         titleBtn!.setTitle(getTitle(), for: .normal)
 
-        setupNavigationControls()
-
-        if let view = viewM {
-            view.loadData(year: navYear, month: navMonth)
-        }
-
-        // reseting data source effectively flush the internal UIPageViewer page cache
-        self.dataSource = nil
-        self.dataSource = self
+        refreshAll()
     }
 
     @objc func onSortClick() {
