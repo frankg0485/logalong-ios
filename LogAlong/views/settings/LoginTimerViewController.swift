@@ -180,50 +180,25 @@ class LoginTimerViewController: UIViewController {
     }
 
     func pushLocalDb() {
-        /*
-        LJournal journal = new LJournal();
-
-        // send over all account/category/tag/vendor
-        DBAccount dbAccount = DBAccount.getInstance();
-        HashSet<Long> accountIds = dbAccount.getAllActiveIds();
-        for (long id : accountIds) {
-            LAccount account = dbAccount.getById(id);
-            if (null != account) {
-                publishProgress(account.getName());
-                journal.addAccount(account.getId());
-            }
+        for account in DBAccount.instance.getAll() {
+            //publishProgress(account.getName());
+            LJournal.instance.addAccount(account.id)
         }
 
-        DBCategory dbCategory = DBCategory.getInstance();
-        HashSet<Long> catIds = dbCategory.getAllActiveIds();
-        for (long id : catIds) {
-            LCategory category = dbCategory.getInstance().getById(id);
-            if (null != category) {
-                publishProgress(category.getName());
-                journal.addCategory(category.getId());
-            }
+        for category in DBCategory.instance.getAll() {
+            //publishProgress(category.getName());
+            LJournal.instance.addCategory(category.id)
         }
 
-        DBVendor dbVendor = DBVendor.getInstance();
-        HashSet<Long> vendorIds = dbVendor.getAllActiveIds();
-        for (long id : vendorIds) {
-            LVendor vendor = dbVendor.getById(id);
-            if (null != vendor) {
-                publishProgress(vendor.getName());
-                journal.addVendor(vendor.getId());
-            }
+        for vendor in DBVendor.instance.getAll() {
+            //publishProgress(vendor.getName());
+            LJournal.instance.addVendor(vendor.id)
         }
 
-        DBTag dbTag = DBTag.getInstance();
-        HashSet<Long> tagIds = dbTag.getAllActiveIds();
-        for (long id : tagIds) {
-            LTag tag = dbTag.getById(id);
-            if (null != tag) {
-                publishProgress(tag.getName());
-                journal.addTag(tag.getId());
-            }
+        for tag in DBTag.instance.getAll() {
+            //publishProgress(tag.getName());
+            LJournal.instance.addTag(tag.id)
         }
-         */
 
         // get all accounts
         _ = LJournal.instance.getAllAccounts()
@@ -231,26 +206,16 @@ class LoginTimerViewController: UIViewController {
         _ = LJournal.instance.getAllTags();
         _ = LJournal.instance.getAllVendors();
 
-        // send all records
-        /*
-        DBTransaction dbTransaction = DBTransaction.getInstance();
-        Cursor cursor = dbTransaction.getAllCursor();
-        if (cursor != null) {
-            LTransaction transaction = new LTransaction();
-            cursor.moveToFirst();
-            do {
-                dbTransaction.getValues(cursor, transaction);
-                if (transaction.getType() != LTransaction.TRANSACTION_TYPE_TRANSFER_COPY)
-                journal.addRecord(transaction.getId());
-                LLog.d(TAG, "adding record: " + transaction.getId());
-                publishProgress(DBAccount.getInstance().getNameById(transaction.getAccount()) + " : " +
-                transaction.getValue());
-            } while (cursor.moveToNext());
-            cursor.close();
+        for transaction in DBTransaction.instance.getAll() {
+            if transaction.type != TransactionType.TRANSFER_COPY {
+                LJournal.instance.addRecord(id: transaction.id)
+            }
+
+            LLog.d("\(self)", "adding record: \(transaction.id)")
+            //publishProgress(DBAccount.getInstance().getNameById(transaction.getAccount()) + " : " + transaction.getValue());
         }
-         */
 
         _ = LJournal.instance.getAllRecords();
-        //_ = LJournal.instance.getAllSchedules();
+        _ = LJournal.instance.getAllSchedules();
     }
 }

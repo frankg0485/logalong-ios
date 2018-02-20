@@ -126,10 +126,33 @@ class DBTransaction: DBGeneric<LTransaction> {
         details.timestampCreate = row[DBHelper.instance.transactions[DBHelper.timestampCretae]]
         details.timestampAccess = row[DBHelper.instance.transactions[DBHelper.timestampAccess]]
 
+        details.account.id = row[DBHelper.instance.accounts[DBHelper.id]]
+        details.account.gid = row[DBHelper.instance.accounts[DBHelper.gid]]
         details.account.name = row[DBHelper.instance.accounts[DBHelper.name]]!
-        details.category.name = row[DBHelper.instance.categories[DBHelper.name]] ?? ""
-        details.tag.name = row[DBHelper.instance.tags[DBHelper.name]] ?? ""
-        details.vendor.name = row[DBHelper.instance.vendors[DBHelper.name]] ?? ""
+
+        if let name = row[DBHelper.instance.categories[DBHelper.name]] {
+            details.category.name = name
+            details.category.id = row[DBHelper.instance.categories[DBHelper.id]]
+            details.category.gid = row[DBHelper.instance.categories[DBHelper.gid]]
+        } else {
+            details.category.name = ""
+        }
+
+        if let name = row[DBHelper.instance.tags[DBHelper.name]] {
+            details.tag.name = name
+            details.tag.id = row[DBHelper.instance.tags[DBHelper.id]]
+            details.tag.gid = row[DBHelper.instance.tags[DBHelper.gid]]
+        } else {
+            details.tag.name = ""
+        }
+
+        if let name = row[DBHelper.instance.vendors[DBHelper.name]] {
+            details.vendor.name = name
+            details.vendor.id = row[DBHelper.instance.vendors[DBHelper.id]]
+            details.vendor.gid = row[DBHelper.instance.vendors[DBHelper.gid]]
+        } else {
+            details.vendor.name = ""
+        }
 
         return details
     }
@@ -290,9 +313,9 @@ class DBTransaction: DBGeneric<LTransaction> {
 
     func getDetails(id: Int64) -> LTransactionDetails? {
         let query = table!.join(DBHelper.instance.accounts, on: DBHelper.accountId == DBHelper.instance.accounts[DBHelper.id])
-            .join(DBHelper.instance.categories, on: DBHelper.categoryId == DBHelper.instance.categories[DBHelper.id])
-            .join(DBHelper.instance.tags, on: DBHelper.tagId == DBHelper.instance.tags[DBHelper.id])
-            .join(DBHelper.instance.vendors, on: DBHelper.vendorId == DBHelper.instance.vendors[DBHelper.id])
+            .join(.leftOuter, DBHelper.instance.categories, on: DBHelper.categoryId == DBHelper.instance.categories[DBHelper.id])
+            .join(.leftOuter, DBHelper.instance.tags, on: DBHelper.tagId == DBHelper.instance.tags[DBHelper.id])
+            .join(.leftOuter, DBHelper.instance.vendors, on: DBHelper.vendorId == DBHelper.instance.vendors[DBHelper.id])
             .filter(DBHelper.instance.transactions[DBHelper.id] == id)
 
         do {

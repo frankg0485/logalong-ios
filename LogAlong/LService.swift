@@ -134,66 +134,59 @@ class LService {
                             LLog.w("\(self)", "account: \(gid) no longer exists")
                         }
 
+                    case LProtocol.JRQST_ADD_CATEGORY:
+                        let id = bdata["id"] as! Int64
+                        let gid = bdata["gid"] as! Int64
+
+                        let category = DBCategory.instance.get(gid: gid)
+
+                        if (category != nil) {
+                            if (category!.id != id) {
+                                LLog.e("\(self)", "unexpected error, category GID: \(gid) already taken by \(category!.name)")
+                                DBCategory.instance.remove(id: category!.id)
+                            }
+                        }
+                        DBCategory.instance.updateColumnById(id, DBHelper.gid, gid)
+
+                    case LProtocol.JRQST_ADD_TAG:
+                        let id = bdata["id"] as! Int64
+                        let gid = bdata["gid"] as! Int64
+
+                        let tag = DBTag.instance.get(gid: gid)
+                        if (tag != nil) {
+                            if (tag!.id != id) {
+                                LLog.e("\(self)", "unexpected error, tag GID: \(gid) already taken by \(tag!.name)")
+                                DBTag.instance.remove(id: tag!.id)
+                            }
+                        }
+                        DBTag.instance.updateColumnById(id, DBHelper.gid, gid)
+
+                    case LProtocol.JRQST_ADD_VENDOR:
+                        let id = bdata["id"] as! Int64
+                        let gid = bdata["gid"] as! Int64
+
+                        let vendor = DBVendor.instance.get(gid: gid)
+                        if (vendor != nil) {
+                            if (vendor!.id != id) {
+                                LLog.e("\(self)", "unexpected error, vendor GID: \(gid) already taken by \(vendor!.name)")
+                                DBVendor.instance.remove(id: vendor!.id)
+                            }
+                        }
+                        DBVendor.instance.updateColumnById(id, DBHelper.gid, gid)
+
+                    case LProtocol.JRQST_ADD_RECORD:
+                        let id = bdata["id"] as! Int64
+                        let gid = bdata["gid"] as! Int64
+
+                        let transaction = DBTransaction.instance.get(gid: gid)
+                        if (transaction != nil) {
+                            if (transaction!.id == id) {
+                                LLog.e("\(self)", "unexpected error, record GID: \(gid) already taken")
+                            }
+                            DBTransaction.instance.remove(id: transaction!.id)
+                        }
+                        DBTransaction.instance.updateColumnById(id, DBHelper.gid, gid)
                         /*
-                         case LProtocol.JRQST_ADD_CATEGORY:
-                         id = intent.getLongExtra("id", 0L)
-                         gid = intent.getLongExtra("gid", 0L)
-
-                         DBCategory dbCategory = DBCategory.getInstance()
-                         LCategory category = dbCategory.getByGid(gid)
-                         if (null != category) {
-                         if (category.getId() != id) {
-                         LLog.e("\(self)", "unexpected error, category GID: " + gid + " already taken " +
-                         "by " + category.getName())
-                         dbCategory.deleteById(category.getId())
-                         }
-                         }
-                         dbCategory.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid)
-                         break
-                         case LProtocol.JRQST_ADD_TAG:
-                         id = intent.getLongExtra("id", 0L)
-                         gid = intent.getLongExtra("gid", 0L)
-
-                         DBTag dbTag = DBTag.getInstance()
-                         LTag tag = dbTag.getByGid(gid)
-                         if (null != tag) {
-                         if (tag.getId() != id) {
-                         LLog.e("\(self)", "unexpected error, tag GID: " + gid + " already taken " +
-                         "by " + tag.getName())
-                         dbTag.deleteById(tag.getId())
-                         }
-                         }
-                         dbTag.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid)
-                         break
-                         case LProtocol.JRQST_ADD_VENDOR:
-                         id = intent.getLongExtra("id", 0L)
-                         gid = intent.getLongExtra("gid", 0L)
-
-                         DBVendor dbVendor = DBVendor.getInstance()
-                         LVendor vendor = dbVendor.getByGid(gid)
-                         if (null != vendor) {
-                         if (vendor.getId() != id) {
-                         LLog.e("\(self)", "unexpected error, vendor GID: " + gid + " already taken " +
-                         "by " + vendor.getName())
-                         dbVendor.deleteById(vendor.getId())
-                         }
-                         }
-                         dbVendor.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid)
-                         break
-                         case LProtocol.JRQST_ADD_RECORD:
-                         DBTransaction dbTransaction = DBTransaction.getInstance()
-                         id = intent.getLongExtra("id", 0L)
-                         gid = intent.getLongExtra("gid", 0L)
-
-                         LTransaction transaction = dbTransaction.getByGid(gid)
-                         if (null != transaction) {
-                         if (transaction.getId() == id) {
-                         LLog.e("\(self)", "unexpected error, record GID: " + gid + " already taken ")
-                         }
-                         dbTransaction.deleteById(transaction.getId())
-                         }
-                         dbTransaction.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid)
-                         break
                          case LProtocol.JRQST_ADD_SCHEDULE:
                          DBScheduledTransaction dbSchTransaction = DBScheduledTransaction.getInstance()
                          id = intent.getLongExtra("id", 0L)
@@ -211,52 +204,52 @@ class LService {
                          */
 
                     case LProtocol.JRQST_GET_CATEGORIES:
-                         let gid = bdata["gid"] as! Int64
-                         let name = bdata["name"] as! String
-                         let dbCategory = DBCategory.instance
-                         var category = dbCategory.get(gid: gid)
-                         if (nil != category) {
+                        let gid = bdata["gid"] as! Int64
+                        let name = bdata["name"] as! String
+                        let dbCategory = DBCategory.instance
+                        var category = dbCategory.get(gid: gid)
+                        if (nil != category) {
                             category!.name = name
                             _ = dbCategory.update(category!)
-                         } else {
+                        } else {
                             category = LCategory()
                             category!.gid = gid
                             category!.name = name
                             _ = dbCategory.add(&category!)
-                         }
+                        }
 
                     case LProtocol.JRQST_GET_TAGS:
-                         let gid = bdata["gid"] as! Int64
-                         let name = bdata["name"] as! String
-                         let dbTag = DBTag.instance
-                         var tag = dbTag.get(gid: gid)
-                         if (nil != tag) {
+                        let gid = bdata["gid"] as! Int64
+                        let name = bdata["name"] as! String
+                        let dbTag = DBTag.instance
+                        var tag = dbTag.get(gid: gid)
+                        if (nil != tag) {
                             tag!.name = name
                             _ = dbTag.update(tag!)
-                         } else {
+                        } else {
                             tag = LTag()
                             tag!.gid = gid
                             tag!.name = name
                             _ = dbTag.add(&tag!)
-                         }
+                        }
 
                     case LProtocol.JRQST_GET_VENDORS:
-                         let gid = bdata["gid"] as! Int64
-                         //let type = bdata["type"] as! Int
-                         let name = bdata["name"] as! String
-                         let dbVendor = DBVendor.instance
-                         var vendor = dbVendor.get(gid: gid)
-                         if (nil != vendor) {
+                        let gid = bdata["gid"] as! Int64
+                        //let type = bdata["type"] as! Int
+                        let name = bdata["name"] as! String
+                        let dbVendor = DBVendor.instance
+                        var vendor = dbVendor.get(gid: gid)
+                        if (nil != vendor) {
                             vendor!.name = name
                             //vendor!.type = type
                             _ = dbVendor.update(vendor!)
-                         } else {
+                        } else {
                             vendor = LVendor()
                             vendor!.gid = gid
                             vendor!.name = name
                             //vendor!.type = type
                             _ = dbVendor.add(&vendor!)
-                         }
+                        }
 
                     case LProtocol.JRQST_GET_RECORD: fallthrough
                     case LProtocol.JRQST_GET_RECORDS: fallthrough
@@ -279,9 +272,9 @@ class LService {
                         let dbTransaction = DBTransaction.instance
                         var transaction = dbTransaction.get(gid: gid)
                         var create = true
-                         if (nil != transaction) {
+                        if (nil != transaction) {
                             create = false
-                         } else {
+                        } else {
                             if (type == TransactionType.TRANSFER.rawValue) {
                                 transaction = dbTransaction.getTransfer(rid: rid, copy: false)
                             } else if (type == TransactionType.TRANSFER_COPY.rawValue) {
@@ -653,20 +646,20 @@ class LService {
                     _ = LJournal.instance.getRecords(ids)
 
                     /*
-                case NOTIFICATION_ADD_SCHEDULE:
-                case NOTIFICATION_UPDATE_SCHEDULE:
-                    gid = intent.getLongExtra("int1", 0L)
-                    journal.getSchedule(gid)
-                    break
+                     case NOTIFICATION_ADD_SCHEDULE:
+                     case NOTIFICATION_UPDATE_SCHEDULE:
+                     gid = intent.getLongExtra("int1", 0L)
+                     journal.getSchedule(gid)
+                     break
 
-                case NOTIFICATION_DELETE_SCHEDULE:
-                    gid = intent.getLongExtra("int1", 0L)
-                    DBScheduledTransaction dbScheduledTransaction = DBScheduledTransaction.getInstance()
-                    LScheduledTransaction scheduledTransaction = dbScheduledTransaction.getByGid(gid)
-                    if (null != scheduledTransaction) {
-                        dbScheduledTransaction.deleteById(scheduledTransaction.getId())
-                    }
-                    break
+                     case NOTIFICATION_DELETE_SCHEDULE:
+                     gid = intent.getLongExtra("int1", 0L)
+                     DBScheduledTransaction dbScheduledTransaction = DBScheduledTransaction.getInstance()
+                     LScheduledTransaction scheduledTransaction = dbScheduledTransaction.getByGid(gid)
+                     if (null != scheduledTransaction) {
+                     dbScheduledTransaction.deleteById(scheduledTransaction.getId())
+                     }
+                     break
                      */
 
                 case LService.NOTIFICATION_UPDATE_USER_PROFILE:
@@ -707,7 +700,7 @@ class LService {
                         if (LAccount.ACCOUNT_SHARE_INVITED == account.getShareUserState(uid)) {
                             account.removeShareUser(uid)
                             dbAccount.update(account)
-                           LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
+                            LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
                         }
 
                     }
