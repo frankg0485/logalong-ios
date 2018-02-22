@@ -270,6 +270,22 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         return cell
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let nvc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddTableViewController")
+            as? AddTableViewController {
+            var selectedRecord: LTransaction?
+            selectedRecord = loader!.getRecord(section: indexPath.section, row: indexPath.row)
+            if selectedRecord!.type == .TRANSFER_COPY {
+                selectedRecord = DBTransaction.instance.getTransfer(rid: selectedRecord!.rid, copy: false)
+            }
+
+            if let record = selectedRecord {
+                nvc.record = record
+                self.navigationController?.pushViewController(nvc, animated: true)
+            }
+        }
+    }
+
     // Override to support conditional editing of the table view.
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
@@ -293,38 +309,11 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
 
     // MARK: - Navigation
     @IBAction func unwindToRecordList(sender: UIStoryboardSegue) {
+        /* no longer needed? refreshing upon DB data change anyway
         if let sourceViewController = sender.source as? AddTableViewController {
             navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
             refresh()
         }
-    }
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-
-        switch(segue.identifier ?? "") {
-
-        case "ShowDetail":
-            guard let recordDetailViewController = segue.destination as? AddTableViewController else {
-                fatalError("Unexpected destination: \(segue.destination)")
-            }
-
-            guard let selectedRecordCell = sender as? RecordsTableViewCell else {
-                fatalError("Unexpected sender: \(String(describing: sender))")
-            }
-
-            guard let indexPath = tableView.indexPath(for: selectedRecordCell) else {
-                fatalError("The selected cell is not being displayed by the table")
-            }
-
-            let selectedRecord = loader!.getRecord(section: indexPath.section, row: indexPath.row)
-
-            //TODO: always edit the original copy of transfer and prohit editing orphan transfer
-            recordDetailViewController.record = selectedRecord
-
-        default:
-            fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
-        }
+         */
     }
 }

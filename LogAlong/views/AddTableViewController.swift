@@ -41,7 +41,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     let noteDefaultDesc = NSLocalizedString("Additional note here", comment: "")
 
     // input-output
-    var record: LTransaction?
+    var record: LTransaction!
     // input
     var createRecord: Bool = false
     var isSchedule: Bool = false
@@ -53,11 +53,14 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     var amountButton: UIButton!
     var dateButton: UIButton!
+    var origRecord: LTransaction!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBarItems()
         createHeader()
+
+        origRecord = LTransaction(trans: record!)
 
         switch (record!.type) {
         case .EXPENSE:
@@ -145,6 +148,16 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
         displayDateMs(record!.timestamp)
         updateSaveButtonState()
+
+        if createRecord {
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(
+                withIdentifier: "SelectAmountViewController") as! SelectAmountViewController
+
+            vc.delegate = self
+            vc.initValue = record!.amount
+            vc.color = readyForPopover(vc)
+            self.present(vc, animated: true, completion: nil)
+        }
     }
 
     private func setupNavigationBarItems() {
@@ -165,6 +178,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         saveButton = UIButton(type: .system)
         saveButton.addTarget(self, action: #selector(self.onSaveClick), for: .touchUpInside)
         saveButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
+        saveButton.setImage(#imageLiteral(resourceName: "ic_action_accept_disabled").withRenderingMode(.alwaysOriginal), for: .disabled)
+
         saveButton.imageEdgeInsets = UIEdgeInsetsMake(0, 40, 0, 0)
         saveButton.setSize(w: BTN_W + 40, h: BTN_H)
 
@@ -337,24 +352,14 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     // MARK: - Navigation
+    private func readyForPopover(_ vc: UIViewController) -> UIColor {
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.popoverPresentationController?.sourceView = self.view
+        vc.popoverPresentationController?.sourceRect =
+            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+        vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+        vc.popoverPresentationController!.delegate = self
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "ChooseAccount")
-            || (segue.identifier == "ChooseAmount")
-            || (segue.identifier == "ChooseCategory")
-            || (segue.identifier == "ChoosePayee")
-            || (segue.identifier == "ChooseTag")
-            || (segue.identifier == "ChooseDate") {
-
-            let vc = segue.destination
-            vc.modalPresentationStyle = UIModalPresentationStyle.popover
-            vc.popoverPresentationController?.sourceView = self.view
-            vc.popoverPresentationController?.sourceRect =
-                CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-            vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
-            vc.popoverPresentationController!.delegate = self
-        }
 
         var color = LTheme.Color.base_blue
         switch (record!.type) {
@@ -364,6 +369,22 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             color = LTheme.Color.base_green
         default:
             break;
+        }
+        return color
+    }
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        var color = LTheme.Color.base_blue
+        if (segue.identifier == "ChooseAccount")
+            || (segue.identifier == "ChooseAmount")
+            || (segue.identifier == "ChooseCategory")
+            || (segue.identifier == "ChoosePayee")
+            || (segue.identifier == "ChooseTag")
+            || (segue.identifier == "ChooseDate") {
+
+            let vc = segue.destination
+            color = readyForPopover(vc)
         }
 
         if let vc = segue.destination as? SelectViewController {
@@ -423,8 +444,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     @objc func onSaveClick() {
         if isSchedule {
-            navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
-            navigationController?.popViewController(animated: true)
         } else {
             var ret = false
             if record!.type == .TRANSFER_COPY {
@@ -439,7 +458,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                     if ret {
                         _ = LJournal.instance.addRecord(id: record!.id)
                     }
-                    _ = navigationController?.popViewController(animated: true)
                 } else {
                     if record!.type == .TRANSFER {
                         ret = DBTransaction.instance.update2(record!)
@@ -452,26 +470,19 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 }
             }
 
-            if presentingViewController is NewAdditionTableViewController {
-                dismiss(animated: true, completion: nil)
-            } else {
-                performSegue(withIdentifier: "unwindToRecordList", sender: self)
-            }
+            //if presentingViewController is NewAdditionTableViewController {
+                //dismiss(animated: true, completion: nil)
+            //} else {
+                //performSegue(withIdentifier: "unwindToRecordList", sender: self)
+            //}
         }
+        navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
+        navigationController?.popViewController(animated: true)
     }
 
     @objc func onCancelClick() {
         navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
-
-        if presentingViewController is NewAdditionTableViewController {
-            dismiss(animated: true, completion: nil)
-        }
-        else if let owningNavigationController = navigationController {
-            owningNavigationController.popViewController(animated: true)
-        }
-        else {
-            fatalError("The RecordViewController is not inside a navigation controller.")
-        }
+        navigationController?.popViewController(animated: true)
     }
 
     /*
@@ -484,20 +495,30 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return UIModalPresentationStyle.none
     }
 
-    private func updateSaveButtonState() {
-        if (record!.type == .TRANSFER || record!.type == .TRANSFER_COPY) {
-            if (accountLabel.text == "Choose Account") || (categoryLabel.text == "Choose Account") || (accountLabel.text == categoryLabel.text) {
-                saveButton.isEnabled = false
-            } else {
-                saveButton.isEnabled = true
-            }
-        } else {
-            //if (amountButton!.text == "Label") || (amountButton!.text == "0.0") || (accountLabel.text == "Choose Account") {
-            //    saveButton.isEnabled = false
-            //} else {
-            saveButton.isEnabled = true
-            //}
+    private func isRecordValid() -> Bool {
+        if record.amount <= 0 || record.accountId <= 0 {
+            return false
         }
+
+        if record.type == .TRANSFER && (record.accountId2 <= 0 || record.accountId2 == record.accountId) {
+            return false
+        }
+
+        return true
+    }
+
+    private func isRecordChanged() -> Bool {
+        if (record.accountId != origRecord.accountId || record.accountId2 != origRecord.accountId2 ||
+            record.amount != origRecord.amount || record.timestamp != origRecord.timestamp ||
+            record.note != origRecord.note || record.categoryId != origRecord.categoryId ||
+            record.vendorId != origRecord.vendorId || record.tagId != origRecord.tagId) {
+            return true
+        }
+        return false
+    }
+
+    private func updateSaveButtonState() {
+        saveButton.isEnabled = isRecordValid() && (createRecord || isRecordChanged())
     }
 
     private func displayDateMs(_ ms: Int64) {

@@ -381,6 +381,11 @@ class DBTransaction: DBGeneric<LTransaction> {
     }
 
     override func add(_ trans: inout LTransaction) -> Bool {
+        if trans.accountId <= 0 || trans.amount == Double(0) {
+            LLog.w("\(self)", "failed to add: invalid transaction account or amount")
+            return false
+        }
+
         if (super.add(&trans)) {
             let amount = (trans.type == .INCOME || trans.type == .TRANSFER_COPY) ? trans.amount : -trans.amount
             DBAccountBalance.updateAccountBalance(id: trans.accountId, amount: amount, timestamp: trans.timestamp)
@@ -392,6 +397,11 @@ class DBTransaction: DBGeneric<LTransaction> {
     }
 
     override func update(_ trans: LTransaction) -> Bool {
+        if trans.accountId <= 0 || trans.amount == Double(0) {
+            LLog.w("\(self)", "failed to update: invalid transaction account or amount")
+            return false
+        }
+
         if (super.update(trans)) {
             let amount = (trans.type == .INCOME || trans.type == .TRANSFER_COPY) ? trans.amount : -trans.amount
             DBAccountBalance.updateAccountBalance(id: trans.accountId, amount: amount, timestamp: trans.timestamp)
@@ -407,13 +417,13 @@ class DBTransaction: DBGeneric<LTransaction> {
             LLog.e("\(self)", "unexpected error, wrong add API called for invalid transaction type")
             return false
         }
-        let ret1 = super.add(&trans)
+        let ret1 = add(&trans)
 
         var trans2 = LTransaction(trans: trans)
         trans2.type = .TRANSFER_COPY
         trans2.accountId = trans.accountId2
         trans2.accountId2 = trans.accountId
-        let ret2 = super.add(&trans2)
+        let ret2 = add(&trans2)
 
         if !ret1 || !ret2 {
             LLog.e("\(self)", "failed to add transfer record")
@@ -428,7 +438,7 @@ class DBTransaction: DBGeneric<LTransaction> {
             LLog.e("\(self)", "unexpected error, wrong update API called for invalid transaction type")
             return false
         }
-        if !super.update(trans) {
+        if !update(trans) {
             LLog.e("\(self)", "failed to update transfer")
             return false
         } else {
@@ -440,7 +450,7 @@ class DBTransaction: DBGeneric<LTransaction> {
                 trans2.id = cpy.id
                 //GID: don't care??
                 //trans2.gid = cpy.gid
-                if !super.update(trans2) {
+                if !update(trans2) {
                     LLog.e("\(self)", "failed to update transfer copy")
                     return false
                 }

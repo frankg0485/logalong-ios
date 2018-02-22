@@ -54,17 +54,14 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         setupViewControllers()
 
         setViewControllers([viewM!], direction: .forward, animated: true, completion: nil)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        if isRefreshPending {
-            refreshAll()
-        }
-        super.viewWillAppear(animated)
+        setSearchButtonImage()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         isVisible = true
+        if isRefreshPending {
+            refreshAll()
+        }
         super.viewDidAppear(animated)
     }
 
@@ -116,7 +113,19 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
     }
 
     @objc func dbSearchChanged(notification: Notification) -> Void {
+        searchControls = LPreferences.getRecordsSearchControls()
         refreshAll()
+        setSearchButtonImage()
+    }
+
+    private func setSearchButtonImage() {
+        if (searchControls.all || (searchControls.accounts.isEmpty && searchControls.categories.isEmpty &&
+            searchControls.vendors.isEmpty && searchControls.tags.isEmpty)) &&
+            searchControls.allTime && !searchControls.byValue {
+            searchBtn!.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
+        } else {
+            searchBtn!.setImage(#imageLiteral(resourceName: "ic_action_search_enabled").withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
 
     private func refreshAll() {
@@ -236,6 +245,7 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
 
     private var titleBtn: UIButton?
     private var sortBtn: UIButton?
+    private var searchBtn: UIButton?
     private func setupNavigationBarItems() {
         let BTN_W: CGFloat = LTheme.Dimension.bar_button_width
         let BTN_H: CGFloat = LTheme.Dimension.bar_button_height
@@ -259,11 +269,10 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         chartBtn.setSize(w: BTN_W - 2 + BTN_S, h: BTN_H - 2)
         chartBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
 
-        let searchBtn = UIButton(type: .system)
-        searchBtn.addTarget(self, action: #selector(self.onSearchClick), for: .touchUpInside)
-        searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
-        searchBtn.setSize(w: BTN_W, h: BTN_H)
-        //searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
+        searchBtn = UIButton(type: .system)
+        searchBtn!.addTarget(self, action: #selector(self.onSearchClick), for: .touchUpInside)
+        searchBtn!.setSize(w: BTN_W, h: BTN_H)
+        //searchBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
 
         /*
          let rightBtn = UIButton(type: .system)
@@ -278,7 +287,7 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
          */
 
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: sortBtn!), UIBarButtonItem(customView: chartBtn)]
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBtn)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBtn!)
 
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background

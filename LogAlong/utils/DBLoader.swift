@@ -63,7 +63,7 @@ class DBLoader {
     }
 
     func getStartEndTime() -> (startMs: Int64, endMs: Int64) {
-        let query = DBTransaction.instance.filter(by: LPreferences.getRecordsSearchControls(), with: nil)
+        let query = DBTransaction.instance.filter(by: search, with: nil)
         let queryStart = query.order(DBHelper.timestamp.asc).limit(1)
         let queryEnd = query.order(DBHelper.timestamp.desc).limit(1)
         var start: Int64 = 0
