@@ -267,29 +267,54 @@ class DBTransaction: DBGeneric<LTransaction> {
 
         if let search = by {
             if !search.all {
+                var filter: Expression<Bool>? = nil
                 if !search.accounts.isEmpty {
                     for acnt in search.accounts {
-                        query = query.filter(table![DBHelper.accountId] == acnt
-                            || table![DBHelper.accountId2] == acnt)
+                        if let ff = filter {
+                            filter = ff || (table![DBHelper.accountId] == acnt
+                                || table![DBHelper.accountId2] == acnt)
+                        } else {
+                            filter = (table![DBHelper.accountId] == acnt
+                                || table![DBHelper.accountId2] == acnt)
+                        }
                     }
+                    query = query.filter(filter!)
                 }
 
+                filter = nil
                 if !search.categories.isEmpty {
                     for cat in search.categories {
-                        query = query.filter(table![DBHelper.categoryId] == cat)
+                        if let ff = filter {
+                            filter = ff || (table![DBHelper.categoryId] == cat)
+                        } else {
+                            filter = (table![DBHelper.categoryId] == cat)
+                        }
                     }
+                    query = query.filter(filter!)
                 }
 
+                filter = nil
                 if !search.vendors.isEmpty {
                     for ven in search.vendors {
-                        query = query.filter(table![DBHelper.vendorId] == ven)
+                        if let ff = filter {
+                            filter = ff || (table![DBHelper.vendorId] == ven)
+                        } else {
+                            filter = (table![DBHelper.vendorId] == ven)
+                        }
                     }
+                    query = query.filter(filter!)
                 }
 
+                filter = nil
                 if !search.tags.isEmpty {
                     for tag in search.tags {
-                        query = query.filter(table![DBHelper.tagId] == tag)
+                        if let ff = filter {
+                            filter = ff || (table![DBHelper.tagId] == tag)
+                        } else {
+                            filter = (table![DBHelper.tagId] == tag)
+                        }
                     }
+                    query = query.filter(filter!)
                 }
             }
 
@@ -353,5 +378,77 @@ class DBTransaction: DBGeneric<LTransaction> {
         }
 
         return ret
+    }
+
+    override func add(_ trans: inout LTransaction) -> Bool {
+        if (super.add(&trans)) {
+            let amount = (trans.type == .INCOME || trans.type == .TRANSFER_COPY) ? trans.amount : -trans.amount
+            DBAccountBalance.updateAccountBalance(id: trans.accountId, amount: amount, timestamp: trans.timestamp)
+            LBroadcast.post(LBroadcast.ACTION_UI_DB_DATA_CHANGED)
+            return true
+        } else {
+            return false
+        }
+    }
+
+    override func update(_ trans: LTransaction) -> Bool {
+        if (super.update(trans)) {
+            let amount = (trans.type == .INCOME || trans.type == .TRANSFER_COPY) ? trans.amount : -trans.amount
+            DBAccountBalance.updateAccountBalance(id: trans.accountId, amount: amount, timestamp: trans.timestamp)
+            LBroadcast.post(LBroadcast.ACTION_UI_DB_DATA_CHANGED)
+            return true
+        } else {
+            return false
+        }
+    }
+
+    func add2(_ trans: inout LTransaction) -> Bool {
+        if trans.type != .TRANSFER {
+            LLog.e("\(self)", "unexpected error, wrong add API called for invalid transaction type")
+            return false
+        }
+        let ret1 = super.add(&trans)
+
+        var trans2 = LTransaction(trans: trans)
+        trans2.type = .TRANSFER_COPY
+        trans2.accountId = trans.accountId2
+        trans2.accountId2 = trans.accountId
+        let ret2 = super.add(&trans2)
+
+        if !ret1 || !ret2 {
+            LLog.e("\(self)", "failed to add transfer record")
+            return false
+        } else {
+            return true
+        }
+    }
+
+    func update2(_ trans: LTransaction) -> Bool {
+        if trans.type != .TRANSFER {
+            LLog.e("\(self)", "unexpected error, wrong update API called for invalid transaction type")
+            return false
+        }
+        if !super.update(trans) {
+            LLog.e("\(self)", "failed to update transfer")
+            return false
+        } else {
+            if let cpy = getTransfer(rid: trans.rid, copy: true) {
+                let trans2 = LTransaction(trans: trans)
+                trans2.type = .TRANSFER_COPY
+                trans2.accountId = trans.accountId2
+                trans2.accountId2 = trans.accountId
+                trans2.id = cpy.id
+                //GID: don't care??
+                //trans2.gid = cpy.gid
+                if !super.update(trans2) {
+                    LLog.e("\(self)", "failed to update transfer copy")
+                    return false
+                }
+            } else {
+                LLog.e("\(self)", "failed to update transfer: copy not found")
+                return false
+            }
+        }
+        return true
     }
 }

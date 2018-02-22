@@ -22,7 +22,8 @@ enum RecordsViewSortMode: Int {
     case VENDOR = 50
 }
 
-class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
+class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataSource,
+UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
 
     private var viewL: RecordsViewController?
     private var viewM: RecordsViewController?
@@ -72,22 +73,26 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         super.viewDidDisappear(animated)
     }
 
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            viewControllerBefore viewController: UIViewController) -> UIViewController? {
         //LLog.d("\(self)", "get previous controller")
         return getLeft() ? viewL : nil
     }
 
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            viewControllerAfter viewController: UIViewController) -> UIViewController? {
         //LLog.d("\(self)", "get next controller")
         return getRight() ? viewR : nil
     }
 
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            willTransitionTo pendingViewControllers: [UIViewController]) {
         //LLog.d("\(self)", "going to: \(pendingViewControllers) @ \(Date())")
         viewNext = pendingViewControllers[0] as? RecordsViewController
     }
 
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool,
+                            previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         //LLog.d("\(self)", "finish: \(finished) prev: \(previousViewControllers) completed: \(completed) @ \(Date())")
         if completed {
             if viewNext == viewL {
@@ -106,7 +111,7 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
     }
 
     @objc func dbDataChanged(notification: Notification) -> Void {
-        LLog.d("\(self)", "db changed")
+        //LLog.d("\(self)", "db changed")
         refreshAll()
     }
 
@@ -305,13 +310,16 @@ class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataS
         } else if (y > endYear) {
             y = endYear
             m = endMonth
-        } else if (y == startYear) {
-            if (m < startMonth) {
-                m = startMonth
+        } else {
+            if (y == startYear) {
+                if (m < startMonth) {
+                    m = startMonth
+                }
             }
-        } else if ( y == endYear) {
-            if ( m > endMonth) {
-                m = endMonth
+            if ( y == endYear) {
+                if ( m > endMonth) {
+                    m = endMonth
+                }
             }
         }
         return (y, m)

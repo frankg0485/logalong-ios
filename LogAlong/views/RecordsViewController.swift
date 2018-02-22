@@ -14,6 +14,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     @IBOutlet weak var headerView: HorizontalLayout!
     @IBOutlet weak var tableView: UITableView!
 
+    private var search: LRecordSearch?
     private var dataLoaded = false
     private var year: Int = 0
     private var month: Int = 0
@@ -21,6 +22,10 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     private var loaderNew: DBLoader?
     private var workItem: DispatchWorkItem?
     private var accountBalances = LAccountBalances()
+    private var balanceEndYear = 0
+    private var balanceEndMonth = 0
+    private var viewTimeInterval = 0
+    private var viewSortMode = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,16 +38,18 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     func refresh(delay: Double = 0) {
+        viewTimeInterval = LPreferences.getRecordsViewTimeInterval()
+        viewSortMode = LPreferences.getRecordsViewSortMode()
         if (dataLoaded) {
             if let item = workItem {
                 item.cancel()
             }
-
+            search = LPreferences.getRecordsSearchControls()
             workItem = DispatchWorkItem {
                 //LLog.d("\(self)", "loading data")
-                self.loaderNew = DBLoader(year: self.year, month: self.month, sort: LPreferences.getRecordsViewSortMode(),
-                                          interval: LPreferences.getRecordsViewTimeInterval(), asc: LPreferences.getRecordsViewAscend(),
-                                          search: LPreferences.getRecordsSearchControls())
+                self.loaderNew = DBLoader(year: self.year, month: self.month, sort: self.viewSortMode,
+                                          interval: self.viewTimeInterval, asc: LPreferences.getRecordsViewAscend(),
+                                          search: self.search!)
                 self.accountBalances.scan()
 
                 DispatchQueue.main.async(execute: {
@@ -51,6 +58,11 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
                     if (self.isViewLoaded) {
                         if self.loader!.getSectionCount() > 0 {
                             self.headerView!.isHidden = false
+
+                            if let ss = self.search {
+                                self.labelBalance?.isHidden = ss.byValue || !ss.allTime ||
+                                    (!ss.all && (!ss.categories.isEmpty || !ss.vendors.isEmpty || !ss.tags.isEmpty))
+                            }
 
                             var income: Double = 0
                             var expense: Double = 0
@@ -61,22 +73,42 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
                                 expense += s.expense
                                 balance += s.balance
                             }
+                            income -= self.loader!.getInternalTransferAmount()
+                            expense -= self.loader!.getInternalTransferAmount()
 
                             var txt: String
-                            switch (LPreferences.getRecordsViewTimeInterval()) {
+                            switch (self.viewTimeInterval) {
                             case RecordsViewInterval.MONTHLY.rawValue:
                                 let fmt = DateFormatter()
                                 fmt.dateFormat = "MM"
                                 txt =  fmt.monthSymbols[self.month]
-                                balance = self.accountBalances.getBalance(year: self.year, month: self.month)
+                                if self.month > 0 {
+                                    self.balanceEndMonth = self.month - 1
+                                    self.balanceEndYear = self.year
+                                } else {
+                                    self.balanceEndMonth = 11
+                                    self.balanceEndYear = self.year - 1
+                                }
                             case RecordsViewInterval.ANNUALLY.rawValue:
                                 txt = String(self.year)
-                                balance = self.accountBalances.getBalance(year: self.year, month: 11)
+                                self.balanceEndYear = self.year - 1
+                                self.balanceEndMonth = 11
                             default:
                                 txt = NSLocalizedString("Balance", comment: "")
                             }
 
-                            //TODO: check search mode and update balance header accordingly
+                            if self.viewTimeInterval != RecordsViewInterval.ALL_TIME.rawValue {
+                                if (self.search!.all) {
+                                    balance += self.accountBalances.getBalance(year: self.balanceEndYear, month: self.balanceEndMonth)
+                                } else {
+                                    if (self.search!.accounts.isEmpty) {
+                                        balance += self.accountBalances.getBalance(year: self.balanceEndYear, month: self.balanceEndMonth)
+                                    } else {
+                                        balance += self.accountBalances.getBalance(accountIds: self.search!.accounts,
+                                                                                   year: self.balanceEndYear, month: self.balanceEndMonth)
+                                    }
+                                }
+                            }
 
                             self.labelHeader!.text = txt
                             self.labelHeader!.sizeToFit()
@@ -211,8 +243,14 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         h.text = sect.txt
         h.sizeToFit()
 
-        b.textColor = (sect.balance >= 0) ? LTheme.Color.base_green : LTheme.Color.base_red
-        b.text = String(format: "%.2f", abs(sect.balance))
+        var balance: Double = 0
+        if (viewSortMode == RecordsViewSortMode.ACCOUNT.rawValue) {
+            balance = sect.balance + accountBalances.getBalance(accountId: sect.id, year: balanceEndYear, month: balanceEndMonth)
+        } else {
+            balance = sect.balance
+        }
+        b.textColor = (balance >= 0) ? LTheme.Color.base_green : LTheme.Color.base_red
+        b.text = String(format: "%.2f", abs(balance))
         b.sizeToFit()
 
         i.text = String(format: "%.2f", sect.income)
@@ -281,6 +319,8 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
             }
 
             let selectedRecord = loader!.getRecord(section: indexPath.section, row: indexPath.row)
+
+            //TODO: always edit the original copy of transfer and prohit editing orphan transfer
             recordDetailViewController.record = selectedRecord
 
         default:

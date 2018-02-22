@@ -27,20 +27,24 @@ class LPreferences {
     static let shareAccountRequest = "shareAccountRequest"
 
     static func getRecordsSearchControls() -> LRecordSearch {
-        let all: Bool = defaults.bool(forKey: recordsSearchControls + ".all")
-        let allTime: Bool = defaults.bool(forKey: recordsSearchControls + ".allTime")
-        let from: Int64 = (defaults.object(forKey: recordsSearchControls + ".from") ?? Int64(0)) as! Int64
-        let to: Int64 = (defaults.object(forKey: recordsSearchControls + ".to") ?? Int64(0)) as! Int64
-        let byEditTime: Bool = defaults.bool(forKey: recordsSearchControls + ".byEditTime")
-        let byValue: Bool = defaults.bool(forKey: recordsSearchControls + ".byValue")
-        let value: Double = defaults.double(forKey: recordsSearchControls + ".value")
+        let defaultTo: Int64 = Date().currentTimeMillis
+        let defaultFrom: Int64 = defaultTo - Int64(4 * 7 * 24 * 3600 * 1000)
+
+        let all: Bool = (defaults.object(forKey: recordsSearchControls + ".all") ?? true) as! Bool
+        let allTime: Bool = (defaults.object(forKey: recordsSearchControls + ".allTime") ?? true) as! Bool
+        let from: Int64 = (defaults.object(forKey: recordsSearchControls + ".from") ?? defaultFrom) as! Int64
+        let to: Int64 = (defaults.object(forKey: recordsSearchControls + ".to") ?? defaultTo) as! Int64
+        let byEditTime: Bool = (defaults.object(forKey: recordsSearchControls + ".byEditTime") ?? false) as! Bool
+        let byValue: Bool = (defaults.object(forKey: recordsSearchControls + ".byValue") ?? false) as! Bool
+        let value: Double = (defaults.object(forKey: recordsSearchControls + ".value") ?? Double(0)) as! Double
 
         let accounts: [Int64] = (defaults.array(forKey: recordsSearchControls + ".accounts") ?? [Int64]()) as! [Int64]
         let categories: [Int64] = (defaults.array(forKey: recordsSearchControls + ".categories") ?? [Int64]()) as! [Int64]
         let vendors: [Int64] = (defaults.array(forKey: recordsSearchControls + ".vendors") ?? [Int64]()) as! [Int64]
         let tags: [Int64] = (defaults.array(forKey: recordsSearchControls + ".tags") ?? [Int64]()) as! [Int64]
 
-        return LRecordSearch(all: all, allTime: allTime, from: from, to: to, byEditTime: byEditTime, byValue: byValue, value: value, accounts: accounts, categories: categories, vendors: vendors, tags: tags)
+        return LRecordSearch(all: all, allTime: allTime, from: from, to: to, byEditTime: byEditTime, byValue: byValue, value: value,
+                             accounts: accounts, categories: categories, vendors: vendors, tags: tags)
     }
 
     static func setRecordsSearchControls(controls: LRecordSearch) {

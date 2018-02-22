@@ -329,6 +329,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 LLog.e("\(self)", "unknown request type")
             }
         } else if let _ = caller as? DatePickerViewController {
+            record!.timestamp = type.int64
             displayDateMs(type.int64)
         }
 
@@ -425,14 +426,29 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
             navigationController?.popViewController(animated: true)
         } else {
-            if createRecord {
-                if DBTransaction.instance.add(&record!) {
-                    _ = LJournal.instance.addRecord(id: record!.id)
-                }
-                _ = navigationController?.popViewController(animated: true)
+            var ret = false
+            if record!.type == .TRANSFER_COPY {
+                LLog.e("\(self)", "unexpected transfer copy")
             } else {
-                if DBTransaction.instance.update(record!) {
-                    _ = LJournal.instance.updateRecord(id: record!.id)
+                if createRecord {
+                    if record!.type == .TRANSFER {
+                        ret = DBTransaction.instance.add2(&record!)
+                    } else {
+                        ret = DBTransaction.instance.add(&record!)
+                    }
+                    if ret {
+                        _ = LJournal.instance.addRecord(id: record!.id)
+                    }
+                    _ = navigationController?.popViewController(animated: true)
+                } else {
+                    if record!.type == .TRANSFER {
+                        ret = DBTransaction.instance.update2(record!)
+                    } else {
+                        ret = DBTransaction.instance.update(record!)
+                    }
+                    if ret {
+                        _ = LJournal.instance.updateRecord(id: record!.id)
+                    }
                 }
             }
 

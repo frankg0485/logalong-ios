@@ -97,6 +97,16 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
         }
     }
 
+    static func updateAccountBalance(id: Int64, amount: Double, timestamp: Int64) {
+        let (year, month, _) = LA.ymd(milliseconds: timestamp)
+        var doubles = [Double](repeating: 0, count: 12)
+        if let ayb = DBAccountBalance.instance.get(accountId: id, year: year) {
+            doubles = ayb.getBalanceValues()
+        }
+        doubles[month] += amount
+        addUpdateAccountBalance(doubles, id, year)
+    }
+
     private static var cancel = false
     static func rescallCancel() {
         cancel = true
@@ -121,7 +131,7 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
         var lastYear: Int = 0
 
         do {
-            for row in try DBHelper.instance.db!.prepare(DBTransaction.instance.table!.order(DBHelper.accountId.asc)) {
+            for row in try DBHelper.instance.db!.prepare(DBTransaction.instance.table!.order(DBHelper.accountId.asc, DBHelper.timestamp.asc)) {
                 if cancel {
                     return
                 }

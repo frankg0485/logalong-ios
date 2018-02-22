@@ -50,6 +50,10 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
                             cb: #selector(self.networkConnected),
                             listener: self)
         LBroadcast.register(LBroadcast.ACTION_UI_SHARE_ACCOUNT, cb: #selector(self.shareAccountRequest), listener: self)
+
+        LBroadcast.register(LBroadcast.ACTION_UI_DB_DATA_CHANGED,
+                            cb: #selector(self.dbDataChanged),
+                            listener: self)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -57,6 +61,16 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if let request = LPreferences.getAccountShareRequest() {
             presentShareView(request)
         }
+    }
+
+    @objc func dbDataChanged(notification: Notification) -> Void {
+        //LLog.d("\(self)", "db changed")
+        accountBalances.scan()
+        labelBalance.textColor = accountBalances.total >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
+        labelBalance.text = String(format: "%.2f", abs(accountBalances.total))
+        labelBalance.sizeToFit()
+
+        tableView.reloadData()
     }
 
     func onShareAccountConfirmDialogExit(_ ok: Bool, _ request: LAccountShareRequest) {

@@ -198,7 +198,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         dismiss(animated: true, completion: nil)
 
         LPreferences.setRecordsSearchControls(controls: search)
-        LBroadcast.post(LBroadcast.ACTION_UI_DB_SEARCH_CHANGED);
+        LBroadcast.post(LBroadcast.ACTION_UI_DB_SEARCH_CHANGED)
     }
 
     private func displayMe(ids: [Int64], btn: UIButton, name: (Int64) -> String?) {

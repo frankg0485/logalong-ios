@@ -16,6 +16,7 @@ class LSection {
     var income: Double
     var expense: Double
     var ids = [Int64]()
+    var id: Int64 = 0
 
     init(show: Bool = true, rows: Int = 1, txt: String = "", balance: Double = 0, income: Double = 0, expense: Double = 0) {
         self.show = show
@@ -31,6 +32,7 @@ class Records {
     //var startIndex: Int = 0
     //var endIndex: Int = 0
     //var entries = [LTransaction]()
+    var internalTransferAmount: Double = 0
     var sections: [LSection] = [LSection]()
 }
 
@@ -94,6 +96,10 @@ class DBLoader {
         return DBTransaction.instance.get(id: records.sections[section].ids[row])!
     }
 
+    func getInternalTransferAmount() -> Double {
+        return records.internalTransferAmount
+    }
+
     func reset() {
         //records.entries.removeAll()
         records.sections.removeAll()
@@ -102,7 +108,14 @@ class DBLoader {
         var newSection = true
         var skip = false
         var section: LSection?
+        var searchAccountIds = [Int64]()
+        if let ss = search {
+            if !ss.all && !ss.accounts.isEmpty {
+                searchAccountIds = ss.accounts
+            }
+        }
 
+        records.internalTransferAmount = 0
         let query = DBTransaction.instance.query(year: year, month: month, sort: sort, interval: interval, asc: asc, search: search)
         do {
             var id: Int64 = 0
@@ -122,6 +135,11 @@ class DBLoader {
                     (id, rid, accountId, accountId2, amount, type, name) = DBTransaction.instance.rdValuesJoinAccount(row)
                     newSection = (prevId == -1 || prevId != accountId)
                     prevId = accountId
+
+                    //exclude accounts if account filter is present
+                    if !searchAccountIds.isEmpty && !searchAccountIds.contains(accountId) {
+                        continue
+                    }
                 case RecordsViewSortMode.CATEGORY.rawValue:
                     (id, rid, accountId, accountId2, amount, type, categoryId, name) = DBTransaction.instance.rdValuesJoinCategory(row)
                     newSection = (prevId == -1 || prevId != categoryId)
@@ -142,9 +160,10 @@ class DBLoader {
                 if (newSection) {
                     section = LSection(show: true, rows: 1)
                     section!.txt = name
+                    section!.id = prevId
 
-                    records.sections.append(section!)
                     newSection = false
+                    records.sections.append(section!)
                 } else {
                     if ((type == TransactionType.TRANSFER || type == TransactionType.TRANSFER_COPY) && (prevTransferRid == rid)) {
                         skip = true
@@ -156,12 +175,56 @@ class DBLoader {
 
                 if (!skip) {
                     section!.ids.append(id)
-                    if (type == TransactionType.INCOME || type == TransactionType.TRANSFER_COPY) {
-                        section!.balance += amount
-                        section!.income += amount
+
+                    // transfer is counted to income/expense/balance only upon one of the following
+                    // - either 'from' or 'to' is missing from currently selected accounts
+                    // - view is sorted by account
+                    if (type == TransactionType.TRANSFER || type == TransactionType.TRANSFER_COPY) {
+                        if sort == RecordsViewSortMode.ACCOUNT.rawValue {
+                            // when sorting by account, whether transfer is counted as income or expense
+                            // depends on what account section refers to.
+                            if (section!.id == accountId && type == TransactionType.TRANSFER) ||
+                                (section!.id == accountId2 && type == TransactionType.TRANSFER_COPY) {
+                                section!.balance -= amount
+                                section!.expense += amount
+                            } else {
+                                section!.balance += amount
+                                section!.income += amount
+                            }
+
+                            // track internal transfer amount, only when sorting in account. This internal amount is
+                            // then used to adjust the global header area income/expense column, which is otherwise
+                            // a simple sum-up of section income/expense
+                            if searchAccountIds.isEmpty || searchAccountIds.contains(accountId) && searchAccountIds.contains(accountId2) {
+                                records.internalTransferAmount += amount
+                            }
+                        } else if !searchAccountIds.isEmpty {
+                            if !searchAccountIds.contains(accountId) {
+                                if (type == TransactionType.TRANSFER) {
+                                    section!.balance += amount
+                                    section!.income += amount
+                                } else {
+                                    section!.balance -= amount
+                                    section!.expense += amount
+                                }
+                            } else if !searchAccountIds.contains(accountId2) {
+                                if (type == TransactionType.TRANSFER_COPY) {
+                                    section!.balance += amount
+                                    section!.income += amount
+                                } else {
+                                    section!.balance -= amount
+                                    section!.expense += amount
+                                }
+                            }
+                        }
                     } else {
-                        section!.balance -= amount
-                        section!.expense += amount
+                        if (type == TransactionType.INCOME) {
+                            section!.balance += amount
+                            section!.income += amount
+                        } else {
+                            section!.balance -= amount
+                            section!.expense += amount
+                        }
                     }
                 }
             }
