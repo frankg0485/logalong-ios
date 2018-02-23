@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDelegate, FPassNameIdPasswordDelegate, UIPopoverPresentationControllerDelegate, FNotifyReloadLoginScreenDelegate {
+class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDelegate, FPassNameIdPasswordDelegate, UIPopoverPresentationControllerDelegate, FNotifyReloadLoginScreenDelegate, FDisableEnableDoneButtonDelegate {
 
     var loginDelegate: FLoginViewControllerDelegate?
     var reloadLoginInfoDelegate: FReloadLoginScreenDelegate?
@@ -22,18 +22,49 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
     var password: String = ""
     var loginType: Int = 0
 
-    @IBOutlet weak var doneButton: UIBarButtonItem!
+    let doneButton = UIButton(type: .system)
+    let cancelButton = UIButton(type: .system)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if !LPreferences.getUserId().isEmpty {
-            doneButton.isEnabled = false
-        }
+        setupNavigationBarItems()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func disEnaDoneButton(_ enable: Bool) {
+        doneButton.isEnabled = enable
+    }
+
+    private func setupNavigationBarItems() {
+        let BTN_W: CGFloat = LTheme.Dimension.bar_button_width
+        let BTN_H: CGFloat = LTheme.Dimension.bar_button_height
+
+        cancelButton.addTarget(self, action: #selector(self.cancelButtonClicked), for: .touchUpInside)
+        cancelButton.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
+        cancelButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20)
+        cancelButton.setSize(w: BTN_W + 20, h: BTN_H)
+
+        doneButton.addTarget(self, action: #selector(self.doneButtonClicked), for: .touchUpInside)
+        doneButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
+        doneButton.setImage(#imageLiteral(resourceName: "ic_action_accept_disabled").withRenderingMode(.alwaysOriginal), for: .disabled)
+        doneButton.imageEdgeInsets = UIEdgeInsetsMake(0, 40, 0, 0)
+        doneButton.setSize(w: BTN_W + 40, h: BTN_H)
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: doneButton)
+
+        doneButton.isEnabled = false
+
+        let titleBtn = UIButton(type: .custom)
+        titleBtn.setSize(w: 80, h: 30)
+        titleBtn.setTitle(NSLocalizedString("Profile", comment: ""), for: .normal)
+        navigationItem.titleView = titleBtn
+        //navigationController?.navigationBar.isTranslucent = false
+        //navigationController?.navigationBar.barStyle = .black
     }
 
     func notifyReloadLoginScreen() {
@@ -49,13 +80,13 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
         loginType = typeOfLogin
     }
 
-    @IBAction func cancelButtonClicked(_ sender: UIBarButtonItem) {
+    @objc func cancelButtonClicked(_ sender: UIBarButtonItem) {
         //dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
     }
 
-    @IBAction func doneButtonClicked(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+    @objc func doneButtonClicked(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: "StartTimer", sender: self)
     }
 
     func notifyShowHideNameCell(hide: Bool) {
@@ -84,6 +115,7 @@ class LoginScreenViewController: UIViewController, FNotifyLoginViewControllerDel
             reloadLoginInfoDelegate = secondViewController
             loginTypeDelegate = secondViewController
             secondViewController.delegate = self
+            secondViewController.disEnaDoneButtonDelegate = self
         } else if let secondViewController = segue.destination as? LoginTimerViewController {
             let popoverViewController = segue.destination
 

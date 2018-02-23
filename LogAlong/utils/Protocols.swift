@@ -47,3 +47,7 @@ protocol FNotifyShowPasswordDelegate: class {
 protocol FShowPasswordCellsDelegate: class {
     func showPasswordCells()
 }
+
+protocol FDisableEnableDoneButtonDelegate: class {
+    func disEnaDoneButton(_ enable: Bool)
+}

@@ -44,17 +44,34 @@ class LoginTimerViewController: UIViewController {
         timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(LoginTimerViewController.updateCountDown), userInfo: nil, repeats: true)
         // Do any additional setup after loading the view.
 
-        LBroadcast.register(LBroadcast.ACTION_CREATE_USER, cb: #selector(self.createUser), listener: self)
-        LBroadcast.register(LBroadcast.ACTION_SIGN_IN, cb: #selector(self.signin), listener: self)
-        LBroadcast.register(LBroadcast.ACTION_LOG_IN, cb: #selector(self.login), listener: self)
+        if LPreferences.getUserId().isEmpty {
+            LBroadcast.register(LBroadcast.ACTION_CREATE_USER, cb: #selector(self.createUser), listener: self)
+            LBroadcast.register(LBroadcast.ACTION_SIGN_IN, cb: #selector(self.signin), listener: self)
+            LBroadcast.register(LBroadcast.ACTION_LOG_IN, cb: #selector(self.login), listener: self)
+        } else {
+            LBroadcast.register(LBroadcast.ACTION_UPDATE_USER_PROFILE, cb: #selector(self.updateProfile), listener: self)
+        }
 
         if typeOfLogin.LOGIN.rawValue == loginType {
             UiRequest.instance.UiSignIn(userId, password)
         } else if LPreferences.getUserId().isEmpty {
             UiRequest.instance.UiCreateUser(userId, password, fullname: name!)
+        } else if !LPreferences.getUserId().isEmpty {
+            UiRequest.instance.UiUpdateUserProfile(userId, LPreferences.getUserPassword(), newPass: password, fullName: name!)
         } else {
             LLog.e("\(self)", "unexpected state, requested to recreate user");
         }
+    }
+
+    @objc func updateProfile(notification: Notification) -> Void {
+        LPreferences.setUserName(name!)
+        LPreferences.setUserPassword(password)
+
+        stopCountDown()
+
+        dismiss(animated: true, completion: nil)
+
+        delegate?.notifyReloadLoginScreen()
     }
 
     @objc func createUser(notification: Notification) -> Void {
@@ -166,8 +183,6 @@ class LoginTimerViewController: UIViewController {
         if serverIsDown {
             connectingLabel.text =
                 NSLocalizedString("Unable to connect to server. Please try again later.", comment: "")
-        } else {
-
         }
 
         okButton.isHidden = false

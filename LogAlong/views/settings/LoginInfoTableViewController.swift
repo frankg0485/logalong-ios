@@ -24,6 +24,8 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     @IBOutlet weak var checkButton: UIButton!
 
     var delegate: FPassNameIdPasswordDelegate?
+    var disEnaDoneButtonDelegate: FDisableEnableDoneButtonDelegate?
+
     var loginType: Int = 0
     var showPswdCells = false
     var validUser = false
@@ -42,8 +44,6 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
             searchButton.isHidden = true
             checkButton.isHidden = true
 
-            LBroadcast.register(LBroadcast.ACTION_UPDATE_USER_PROFILE, cb: #selector(self.updateUserName), listener: self)
-
             /*passwordCell.isHidden = true
              showPasswordCell.isHidden = true*/
 
@@ -59,7 +59,6 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
             checkButton.isHidden = false
 
             passwordTextField.backgroundColor = LTheme.Color.row_released_color
-
         }
 
         passwordTextField.delegate = self
@@ -83,11 +82,6 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
         // Dispose of any resources that can be recreated.
     }
 
-    func checkDoneButton() {
-        if !(nameTextField.text! == LPreferences.getUserName() && passwordTextField.text! == LPreferences.getUserPassword()) {
-
-        }
-    }
     func setUpButtons() {
         changePasswordButton.setImage(#imageLiteral(resourceName: "ic_action_overflow").withRenderingMode(.alwaysOriginal), for: .normal)
         searchButton.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
@@ -103,10 +97,6 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
         tableView.reloadData()
     }
 
-    @objc func updateUserName(notification: Notification) {
-        nameTextField.text = LPreferences.getUserName()
-    }
-
     func getFinalLoginType() -> Int {
         if nameCell.isHidden == true {
             return typeOfLogin.LOGIN.rawValue
@@ -116,6 +106,8 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
     }
 
     func reloadLoginScreen() {
+        showPswdCells = false
+
         self.viewDidLoad()
         tableView.reloadData()
     }
@@ -126,12 +118,18 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
 
             if (passwordTextField.text?.isEmpty == false) && (userIdTextField.text?.isEmpty == false) {
                 delegate?.passLoginInfoBack(name: nil, id: userIdTextField.text!, password: passwordTextField.text!, typeOfLogin: loginType)
+                disEnaDoneButtonDelegate?.disEnaDoneButton(true)
+            } else {
+                disEnaDoneButtonDelegate?.disEnaDoneButton(true)
             }
         } else {
             loginType = typeOfLogin.CREATE.rawValue
 
             if (nameTextField.text?.isEmpty == false) && (passwordTextField.text?.isEmpty == false) && (userIdTextField.text?.isEmpty == false) {
                 delegate?.passLoginInfoBack(name: nameTextField.text, id: userIdTextField.text!, password: passwordTextField.text!, typeOfLogin: loginType)
+                disEnaDoneButtonDelegate?.disEnaDoneButton(true)
+            } else {
+                disEnaDoneButtonDelegate?.disEnaDoneButton(false)
             }
         }
     }
@@ -143,10 +141,15 @@ class LoginInfoTableViewController: UITableViewController, FLoginViewControllerD
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         if (validUser) {
-            LPreferences.setUserName(nameTextField.text!)
-            UiRequest.instance.UiUpdateUserProfile(userIdTextField.text!, LPreferences.getUserPassword(), newPass: passwordTextField.text!, fullName: nameTextField.text!)
-            LPreferences.setUserPassword(passwordTextField.text!)
-
+            if nameTextField.text != LPreferences.getUserName() {
+                delegate?.passLoginInfoBack(name: nameTextField.text!, id: userIdTextField.text!, password: passwordTextField.text!, typeOfLogin: -1)
+                disEnaDoneButtonDelegate?.disEnaDoneButton(true)
+            } else if showPswdCells && (passwordTextField.text != LPreferences.getUserPassword()) {
+                delegate?.passLoginInfoBack(name: nameTextField.text!, id: userIdTextField.text!, password: passwordTextField.text!, typeOfLogin: -1)
+                disEnaDoneButtonDelegate?.disEnaDoneButton(true)
+            } else {
+                disEnaDoneButtonDelegate?.disEnaDoneButton(false)
+            }
         } else {
             checkTextFields()
         }
