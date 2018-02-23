@@ -2019,22 +2019,11 @@
                             <constraint firstAttribute="trailing" secondItem="du2-je-CCA" secondAttribute="trailing" id="we6-8Q-oIM"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="TrL-XP-QmN">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="mgy-VB-Hd4">
-                            <connections>
-                                <action selector="cancelButtonClicked:" destination="YPv-cd-Dzw" id="rC5-BQ-YEG"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="3Va-pR-fZK">
-                            <connections>
-                                <segue destination="692-8r-UR4" kind="popoverPresentation" identifier="" popoverAnchorBarButtonItem="3Va-pR-fZK" id="6rP-FO-SaB">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="TrL-XP-QmN"/>
                     <connections>
-                        <outlet property="doneButton" destination="3Va-pR-fZK" id="JJ5-YV-6Bm"/>
+                        <segue destination="692-8r-UR4" kind="popoverPresentation" identifier="StartTimer" popoverAnchorView="ul8-Oc-WgZ" id="aNe-pM-V9r">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cOq-il-s8z" userLabel="First Responder" sceneMemberID="firstResponder"/>
