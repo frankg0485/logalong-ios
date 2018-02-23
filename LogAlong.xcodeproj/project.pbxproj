@@ -42,6 +42,7 @@
 		01FBE7F61F439D5A00A0B514 /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */; };
 		01FBE7FA1F43A00800A0B514 /* NewAdditionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */; };
 		01FDE4911F78066300A7DD78 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */; };
+		CB006DC7203FAAFC005059BB /* DBScheduledTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB006DC6203FAAFC005059BB /* DBScheduledTransaction.swift */; };
 		CB1073551FCE599E00390032 /* LJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1073541FCE599E00390032 /* LJournal.swift */; };
 		CB1073601FCE62D900390032 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB10735F1FCE62D900390032 /* DBHelper.swift */; };
 		CB1073621FCE6D0E00390032 /* DBAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1073611FCE6D0E00390032 /* DBAccount.swift */; };
@@ -235,6 +236,7 @@
 		01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
 		01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAdditionTableViewController.swift; sourceTree = "<group>"; };
 		01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		CB006DC6203FAAFC005059BB /* DBScheduledTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBScheduledTransaction.swift; sourceTree = "<group>"; };
 		CB1073541FCE599E00390032 /* LJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LJournal.swift; sourceTree = "<group>"; };
 		CB10735F1FCE62D900390032 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		CB1073611FCE6D0E00390032 /* DBAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBAccount.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				CBB161951FF80746006717C0 /* DBLoader.swift */,
 				CBB51D2B1FE49EC2000CD233 /* DBTag.swift */,
 				013E34EC1F4366F900EF8972 /* DBTransaction.swift */,
+				CB006DC6203FAAFC005059BB /* DBScheduledTransaction.swift */,
 				CBB51D2D1FE49EDB000CD233 /* DBVendor.swift */,
 				CBFB1BEF1FC09A5D00B0321E /* LBroadcast.swift */,
 				CBEF97701FD4654F00D61F79 /* LExtension.swift */,
@@ -712,6 +715,7 @@
 				CBEAFF35202BD4BC00866790 /* ChartsPageViewController.swift in Sources */,
 				CBEB3E5F2002BE7C00A34432 /* RecordsViewController.swift in Sources */,
 				017BA1141FAF5DC600694E38 /* LoginInfoTableViewController.swift in Sources */,
+				CB006DC7203FAAFC005059BB /* DBScheduledTransaction.swift in Sources */,
 				CB51B55A1FBBFBF6002CABA1 /* LTransport.swift in Sources */,
 				CB1BC63A1FE7717600FD9D7E /* LScheduledTransaction.swift in Sources */,
 				010797E61F6778FA00623C04 /* LCategory.swift in Sources */,
