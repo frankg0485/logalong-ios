@@ -16,7 +16,7 @@ class DBTransaction: DBGeneric<LTransaction> {
         setValues = wrValues
     }
 
-    private func rdValues(_ row: Row) -> LTransaction? {
+    static func parseRow(_ row: Row) -> LTransaction? {
         return LTransaction(id: row[DBHelper.id],
                             gid: row[DBHelper.gid],
                             rid: row[DBHelper.rid],
@@ -34,7 +34,7 @@ class DBTransaction: DBGeneric<LTransaction> {
                             access: row[DBHelper.timestampAccess])
     }
 
-    private func wrValues(_ value: LTransaction) -> [SQLite.Setter] {
+    static func composeRow(_ value: LTransaction) -> [SQLite.Setter] {
         return [DBHelper.gid <- value.gid,
                 DBHelper.rid <- value.rid,
                 DBHelper.accountId <- value.accountId,
@@ -49,6 +49,14 @@ class DBTransaction: DBGeneric<LTransaction> {
                 DBHelper.timestamp <- value.timestamp,
                 DBHelper.timestampCretae <- value.timestampCreate,
                 DBHelper.timestampAccess <- value.timestampAccess]
+    }
+
+    private func rdValues(_ row: Row) -> LTransaction? {
+        return DBTransaction.parseRow(row)
+    }
+
+    private func wrValues(_ value: LTransaction) -> [SQLite.Setter] {
+        return DBTransaction.composeRow(value)
     }
 
     func rdValuesJoinNone(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
@@ -389,7 +397,6 @@ class DBTransaction: DBGeneric<LTransaction> {
         if (super.add(&trans)) {
             let amount = (trans.type == .INCOME || trans.type == .TRANSFER_COPY) ? trans.amount : -trans.amount
             DBAccountBalance.updateAccountBalance(id: trans.accountId, amount: amount, timestamp: trans.timestamp)
-            LBroadcast.post(LBroadcast.ACTION_UI_DB_DATA_CHANGED)
             return true
         } else {
             return false
@@ -405,7 +412,6 @@ class DBTransaction: DBGeneric<LTransaction> {
         if (super.update(trans)) {
             let amount = (trans.type == .INCOME || trans.type == .TRANSFER_COPY) ? trans.amount : -trans.amount
             DBAccountBalance.updateAccountBalance(id: trans.accountId, amount: amount, timestamp: trans.timestamp)
-            LBroadcast.post(LBroadcast.ACTION_UI_DB_DATA_CHANGED)
             return true
         } else {
             return false

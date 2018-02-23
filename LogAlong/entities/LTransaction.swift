@@ -60,11 +60,19 @@ class LTransaction : LDbBase {
         super.init(id: id, gid: gid, name: "", create: create, access: access)
     }
 
-    convenience init(trans: LTransaction) {
-        self.init(id: trans.id, gid: trans.gid, rid: trans.rid, accountId: trans.accountId, accountId2: trans.accountId2,
-                  amount: trans.amount, type: trans.type, categoryId: trans.categoryId, tagId: trans.tagId,
-                  vendorId: trans.vendorId, note: trans.note, by: trans.by,
-                  timestamp: trans.timestamp, create: trans.timestampCreate, access: trans.timestampAccess)
+    init(trans: LTransaction) {
+        rid = trans.rid
+        accountId = trans.accountId
+        accountId2 = trans.accountId2
+        amount = trans.amount
+        type = trans.type
+        categoryId = trans.categoryId
+        tagId = trans.tagId
+        vendorId = trans.vendorId
+        note = trans.note
+        by = trans.by
+        timestamp = trans.timestamp
+        super.init(id: trans.id, gid: trans.gid, name: "", create: trans.timestampCreate, access: trans.timestampAccess)
     }
 
     convenience init(accountId: Int64, accountId2: Int64, amount: Double, type: TransactionType,

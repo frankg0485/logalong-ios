@@ -82,7 +82,11 @@ class DBGeneric<T> {
             let insert = table!.insert(setValues!(dbase))
             let rowid = try DBHelper.instance.db!.run(insert)
             ret = (rowid != 0)
-            (dbase as! LDbBase).id = rowid
+
+            if ret {
+                (dbase as! LDbBase).id = rowid
+                LBroadcast.post(LBroadcast.ACTION_UI_DB_DATA_CHANGED)
+            }
         } catch {
             LLog.e("\(self)", "DB insert failed: \(error)")
         }
@@ -97,6 +101,8 @@ class DBGeneric<T> {
             let delete = table!.filter(DBHelper.id == id).delete()
             try DBHelper.instance.db!.run(delete)
             ret = true
+
+            LBroadcast.post(LBroadcast.ACTION_UI_DB_DATA_CHANGED)
         } catch {
             LLog.e("\(self)", "DB deletion failed")
         }
@@ -113,6 +119,8 @@ class DBGeneric<T> {
 
             try DBHelper.instance.db!.run(update)
             ret = true
+
+            LBroadcast.post(LBroadcast.ACTION_UI_DB_DATA_CHANGED)
         } catch {
             LLog.e("\(self)", "DB update failed")
         }
@@ -129,6 +137,8 @@ class DBGeneric<T> {
 
             try DBHelper.instance.db!.run(update)
             ret = true
+
+            LBroadcast.post(LBroadcast.ACTION_UI_DB_DATA_CHANGED)
         } catch {
             LLog.e("\(self)", "DB update column failed")
         }

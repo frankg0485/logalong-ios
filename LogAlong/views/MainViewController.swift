@@ -20,6 +20,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var accountBalances = LAccountBalances()
     var timer = Timer()
     var shareViewPresented = false
+    var isVisible = false
+    var isRefreshPending = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,27 +59,46 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        isVisible = true
+        if isRefreshPending {
+            refreshAll()
+        }
+
         super.viewDidAppear(animated)
         if let request = LPreferences.getAccountShareRequest() {
             presentShareView(request)
         }
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        isVisible = false
+        super.viewDidDisappear(animated)
+    }
+
     @objc func dbDataChanged(notification: Notification) -> Void {
         //LLog.d("\(self)", "db changed")
-        accountBalances.scan()
-        labelBalance.textColor = accountBalances.total >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
-        labelBalance.text = String(format: "%.2f", abs(accountBalances.total))
-        labelBalance.sizeToFit()
+        refreshAll()
+    }
 
-        tableView.reloadData()
+    private func refreshAll() {
+        if isVisible {
+            isRefreshPending = false
+
+            accountBalances.scan()
+            labelBalance.textColor = accountBalances.total >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
+            labelBalance.text = String(format: "%.2f", abs(accountBalances.total))
+            labelBalance.sizeToFit()
+
+            tableView.reloadData()
+        } else {
+            isRefreshPending = true
+        }
     }
 
     func onShareAccountConfirmDialogExit(_ ok: Bool, _ request: LAccountShareRequest) {
         shareViewPresented = false
 
-        let journal = LJournal()
-        journal.confirmAccountShare(aid: request.accountGid, uid: request.userId, yes: ok)
+        _ = LJournal.instance.confirmAccountShare(aid: request.accountGid, uid: request.userId, yes: ok)
 
         LPreferences.deleteAccountShareRequest(request: request)
 
@@ -192,23 +213,19 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             as? NewAdditionTableViewController {
 
             vc.modalPresentationStyle = UIModalPresentationStyle.popover
-            vc.popoverPresentationController?.delegate = self
+            vc.popoverPresentationController?.sourceView = addBtn
+            vc.popoverPresentationController?.sourceRect = CGRect(x: addBtn.bounds.midX + ADD_BUTTON_EXTRA_SPACE,
+                                                                  y: addBtn.bounds.maxY, width: 0, height: 0)
+
+            vc.popoverPresentationController?.permittedArrowDirections = .up
+            vc.popoverPresentationController!.delegate = self
+
             vc.myNavigationController = self.navigationController
+
             //149 = 3 * 50 (cell height) - 1 (cell separator height): so to hide the last cell separator
             vc.preferredContentSize = CGSize(width: 140, height: 149)
 
-            let popoverPresentationController = vc.popoverPresentationController
-
-            // result is an optional (but should not be nil if modalPresentationStyle is popover)
-            if let _popoverPresentationController = popoverPresentationController {
-                // set the view from which to pop up
-                _popoverPresentationController.permittedArrowDirections = .up
-                _popoverPresentationController.sourceView = addBtn
-                _popoverPresentationController.sourceRect = CGRect(x: addBtn.bounds.midX + ADD_BUTTON_EXTRA_SPACE,
-                                                                   y: addBtn.bounds.maxY, width: 0, height: 0)
-
-                dismissable = true
-            }
+            dismissable = true
 
             self.present(vc, animated: true, completion: nil)
         }
@@ -308,21 +325,6 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         balanceLabel?.text = String(format: "%.2f", abs(amount))
         balanceLabel?.sizeToFit()
         return cell!
-    }
-
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-        if segue.identifier == "TypeOfAddition" {
-            let popoverViewController = segue.destination
-
-            popoverViewController.modalPresentationStyle = UIModalPresentationStyle.popover
-            popoverViewController.popoverPresentationController!.delegate = self
-
-            dismissable = true
-        }
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {

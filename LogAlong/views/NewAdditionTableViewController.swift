@@ -10,6 +10,7 @@ import UIKit
 
 class NewAdditionTableViewController: UITableViewController {
     var myNavigationController: UINavigationController!
+    var isSchedule: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,20 +30,29 @@ class NewAdditionTableViewController: UITableViewController {
     // MARK: - Navigation
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let record = LTransaction()
 
         if let mnc = self.myNavigationController {
             if let nvc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddTableViewController")
                 as? AddTableViewController {
-                nvc.record = record
+
+                var record: LTransaction?
+
                 nvc.createRecord = true
+                nvc.isSchedule = isSchedule
+                if isSchedule {
+                    nvc.schedule = LScheduledTransaction()
+                    record = nvc.schedule
+                } else {
+                    record = LTransaction()
+                    nvc.record = record
+                }
 
                 switch indexPath.row {
-                case 1: record.type = .INCOME
-                case 2: record.type = .TRANSFER
+                case 1: record!.type = .INCOME
+                case 2: record!.type = .TRANSFER
                 case 0: fallthrough
                 default:
-                     record.type = .EXPENSE
+                     record!.type = .EXPENSE
                 }
                 mnc.pushViewController(nvc, animated: true)
             }

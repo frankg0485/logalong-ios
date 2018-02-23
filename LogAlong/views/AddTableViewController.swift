@@ -42,6 +42,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     // input-output
     var record: LTransaction!
+    var schedule: LScheduledTransaction!
+
     // input
     var createRecord: Bool = false
     var isSchedule: Bool = false
@@ -53,12 +55,23 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     var amountButton: UIButton!
     var dateButton: UIButton!
+
+    var repeatCountButton: UIButton?
+    var repeatIntervalButton: UIButton?
+    var repeatUnitButton: UIButton?
+
     var origRecord: LTransaction!
+    var origSchedule: LScheduledTransaction!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBarItems()
         createHeader()
+
+        if isSchedule {
+            record = schedule
+            origSchedule = LScheduledTransaction(schedule: schedule)
+        }
 
         origRecord = LTransaction(trans: record!)
 
@@ -149,7 +162,11 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         displayDateMs(record!.timestamp)
         updateSaveButtonState()
 
-        if createRecord {
+        if isSchedule {
+            updateScheduleDisplay()
+        }
+
+        if createRecord && !isSchedule {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(
                 withIdentifier: "SelectAmountViewController") as! SelectAmountViewController
 
@@ -213,13 +230,14 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         label.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
         layout.addSubview(label)
 
-        let valueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
-        valueBtn.setTitle(NSLocalizedString("Unlimited", comment: ""), for: .normal)
-        valueBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
-        valueBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        valueBtn.contentHorizontalAlignment = .right
-        valueBtn.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
-        layout.addSubview(valueBtn)
+        repeatCountButton = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        repeatCountButton!.addTarget(self, action: #selector(onRepeatCountClick), for: .touchUpInside)
+        //repeatCountButton!.setTitle(NSLocalizedString("Unlimited", comment: ""), for: .normal)
+        repeatCountButton!.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        repeatCountButton!.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        repeatCountButton!.contentHorizontalAlignment = .right
+        repeatCountButton!.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
+        layout.addSubview(repeatCountButton!)
 
         repeatCountView.addSubview(layout)
     }
@@ -235,21 +253,23 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         label.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
         layout.addSubview(label)
 
-        let intBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
-        intBtn.setTitle(NSLocalizedString("1", comment: ""), for: .normal)
-        intBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
-        intBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        intBtn.contentHorizontalAlignment = .right
-        intBtn.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 5)
-        layout.addSubview(intBtn)
+        repeatIntervalButton = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        repeatIntervalButton!.addTarget(self, action: #selector(onRepeatIntervalClick), for: .touchUpInside)
+        //repeatIntervalButton!.setTitle(NSLocalizedString("1", comment: ""), for: .normal)
+        repeatIntervalButton!.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        repeatIntervalButton!.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        repeatIntervalButton!.contentHorizontalAlignment = .right
+        repeatIntervalButton!.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 10)
+        layout.addSubview(repeatIntervalButton!)
 
-        let valueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
-        valueBtn.setTitle(NSLocalizedString("month", comment: ""), for: .normal)
-        valueBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
-        valueBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        valueBtn.contentHorizontalAlignment = .right
-        valueBtn.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
-        layout.addSubview(valueBtn)
+        repeatUnitButton = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        repeatUnitButton!.addTarget(self, action: #selector(onRepeatUnitClick), for: .touchUpInside)
+        //repeatUnitButton!.setTitle(NSLocalizedString("month", comment: ""), for: .normal)
+        repeatUnitButton!.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        repeatUnitButton!.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        repeatUnitButton!.contentHorizontalAlignment = .right
+        repeatUnitButton!.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
+        layout.addSubview(repeatUnitButton!)
 
         repeatIntervalView.addSubview(layout)
     }
@@ -291,6 +311,33 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         valueTimeHeader.addSubview(dateButton)
 
         amountDateView.addSubview(valueTimeHeader)
+    }
+
+    private func updateScheduleDisplay() {
+        repeatIntervalButton?.setTitle(String(schedule.repeatInterval), for: .normal)
+
+        var txt = ""
+        if schedule.repeatInterval > 1 {
+            txt = (schedule.repeatUnit == LScheduledTransaction.REPEAT_UNIT_WEEK) ?
+                 NSLocalizedString("weeks", comment: "") : NSLocalizedString("months", comment: "")
+        } else {
+            txt = (schedule.repeatUnit == LScheduledTransaction.REPEAT_UNIT_WEEK) ?
+                NSLocalizedString("week", comment: "") : NSLocalizedString("month", comment: "")
+        }
+        repeatUnitButton?.setTitle(txt, for: .normal)
+
+        if schedule.repeatCount == 0 {
+            txt = NSLocalizedString("disabled", comment: "")
+        } else if schedule.repeatCount == 1 {
+            txt = NSLocalizedString("unlimited", comment: "")
+        } else if schedule.repeatCount == 2 {
+            txt = String(schedule.repeatCount - 1) + " " + NSLocalizedString("time", comment: "")
+        } else {
+            txt = String(schedule.repeatCount - 1) + " " + NSLocalizedString("times", comment: "")
+        }
+        repeatCountButton?.setTitle(txt, for: .normal)
+
+        updateSaveButtonState()
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -345,6 +392,19 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             }
         } else if let _ = caller as? DatePickerViewController {
             record!.timestamp = type.int64
+
+            if isSchedule {
+                let cdate = Date(milliseconds: record.timestamp)
+                let calendar = Calendar.current
+                var comp = calendar.dateComponents(in: calendar.timeZone, from: cdate)
+                comp.hour = LScheduledTransaction.START_HOUR_OF_DAY
+                comp.minute = 0
+                comp.second = 0
+                let date = calendar.date(from: comp)!
+                if record.timestamp < date.currentTimeMillis {
+                    record.timestamp = date.currentTimeMillis
+                }
+            }
             displayDateMs(type.int64)
         }
 
@@ -359,7 +419,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
         vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
         vc.popoverPresentationController!.delegate = self
-
 
         var color = LTheme.Color.base_blue
         switch (record!.type) {
@@ -434,6 +493,33 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }
     }
 
+    @objc func onRepeatCountClick() {
+        schedule.repeatCount += 1
+        if schedule.repeatCount > 11 {
+            schedule.repeatCount = 0
+        }
+
+        updateScheduleDisplay()
+    }
+
+    @objc func onRepeatIntervalClick() {
+        schedule.repeatInterval += 1
+        if schedule.repeatInterval > 12 {
+            schedule.repeatInterval = 1
+        }
+        updateScheduleDisplay()
+    }
+
+    @objc func onRepeatUnitClick() {
+        if schedule.repeatUnit == LScheduledTransaction.REPEAT_UNIT_MONTH {
+            schedule.repeatUnit = LScheduledTransaction.REPEAT_UNIT_WEEK
+        } else {
+            schedule.repeatUnit = LScheduledTransaction.REPEAT_UNIT_MONTH
+        }
+
+        updateScheduleDisplay()
+    }
+
     @objc func onAmountClick() {
         performSegue(withIdentifier: "ChooseAmount", sender: self)
     }
@@ -443,7 +529,29 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     @objc func onSaveClick() {
+        record.timestampAccess = Date().currentTimeMillis
+
         if isSchedule {
+            let cdate = Date(milliseconds: record.timestamp)
+            let calendar = Calendar.current
+            var comp = calendar.dateComponents(in: calendar.timeZone, from: cdate)
+            comp.hour = LScheduledTransaction.START_HOUR_OF_DAY
+            comp.minute = 0
+            comp.second = 0
+            let date = calendar.date(from: comp)!
+            record.timestamp = date.currentTimeMillis
+
+            schedule.initNextTimeMs()
+
+            if createRecord {
+                if DBScheduledTransaction.instance.add(&schedule!) {
+                    _ = LJournal.instance.addSchedule(id: schedule.id)
+                }
+            } else {
+                if DBScheduledTransaction.instance.update(schedule) {
+                    _ = LJournal.instance.updateSchedule(id: schedule.id)
+                }
+            }
         } else {
             var ret = false
             if record!.type == .TRANSFER_COPY {
@@ -517,8 +625,23 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return false
     }
 
+    private func isScheduleChanged() -> Bool {
+        if isRecordChanged() {
+            return true
+        }
+        if schedule.enabled != origSchedule.enabled || schedule.repeatInterval != origSchedule.repeatInterval ||
+            schedule.repeatUnit != origSchedule.repeatUnit || schedule.repeatCount != origSchedule.repeatCount {
+            return true
+        }
+        return false
+    }
+
     private func updateSaveButtonState() {
-        saveButton.isEnabled = isRecordValid() && (createRecord || isRecordChanged())
+        if isSchedule {
+            saveButton.isEnabled = isRecordValid() && (createRecord || isScheduleChanged())
+        } else {
+            saveButton.isEnabled = isRecordValid() && (createRecord || isRecordChanged())
+        }
     }
 
     private func displayDateMs(_ ms: Int64) {
