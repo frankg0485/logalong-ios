@@ -418,6 +418,14 @@ class DBTransaction: DBGeneric<LTransaction> {
         }
     }
 
+    override func remove(id: Int64) -> Bool {
+        if let trans = get(id: id) {
+            let amount = (trans.type == .INCOME || trans.type == .TRANSFER_COPY) ? -trans.amount : trans.amount
+            DBAccountBalance.updateAccountBalance(id: trans.accountId, amount: amount, timestamp: trans.timestamp)
+        }
+        return super.remove(id: id)
+    }
+
     func add2(_ trans: inout LTransaction) -> Bool {
         if trans.type != .TRANSFER {
             LLog.e("\(self)", "unexpected error, wrong add API called for invalid transaction type")
@@ -437,6 +445,21 @@ class DBTransaction: DBGeneric<LTransaction> {
         } else {
             return true
         }
+    }
+
+    func remove2(id: Int64) -> Bool {
+        if let trans = get(id: id) {
+            if trans.type != .TRANSFER {
+                LLog.e("\(self)", "unexpected error, wrong remove API called for invalid transaction type")
+                return false
+            }
+            _ = remove(id: id)
+
+            if let cpy = getTransfer(rid: trans.rid, copy: true) {
+                _ = remove(id: cpy.id)
+            }
+        }
+        return true
     }
 
     func update2(_ trans: LTransaction) -> Bool {
@@ -466,5 +489,17 @@ class DBTransaction: DBGeneric<LTransaction> {
             }
         }
         return true
+    }
+
+    func deleteByAccount(id: Int64) -> Bool {
+        var ret = false
+        do {
+            let delete = table!.filter(DBHelper.accountId == id).delete()
+            try DBHelper.instance.db!.run(delete)
+            ret = true
+        } catch {
+            LLog.e("\(self)", "DB deletion by account failed")
+        }
+        return ret
     }
 }

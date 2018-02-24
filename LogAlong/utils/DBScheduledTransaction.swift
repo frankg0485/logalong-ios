@@ -40,4 +40,16 @@ class DBScheduledTransaction: DBGeneric<LScheduledTransaction> {
     func getAll() -> [LScheduledTransaction] {
         return super.getAll(by: DBHelper.scheduleTime.asc)
     }
+
+    func deleteByAccount(id: Int64) -> Bool {
+        var ret = false
+        do {
+            let delete = table!.filter(DBHelper.accountId == id).delete()
+            try DBHelper.instance.db!.run(delete)
+            ret = true
+        } catch {
+            LLog.e("\(self)", "DB deletion by account failed")
+        }
+        return ret
+    }
 }

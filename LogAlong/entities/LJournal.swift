@@ -158,9 +158,9 @@ class LJournal {
             jdata.putLongAutoInc(by)
             if (0 == rid) {
                 rid = LTransaction.generateRid()
-                DBTransaction.instance.updateColumnById(id, DBHelper.rid, rid)
+                _ = DBTransaction.instance.updateColumnById(id, DBHelper.rid, rid)
                 if (TransactionType.TRANSFER == type) {
-                    DBTransaction.instance.updateTransferCopyRid(transaction: self)
+                    _ = DBTransaction.instance.updateTransferCopyRid(transaction: self)
                 }
             }
             jdata.putLongAutoInc(rid)
@@ -185,68 +185,86 @@ class LJournal {
         }
     }
 
-    /*
-    private class ScheduleJournalFlushAction extends GenericJournalFlushAction<LScheduledTransaction> {
+    private class JLScheduledTransaction : LScheduledTransaction, GenericJD {
+        func getId() -> Int64 {
+            return id
+        }
 
-    @Override
-    LScheduledTransaction getById(long id) {
-    return DBScheduledTransaction.getInstance().getById(id);
+        func getGid() -> Int64 {
+            return gid
+        }
+
+        func getRequestCode() -> UInt16 {
+            return LProtocol.JRQST_ADD_SCHEDULE
+        }
+
+        func add_data(_ jdata: LBuffer) -> Bool {
+            if (TransactionType.TRANSFER_COPY == type) {
+                return false
+            }
+
+            if let account = DBAccount.instance.get(id: accountId) {
+                jdata.putLongAutoInc(account.gid)
+            } else {
+                jdata.putLongAutoInc(0)
+            }
+
+            if let account2 = DBAccount.instance.get(id: accountId2) {
+                jdata.putLongAutoInc(account2.gid)
+            } else {
+                jdata.putLongAutoInc(0)
+            }
+
+            if let category = DBCategory.instance.get(id: categoryId) {
+                jdata.putLongAutoInc(category.gid)
+            } else {
+                jdata.putLongAutoInc(0)
+            }
+
+            if let tag = DBTag.instance.get(id: tagId) {
+                jdata.putLongAutoInc(tag.gid)
+            } else {
+                jdata.putLongAutoInc(0)
+            }
+
+            if let vendor = DBVendor.instance.get(id: vendorId) {
+                jdata.putLongAutoInc(vendor.gid)
+            } else {
+                jdata.putLongAutoInc(0)
+            }
+
+            jdata.putByteAutoInc(type.rawValue)
+            jdata.putDoubleAutoInc(amount)
+            jdata.putLongAutoInc(by)
+            jdata.putLongAutoInc(rid)
+            jdata.putLongAutoInc(timestamp)
+            jdata.putLongAutoInc(timestampCreate)
+            jdata.putLongAutoInc(timestampAccess)
+
+            let snote = [UInt8](note.utf8)
+            jdata.putShortAutoInc(UInt16(snote.count))
+            jdata.putBytesAutoInc(snote)
+
+            jdata.putLongAutoInc(scheduleTime)
+            jdata.putByteAutoInc(UInt8(repeatInterval))
+            jdata.putByteAutoInc(UInt8(repeatUnit))
+            jdata.putByteAutoInc(UInt8(repeatCount))
+            jdata.putByteAutoInc(UInt8(enabled ? 1 : 0))
+
+            jdata.setLen(jdata.getOffset())
+
+            return true
+        }
+
+        static func fetch(_ jdata: LBuffer) -> JLScheduledTransaction? {
+            if let schedule = DBScheduledTransaction.instance.get(id: jdata.getLongAutoInc()) {
+                return JLScheduledTransaction(schedule: schedule)
+            } else {
+                return nil
+            }
+        }
     }
 
-    @Override
-    LScheduledTransaction getByIdAll(long id) {
-    return DBScheduledTransaction.getInstance().getByIdAll(id);
-    }
-
-    @Override
-    boolean isGidAssigned(LScheduledTransaction lScheduledTransaction) {
-    return lScheduledTransaction.getGid() != 0;
-    }
-
-    @Override
-    short getRequestCode() {
-    return LProtocol.JRQST_ADD_SCHEDULE;
-    }
-
-    @Override
-    boolean add_data(LBuffer jdata, LScheduledTransaction lScheduledTransaction) {
-    jdata.putLongAutoInc(DBAccount.getInstance().getGidById(lScheduledTransaction.getAccount()));
-    jdata.putLongAutoInc(DBAccount.getInstance().getGidById(lScheduledTransaction.getAccount2()));
-    jdata.putLongAutoInc(DBCategory.getInstance().getGidById(lScheduledTransaction.getCategory()));
-    jdata.putLongAutoInc(DBTag.getInstance().getGidById(lScheduledTransaction.getTag()));
-    jdata.putLongAutoInc(DBVendor.getInstance().getGidById(lScheduledTransaction.getVendor()));
-    jdata.putByteAutoInc((byte) lScheduledTransaction.getType());
-    jdata.putDoubleAutoInc(lScheduledTransaction.getValue());
-    jdata.putLongAutoInc(lScheduledTransaction.getChangeBy());
-    if (0 == lScheduledTransaction.getRid()) {
-    lScheduledTransaction.generateRid();
-    DBScheduledTransaction.getInstance().updateColumnById(lScheduledTransaction.getId(), DBHelper
-    .TABLE_COLUMN_IRID, lScheduledTransaction.getRid());
-    }
-    jdata.putLongAutoInc(lScheduledTransaction.getRid());
-    jdata.putLongAutoInc(lScheduledTransaction.getTimeStamp());
-    jdata.putLongAutoInc(lScheduledTransaction.getTimeStampCreate());
-    jdata.putLongAutoInc(lScheduledTransaction.getTimeStampLast());
-    try {
-    byte[] note = lScheduledTransaction.getNote().getBytes("UTF-8");
-    jdata.putShortAutoInc((short) note.length);
-    jdata.putBytesAutoInc(note);
-    } catch (Exception e) {
-    LLog.e(TAG, "unexpected error when adding schedule " + e.getMessage());
-    return false;
-    }
-
-    jdata.putLongAutoInc(lScheduledTransaction.getNextTime());
-    jdata.putByteAutoInc((byte) lScheduledTransaction.getRepeatInterval());
-    jdata.putByteAutoInc((byte) lScheduledTransaction.getRepeatUnit());
-    jdata.putByteAutoInc((byte) lScheduledTransaction.getRepeatCount());
-    jdata.putByteAutoInc((byte) (lScheduledTransaction.isEnabled() ? 1 : 0));
-
-    jdata.setLen(jdata.getBufOffset());
-    return true;
-    }
-    }
-    */
     private class JLAccount: LAccount, GenericJD {
         init(account: LAccount) {
             super.init(id: account.id, gid: account.gid, name: account.name,
@@ -397,6 +415,7 @@ class LJournal {
     private lazy var tagJournalFlushAction: GenericJournalFlushAction<JLTag> = GenericJournalFlushAction<JLTag>()
     private lazy var vendorJournalFlushAction: GenericJournalFlushAction<JLVendor> = GenericJournalFlushAction<JLVendor>()
     private lazy var recordJournalFlushAction: GenericJournalFlushAction<JLTransaction> = GenericJournalFlushAction<JLTransaction>()
+    private lazy var scheduleJournalFlushAction: GenericJournalFlushAction<JLScheduledTransaction> = GenericJournalFlushAction<JLScheduledTransaction>()
 
     func flush() -> Bool {
 
@@ -430,17 +449,12 @@ class LJournal {
             (retVal, newEntry, removeEntry) = recordJournalFlushAction.update(JLTransaction.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_RECORD:
             (retVal, newEntry, removeEntry) = recordJournalFlushAction.delete(JLTransaction.fetch, jdata, ndata)
-            /*
-             case LProtocol.JRQST_ADD_SCHEDULE:
-             if (!scheduleJournalFlushAction.add(jdata, ndata)) return false;
-             break;
-             case LProtocol.JRQST_UPDATE_SCHEDULE:
-             if (!scheduleJournalFlushAction.update(jdata, ndata)) return false;
-             break;
-             case LProtocol.JRQST_DELETE_SCHEDULE:
-             if (!scheduleJournalFlushAction.delete(jdata, ndata)) return false;
-             break;
-             */
+        case LProtocol.JRQST_ADD_SCHEDULE:
+            (retVal, newEntry, removeEntry) = scheduleJournalFlushAction.add(JLScheduledTransaction.fetch, jdata, ndata)
+        case LProtocol.JRQST_UPDATE_SCHEDULE:
+            (retVal, newEntry, removeEntry) = scheduleJournalFlushAction.update(JLScheduledTransaction.fetch, jdata, ndata)
+        case LProtocol.JRQST_DELETE_SCHEDULE:
+            (retVal, newEntry, removeEntry) = scheduleJournalFlushAction.delete(JLScheduledTransaction.fetch, jdata, ndata)
         case LProtocol.JRQST_ADD_ACCOUNT:
             (retVal, newEntry, removeEntry) = accountJournalFlushAction.add(JLAccount.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_ACCOUNT:
@@ -551,31 +565,31 @@ class LJournal {
         return post();
     }
 
-    func addRecord(id: Int64) -> Bool {
+    func addRecord(_ id: Int64) -> Bool {
         return postById(id, LProtocol.JRQST_ADD_RECORD);
     }
 
-    func updateRecord(id: Int64) -> Bool {
+    func updateRecord(_ id: Int64) -> Bool {
         return postById(id, LProtocol.JRQST_UPDATE_RECORD);
     }
 
-    func deleteRecord(id: Int64) -> Bool {
+    func deleteRecord(_ id: Int64) -> Bool {
         return postById(id, LProtocol.JRQST_DELETE_RECORD);
     }
 
-    func getSchedule(id: Int64) -> Bool {
+    func getSchedule(_ id: Int64) -> Bool {
         return postById(id, LProtocol.JRQST_GET_SCHEDULE);
     }
 
-    func addSchedule(id: Int64) -> Bool {
+    func addSchedule(_ id: Int64) -> Bool {
         return postById(id, LProtocol.JRQST_ADD_SCHEDULE);
     }
 
-    func updateSchedule(id: Int64) -> Bool {
+    func updateSchedule(_ id: Int64) -> Bool {
         return postById(id, LProtocol.JRQST_UPDATE_SCHEDULE);
     }
 
-    func deleteSchedule(id: Int64) -> Bool {
+    func deleteSchedule(_ id: Int64) -> Bool {
         return postById(id, LProtocol.JRQST_DELETE_SCHEDULE);
     }
 

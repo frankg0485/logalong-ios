@@ -197,22 +197,22 @@ class LoginTimerViewController: UIViewController {
     func pushLocalDb() {
         for account in DBAccount.instance.getAll() {
             //publishProgress(account.getName());
-            LJournal.instance.addAccount(account.id)
+            _ = LJournal.instance.addAccount(account.id)
         }
 
         for category in DBCategory.instance.getAll() {
             //publishProgress(category.getName());
-            LJournal.instance.addCategory(category.id)
+            _ = LJournal.instance.addCategory(category.id)
         }
 
         for vendor in DBVendor.instance.getAll() {
             //publishProgress(vendor.getName());
-            LJournal.instance.addVendor(vendor.id)
+            _ = LJournal.instance.addVendor(vendor.id)
         }
 
         for tag in DBTag.instance.getAll() {
             //publishProgress(tag.getName());
-            LJournal.instance.addTag(tag.id)
+            _ = LJournal.instance.addTag(tag.id)
         }
 
         // get all accounts
@@ -223,7 +223,7 @@ class LoginTimerViewController: UIViewController {
 
         for transaction in DBTransaction.instance.getAll() {
             if transaction.type != TransactionType.TRANSFER_COPY {
-                LJournal.instance.addRecord(id: transaction.id)
+                _ = LJournal.instance.addRecord(transaction.id)
             }
 
             LLog.d("\(self)", "adding record: \(transaction.id)")

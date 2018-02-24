@@ -55,4 +55,14 @@ class DBAccount : DBGeneric<LAccount> {
         }
         return users
     }
+
+    static func deleteEntries(of account: Int64) {
+        _ = DBAccountBalance.instance.remove(accountId: account)
+        DispatchQueue.global(qos: .background).async {
+            _ = DBTransaction.instance.deleteByAccount(id: account)
+            _ = DBScheduledTransaction.instance.deleteByAccount(id: account)
+
+            LBroadcast.post(LBroadcast.ACTION_UI_DB_DATA_CHANGED)
+        }
+    }
 }

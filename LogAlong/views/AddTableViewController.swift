@@ -47,6 +47,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     // input
     var createRecord: Bool = false
     var isSchedule: Bool = false
+    var isReadOnly: Bool = false
 
     var cancelButton: UIButton!
     var saveButton: UIButton!
@@ -200,16 +201,17 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         saveButton.imageEdgeInsets = UIEdgeInsetsMake(0, 40, 0, 0)
         saveButton.setSize(w: BTN_W + 40, h: BTN_H)
 
-        /*
-         deleteButton = UIButton(type: .system)
-         deleteButton.addTarget(self, action: #selector(self.onDeleteClick), for: .touchUpInside)
-         deleteButton.setImage(#imageLiteral(resourceName: "ic_action_discard").withRenderingMode(.alwaysOriginal), for: .normal)
-         deleteButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 15)
-         deleteButton.setSize(w: BTN_W + 20, h: BTN_H)
-         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: cancelButton),
-         UIBarButtonItem(customView: deleteButton)]
-         */
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
+        if createRecord {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
+        } else {
+            let deleteButton = UIButton(type: .system)
+            deleteButton.addTarget(self, action: #selector(self.onDeleteClick), for: .touchUpInside)
+            deleteButton.setImage(#imageLiteral(resourceName: "ic_action_discard").withRenderingMode(.alwaysOriginal), for: .normal)
+            deleteButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 15)
+            deleteButton.setSize(w: BTN_W + 20, h: BTN_H)
+            navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: cancelButton),
+                                                 UIBarButtonItem(customView: deleteButton)]
+        }
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: saveButton)
 
         navigationController?.navigationBar.isTranslucent = false
@@ -340,8 +342,23 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         updateSaveButtonState()
     }
 
+    private func isRowHidden(_ row: Int) -> Bool {
+        if !isSchedule {
+            if row == 0 || row == 1 {
+                return true
+            }
+        }
+
+        if record.type == .TRANSFER || record.type == .TRANSFER_COPY {
+            if (row == 5 || row == 6) {
+                return true
+            }
+        }
+        return false
+    }
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.row == 0 || indexPath.row == 1) && !isSchedule {
+        if isRowHidden(indexPath.row) {
             return 0
         }
         return super.tableView(tableView, heightForRowAt: indexPath)
@@ -349,10 +366,39 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        if (indexPath.row == 0 || indexPath.row == 1) && !isSchedule {
+        if isRowHidden(indexPath.row) {
             cell.isHidden = true
         }
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if (isSchedule && indexPath.row == 0) || (!isSchedule && indexPath.row == 2) {
+            return .delete
+        } else {
+            return .none
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if .delete == editingStyle {
+            if isSchedule {
+                if DBScheduledTransaction.instance.remove(id: schedule.id) {
+                    _ = LJournal.instance.deleteSchedule(schedule.id)
+                }
+            } else {
+                var ret = false
+                if record.type == .TRANSFER {
+                    ret = DBTransaction.instance.remove2(id: record.id)
+                } else {
+                    ret = DBTransaction.instance.remove(id: record.id)
+                }
+                if ret {
+                    _ = LJournal.instance.deleteRecord(record.id)
+                }
+            }
+            onCancelClick()
+        }
     }
 
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
@@ -432,6 +478,10 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return color
     }
 
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        return !tableView.isEditing && !isReadOnly
+    }
+
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         var color = LTheme.Color.base_blue
@@ -494,6 +544,10 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     @objc func onRepeatCountClick() {
+        if tableView.isEditing || isReadOnly {
+            return
+        }
+
         schedule.repeatCount += 1
         if schedule.repeatCount > 11 {
             schedule.repeatCount = 0
@@ -503,6 +557,10 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     @objc func onRepeatIntervalClick() {
+        if tableView.isEditing || isReadOnly {
+            return
+        }
+
         schedule.repeatInterval += 1
         if schedule.repeatInterval > 12 {
             schedule.repeatInterval = 1
@@ -511,6 +569,10 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     @objc func onRepeatUnitClick() {
+        if tableView.isEditing || isReadOnly {
+            return
+        }
+
         if schedule.repeatUnit == LScheduledTransaction.REPEAT_UNIT_MONTH {
             schedule.repeatUnit = LScheduledTransaction.REPEAT_UNIT_WEEK
         } else {
@@ -521,14 +583,26 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     @objc func onAmountClick() {
+        if tableView.isEditing || isReadOnly {
+            return
+        }
+
         performSegue(withIdentifier: "ChooseAmount", sender: self)
     }
 
     @objc func onDateClick() {
+        if tableView.isEditing || isReadOnly {
+            return
+        }
+
         performSegue(withIdentifier: "ChooseDate", sender: self)
     }
 
     @objc func onSaveClick() {
+        if tableView.isEditing || isReadOnly {
+            return
+        }
+
         record.timestampAccess = Date().currentTimeMillis
 
         if isSchedule {
@@ -545,11 +619,11 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
             if createRecord {
                 if DBScheduledTransaction.instance.add(&schedule!) {
-                    _ = LJournal.instance.addSchedule(id: schedule.id)
+                    _ = LJournal.instance.addSchedule(schedule.id)
                 }
             } else {
                 if DBScheduledTransaction.instance.update(schedule) {
-                    _ = LJournal.instance.updateSchedule(id: schedule.id)
+                    _ = LJournal.instance.updateSchedule(schedule.id)
                 }
             }
         } else {
@@ -564,7 +638,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                         ret = DBTransaction.instance.add(&record!)
                     }
                     if ret {
-                        _ = LJournal.instance.addRecord(id: record!.id)
+                        _ = LJournal.instance.addRecord(record!.id)
                     }
                 } else {
                     if record!.type == .TRANSFER {
@@ -573,7 +647,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                         ret = DBTransaction.instance.update(record!)
                     }
                     if ret {
-                        _ = LJournal.instance.updateRecord(id: record!.id)
+                        _ = LJournal.instance.updateRecord(record!.id)
                     }
                 }
             }
@@ -588,16 +662,18 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         navigationController?.popViewController(animated: true)
     }
 
+    @objc func onDeleteClick() {
+        if tableView.isEditing || isReadOnly {
+            return
+        }
+
+        tableView.setEditing(true, animated: true)
+    }
+
     @objc func onCancelClick() {
         navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
         navigationController?.popViewController(animated: true)
     }
-
-    /*
-     @objc func onDeleteClick() {
-     LLog.d("\(self)", "delete click")
-     }
-     */
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none

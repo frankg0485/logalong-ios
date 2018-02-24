@@ -127,8 +127,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             switch (createType!) {
             case .ACCOUNT: fallthrough
             case .ACCOUNT2:
+                account!.name = name
                 if isCreate {
-                    account!.name = name
                     if DBAccount.instance.add(&account!) {
                         _ = LJournal.instance.addAccount(account!.id)
                     }
@@ -138,8 +138,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                     }
                 }
             case .CATEGORY:
+                category!.name = name
                 if isCreate {
-                    category!.name = name
                     if DBCategory.instance.add(&category!) {
                         _ = LJournal.instance.addCategory(category!.id)
                     }
@@ -151,8 +151,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             case .PAYER: fallthrough
             case .PAYEE: fallthrough
             case .VENDOR:
+                vendor!.name = name
                 if isCreate {
-                    vendor!.name = name
                     if DBVendor.instance.add(&vendor!) {
                         _ = LJournal.instance.addVendor(vendor!.id)
                     }
@@ -162,8 +162,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                     }
                 }
             case .TAG:
+                tag!.name = name
                 if isCreate {
-                    tag!.name = name
                     if DBTag.instance.add(&tag!) {
                         _ = LJournal.instance.addTag(tag!.id)
                     }

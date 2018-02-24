@@ -61,11 +61,11 @@ class LService {
     }
 
     @objc func login(notification: Notification) {
-        LJournal.instance.flush()
+        _ = LJournal.instance.flush()
     }
 
     @objc func newJournalAvailable(notification: Notification) {
-        LJournal.instance.flush()
+        _ = LJournal.instance.flush()
     }
 
     @objc func postJournal(notification: Notification) {
@@ -93,21 +93,22 @@ class LService {
                         if (nil != account) {
                             if (account!.id != id) {
                                 LLog.e("\(self)", "unexpected error, account GID: \(gid) already taken by \(account!.name)")
-                                //this is an unrecoverable error, we'll delete the dangling account
-                                dbAccount.remove(id: account!.id)
+                                //this is an unrecoverable error, we'll delete the dangling account and all records associated with it
+                                DBAccount.deleteEntries(of: account!.id)
+                                _ = dbAccount.remove(id: account!.id)
                             }
                         }
 
                         account = dbAccount.get(id: id)
                         if (nil != account) {
-                            //TODO: account!.setOwner(uid)
+                            account!.setOwner(uid)
                             account!.gid = gid
-                            dbAccount.update(account!)
+                            _ = dbAccount.update(account!)
                         }
 
                     case LProtocol.JRQST_GET_ACCOUNTS:
                         let gid = bdata["gid"] as! Int64
-                        let uid = bdata["uid"] as! Int64
+                        //let uid = bdata["uid"] as! Int64
                         let name = bdata["name"] as! String
 
                         if let account = DBAccount.instance.get(gid: gid) {
@@ -138,70 +139,61 @@ class LService {
                         let id = bdata["id"] as! Int64
                         let gid = bdata["gid"] as! Int64
 
-                        let category = DBCategory.instance.get(gid: gid)
-
-                        if (category != nil) {
-                            if (category!.id != id) {
-                                LLog.e("\(self)", "unexpected error, category GID: \(gid) already taken by \(category!.name)")
-                                DBCategory.instance.remove(id: category!.id)
+                        if let category = DBCategory.instance.get(gid: gid) {
+                            if (category.id != id) {
+                                LLog.e("\(self)", "unexpected error, category GID: \(gid) already taken by \(category.name)")
+                                _ = DBCategory.instance.remove(id: category.id)
                             }
                         }
-                        DBCategory.instance.updateColumnById(id, DBHelper.gid, gid)
+                        _ = DBCategory.instance.updateColumnById(id, DBHelper.gid, gid)
 
                     case LProtocol.JRQST_ADD_TAG:
                         let id = bdata["id"] as! Int64
                         let gid = bdata["gid"] as! Int64
 
-                        let tag = DBTag.instance.get(gid: gid)
-                        if (tag != nil) {
-                            if (tag!.id != id) {
-                                LLog.e("\(self)", "unexpected error, tag GID: \(gid) already taken by \(tag!.name)")
-                                DBTag.instance.remove(id: tag!.id)
+                        if let tag = DBTag.instance.get(gid: gid) {
+                            if (tag.id != id) {
+                                LLog.e("\(self)", "unexpected error, tag GID: \(gid) already taken by \(tag.name)")
+                                _ = DBTag.instance.remove(id: tag.id)
                             }
                         }
-                        DBTag.instance.updateColumnById(id, DBHelper.gid, gid)
+                        _ = DBTag.instance.updateColumnById(id, DBHelper.gid, gid)
 
                     case LProtocol.JRQST_ADD_VENDOR:
                         let id = bdata["id"] as! Int64
                         let gid = bdata["gid"] as! Int64
 
-                        let vendor = DBVendor.instance.get(gid: gid)
-                        if (vendor != nil) {
-                            if (vendor!.id != id) {
-                                LLog.e("\(self)", "unexpected error, vendor GID: \(gid) already taken by \(vendor!.name)")
-                                DBVendor.instance.remove(id: vendor!.id)
+                        if let vendor = DBVendor.instance.get(gid: gid) {
+                            if (vendor.id != id) {
+                                LLog.e("\(self)", "unexpected error, vendor GID: \(gid) already taken by \(vendor.name)")
+                                _ = DBVendor.instance.remove(id: vendor.id)
                             }
                         }
-                        DBVendor.instance.updateColumnById(id, DBHelper.gid, gid)
+                        _ = DBVendor.instance.updateColumnById(id, DBHelper.gid, gid)
 
                     case LProtocol.JRQST_ADD_RECORD:
                         let id = bdata["id"] as! Int64
                         let gid = bdata["gid"] as! Int64
 
-                        let transaction = DBTransaction.instance.get(gid: gid)
-                        if (transaction != nil) {
-                            if (transaction!.id == id) {
+                        if let transaction = DBTransaction.instance.get(gid: gid) {
+                            if (transaction.id != id) {
                                 LLog.e("\(self)", "unexpected error, record GID: \(gid) already taken")
+                                _ = DBTransaction.instance.remove(id: transaction.id)
                             }
-                            DBTransaction.instance.remove(id: transaction!.id)
                         }
-                        DBTransaction.instance.updateColumnById(id, DBHelper.gid, gid)
-                        /*
-                         case LProtocol.JRQST_ADD_SCHEDULE:
-                         DBScheduledTransaction dbSchTransaction = DBScheduledTransaction.getInstance()
-                         id = intent.getLongExtra("id", 0L)
-                         gid = intent.getLongExtra("gid", 0L)
+                        _ = DBTransaction.instance.updateColumnById(id, DBHelper.gid, gid)
 
-                         LScheduledTransaction scheduledTransaction = dbSchTransaction.getByGid(gid)
-                         if (null != scheduledTransaction) {
-                         if (scheduledTransaction.getId() == id) {
-                         LLog.e("\(self)", "unexpected error, schedule GID: " + gid + " already taken ")
+                    case LProtocol.JRQST_ADD_SCHEDULE:
+                         let id = bdata["id"] as! Int64
+                         let gid = bdata["gid"] as! Int64
+
+                         if let scheduledTransaction = DBScheduledTransaction.instance.get(gid: gid) {
+                            if (scheduledTransaction.id != id) {
+                                LLog.e("\(self)", "unexpected error, schedule GID: \(gid) already taken")
+                                _ = DBScheduledTransaction.instance.remove(id: scheduledTransaction.id)
+                            }
                          }
-                         dbSchTransaction.deleteById(scheduledTransaction.getId())
-                         }
-                         dbSchTransaction.updateColumnById(id, DBHelper.TABLE_COLUMN_GID, gid)
-                         break
-                         */
+                         _ = DBScheduledTransaction.instance.updateColumnById(id, DBHelper.gid, gid)
 
                     case LProtocol.JRQST_GET_CATEGORIES:
                         let gid = bdata["gid"] as! Int64
@@ -309,69 +301,70 @@ class LService {
                             _ = dbTransaction.update(transaction!)
                         }
 
-                        /*
-                         case LProtocol.JRQST_GET_SCHEDULE:
-                         case LProtocol.JRQST_GET_SCHEDULES:
-                         case LProtocol.JRQST_GET_ACCOUNT_SCHEDULES:
-                         gid = intent.getLongExtra("gid", 0L)
-                         aid = intent.getLongExtra("aid", 0)
-                         aid2 = intent.getLongExtra("aid2", 0)
-                         cid = intent.getLongExtra("cid", 0)
-                         tid = intent.getLongExtra("tid", 0)
-                         vid = intent.getLongExtra("vid", 0)
-                         type = intent.getByteExtra("type", (byte) LTransaction.TRANSACTION_TYPE_EXPENSE)
-                         amount = intent.getDoubleExtra("amount", 0)
-                         rid = intent.getLongExtra("recordId", 0L)
-                         timestamp = intent.getLongExtra("timestamp", 0L)
-                         createUid = intent.getLongExtra("createBy", 0)
-                         changeUid = intent.getLongExtra("changeBy", 0)
-                         createTime = intent.getLongExtra("createTime", 0L)
-                         changeTime = intent.getLongExtra("changeTime", 0L)
-                         note = intent.getStringExtra("note")
+                    case LProtocol.JRQST_GET_SCHEDULE: fallthrough
+                    case LProtocol.JRQST_GET_SCHEDULES: fallthrough
+                    case LProtocol.JRQST_GET_ACCOUNT_SCHEDULES:
+                        let gid = bdata["gid"] as! Int64
+                        let aid = bdata["aid"] as! Int64
+                        let aid2 = bdata["aid2"] as! Int64
+                        let cid = bdata["cid"] as! Int64
+                        let tid = bdata["tid"] as! Int64
+                        let vid = bdata["vid"] as! Int64
+                        let type = bdata["type"] as! UInt8 //LTransaction.TRANSACTION_TYPE_EXPENSE
+                        let amount = bdata["amount"] as! Double
+                        let rid = bdata["recordId"] as! Int64
+                        let timestamp = bdata["timestamp"] as! Int64
+                        //let createUid = bdata["createBy"] as! Int64
+                        let changeUid = bdata["changeBy"] as! Int64
+                        let createTime = bdata["createTime"] as! Int64
+                        let changeTime = bdata["changeTime"] as! Int64
+                        let note = bdata["note"] as! String
 
-                         long nextTime = intent.getLongExtra("nextTime", 0L)
-                         byte interval = intent.getByteExtra("interval", (byte) 0)
-                         byte unit = intent.getByteExtra("unit", (byte) 0)
-                         byte count = intent.getByteExtra("count", (byte) 0)
-                         boolean enabled = intent.getByteExtra("count", (byte) 0) == 0 ? false : true
+                        let nextTime = bdata["nextTime"] as! Int64
+                        let interval = bdata["interval"] as! UInt8
+                        let unit = bdata["unit"] as! UInt8
+                        let count = bdata["count"] as! UInt8
+                        let enabled: Bool = bdata["enabled"] as! UInt8 == 0 ? false : true
 
-                         dbSchTransaction = DBScheduledTransaction.getInstance()
-                         scheduledTransaction = dbSchTransaction.getByGid(gid)
+                        let dbSchTransaction = DBScheduledTransaction.instance
+                        var scheduledTransaction = dbSchTransaction.get(gid: gid)
 
-                         create = true
-                         if (null != scheduledTransaction) {
-                         create = false
-                         } else {
-                         scheduledTransaction = new LScheduledTransaction()
-                         }
-                         dbAccount = DBAccount.getInstance()
-                         scheduledTransaction.setGid(gid)
-                         scheduledTransaction.setAccount(dbAccount.getIdByGid(aid))
-                         scheduledTransaction.setAccount2(dbAccount.getIdByGid(aid2))
-                         scheduledTransaction.setCategory(DBCategory.getInstance().getIdByGid(cid))
-                         scheduledTransaction.setTag(DBTag.getInstance().getIdByGid(tid))
-                         scheduledTransaction.setVendor(DBVendor.getInstance().getIdByGid(vid))
-                         scheduledTransaction.setType(type)
-                         scheduledTransaction.setValue(amount)
-                         scheduledTransaction.setCreateBy(createUid)
-                         scheduledTransaction.setChangeBy(changeUid)
-                         scheduledTransaction.setRid(rid)
-                         scheduledTransaction.setTimeStamp(timestamp)
-                         scheduledTransaction.setTimeStampCreate(createTime)
-                         scheduledTransaction.setTimeStampLast(changeTime)
-                         scheduledTransaction.setNote(note)
+                        var create = true
+                        if (nil != scheduledTransaction) {
+                            create = false
+                        } else {
+                            scheduledTransaction = LScheduledTransaction()
+                        }
 
-                         scheduledTransaction.setNextTime(nextTime)
-                         scheduledTransaction.setRepeatInterval(interval)
-                         scheduledTransaction.setRepeatUnit(unit)
-                         scheduledTransaction.setRepeatCount(count)
-                         scheduledTransaction.setEnabled(enabled)
+                        let dbAccount = DBAccount.instance
+                        scheduledTransaction!.gid = gid
+                        scheduledTransaction!.accountId = dbAccount.getId(gid: aid)!
+                        scheduledTransaction!.accountId2 = dbAccount.getId(gid: aid2) ?? 0
+                        scheduledTransaction!.categoryId = DBCategory.instance.getId(gid: cid) ?? 0
+                        scheduledTransaction!.tagId = DBTag.instance.getId(gid: tid) ?? 0
+                        scheduledTransaction!.vendorId = DBVendor.instance.getId(gid: vid) ?? 0
+                        scheduledTransaction!.type = TransactionType(rawValue: type)!
+                        scheduledTransaction!.amount = amount
+                        //scheduledTransaction!.setCreateBy(createUid)
+                        scheduledTransaction!.by = changeUid
+                        scheduledTransaction!.rid = rid
+                        scheduledTransaction!.timestamp = timestamp
+                        scheduledTransaction!.timestampCreate = createTime
+                        scheduledTransaction!.timestampAccess = changeTime
+                        scheduledTransaction!.note = note
 
-                         if (create) dbSchTransaction.add(scheduledTransaction)
-                         else dbSchTransaction.update(scheduledTransaction)
+                        scheduledTransaction!.scheduleTime = nextTime
+                        scheduledTransaction!.repeatInterval = Int(interval)
+                        scheduledTransaction!.repeatUnit = Int(unit)
+                        scheduledTransaction!.repeatCount = Int(count)
+                        scheduledTransaction!.enabled = enabled
 
-                         break
-                         */
+                        if (create) {
+                            _ = dbSchTransaction.add(&scheduledTransaction!)
+                        } else {
+                            _ = dbSchTransaction.update(scheduledTransaction!)
+                        }
+
                     case LProtocol.JRQST_UPDATE_ACCOUNT: break
                     case LProtocol.JRQST_DELETE_ACCOUNT: break
                     case LProtocol.JRQST_UPDATE_CATEGORY: break
@@ -392,7 +385,7 @@ class LService {
                 }
 
                 if (LProtocol.RSPS_OK == ret) {
-                    DBJournal.instance.remove(id: journalId)
+                    _ = DBJournal.instance.remove(id: journalId)
                     LLog.d("\(self)", "flushing journal upon completion ...")
                     moreJournal = LJournal.instance.flush()
                 }
@@ -409,7 +402,7 @@ class LService {
                 } else {
                     journalPostErrorCount = 0
                     LLog.e("\(self)", "fatal journal post error, journal skipped")
-                    DBJournal.instance.remove(id: journalId)
+                    _ = DBJournal.instance.remove(id: journalId)
                     moreJournal = LJournal.instance.flush()
                 }
             }
@@ -450,18 +443,17 @@ class LService {
 
                     let dbAccount = DBAccount.instance
                     if let account = dbAccount.get(gid: gid) {
-                        //TODO
-                        //account.setOwner(uid)
+                        account.setOwner(uid)
                         account.name = name
                         _ = dbAccount.update(account)
                     } else {
                         if let account = dbAccount.get(name: name) {
-                            //TODO: account.setOwner(uid)
+                            account.setOwner(uid)
                             account.gid = gid
                             _ = dbAccount.update(account)
                         } else {
                             var account = LAccount()
-                            //TODO: account.setOwner(uid)
+                            account.setOwner(uid)
                             account.gid = gid
                             account.name = name
                             _ = dbAccount.add(&account)
@@ -645,22 +637,17 @@ class LService {
                     }
                     _ = LJournal.instance.getRecords(ids)
 
-                    /*
-                     case NOTIFICATION_ADD_SCHEDULE:
-                     case NOTIFICATION_UPDATE_SCHEDULE:
-                     gid = intent.getLongExtra("int1", 0L)
-                     journal.getSchedule(gid)
-                     break
+                case LService.NOTIFICATION_ADD_SCHEDULE: fallthrough
+                case LService.NOTIFICATION_UPDATE_SCHEDULE:
+                     let gid = bdata["int1"] as! Int64
+                     _ = LJournal.instance.getSchedule(gid)
 
-                     case NOTIFICATION_DELETE_SCHEDULE:
-                     gid = intent.getLongExtra("int1", 0L)
-                     DBScheduledTransaction dbScheduledTransaction = DBScheduledTransaction.getInstance()
-                     LScheduledTransaction scheduledTransaction = dbScheduledTransaction.getByGid(gid)
-                     if (null != scheduledTransaction) {
-                     dbScheduledTransaction.deleteById(scheduledTransaction.getId())
+                case LService.NOTIFICATION_DELETE_SCHEDULE:
+                     let gid = bdata["int1"] as! Int64
+                     let dbScheduledTransaction = DBScheduledTransaction.instance
+                     if let scheduledTransaction = dbScheduledTransaction.get(gid: gid) {
+                        _ = dbScheduledTransaction.remove(id: scheduledTransaction.id)
                      }
-                     break
-                     */
 
                 case LService.NOTIFICATION_UPDATE_USER_PROFILE:
                     LPreferences.setUserName(bdata["txt1"] as! String)
@@ -675,10 +662,10 @@ class LService {
                 case LService.NOTIFICATION_REQUEST_ACCOUNT_SHARE:
                     let aid = bdata["int1"] as! Int64
                     let uid = bdata["int2"] as! Int64
-                    //TODO:
+
                     let shareAccept = LPreferences.getShareAccept(uid)
                     if ((shareAccept != 0) && (shareAccept + 24 * 3600 > Int64(NSDate().timeIntervalSince1970))) {
-                        LJournal.instance.confirmAccountShare(aid: aid, uid: uid, yes: true)
+                        _ = LJournal.instance.confirmAccountShare(aid: aid, uid: uid, yes: true)
                     } else {
                         let name = bdata["txt1"]
                         if let shareRequest = LAccountShareRequest(userId: uid, userName: LPreferences
@@ -699,10 +686,9 @@ class LService {
                         //unshare a previously confirmed share here
                         if (LAccount.ACCOUNT_SHARE_INVITED == account.getShareUserState(uid)) {
                             account.removeShareUser(uid)
-                            dbAccount.update(account)
+                            _ = dbAccount.update(account)
                             LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
                         }
-
                     }
 
                 case LService.NOTIFICATION_UPDATE_ACCOUNT_USER:

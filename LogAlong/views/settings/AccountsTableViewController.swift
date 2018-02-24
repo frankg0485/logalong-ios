@@ -23,6 +23,8 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     var categories: [LCategory] = []
     var vendors: [LVendor] = []
     var tags: [LTag] = []
+    var isVisible = false
+    var isRefreshPending = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +33,12 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         tableView.tableFooterView = UIView()
 
+        LBroadcast.register(LBroadcast.ACTION_UI_DB_DATA_CHANGED,
+                            cb: #selector(self.dbDataChanged),
+                            listener: self)
+
         LBroadcast.register(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, cb: #selector(self.uiUpdateAccount), listener: self)
+
         //        tableView.tableFooterView = UIView()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -43,6 +50,30 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        isVisible = true
+        if isRefreshPending {
+            refreshAll()
+        }
+        super.viewDidAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        isVisible = false
+        super.viewDidDisappear(animated)
+    }
+
+    @objc func dbDataChanged(notification: Notification) -> Void {
+        refreshAll()
+    }
+
+    private func refreshAll() {
+        if isVisible {
+            getEntries()
+            tableView.reloadData()
+        }
     }
 
     private func setupNavigationBarItems() {
@@ -355,17 +386,29 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             // Delete the row from the data source
             switch (listType!) {
             case .ACCOUNT:
-                _ = DBAccount.instance.remove(id: accounts.remove(at: indexPath.row).id)
+                let acnt = accounts.remove(at: indexPath.row)
+                DBAccount.deleteEntries(of: acnt.id)
+                if DBAccount.instance.remove(id: acnt.id) {
+                    _ = LJournal.instance.deleteAccount(acnt.id)
+                }
             case .CATEGORY:
-                _ = DBCategory.instance.remove(id: categories.remove(at: indexPath.row).id)
+                let cat = categories.remove(at: indexPath.row)
+                if DBCategory.instance.remove(id: cat.id) {
+                    _ = LJournal.instance.deleteCategory(cat.id)
+                }
             case .VENDOR:
-                _ = DBVendor.instance.remove(id: vendors.remove(at: indexPath.row).id)
+                let vend = vendors.remove(at: indexPath.row)
+                if DBVendor.instance.remove(id: vend.id) {
+                    _ = LJournal.instance.deleteVendor(vend.id)
+                }
             case .TAG:
-                _ = DBTag.instance.remove(id: tags.remove(at: indexPath.row).id)
+                let tag = tags.remove(at: indexPath.row)
+                if DBTag.instance.remove(id: tag.id) {
+                    _ = LJournal.instance.deleteTag(tag.id)
+                }
             }
 
             tableView.deleteRows(at: [indexPath], with: .fade)
-
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
@@ -458,9 +501,9 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     }
 
     func creationCallback(created: Bool) {
-        if created {
-            getEntries()
-            tableView.reloadData()
-        }
+        //if created {
+        //    getEntries()
+        //    tableView.reloadData()
+        //}
     }
 }

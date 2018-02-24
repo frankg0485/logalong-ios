@@ -276,10 +276,19 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
             var selectedRecord: LTransaction?
             selectedRecord = loader!.getRecord(section: indexPath.section, row: indexPath.row)
             if selectedRecord!.type == .TRANSFER_COPY {
-                selectedRecord = DBTransaction.instance.getTransfer(rid: selectedRecord!.rid, copy: false)
+                if let record = DBTransaction.instance.getTransfer(rid: selectedRecord!.rid, copy: false) {
+                    selectedRecord = record
+                } else {
+                    nvc.isReadOnly = true
+                }
             }
 
             if let record = selectedRecord {
+                if record.type == .TRANSFER || record.type == .TRANSFER_COPY {
+                    if (record.accountId2 <= 0) {
+                        nvc.isReadOnly = true
+                    }
+                }
                 nvc.record = record
                 self.navigationController?.pushViewController(nvc, animated: true)
             }
