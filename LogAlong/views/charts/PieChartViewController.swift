@@ -9,23 +9,110 @@
 import UIKit
 import Charts
 
-class PieChartViewController: UIViewController, ChartViewDelegate {
+class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var pieChartView: PieChartView!
 
     var accounts = DBAccount.instance.getAll()
     var amounts: [Double] = []
+    var entryView: UIView!
+    let entryViewTop: CGFloat = 50
+    let entryViewWidth: CGFloat = 140
+    var entryViewHeight: NSLayoutConstraint!
+    var entryViewMaxHeight: CGFloat!
+    var headerLabel: UILabel!
+    var headerValue: UILabel!
+    var tableView: UITableView!
+
+    let HEADER_H: CGFloat = 40
+    let ENTRY_H: CGFloat = 40
+    let FONT_SIZE: CGFloat = 12
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        pieChartView.backgroundColor = LTheme.Color.base_bgd_color
+        view.backgroundColor = LTheme.Color.base_bgd_color
+        //pieChartView.backgroundColor = LTheme.Color.base_bgd_color
         pieChartView.delegate = self
+
+        entryViewMaxHeight = UIScreen.main.bounds.width - 2 * entryViewTop //landscape
+        createEntryView()
+
+        let centerLabel = UILabel(frame: CGRect(x: UIScreen.main.bounds.height / 2 - 40, y: UIScreen.main.bounds.width / 2, width: 80, height: 30))
+        centerLabel.textAlignment = .center
+        centerLabel.textColor = UIColor.red
+        centerLabel.font = UIFont.systemFont(ofSize: FONT_SIZE)
+        centerLabel.text = "$9912345.67"
+        view.addSubview(centerLabel)
+    }
+
+    private func createEntryView() {
+        entryView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
+        entryView.layer.borderColor = UIColor.red.cgColor
+        entryView.layer.borderWidth = 1
+        entryView.layer.cornerRadius = 5
+        entryView.clipsToBounds = true
+
+        let vl = VerticalLayout(width: entryViewWidth)
+        let hl = HorizontalLayout(height: HEADER_H)
+        hl.backgroundColor = UIColor.red
+        hl.layoutMargins.top = 0
+        hl.layoutMargins.bottom = 0
+
+        headerLabel = UILabel(frame: CGRect(x: 2, y: 0, width: 0, height: HEADER_H))
+        headerLabel.text = "House"
+        headerLabel.font = UIFont.systemFont(ofSize: FONT_SIZE)
+        headerLabel.textColor = UIColor.white
+        headerValue = UILabel(frame: CGRect(x: 3, y: 0, width: 0, height: HEADER_H))
+        //headerValue.textAlignment = .right
+        headerValue.text = "$53298.85"
+        headerValue.font = UIFont.systemFont(ofSize: FONT_SIZE)
+        headerValue.textColor = UIColor.white
+        hl.addSubview(headerLabel)
+        hl.addSubview(headerValue)
+        vl.addSubview(hl)
+
+        tableView = UITableView(frame: CGRect(x: 0, y: 1, width: entryViewWidth, height: 0))
+        tableView.layoutMargins.top = 0
+        tableView.layoutMargins.bottom = 0
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.tableFooterView = UIView()
+        vl.addSubview(tableView)
+
+        entryView.addSubview(vl)
+        view.addSubview(entryView)
+
+        entryView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: entryView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal,
+                           toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: entryViewTop).isActive = true
+        NSLayoutConstraint(item: entryView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal,
+                           toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: -8).isActive = true
+
+        NSLayoutConstraint(item: entryView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal,
+                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: entryViewWidth).isActive = true
+        entryViewHeight = NSLayoutConstraint(item: entryView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
+                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: entryViewMaxHeight)
+
+        entryViewHeight.isActive = true
+        entryView.isHidden = true
+    }
+
+    private func displayEntry() {
+        let height = HEADER_H + 3 * ENTRY_H
+
+        entryViewHeight.constant = height > entryViewMaxHeight ? entryViewMaxHeight : height
+        entryView.isHidden = false
+        tableView.reloadData()
     }
 
     func chartValueNothingSelected(_ chartView: ChartViewBase) {
+        entryView.isHidden = true
     }
+
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+
+        displayEntry()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -174,5 +261,34 @@ class PieChartViewController: UIViewController, ChartViewDelegate {
         legend.yOffset = LTheme.Dimension.pie_chart_legend_offset
 
         pieChartView.chartDescription?.text = ""
+    }
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return ENTRY_H
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(frame: CGRect(x: 0, y: 0, width: entryViewWidth, height: ENTRY_H))
+        let hl = HorizontalLayout(height: ENTRY_H)
+        headerLabel = UILabel(frame: CGRect(x: 2, y: 0, width: 0, height: ENTRY_H))
+        headerLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+        headerLabel.text = "test"
+
+        headerValue = UILabel(frame: CGRect(x: 3, y: 0, width: 0, height: ENTRY_H))
+        headerValue.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+        headerValue.text = "1234.56"
+        hl.addSubview(headerLabel)
+        hl.addSubview(headerValue)
+        cell.addSubview(hl)
+
+        return cell;
     }
 }

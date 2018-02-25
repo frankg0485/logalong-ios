@@ -1033,14 +1033,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qAM-zp-jjT" customClass="PieChartView" customModule="Charts">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="1" width="375" height="665"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="fiX-HG-8mQ" firstAttribute="top" secondItem="qAM-zp-jjT" secondAttribute="bottom" id="3k1-JI-IBf"/>
-                            <constraint firstItem="qAM-zp-jjT" firstAttribute="top" secondItem="cAE-Rh-zJI" secondAttribute="top" id="KCm-OW-Ykq"/>
+                            <constraint firstItem="fiX-HG-8mQ" firstAttribute="top" secondItem="qAM-zp-jjT" secondAttribute="bottom" constant="1" id="3k1-JI-IBf"/>
+                            <constraint firstItem="qAM-zp-jjT" firstAttribute="top" secondItem="cAE-Rh-zJI" secondAttribute="top" constant="1" id="KCm-OW-Ykq"/>
                             <constraint firstAttribute="trailing" secondItem="qAM-zp-jjT" secondAttribute="trailing" id="SCW-km-msz"/>
                             <constraint firstItem="qAM-zp-jjT" firstAttribute="leading" secondItem="cAE-Rh-zJI" secondAttribute="leading" id="ixB-V0-cDj"/>
                         </constraints>
