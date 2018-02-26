@@ -12,20 +12,30 @@ import Charts
 class BarChartViewController: UIViewController {
 
     @IBOutlet weak var barChartView: BarChartView!
+    var year: Int = 2018
+    var incomes = [Double](repeating: 0, count: 12)
+    var expenses = [Double](repeating: 0, count: 12)
 
-    let accounts = DBAccount.instance.getAll()
-    var amounts: [Double] = []
+    private var isVisible = false
+    private var isRefreshPending = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        for _ in accounts {
-            amounts.append((Double(arc4random()) / 0xFFFFFFFF) * (90) + 10)
-        }
-
-        createBarChart(accounts: accounts, values: amounts)
-        // Do any additional setup after loading the view.
-
         barChartView.superview!.backgroundColor = LTheme.Color.base_bgd_color
+        createBarChart()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        isVisible = true
+        if isRefreshPending {
+            createBarChart()
+        }
+        super.viewDidAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        isVisible = false
+        super.viewDidDisappear(animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,7 +43,7 @@ class BarChartViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    class MyAxisValueFormatter: NSObject, IAxisValueFormatter {
+    class MyXAxisValueFormatter: NSObject, IAxisValueFormatter {
         private let months: [String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         func stringForValue(_ value: Double, axis: AxisBase?) -> String {
             if let axis = axis {
@@ -49,7 +59,18 @@ class BarChartViewController: UIViewController {
         }
     }
 
-    func createBarChart(accounts: [LAccount], values: [Double]) {
+    class MyYAxisValueFormatter: NSObject, IAxisValueFormatter {
+        func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+            if axis != nil {
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                return numberFormatter.string(from: NSNumber(value: value)) ?? ""
+            }
+            return ""
+        }
+    }
+
+    func createBarChart() {
         barChartView.chartDescription?.text =  ""
 
         // scaling can now only be done on x- and y-axis separately
@@ -68,7 +89,10 @@ class BarChartViewController: UIViewController {
         //xAxis.setLabelRotationAngle(15f);
         xAxis.labelCount = 13
         //xAxis.setLabelCount(13, true);
-        xAxis.valueFormatter = MyAxisValueFormatter()
+        xAxis.valueFormatter = MyXAxisValueFormatter()
+
+        barChartView.leftAxis.valueFormatter = MyYAxisValueFormatter()
+        barChartView.rightAxis.valueFormatter = MyYAxisValueFormatter()
 
         barChartView.leftAxis.drawGridLinesEnabled = false
         barChartView.drawBarShadowEnabled = false
@@ -83,12 +107,12 @@ class BarChartViewController: UIViewController {
         var yVals1 = [BarChartDataEntry]()
         var yVals2 = [BarChartDataEntry]();
         for ii in 0..<12 {
-            yVals1.append(BarChartDataEntry(x: Double(ii), y: Double(arc4random_uniform(10000))))
-            yVals2.append(BarChartDataEntry(x: Double(ii), y: Double(arc4random_uniform(10000))))
+            yVals1.append(BarChartDataEntry(x: Double(ii), y: expenses[ii]))
+            yVals2.append(BarChartDataEntry(x: Double(ii), y: incomes[ii]))
         }
 
-        let dataSet1 = BarChartDataSet(values: yVals1, label: "Expense");
-        let dataSet2 = BarChartDataSet(values: yVals2, label: "Income - 2018")
+        let dataSet1 = BarChartDataSet(values: yVals1, label: NSLocalizedString("Expense", comment: ""))
+        let dataSet2 = BarChartDataSet(values: yVals2, label: NSLocalizedString("Income", comment: "") + " - " + String(year))
 
         dataSet1.colors = [UIColor.red]
         dataSet1.drawValuesEnabled = false
@@ -112,5 +136,20 @@ class BarChartViewController: UIViewController {
         barChartView.xAxis.axisMinimum = 0
         barChartView.xAxis.axisMaximum = 12
         barChartView.groupBars(fromX: 0, groupSpace: groupSpace, barSpace: barSpace)
+    }
+
+    func refresh(year: Int, incomes: [Double]?, expenses: [Double]?) {
+        if incomes != nil && expenses != nil {
+            self.incomes = incomes!
+            self.expenses = expenses!
+            self.year = year
+        }
+
+        if self.isVisible {
+            isRefreshPending = false
+            createBarChart()
+        } else {
+            isRefreshPending = true
+        }
     }
 }

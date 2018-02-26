@@ -11,12 +11,27 @@ import UIKit
 class ChartsPageViewController: UIPageViewController/*, UIPageViewControllerDataSource, UIPageViewControllerDelegate*/,
 UIPopoverPresentationControllerDelegate {
 
+    private struct MyChartData {
+        var expenseCategories: Dictionary<String, Double>
+        var expenses: [Double]
+        var incomes: [Double]
+    }
+
     var pieVC: PieChartViewController!
     var barVC: BarChartViewController!
-    //var barVC: PieChartViewController!
+    var progress: UIActivityIndicatorView!
     var chartBtn: UIButton!
     var bottomBar: HorizontalLayout!
     var showingPieChart = true
+    var isVisible = false
+    var isRefreshPending = false
+
+    private var search: LRecordSearch?
+    private var workItem: DispatchWorkItem?
+    private var chartDataSet = Dictionary<Int, MyChartData>()
+    private var startYear: Int = 2018
+    private var endYear: Int = 2018
+    private var curYear: Int = 2018
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +44,15 @@ UIPopoverPresentationControllerDelegate {
         showingPieChart = true
 
         setupButtons()
+
+        LBroadcast.register(LBroadcast.ACTION_UI_DB_DATA_CHANGED,
+                            cb: #selector(self.dbDataChanged),
+                            listener: self)
+        LBroadcast.register(LBroadcast.ACTION_UI_DB_SEARCH_CHANGED,
+                            cb: #selector(self.dbSearchChanged),
+                            listener: self)
+
+        isRefreshPending = true
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -36,6 +60,80 @@ UIPopoverPresentationControllerDelegate {
             d.shouldRotate = false
             UIDevice.current.setValue(Int(UIInterfaceOrientation.portrait.rawValue), forKey: "orientation")
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        isVisible = true
+        if isRefreshPending {
+            refreshAll()
+        }
+        super.viewDidAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        isVisible = false
+        super.viewDidDisappear(animated)
+    }
+
+    @objc func dbDataChanged(notification: Notification) -> Void {
+        refreshAll()
+    }
+
+    @objc func dbSearchChanged(notification: Notification) -> Void {
+        refreshAll()
+        //setSearchButtonImage()
+    }
+
+    private func refreshAll() {
+        if isVisible {
+            isRefreshPending = false
+            progress.startAnimating()
+            //LLog.d("\(self)", "loading data")
+
+            chartDataSet.removeAll()
+            search = LPreferences.getRecordsSearchControls()
+
+            let loader = DBLoader(search: search!)
+            let (startMs, endMs) = loader.getStartEndTime()
+            let (y1, _, _) = LA.ymd(milliseconds: startMs)
+            let (y2, _, _) = LA.ymd(milliseconds: endMs)
+            startYear = y1
+            endYear = y2
+            if (curYear < startYear || curYear > endYear) {
+                curYear = endYear
+            }
+            reloadData(curYear)
+        } else {
+            isRefreshPending = true
+        }
+    }
+
+    private func reloadData(_ year: Int) {
+        if let work = workItem {
+            work.cancel()
+        }
+        workItem = DispatchWorkItem {
+            let loader = DBLoader(year: year, month: 0, sort: RecordsViewSortMode.CATEGORY.rawValue,
+                                   interval: RecordsViewInterval.ANNUALLY.rawValue, asc: true, search: self.search!)
+            var chartData = MyChartData(expenseCategories:[:], expenses: [], incomes: [])
+            chartData.incomes = loader.records.annualIncomes
+            chartData.expenses = loader.records.annualExpenses
+            for sect in loader.records.sections {
+                chartData.expenseCategories[sect.txt] = sect.expense
+            }
+            self.chartDataSet[year] = chartData
+
+            DispatchQueue.main.async(execute: {
+                self.progress.stopAnimating()
+                self.refreshChart(chartData)
+            })
+        }
+        DispatchQueue.global(qos: .userInteractive).async(execute: workItem!)
+    }
+
+    private func refreshChart(_ data: MyChartData) {
+        pieVC.refresh(year: curYear, data: chartDataSet[curYear]?.expenseCategories)
+        barVC.refresh(year: curYear, incomes: chartDataSet[curYear]?.incomes, expenses: chartDataSet[curYear]?.expenses)
     }
 
     @objc func onChartClick() {
@@ -75,6 +173,30 @@ UIPopoverPresentationControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
 
+    @objc func onLeftClick() {
+        if (curYear > startYear) {
+            curYear -= 1
+            if let data = chartDataSet[curYear] {
+                refreshChart(data)
+            } else {
+                progress.startAnimating()
+                reloadData(curYear)
+            }
+        }
+    }
+
+    @objc func onRightClick() {
+        if (curYear < endYear) {
+            curYear += 1
+            if let data = chartDataSet[curYear] {
+                refreshChart(data)
+            } else {
+                progress.startAnimating()
+                reloadData(curYear)
+            }
+        }
+    }
+
     private func setupButtons() {
         let BTN_W: CGFloat = LTheme.Dimension.bar_button_width
         let BTN_H: CGFloat = LTheme.Dimension.bar_button_height
@@ -96,11 +218,13 @@ UIPopoverPresentationControllerDelegate {
         searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
 
         let leftBtn = UIButton(type: .system)
+        leftBtn.addTarget(self, action: #selector(self.onLeftClick), for: .touchUpInside)
         leftBtn.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
         leftBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S, height: BTN_H)
         leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S)
 
         let rightBtn = UIButton(type: .system)
+        rightBtn.addTarget(self, action: #selector(self.onRightClick), for: .touchUpInside)
         rightBtn.setImage(#imageLiteral(resourceName: "ic_action_right").withRenderingMode(.alwaysOriginal), for: .normal)
         rightBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S, height: BTN_H)
         rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S)
@@ -142,6 +266,20 @@ UIPopoverPresentationControllerDelegate {
         NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
                            toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_H).isActive = true
 
+        // progress indicator
+        progress = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        view.addSubview(progress)
+        //progress.center = view.convert(view.center, from:view.superview)
+        progress.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: progress, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal,
+                           toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: progress, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal,
+                           toItem: view, attribute: NSLayoutAttribute.centerY, multiplier: 1.0, constant: -20).isActive = true
+        //NSLayoutConstraint(item: progress, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal,
+        //                   toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: 80).isActive = true
+        //NSLayoutConstraint(item: progress, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
+        //                   toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: 80).isActive = true
+        //progress.transform = CGAffineTransform(scaleX: 2, y: 2)
     }
 
     private func setupViewControllers() {

@@ -60,28 +60,30 @@ class DBTransaction: DBGeneric<LTransaction> {
     }
 
     func rdValuesJoinNone(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
-        amount: Double, type: TransactionType) {
+        amount: Double, type: TransactionType, timestamp: Int64) {
             return (id: row[DBHelper.id],
                     rid: row[DBHelper.rid],
                     accountId: row[DBHelper.accountId],
                     accountId2: row[DBHelper.accountId2],
                     amount: row[DBHelper.amount],
-                    type: TransactionType(rawValue: UInt8(row[DBHelper.type]))!)
+                    type: TransactionType(rawValue: UInt8(row[DBHelper.type]))!,
+                    timestamp: row[DBHelper.timestamp])
     }
 
     func rdValuesJoinAccount(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
-        amount: Double, type: TransactionType, name: String) {
+        amount: Double, type: TransactionType, timestamp: Int64, name: String) {
             return (id: row[table![DBHelper.id]],
                     rid: row[DBHelper.rid],
                     accountId: row[DBHelper.accountId],
                     accountId2: row[DBHelper.accountId2],
                     amount: row[DBHelper.amount],
                     type: TransactionType(rawValue: UInt8(row[table![DBHelper.type]]))!,
+                    timestamp: row[table![DBHelper.timestamp]],
                     name: row[DBHelper.name] ?? "-")
     }
 
     func rdValuesJoinTag(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
-        amount: Double, type: TransactionType, tagId: Int64, name: String) {
+        amount: Double, type: TransactionType, tagId: Int64, timestamp: Int64, name: String) {
             return (id: row[table![DBHelper.id]],
                     rid: row[DBHelper.rid],
                     accountId: row[DBHelper.accountId],
@@ -89,11 +91,12 @@ class DBTransaction: DBGeneric<LTransaction> {
                     amount: row[DBHelper.amount],
                     type: TransactionType(rawValue: UInt8(row[table![DBHelper.type]]))!,
                     tagId: row[DBHelper.tagId],
+                    timestamp: row[table![DBHelper.timestamp]],
                     name: row[DBHelper.name] ?? "-")
     }
 
     func rdValuesJoinCategory(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
-        amount: Double, type: TransactionType, categoryId: Int64, name: String) {
+        amount: Double, type: TransactionType, categoryId: Int64, timestamp: Int64, name: String) {
             return (id: row[table![DBHelper.id]],
                     rid: row[DBHelper.rid],
                     accountId: row[DBHelper.accountId],
@@ -101,11 +104,12 @@ class DBTransaction: DBGeneric<LTransaction> {
                     amount: row[DBHelper.amount],
                     type: TransactionType(rawValue: UInt8(row[table![DBHelper.type]]))!,
                     categoryId: row[DBHelper.categoryId],
+                    timestamp: row[table![DBHelper.timestamp]],
                     name: row[DBHelper.name] ?? "-")
     }
 
     func rdValuesJoinVendor(_ row: Row) -> (id: Int64, rid: Int64, accountId: Int64, accountId2: Int64,
-        amount: Double, type: TransactionType, vendorId: Int64, name: String) {
+        amount: Double, type: TransactionType, vendorId: Int64, timestamp: Int64, name: String) {
             return (id: row[table![DBHelper.id]],
                     rid: row[DBHelper.rid],
                     accountId: row[DBHelper.accountId],
@@ -113,6 +117,7 @@ class DBTransaction: DBGeneric<LTransaction> {
                     amount: row[DBHelper.amount],
                     type: TransactionType(rawValue: UInt8(row[table![DBHelper.type]]))!,
                     vendorId: row[DBHelper.vendorId],
+                    timestamp: row[table![DBHelper.timestamp]],
                     name: row[DBHelper.name] ?? "-")
     }
 

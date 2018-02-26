@@ -34,11 +34,15 @@ class Records {
     //var entries = [LTransaction]()
     var internalTransferAmount: Double = 0
     var sections: [LSection] = [LSection]()
+
+    // entries are only valid when browsing in 'anually' mode
+    var annualExpenses = [Double]()
+    var annualIncomes = [Double]()
 }
 
 class DBLoader {
     //private let table = DBHelper.instance.transactions
-    private var records: Records = Records()
+    var records: Records = Records()
 
     var year: Int = 0
     var month: Int = 0
@@ -103,6 +107,9 @@ class DBLoader {
     func reset() {
         //records.entries.removeAll()
         records.sections.removeAll()
+        records.annualExpenses = [Double](repeating: 0, count: 12)
+        records.annualIncomes = [Double](repeating: 0, count: 12)
+
         var prevId: Int64 = -1
         var prevTransferRid: Int64 = -1
         var newSection = true
@@ -127,12 +134,13 @@ class DBLoader {
             var vendorId: Int64 = 0
             var amount: Double
             var type: TransactionType
+            var timestamp: Int64 = 0
             var name = ""
 
             for row in try DBHelper.instance.db!.prepare(query) {
                 switch (sort) {
                 case RecordsViewSortMode.ACCOUNT.rawValue:
-                    (id, rid, accountId, accountId2, amount, type, name) = DBTransaction.instance.rdValuesJoinAccount(row)
+                    (id, rid, accountId, accountId2, amount, type, timestamp, name) = DBTransaction.instance.rdValuesJoinAccount(row)
                     newSection = (prevId == -1 || prevId != accountId)
                     prevId = accountId
 
@@ -141,19 +149,19 @@ class DBLoader {
                         continue
                     }
                 case RecordsViewSortMode.CATEGORY.rawValue:
-                    (id, rid, accountId, accountId2, amount, type, categoryId, name) = DBTransaction.instance.rdValuesJoinCategory(row)
+                    (id, rid, accountId, accountId2, amount, type, categoryId, timestamp, name) = DBTransaction.instance.rdValuesJoinCategory(row)
                     newSection = (prevId == -1 || prevId != categoryId)
                     prevId = categoryId
                 case RecordsViewSortMode.TAG.rawValue:
-                    (id, rid, accountId, accountId2, amount, type, tagId, name) = DBTransaction.instance.rdValuesJoinTag(row)
+                    (id, rid, accountId, accountId2, amount, type, tagId, timestamp, name) = DBTransaction.instance.rdValuesJoinTag(row)
                     newSection = (prevId == -1 || prevId != tagId)
                     prevId = tagId
                 case RecordsViewSortMode.VENDOR.rawValue:
-                    (id, rid, accountId, accountId2, amount, type, vendorId, name) = DBTransaction.instance.rdValuesJoinVendor(row)
+                    (id, rid, accountId, accountId2, amount, type, vendorId, timestamp, name) = DBTransaction.instance.rdValuesJoinVendor(row)
                     newSection = (prevId == -1 || prevId != vendorId)
                     prevId = vendorId
                 default:
-                    (id, rid, accountId, accountId2, amount, type) = DBTransaction.instance.rdValuesJoinNone(row)
+                    (id, rid, accountId, accountId2, amount, type, timestamp) = DBTransaction.instance.rdValuesJoinNone(row)
                 }
 
                 skip = false
@@ -225,6 +233,20 @@ class DBLoader {
                             section!.balance -= amount
                             section!.expense += amount
                         }
+                    }
+                }
+
+                if interval == RecordsViewInterval.ANNUALLY.rawValue {
+                    let (_, m, _) = LA.ymd(milliseconds: timestamp)
+                    if type == .INCOME || type == .TRANSFER_COPY {
+                        records.annualIncomes[m] += amount
+                    } else {
+                        records.annualExpenses[m] += amount
+                    }
+
+                    if skip {
+                        records.annualIncomes[m] -= amount
+                        records.annualExpenses[m] -= amount
                     }
                 }
             }

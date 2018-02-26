@@ -13,8 +13,12 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
 
     @IBOutlet weak var pieChartView: PieChartView!
 
-    var accounts = DBAccount.instance.getAll()
-    var amounts: [Double] = []
+    private var isVisible = false
+    private var isRefreshPending = false
+
+    var year: Int = 2018
+    var expenseCategories = Dictionary<String, Double>()
+
     var entryView: UIView!
     let entryViewTop: CGFloat = 50
     let entryViewWidth: CGFloat = 140
@@ -28,6 +32,31 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
     let ENTRY_H: CGFloat = 40
     let FONT_SIZE: CGFloat = 12
 
+    let colors: [UIColor] = [
+        UIColor(hex: 0xffcc0000),
+        UIColor(hex: 0xff9933cc),
+        UIColor(hex: 0xffff8a00),
+        UIColor(hex: 0xff669900),
+        UIColor(hex: 0xff0099cc),
+
+        UIColor(hex: 0xffe21d1d),
+        UIColor(hex: 0xffac59d6),
+        UIColor(hex: 0xffffa00e),
+        UIColor(hex: 0xff7caf00),
+        UIColor(hex: 0xff16a5d7),
+
+        UIColor(hex: 0xfff83a3a),
+        UIColor(hex: 0xffc182e0),
+        UIColor(hex: 0xffffb61c),
+        UIColor(hex: 0xff92c500),
+        UIColor(hex: 0xff2cb1e1),
+
+        UIColor(hex: 0xffff7979),
+        UIColor(hex: 0xffcf9fe7),
+        UIColor(hex: 0xffffd060),
+        UIColor(hex: 0xffb6db49),
+        UIColor(hex: 0xff6dcaec)
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +73,25 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         centerLabel.font = UIFont.systemFont(ofSize: FONT_SIZE)
         centerLabel.text = "$9912345.67"
         view.addSubview(centerLabel)
+
+        createPieChart()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        let value = UIInterfaceOrientation.landscapeRight.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
+        tabBarController?.tabBar.isHidden = true
+
+        isVisible = true
+        if isRefreshPending {
+            createPieChart()
+        }
+        super.viewDidAppear(animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        isVisible = false
+        super.viewDidDisappear(animated)
     }
 
     private func createEntryView() {
@@ -115,24 +163,7 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         displayEntry()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-
-        let value = UIInterfaceOrientation.landscapeRight.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
-
-        tabBarController?.tabBar.isHidden = true
-
-        accounts = DBAccount.instance.getAll()
-
-        amounts.removeAll()
-        for _ in accounts {
-            amounts.append((Double(arc4random()) / 0xFFFFFFFF) * (90) + 10)
-        }
-
-        createPieChart(accounts: accounts, values: amounts)
-    }
-
-    func createPieChart(accounts: [LAccount], values: [Double]) {
+    func createPieChart() {
         pieChartView.centerText = "Expense - 2018"
         pieChartView.drawSlicesUnderHoleEnabled = true
         pieChartView.usePercentValuesEnabled = true
@@ -208,23 +239,17 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         }
         */
         var pieEntries = [PieChartDataEntry]()
-
+/*
         for i in 0..<values.count {
             let entry = PieChartDataEntry()
             entry.y = values[i]
             entry.label = accounts[i].name
             pieEntries.append(entry)
+            if i > colors.count {
+                break;
+            }
         }
-        var colors: [UIColor] = []
-
-        for _ in 0..<values.count {
-            let red = Double(arc4random_uniform(256))
-            let green = Double(arc4random_uniform(256))
-            let blue = Double(arc4random_uniform(256))
-            let color = UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
-            colors.append(color)
-        }
-
+*/
         let set = PieChartDataSet(values: pieEntries, label: "")
         set.sliceSpace = 1.0
         set.selectionShift = 5.0
@@ -247,6 +272,7 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
 
         pieData.setValueTextColor(UIColor.white)
         //pieData.setValueTextSize(10.0f);
+        pieData.setValueFont(UIFont.systemFont(ofSize: FONT_SIZE - 1))
         pieChartView.data = pieData
 
         let legend = pieChartView.legend
@@ -257,8 +283,12 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         legend.drawInside = false
         legend.enabled = true
         //legend.setTextSize(11.0f);
+        legend.font = UIFont.systemFont(ofSize: FONT_SIZE)
         legend.xOffset = LTheme.Dimension.pie_chart_legend_offset
         legend.yOffset = LTheme.Dimension.pie_chart_legend_offset
+        //legend.textWidthMax = 50
+        //legend.maxSizePercent = 10
+        //legend.wordWrapEnabled = true
 
         pieChartView.chartDescription?.text = ""
     }
@@ -290,5 +320,17 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         cell.addSubview(hl)
 
         return cell;
+    }
+
+    func refresh(year: Int, data: Dictionary<String, Double>?) {
+        if data != nil {
+            expenseCategories = data!
+        }
+        if isVisible {
+            isRefreshPending = false
+            createPieChart()
+        } else {
+            isRefreshPending = true
+        }
     }
 }
