@@ -22,11 +22,12 @@ UIPopoverPresentationControllerDelegate {
     var progress: UIActivityIndicatorView!
     var chartBtn: UIButton!
     var bottomBar: HorizontalLayout!
+    var searchBtn: UIButton!
     var showingPieChart = true
     var isVisible = false
     var isRefreshPending = false
 
-    private var search: LRecordSearch?
+    private var searchControls: LRecordSearch = LPreferences.getRecordsSearchControls()
     private var workItem: DispatchWorkItem?
     private var chartDataSet = Dictionary<Int, MyChartData>()
     private var startYear: Int = 2018
@@ -51,6 +52,7 @@ UIPopoverPresentationControllerDelegate {
         LBroadcast.register(LBroadcast.ACTION_UI_DB_SEARCH_CHANGED,
                             cb: #selector(self.dbSearchChanged),
                             listener: self)
+        setSearchButtonImage()
 
         isRefreshPending = true
     }
@@ -81,7 +83,17 @@ UIPopoverPresentationControllerDelegate {
 
     @objc func dbSearchChanged(notification: Notification) -> Void {
         refreshAll()
-        //setSearchButtonImage()
+        setSearchButtonImage()
+    }
+
+    private func setSearchButtonImage() {
+        if (searchControls.all || (searchControls.accounts.isEmpty && searchControls.categories.isEmpty &&
+            searchControls.vendors.isEmpty && searchControls.tags.isEmpty)) &&
+            searchControls.allTime && !searchControls.byValue {
+            searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
+        } else {
+            searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search_enabled").withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
 
     private func refreshAll() {
@@ -91,9 +103,9 @@ UIPopoverPresentationControllerDelegate {
             //LLog.d("\(self)", "loading data")
 
             chartDataSet.removeAll()
-            search = LPreferences.getRecordsSearchControls()
+            searchControls = LPreferences.getRecordsSearchControls()
 
-            let loader = DBLoader(search: search!)
+            let loader = DBLoader(search: searchControls)
             let (startMs, endMs) = loader.getStartEndTime()
             let (y1, _, _) = LA.ymd(milliseconds: startMs)
             let (y2, _, _) = LA.ymd(milliseconds: endMs)
@@ -114,7 +126,7 @@ UIPopoverPresentationControllerDelegate {
         }
         workItem = DispatchWorkItem {
             let loader = DBLoader(year: year, month: 0, sort: RecordsViewSortMode.CATEGORY.rawValue,
-                                   interval: RecordsViewInterval.ANNUALLY.rawValue, asc: true, search: self.search!)
+                                   interval: RecordsViewInterval.ANNUALLY.rawValue, asc: true, search: self.searchControls)
             var chartData = MyChartData(expenseCategories:[:], expenses: [], incomes: [])
             chartData.incomes = loader.records.annualIncomes
             chartData.expenses = loader.records.annualExpenses
@@ -211,7 +223,7 @@ UIPopoverPresentationControllerDelegate {
         chartBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S, height: BTN_H)
         chartBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
 
-        let searchBtn = UIButton(type: .system)
+        searchBtn = UIButton(type: .system)
         searchBtn.addTarget(self, action: #selector(self.onSearchClick), for: .touchUpInside)
         searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
         searchBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S, height: BTN_H)

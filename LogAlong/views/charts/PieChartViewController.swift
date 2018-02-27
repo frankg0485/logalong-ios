@@ -10,7 +10,6 @@ import UIKit
 import Charts
 
 class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDataSource, UITableViewDelegate {
-
     @IBOutlet weak var pieChartView: PieChartView!
 
     private var isVisible = false
@@ -19,7 +18,13 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
     var year: Int = 2018
     var expenseCategories = Dictionary<String, Double>()
 
+    var pieEntries = [PieChartDataEntry]()
+    var extraPieEntries = [PieChartDataEntry]()
+    var subEntries = [(key: String, value: Double)]()
+    var lastPieEntry = 0
+
     var entryView: UIView!
+    var headerView: UIView!
     let entryViewTop: CGFloat = 50
     let entryViewWidth: CGFloat = 140
     var entryViewHeight: NSLayoutConstraint!
@@ -27,10 +32,12 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
     var headerLabel: UILabel!
     var headerValue: UILabel!
     var tableView: UITableView!
+    var centerLabel: UILabel!
 
     let HEADER_H: CGFloat = 40
     let ENTRY_H: CGFloat = 40
     let FONT_SIZE: CGFloat = 12
+    let MAX_PIE_CHART_ITEMS = 12
 
     let colors: [UIColor] = [
         UIColor(hex: 0xffcc0000),
@@ -67,11 +74,10 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         entryViewMaxHeight = UIScreen.main.bounds.width - 2 * entryViewTop //landscape
         createEntryView()
 
-        let centerLabel = UILabel(frame: CGRect(x: UIScreen.main.bounds.height / 2 - 40, y: UIScreen.main.bounds.width / 2, width: 80, height: 30))
+        centerLabel = UILabel(frame: CGRect(x: UIScreen.main.bounds.height / 2 - 40, y: UIScreen.main.bounds.width / 2, width: 80, height: 30))
         centerLabel.textAlignment = .center
         centerLabel.textColor = UIColor.red
         centerLabel.font = UIFont.systemFont(ofSize: FONT_SIZE)
-        centerLabel.text = "$9912345.67"
         view.addSubview(centerLabel)
 
         createPieChart()
@@ -108,17 +114,18 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         hl.layoutMargins.bottom = 0
 
         headerLabel = UILabel(frame: CGRect(x: 2, y: 0, width: 0, height: HEADER_H))
-        headerLabel.text = "House"
+        headerLabel.layoutMargins.right = 0
         headerLabel.font = UIFont.systemFont(ofSize: FONT_SIZE)
         headerLabel.textColor = UIColor.white
-        headerValue = UILabel(frame: CGRect(x: 3, y: 0, width: 0, height: HEADER_H))
-        //headerValue.textAlignment = .right
-        headerValue.text = "$53298.85"
+        headerValue = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: HEADER_H))
+        headerValue.layoutMargins.left = 3
+        headerValue.textAlignment = .right
         headerValue.font = UIFont.systemFont(ofSize: FONT_SIZE)
         headerValue.textColor = UIColor.white
         hl.addSubview(headerLabel)
         hl.addSubview(headerValue)
         vl.addSubview(hl)
+        headerView = hl
 
         tableView = UITableView(frame: CGRect(x: 0, y: 1, width: entryViewWidth, height: 0))
         tableView.layoutMargins.top = 0
@@ -146,8 +153,14 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         entryView.isHidden = true
     }
 
-    private func displayEntry() {
-        let height = HEADER_H + 3 * ENTRY_H
+    private func displayEntry(_ color: UIColor) {
+        entryView.layer.borderColor = color.cgColor
+        headerView.backgroundColor = color
+
+        var height = HEADER_H
+        if subEntries.count > 1 {
+            height += CGFloat(subEntries.count) * ENTRY_H
+        }
 
         entryViewHeight.constant = height > entryViewMaxHeight ? entryViewMaxHeight : height
         entryView.isHidden = false
@@ -160,96 +173,115 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
 
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
 
-        displayEntry()
+        let pe: PieChartDataEntry = entry as! PieChartDataEntry
+        let index = pieEntries.index(of: pe)
+
+        subEntries.removeAll()
+
+        headerLabel.text = pe.label
+        headerValue.text = LA.valueAsCurrency(pe.value)
+        headerValue.sizeToFit()
+        for kv in getExpenseSubCatsAt(mainCat: pe.label!, index: index!).sorted(by: {$0.value > $1.value}) {
+            subEntries.append((key: kv.key, value: kv.value))
+        }
+
+        displayEntry(colors[index!])
+    }
+
+    private func getExpenseSubCats(_ mainCat: String) -> Dictionary<String, Double> {
+        var map = Dictionary<String, Double>()
+
+        for key in expenseCategories.keys {
+            let cats = key.components(separatedBy: ":")
+            if cats[0] == mainCat {
+                map[(cats.count > 1) ? cats[1] : key] = expenseCategories[key]
+            }
+        }
+        return map
+    }
+
+    private func getExpenseSubCatsAt(mainCat: String, index: Int) -> Dictionary<String, Double> {
+        var map: Dictionary<String, Double>
+
+        if (index == lastPieEntry && extraPieEntries.count > 0) {
+            map = Dictionary<String, Double>()
+            for entry in extraPieEntries {
+                map[entry.label!] = entry.value
+            }
+        } else {
+            map = getExpenseSubCats(mainCat)
+        }
+        return map
     }
 
     func createPieChart() {
-        pieChartView.centerText = "Expense - 2018"
+        pieChartView.centerText = NSLocalizedString("Expense", comment: "") + " - " + String(year)
         pieChartView.drawSlicesUnderHoleEnabled = true
         pieChartView.usePercentValuesEnabled = true
 
-        /*
-        currentExpenseCats.clear();
-        currentCharData = chartData;
         // group all sub-categories
-        double sum = 0;
-        for (String key : chartData.expenseCategories.keySet()) {
-            sum += chartData.expenseCategories.get(key);
-            String mainCat = key.split(":", -1)[0];
-            Double v = currentExpenseCats.get(mainCat);
-            if (v == null) {
-                currentExpenseCats.put(mainCat, chartData.expenseCategories.get(key));
+        var currentExpenseCats =  Dictionary<String, Double>();
+        var sum: Double = 0
+        for key in expenseCategories.keys {
+            sum += expenseCategories[key]!
+            let mainCat = key.components(separatedBy: ":")[0]
+            if var v = currentExpenseCats[mainCat] {
+                v += expenseCategories[key]!
+                currentExpenseCats[mainCat] = v
             } else {
-                v += chartData.expenseCategories.get(key);
-                currentExpenseCats.put(mainCat, v);
+                currentExpenseCats[mainCat] = expenseCategories[key]!
             }
         }
-        piechartExpenseSumTV.setText(String.format("$%.2f", sum));
+
+        centerLabel.text = LA.valueAsCurrency(sum)
 
         // group tiny entries
-        pieEntries = new ArrayList<>();
-        extraPieEntries = new ArrayList<>();
-        lastPieEntry = currentExpenseCats.size() - 1;
+        pieEntries = [PieChartDataEntry]()
+        extraPieEntries = [PieChartDataEntry]()
 
-        int count = 0;
-        String lastGroup = null;
-        double lastGroupValue = 0;
+        lastPieEntry = currentExpenseCats.count - 1
+        var count = 0
+        var lastGroup: String? = nil
+        var lastGroupValue: Double = 0
 
-        List list = new ArrayList<String>();
-        double threshold = sum * 0.005;
-        String lastKey = "";
-        Double lastValue = 0.0;
+        var list = [String]()
+        let threshold = sum * 0.005;
+        var lastKey = "";
+        var lastValue: Double = 0.0
 
-        for (Map.Entry<String, Double> entry : entriesSortedByValues(currentExpenseCats)) {
-            if (count < MAX_PIE_CHART_ITEMS && entry.getValue() > threshold) {
-                list.add(entry.getKey());
+        for kv in currentExpenseCats.sorted(by: {$0.value > $1.value}) {
+            if (count < MAX_PIE_CHART_ITEMS && kv.value > threshold) {
+                list.append(kv.key)
             } else {
-                if (null == lastGroup) {
-                    list.remove(lastKey);
-                    extraPieEntries.add(new PieEntry(lastValue.floatValue(), lastKey));
+                if (nil == lastGroup) {
+                    list.remove(at: list.count - 1)
+                    extraPieEntries.append(PieChartDataEntry(value: lastValue, label: lastKey))
 
-                    lastGroup = lastKey + " ...";
-                    lastGroupValue = lastValue;
+                    lastGroup = lastKey + " ..."
+                    lastGroupValue = lastValue
                     lastPieEntry = count - 1;
                 }
 
-                extraPieEntries.add(new PieEntry(entry.getValue().floatValue(), entry.getKey()));
-                lastGroupValue += entry.getValue();
+                extraPieEntries.append(PieChartDataEntry(value: kv.value, label: kv.key))
+                lastGroupValue += kv.value
             }
 
-            lastKey = entry.getKey();
-            lastValue = entry.getValue();
-            count++;
+            lastKey = kv.key
+            lastValue = kv.value
+            count += 1
         }
 
-        if (currentExpenseCats.size() <= list.size()) {
-            for (String key : currentExpenseCats.keySet()) {
-                pieEntries.add(new PieEntry(currentExpenseCats.get(key).floatValue(), key));
+        if currentExpenseCats.count <= list.count {
+            for kv in currentExpenseCats {
+                pieEntries.append(PieChartDataEntry(value: kv.value, label: kv.key))
             }
         } else {
-            count = 0;
-            for (String key : currentExpenseCats.keySet()) {
-                if (list.contains(key)) {
-                    pieEntries.add(new PieEntry(currentExpenseCats.get(key).floatValue(), key));
-                    count++;
-                    if (count >= list.size()) break;
-                }
+            for key in list {
+                pieEntries.append(PieChartDataEntry(value: currentExpenseCats[key]!, label: key))
             }
-            pieEntries.add(new PieEntry((float) lastGroupValue, lastGroup));
+            pieEntries.append(PieChartDataEntry(value: lastGroupValue, label: lastGroup))
         }
-        */
-        var pieEntries = [PieChartDataEntry]()
-/*
-        for i in 0..<values.count {
-            let entry = PieChartDataEntry()
-            entry.y = values[i]
-            entry.label = accounts[i].name
-            pieEntries.append(entry)
-            if i > colors.count {
-                break;
-            }
-        }
-*/
+
         let set = PieChartDataSet(values: pieEntries, label: "")
         set.sliceSpace = 1.0
         set.selectionShift = 5.0
@@ -298,7 +330,7 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return subEntries.count
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -308,13 +340,17 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(frame: CGRect(x: 0, y: 0, width: entryViewWidth, height: ENTRY_H))
         let hl = HorizontalLayout(height: ENTRY_H)
-        headerLabel = UILabel(frame: CGRect(x: 2, y: 0, width: 0, height: ENTRY_H))
+        let headerLabel = UILabel(frame: CGRect(x: 2, y: 0, width: 0, height: ENTRY_H))
+        headerLabel.layoutMargins.right = 5
         headerLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-        headerLabel.text = "test"
+        headerLabel.text = subEntries[indexPath.row].key
 
-        headerValue = UILabel(frame: CGRect(x: 3, y: 0, width: 0, height: ENTRY_H))
+        let headerValue = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: ENTRY_H))
+        headerValue.layoutMargins.left = 0
+        headerValue.textAlignment = .right
         headerValue.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-        headerValue.text = "1234.56"
+        headerValue.text = LA.valueAsCurrency(subEntries[indexPath.row].value)
+        headerValue.sizeToFit()
         hl.addSubview(headerLabel)
         hl.addSubview(headerValue)
         cell.addSubview(hl)
@@ -325,6 +361,7 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
     func refresh(year: Int, data: Dictionary<String, Double>?) {
         if data != nil {
             expenseCategories = data!
+            self.year = year
         }
         if isVisible {
             isRefreshPending = false

@@ -9,6 +9,12 @@
 import UIKit
 
 class LA {
+    static func valueAsCurrency(_ value: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        return formatter.string(from: value as NSNumber)!
+    }
+
     static func toByteArray<T>(_ value: T) -> [UInt8] {
         var value = value
         return withUnsafeBytes(of: &value) { Array($0) }
