@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        UIApplication.shared.setMinimumBackgroundFetchInterval(3600)
 
         let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
         if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
@@ -61,6 +62,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let wi = workItem {
             wi.cancel()
         }
+
+        registerBackgroundTask()
         workItem = DispatchWorkItem {
             DBAccountBalance.rescan()
 
@@ -69,8 +72,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             })
         }
         DispatchQueue.global(qos: .default).async(execute: workItem!)
-
-        registerBackgroundTask()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -120,4 +121,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return rootViewController
     }
      */
+
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        LLog.d("\(self)", "perform background fetching ...")
+        //simply let system run for 15 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 15, execute: {
+            completionHandler(UIBackgroundFetchResult.newData)
+        })
+    }
 }
