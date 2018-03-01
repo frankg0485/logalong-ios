@@ -108,7 +108,7 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
     }
 
     private static var cancel = false
-    static func rescallCancel() {
+    static func rescanCancel() {
         cancel = true
     }
     static func rescan() {

@@ -12,11 +12,11 @@ enum UiConnectionState {
     case CONNECTING
     case DISCONNECTED
     case CONNECTED
-    case LOGGED_IN
+    //case LOGGED_IN
 }
 
 class UiRequest: NSObject {
-    var state = UiConnectionState.CONNECTING;
+    var state = UiConnectionState.CONNECTING
 
     static let instance = UiRequest()
 
@@ -34,12 +34,12 @@ class UiRequest: NSObject {
     @objc func networkConnected(notification: Notification) -> Void {
         state = UiConnectionState.CONNECTED;
         if !LPreferences.getUserId().isEmpty {
-            UiLogIn(LPreferences.getUserId(), LPreferences.getUserPassword())
+            _ = UiLogIn(LPreferences.getUserId(), LPreferences.getUserPassword())
         }
     }
 
     @objc func networkDisConnected(notification: Notification) -> Void {
-        state = UiConnectionState.DISCONNECTED;
+        state = UiConnectionState.DISCONNECTED
     }
 
     func UiGetUserByName(_ name: String) -> Bool {

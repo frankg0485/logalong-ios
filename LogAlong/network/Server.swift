@@ -32,7 +32,7 @@ final class LServer: NSObject {
     var username = ""
 
     static let PORT_NO = 8000
-    static let SERVER_NAME = "192.168.1.112"
+    static let SERVER_NAME = "192.168.1.102"
 
     func connect() {
         var readStream: Unmanaged<CFReadStream>?

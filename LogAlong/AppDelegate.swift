@@ -81,16 +81,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        DBAccountBalance.rescallCancel()
+        DBAccountBalance.rescanCancel()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if uiRequest.state == .DISCONNECTED {
+            LLog.d("\(self)", "connection lost: reconnecting ...")
+            LServer.instance.connect()
+        }
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        LLog.d("\(self)", "going to terminate")
+        //LLog.d("\(self)", "going to terminate")
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
