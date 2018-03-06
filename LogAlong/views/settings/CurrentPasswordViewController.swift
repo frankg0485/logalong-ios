@@ -10,6 +10,8 @@ import UIKit
 
 class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
 
+    @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var progress: UIActivityIndicatorView!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var wrongPasswordLabel: UILabel!
@@ -21,24 +23,23 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
     var checkboxShowPass: LCheckbox!
     var password: String!
 
+    var resetPassword = false
+    var canCancel = true
+    var emailSent = false
+
     var timer: Timer?
     var count: Double = 0
     var overlayViewController: UIViewController?
 
     var passwordChanged = false
     var delegate: FShowPasswordCellsDelegate?
-    var signin = false {
-        didSet {
-            delegate?.showPasswordCells()
-        }
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         preferredContentSize.width = LTheme.Dimension.popover_width
         preferredContentSize.height = LTheme.Dimension.popover_height_small + 20
 
-        cancelButton.isEnabled = true
+        cancelButton.isEnabled = canCancel
         okButton.isEnabled = false
 
         passwordTextField.delegate = self
@@ -49,9 +50,11 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
         setTapGesture(view)
 
         LBroadcast.register(LBroadcast.ACTION_SIGN_IN, cb: #selector(self.signIn), listener: self)
+        LBroadcast.register(LBroadcast.ACTION_UI_RESET_PASSWORD, cb: #selector(self.uiResetPassword), listener: self)
 
         // Do any additional setup after loading the view.
         setupDisplay()
+        setupResetPasswordDisplay()
         progress.isHidden = true
     }
 
@@ -64,6 +67,24 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
         view.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onClickView(_:)))
         view.addGestureRecognizer(tapGesture)
+    }
+
+    private func setupResetPasswordDisplay() {
+        resetButton.isHidden = true
+        wrongPasswordLabel.text = ""
+        if resetPassword {
+            okButton.isEnabled = false
+            showPassView.isHidden = true
+            passwordTextField.text = ""
+            passwordTextField.isSecureTextEntry = false
+            passwordTextField.placeholder = NSLocalizedString("email address", comment:"")
+            headerLabel.text = NSLocalizedString("Enter email to reset password", comment: "")
+        } else {
+            showPassView.isHidden = false
+            passwordTextField.text = ""
+            passwordTextField.placeholder =  NSLocalizedString("password", comment: "")
+            headerLabel.text = NSLocalizedString("Enter current password", comment: "")
+        }
     }
 
     private func setupDisplay() {
@@ -87,6 +108,11 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
         }
 
         setTapGesture(showPassView)
+    }
+
+    @IBAction func onResetClick(_ sender: UIButton) {
+        resetPassword = true
+        setupResetPasswordDisplay()
     }
 
     @objc func timerHandler() {
@@ -130,16 +156,58 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
     }
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
-        startTimer(5)
-        _ = UiRequest.instance.UiSignIn(LPreferences.getUserId(), password)
+        if emailSent {
+            resetPassword = false
+            emailSent = false
+            setupResetPasswordDisplay()
+        } else {
+            if resetPassword {
+                startTimer(LServer.REQUEST_TIMEOUT_SECONDS * 2)
+                _ = UiRequest.instance.UiResetPassword(LPreferences.getUserId(), email: password)
+            } else {
+                startTimer(LServer.REQUEST_TIMEOUT_SECONDS)
+                _ = UiRequest.instance.UiSignIn(LPreferences.getUserId(), password)
+            }
+        }
     }
 
-    @IBAction func cancelButtonPressed(_ sender: UIButton) {
+    private func do_cancel() {
         LBroadcast.unregister(LBroadcast.ACTION_SIGN_IN, listener: self)
+        LBroadcast.unregister(LBroadcast.ACTION_UI_RESET_PASSWORD, listener: self)
         dismiss(animated: true, completion: nil)
     }
 
+    @IBAction func cancelButtonPressed(_ sender: UIButton) {
+        do_cancel()
+    }
+
     @objc func signIn(notification: Notification) -> Void {
+        stopTimer()
+
+        var success = false
+        if let bdata = notification.userInfo as? [String: Any] {
+            if let status = bdata["status"] as? Int {
+                if LProtocol.RSPS_OK == status {
+                    success = true
+                    LPreferences.setUserPassword(password)
+                    _ = UiRequest.instance.UiLogIn(LPreferences.getUserId(), password)
+                }
+            }
+        }
+
+        if success {
+            delegate?.showPasswordCells()
+            wrongPasswordLabel.text = ""
+            DispatchQueue.main.async {
+                self.do_cancel()
+            }
+        } else {
+            wrongPasswordLabel.text = NSLocalizedString("Password mismatch", comment: "")
+            resetButton.isHidden = false
+        }
+    }
+
+    @objc func uiResetPassword(notification: Notification) -> Void {
         stopTimer()
 
         var success = false
@@ -152,20 +220,29 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
         }
 
         if success {
-            delegate?.showPasswordCells()
-            wrongPasswordLabel.text = ""
-
-            cancelButtonPressed(cancelButton)
+            wrongPasswordLabel.text = "Please follow instructions in email to reset password."
+            emailSent = true
         } else {
-            wrongPasswordLabel.text = NSLocalizedString("Password mismatch", comment: "")
+            wrongPasswordLabel.text = "Unable to email notification, please try later"
         }
+    }
+
+    private func isValidEmail(_ testStr: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
     }
 
     private func setDoneButtonState() {
         if password.isEmpty {
             okButton.isEnabled = false
         } else{
-            okButton.isEnabled = password.count > 3
+            if resetPassword {
+                okButton.isEnabled = isValidEmail(password)
+            } else {
+                okButton.isEnabled = password.count > 3
+            }
         }
     }
 
@@ -177,7 +254,7 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let limitLength = 20
+        let limitLength = resetPassword ? 36 : 20
         guard let text = textField.text else { return true }
         let newLength = text.count + string.count - range.length
         return newLength <= limitLength

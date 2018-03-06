@@ -16,6 +16,7 @@ protocol LServerDelegate: class {
 final class LServer: NSObject {
     weak var delegate: LServerDelegate!
     static let instance = LServer()
+    static let REQUEST_TIMEOUT_SECONDS: Double = 10
 
     let rxQ = DispatchQueue(label: "com.swoag.logalong.receive")
     let txQ = DispatchQueue(label: "com.swoag.logalong.transmit")

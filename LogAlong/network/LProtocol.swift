@@ -238,12 +238,7 @@ final class LProtocol : LServerDelegate {
                 LBroadcast.post(LBroadcast.ACTION_LOG_IN, sender: nil, data: bdata)
 
             case LProtocol.RSPS | LProtocol.RQST_RESET_PASSWORD:
-                /*
-                 rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver.ACTION_UI_RESET_PASSWORD));
-                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
-                 */
-                break
+                LBroadcast.post(LBroadcast.ACTION_UI_RESET_PASSWORD, sender: nil, data: bdata)
 
             default:
                 LLog.w("\(self)", "unexpected response: \(rsps) @state: \(state)");
@@ -283,15 +278,10 @@ final class LProtocol : LServerDelegate {
                     LPreferences.setShareUserId(gid, name)
                     LPreferences.setShareUserName(gid, fullName)
                 }
-
                 LBroadcast.post(LBroadcast.ACTION_GET_USER_BY_NAME, sender: nil, data: bdata)
-                break;
 
             case LProtocol.RSPS | LProtocol.RQST_RESET_PASSWORD:
-                /*rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver.ACTION_UI_RESET_PASSWORD));
-                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
-                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);*/
-                break;
+                LBroadcast.post(LBroadcast.ACTION_UI_RESET_PASSWORD, sender: nil, data: bdata)
 
             case LProtocol.RSPS | LProtocol.RQST_POST_JOURNAL:
                 if (LProtocol.RSPS_OK == status || LProtocol.RSPS_MORE == status) {

@@ -274,30 +274,21 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
 
-        //TODO: presentPasswordPopover()
+        presentPasswordPopover()
     }
 
     func presentPasswordPopover() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "CurrentPassword")
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CurrentPasswordViewController") as!CurrentPasswordViewController
 
-        controller.modalPresentationStyle = UIModalPresentationStyle.popover
-        controller.popoverPresentationController?.delegate = self
-        controller.preferredContentSize = CGSize(width: 375, height: 200)
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.popoverPresentationController?.sourceView = self.view
+        vc.popoverPresentationController?.sourceRect =
+            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY - 22, width: 0, height: 0)
+        vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+        vc.popoverPresentationController!.delegate = self
 
-        let popoverPresentationController = controller.popoverPresentationController
-
-        // result is an optional (but should not be nil if modalPresentationStyle is popover)
-        if let _popoverPresentationController = popoverPresentationController {
-            // set the view from which to pop up
-            _popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
-            _popoverPresentationController.sourceView = self.view;
-            _popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-            // present (id iPhone it is a modal automatic full screen)
-            dismissable = false
-
-            self.present(controller, animated: true, completion: nil)
-        }
+        vc.canCancel = false
+        present(vc, animated: true, completion: nil)
     }
     // MARK: - Table view data source
 

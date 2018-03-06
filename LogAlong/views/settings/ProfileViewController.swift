@@ -247,7 +247,9 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         }
     }
 
+    // called upon successful login from 'options'
     func showPasswordCells() {
+        optionButton.isHidden = true
         passView.isHidden = false
         showPassView.isHidden = false
         passValue.text = password
@@ -291,7 +293,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         default:
             _ = UiRequest.instance.UiUpdateUserProfile(userId, LPreferences.getUserPassword(), newPass: password, fullName: name)
         }
-        startTimer(5)
+        startTimer(LServer.REQUEST_TIMEOUT_SECONDS)
     }
 
     @objc func timerHandler() {
@@ -418,12 +420,12 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
                         stopTimer()
                         msgLabel.text = NSLocalizedString("User ID already taken by someone else, please select a different one.", comment: "")
                     } else {
-                        resetTimer(5)
+                        resetTimer(LServer.REQUEST_TIMEOUT_SECONDS)
                         _ = UiRequest.instance.UiSignIn(userId, password)
                     }
                 } else {
                     if profileAction == .CREATE_USER {
-                        resetTimer(5)
+                        resetTimer(LServer.REQUEST_TIMEOUT_SECONDS)
                         _ = UiRequest.instance.UiCreateUser(userId, password, fullname: name)
                     } else {
                         stopTimer()
@@ -444,7 +446,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
                     LPreferences.setUserName(name)
                     success = true
 
-                    resetTimer(5)
+                    resetTimer(LServer.REQUEST_TIMEOUT_SECONDS)
                     _ = UiRequest.instance.UiLogIn(userId, password)
                     pushDb = true
                 }
@@ -471,7 +473,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
                     }
                     success = true
 
-                    resetTimer(5)
+                    resetTimer(LServer.REQUEST_TIMEOUT_SECONDS)
                     _ = UiRequest.instance.UiLogIn(userId, password)
                     pushDb = true
                 }
@@ -519,6 +521,46 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
     }
 
     private func pushLocalDb() {
+        for account in DBAccount.instance.getAll() {
+            //publishProgress(account.getName());
+            _ = LJournal.instance.addAccount(account.id)
+        }
 
+        for category in DBCategory.instance.getAll() {
+            //publishProgress(category.getName());
+            _ = LJournal.instance.addCategory(category.id)
+        }
+
+        for vendor in DBVendor.instance.getAll() {
+            //publishProgress(vendor.getName());
+            _ = LJournal.instance.addVendor(vendor.id)
+        }
+
+        for tag in DBTag.instance.getAll() {
+            //publishProgress(tag.getName());
+            _ = LJournal.instance.addTag(tag.id)
+        }
+
+        // get all accounts
+        _ = LJournal.instance.getAllAccounts()
+        _ = LJournal.instance.getAllCategories();
+        _ = LJournal.instance.getAllTags();
+        _ = LJournal.instance.getAllVendors();
+
+        for transaction in DBTransaction.instance.getAll() {
+            if transaction.type != TransactionType.TRANSFER_COPY {
+                _ = LJournal.instance.addRecord(transaction.id)
+            }
+
+            //LLog.d("\(self)", "adding record: \(transaction.id)")
+            //publishProgress(DBAccount.getInstance().getNameById(transaction.getAccount()) + " : " + transaction.getValue());
+        }
+
+        for schedule in DBScheduledTransaction.instance.getAll() {
+            _ = LJournal.instance.addSchedule(schedule.id)
+        }
+
+        _ = LJournal.instance.getAllRecords();
+        _ = LJournal.instance.getAllSchedules();
     }
 }
