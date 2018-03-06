@@ -47,6 +47,9 @@ class HorizontalLayout : LLayout {
         //print("layout subviews ............")
         for ii in 0..<subviews.count {
             let view = subviews[ii] as UIView
+            if view.isHidden {
+                continue
+            }
             view.layoutSubviews()
             if (weights[ii] == 0) {
                 width += view.frame.width + view.layoutMargins.left + view.layoutMargins.right
@@ -60,6 +63,9 @@ class HorizontalLayout : LLayout {
             let space = superview!.frame.width - width
             for ii in 0..<subviews.count {
                 let view = subviews[ii] as UIView
+                if view.isHidden {
+                    continue
+                }
                 if weights[ii] != 0 {
                     view.frame.size.width = (space * weights[ii]) / weightSum
                 }
@@ -69,6 +75,9 @@ class HorizontalLayout : LLayout {
         width = 0
         for ii in 0..<subviews.count {
             let view = subviews[ii] as UIView
+            if view.isHidden {
+                continue
+            }
             view.center.y = self.center.y - self.frame.origin.y
             //print("view center: \(self.center.y) - \(self.frame.origin.y)")
             view.layoutSubviews()
@@ -111,6 +120,9 @@ class VerticalLayout : LLayout {
         //print("layout subviews ............")
         for ii in 0..<subviews.count {
             let view = subviews[ii] as UIView
+            if view.isHidden {
+                continue
+            }
             view.layoutSubviews()
             if (weights[ii] == 0) {
                 height += view.frame.height + view.layoutMargins.top + view.layoutMargins.bottom
@@ -124,6 +136,9 @@ class VerticalLayout : LLayout {
             let space = superview!.frame.height - height
             for ii in 0..<subviews.count {
                 let view = subviews[ii] as UIView
+                if view.isHidden {
+                    continue
+                }
                 if weights[ii] != 0 {
                     view.frame.size.height = (space * weights[ii]) / weightSum
                 }
@@ -133,6 +148,9 @@ class VerticalLayout : LLayout {
         height = 0
         for ii in 0..<subviews.count {
             let view = subviews[ii] as UIView
+            if view.isHidden {
+                continue
+            }
             view.center.x = self.center.x - self.frame.origin.x
             view.layoutSubviews()
 

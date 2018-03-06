@@ -11,7 +11,7 @@ import UIKit
 protocol FViewControllerDelegate: class {
     func passNumberBack(_ caller: UIViewController, type: TypePassed)
 }
-
+/*
 protocol FLoginViewControllerDelegate: class {
     func showHideNameCell(hide: Bool)
 }
@@ -19,11 +19,11 @@ protocol FLoginViewControllerDelegate: class {
 protocol FNotifyLoginViewControllerDelegate: class {
     func notifyShowHideNameCell(hide: Bool)
 }
-
+*/
 protocol FPassCreationBackDelegate: class {
     func creationCallback(created: Bool)
 }
-
+/*
 protocol FPassNameIdPasswordDelegate: class {
     func passLoginInfoBack(name: String?, id: String, password: String, typeOfLogin: Int)
 }
@@ -43,11 +43,12 @@ protocol FLoginTypeDelegate: class {
 protocol FNotifyShowPasswordDelegate: class {
     func showPassword(show: Bool)
 }
-
+*/
 protocol FShowPasswordCellsDelegate: class {
     func showPasswordCells()
 }
-
+/*
 protocol FDisableEnableDoneButtonDelegate: class {
     func disEnaDoneButton(_ enable: Bool)
 }
+ */

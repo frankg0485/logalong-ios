@@ -274,7 +274,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
 
-        presentPasswordPopover()
+        //TODO: presentPasswordPopover()
     }
 
     func presentPasswordPopover() {

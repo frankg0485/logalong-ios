@@ -59,7 +59,9 @@ class LBroadcast {
     }
 
     static func post(_ id: Int, sender: Any? = nil, data: [AnyHashable : Any]? = nil) {
+        //LLog.d("\(self)", "posting id: \(id)")
         DispatchQueue.main.async {
+        //LLog.d("\(self)", "scheduling id: \(id)")
             NotificationCenter.default.post(name: action(id), object: sender, userInfo: data)
         }
     }

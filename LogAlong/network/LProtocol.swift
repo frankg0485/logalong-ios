@@ -196,43 +196,33 @@ final class LProtocol : LServerDelegate {
         case LConnectionState.CONNECTED:
             switch (rsps) {
             case LProtocol.RSPS | LProtocol.RQST_GET_USER_BY_NAME:
-                /*
-                 rspsIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                 .ACTION_GET_USER_BY_NAME));
-                 rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
+                if (LProtocol.RSPS_OK == status) {
+                    var name: String
+                    var fullName: String
 
-                 if (RSPS_OK == status) {
-                 var name: String = ""
-                 var fullName: String = ""
-                 var gid: Int64 = pkt.getLongAutoInc()
-                 var bytes: UInt16 = pkt.getShortAutoInc()
-                 name = pkt.getStringAutoInc(bytes)
-                 bytes = pkt.getShortAutoInc()
-                 fullName = pkt.getStringAutoInc(bytes)
+                    let gid = pkt.getLongAutoInc()
+                    var bytes = pkt.getShortAutoInc()
+                    name = pkt.getStringAutoInc(Int(bytes))
+                    bytes = pkt.getShortAutoInc()
+                    fullName = pkt.getStringAutoInc(Int(bytes))
 
-                 rspsIntent.putExtra("id", gid);
-                 rspsIntent.putExtra("name", name);
-                 rspsIntent.putExtra("fullName", fullName);
-                 }
-                 LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
-                 */
-                break;
+                    bdata["id"] = gid
+                    bdata["name"] = name
+                    bdata["fullName"] = fullName
+                }
+                LBroadcast.post(LBroadcast.ACTION_GET_USER_BY_NAME, sender: nil, data: bdata)
 
             case LProtocol.RSPS | LProtocol.RQST_CREATE_USER:
                 LBroadcast.post(LBroadcast.ACTION_CREATE_USER, sender: nil, data: bdata)
-                break;
 
             case LProtocol.RSPS | LProtocol.RQST_SIGN_IN:
                 if (LProtocol.RSPS_OK == status) {
                     LPreferences.setLoginError(false)
                     let bytes = pkt.getShortAutoInc()
                     let name = pkt.getStringAutoInc(Int(bytes))
-
-                    bdata["userName"] = name
+                    bdata["fullName"] = name
                 }
-
                 LBroadcast.post(LBroadcast.ACTION_SIGN_IN, sender: nil, data: bdata)
-                break;
 
             case LProtocol.RSPS | LProtocol.RQST_LOG_IN:
                 if (LProtocol.RSPS_OK == status) {
@@ -245,9 +235,7 @@ final class LProtocol : LServerDelegate {
                     //login error, remember to force user to login
                     LPreferences.setLoginError(true);
                 }
-
                 LBroadcast.post(LBroadcast.ACTION_LOG_IN, sender: nil, data: bdata)
-                break;
 
             case LProtocol.RSPS | LProtocol.RQST_RESET_PASSWORD:
                 /*
@@ -255,8 +243,7 @@ final class LProtocol : LServerDelegate {
                  rspsIntent.putExtra(LBroadcastReceiver.EXTRA_RET_CODE, status);
                  LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(rspsIntent);
                  */
-
-                break;
+                break
 
             default:
                 LLog.w("\(self)", "unexpected response: \(rsps) @state: \(state)");
@@ -268,19 +255,15 @@ final class LProtocol : LServerDelegate {
             switch (rsps) {
             case LProtocol.RSPS | LProtocol.RQST_UPDATE_USER_PROFILE:
                 LBroadcast.post(LBroadcast.ACTION_UPDATE_USER_PROFILE, sender: nil, data: bdata)
-                break;
 
             case LProtocol.RSPS | LProtocol.RQST_SIGN_IN:
                 if (LProtocol.RSPS_OK == status) {
                     LPreferences.setLoginError(false)
                     let bytes = pkt.getShortAutoInc()
                     let name = pkt.getStringAutoInc(Int(bytes))
-
-                    bdata["userName"] = name
+                    bdata["fullName"] = name
                 }
-
                 LBroadcast.post(LBroadcast.ACTION_SIGN_IN, sender: nil, data: bdata)
-                break;
 
             case LProtocol.RSPS | LProtocol.RQST_GET_USER_BY_NAME:
                 if (LProtocol.RSPS_OK == status) {
