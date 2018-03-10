@@ -128,6 +128,17 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         }
     }
 
+    private func presentPopOver(_ vc: UIViewController) {
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.popoverPresentationController?.sourceView = self.view
+        vc.popoverPresentationController?.sourceRect =
+            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY - 22, width: 0, height: 0)
+        vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+        vc.popoverPresentationController!.delegate = self
+
+        self.present(vc, animated: true, completion: nil)
+    }
+
     //------------------ ACCOUNT --------------------------
     @objc func uiUpdateAccount(notification: Notification) -> Void {
         accounts = DBAccount.instance.getAll()
@@ -135,23 +146,18 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     }
 
     func unshareAllFromAccount(_ accountId: Int64) {
-        var account = DBAccount.instance.get(id: accountId)!
+        let account = DBAccount.instance.get(id: accountId)!
         account.share = ""
         account.setOwner(Int64(LPreferences.getUserIdNum()))
-        DBAccount.instance.update(account)
-
-        var journal = LJournal()
-        journal.removeUserFromAccount(uid: 0, aid: account.gid)
+        _ = DBAccount.instance.update(account)
+        _ = LJournal.instance.removeUserFromAccount(uid: 0, aid: account.gid)
     }
 
     func unshareMyselfFromAccount(_ accountId: Int64) {
         let account = DBAccount.instance.get(id: accountId)!
-
-        //LTask.start(DBAccount.MyAccountDeleteTask(), account.getId())
-        DBAccount.instance.remove(id: accountId)
-
-        var journal = LJournal()
-        journal.removeUserFromAccount(uid: Int64(LPreferences.getUserIdNum()), aid: account.gid)
+        DBAccount.deleteEntries(of: accountId)
+        _ = DBAccount.instance.remove(id: accountId)
+        _ = LJournal.instance.removeUserFromAccount(uid: Int64(LPreferences.getUserIdNum()), aid: account.gid)
     }
 
     func do_account_share_update(_ accountId: Int64, _ selections: Set<Int64>, _ origSelections: Set<Int64>) {
@@ -167,12 +173,12 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             return
         }
 
-        var journal = LJournal()
+        let journal = LJournal.instance
         //first update all existing users if there's any removal
         for ii in origSelections {
             if (!selections.contains(ii)) {
                 account.removeShareUser(ii)
-                journal.removeUserFromAccount(uid: ii, aid: account.gid)
+                _ = journal.removeUserFromAccount(uid: ii, aid: account.gid)
             }
         }
 
@@ -188,12 +194,11 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             if (newShare) {
                 // new share request: new memeber is added to group
                 account.addShareUser(ii, LAccount.ACCOUNT_SHARE_INVITED)
-                journal.addUserToAccount(uid: ii, aid: account.gid)
+                _ = journal.addUserToAccount(uid: ii, aid: account.gid)
             }
         }
-        DBAccount.instance.update(account)
+        _ = DBAccount.instance.update(account)
     }
-
 
     func getAccountCurrentShares(_ account: LAccount) -> Set<Int64> {
         var selectedUsers: Set<Int64> = []
@@ -216,7 +221,8 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         return selectedUsers
     }
 
-    func onShareAccountDialogExit(_ applyToAllAccounts: Bool, _ accountId: Int64, _ selections: Set<Int64>, origSelections: Set<Int64>) {
+    func onShareAccountDialogExit(_ applyToAllAccounts: Bool, _ accountId: Int64,
+                                  _ selections: Set<Int64>, origSelections: Set<Int64>) {
         var set: Set<Int64> = []
 
         if (applyToAllAccounts) {
@@ -225,10 +231,11 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             }
 
             for id in set {
-                if (DBAccount.instance.get(id: id)?.getOwner() == Int64(LPreferences.getUserIdNum())) {
-                    let account = DBAccount.instance.get(id: id)
-                    let selectedUsers = getAccountCurrentShares(account!)
-                    do_account_share_update(id, selections, selectedUsers)
+                if let account = DBAccount.instance.get(id: id) {
+                    if (account.getOwner() == Int64(LPreferences.getUserIdNum())) {
+                        let selectedUsers = getAccountCurrentShares(account)
+                        do_account_share_update(id, selections, selectedUsers)
+                    }
                 }
             }
         } else {
@@ -242,8 +249,9 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     @IBAction func shareButtonClicked(_ sender: UIButton) {
         if let cell = sender.superview?.superview as? AccountsTableViewCell {
             let name = cell.nameLabel.text!
-            let account = DBAccount.instance.get(name: cell.nameLabel.text!)!
-            presentShareView(account)
+            if let account = DBAccount.instance.get(name: name) {
+                presentShareView(account)
+            }
         }
     }
 
@@ -255,23 +263,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         controller.origSelectedIds = getAccountCurrentShares(account)
         controller.accountsVC = self
 
-        controller.viewHeight = 172
-        controller.modalPresentationStyle = UIModalPresentationStyle.popover
-        controller.popoverPresentationController?.delegate = self
-        controller.preferredContentSize = CGSize(width: 375, height: 172)
-
-        let popoverPresentationController = controller.popoverPresentationController
-
-        // result is an optional (but should not be nil if modalPresentationStyle is popover)
-        if let _popoverPresentationController = popoverPresentationController {
-            // set the view from which to pop up
-            _popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
-            _popoverPresentationController.sourceView = self.view
-            _popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-            // present (id iPhone it is a modal automatic full screen)
-
-            self.present(controller, animated: true, completion: nil)
-        }
+        presentPopOver(controller)
     }
 
     //------------------ CATEGORY -------------------------
@@ -480,20 +472,9 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         case .TAG:
             controller.createType = SelectType.TAG
         }
-
         controller.delegate = self
 
-        controller.modalPresentationStyle = UIModalPresentationStyle.popover
-        controller.popoverPresentationController?.delegate = self
-
-        if let popoverPresentationController = controller.popoverPresentationController {
-            popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
-            popoverPresentationController.sourceView = self.view
-            popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-
-            self.present(controller, animated: true, completion: nil)
-        }
-
+        presentPopOver(controller)
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {

@@ -10,18 +10,21 @@ import UIKit
 
 class ShareAccountConfirmViewController: UIViewController {
     @IBOutlet weak var accountUserLabel: UILabel!
-    @IBOutlet weak var acceptAllButton: UIButton!
-
+    @IBOutlet weak var acceptAllView: UIView!
+    var checkbox: LCheckbox!
     var accountUserLabelText: String = ""
-    var checked = false
     var request: LAccountShareRequest?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = LTheme.Color.dialog_bg_color
+        //self.view.backgroundColor = LTheme.Color.dialog_bg_color
+
+        preferredContentSize.width = LTheme.Dimension.popover_width
+        preferredContentSize.height = 240
+
         accountUserLabel.text = accountUserLabelText
-        accountUserLabel.font = UIFont.boldSystemFont(ofSize: 17)
-        // Do any additional setup after loading the view.
+        //accountUserLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        setupDisplay()
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,8 +32,42 @@ class ShareAccountConfirmViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func exit(_ ok: Bool) {
-        if checked {
+    private func setTapGesture(_ view: UIView) {
+        view.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onClickView(_:)))
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func onClickView(_ sender: UITapGestureRecognizer) {
+        if acceptAllView == sender.view {
+            checkbox.isSelected = !checkbox.isSelected
+        }
+    }
+
+    private func setupDisplay() {
+        let ROW_H: CGFloat = 50
+        let ROW_H2: CGFloat = 35
+
+        let hl3 = HorizontalLayout(height: 30)
+        hl3.layoutMargins = UIEdgeInsetsMake(0, 0, ROW_H - ROW_H2, 0)
+        checkbox = LCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        checkbox.layoutMargins = UIEdgeInsetsMake(0, 6, 0, 0)
+        checkbox.isUserInteractionEnabled = false
+        checkbox.isSelected = false
+        let label0 = UILabel(frame: CGRect(x: 1, y: 0, width: 0, height: ROW_H2))
+        label0.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        label0.text = NSLocalizedString("accept all from this user", comment: "")
+        label0.textColor = LTheme.Color.light_gray_text_color
+
+        hl3.addSubview(checkbox)
+        hl3.addSubview(label0)
+        acceptAllView.addSubview(hl3)
+
+        setTapGesture(acceptAllView)
+    }
+
+    private func done(_ ok: Bool) {
+        if checkbox.isSelected {
             LPreferences.setShareAccept((request?.userId)!, Int64(Date().timeIntervalSince1970))
         }
 
@@ -44,33 +81,12 @@ class ShareAccountConfirmViewController: UIViewController {
     }
 
     @IBAction func declineButtonClicked(_ sender: UIButton) {
-        exit(false)
+        done(false)
         dismiss(animated: true, completion: nil)
     }
 
     @IBAction func okButtonClicked(_ sender: UIButton) {
-        exit(true)
+        done(true)
         dismiss(animated: true, completion: nil)
     }
-
-    @IBAction func acceptAllButtonClicked(_ sender: UIButton) {
-        if checked {
-            checked = false
-            sender.setImage(#imageLiteral(resourceName: "btn_check_off_normal_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
-        } else {
-            checked = true
-            sender.setImage(#imageLiteral(resourceName: "btn_check_on_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
-        }
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

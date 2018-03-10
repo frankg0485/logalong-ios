@@ -11,7 +11,7 @@ import UIKit
 class UsersTableViewCell: UITableViewCell {
 
     @IBOutlet weak var userLabel: UILabel!
-    @IBOutlet weak var checkButton: UIButton!
+    @IBOutlet weak var checkButton: LCheckbox!
     @IBOutlet weak var shareStatusButton: UIButton!
     @IBOutlet weak var ownerButton: UIButton!
 

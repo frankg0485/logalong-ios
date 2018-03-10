@@ -10,17 +10,19 @@ import UIKit
 
 class LCheckbox: UIButton
 {
-    let BOX_W = 30
-    let BOX_H = 30
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setImage(#imageLiteral(resourceName: "btn_check_off_holo_light").resizedImageWithinRect(rectSize: CGSize(width: BOX_W, height: BOX_H)), for: .normal)
-        self.setImage(#imageLiteral(resourceName: "btn_check_off_disable_holo_light").resizedImageWithinRect(rectSize: CGSize(width: BOX_W, height: BOX_H)), for: .disabled)
-        self.setImage(#imageLiteral(resourceName: "btn_check_on_holo_light").resizedImageWithinRect(rectSize: CGSize(width: BOX_W, height: BOX_H)), for: .selected)
-        self.setImage(#imageLiteral(resourceName: "btn_check_on_disabled_holo_light").resizedImageWithinRect(rectSize: CGSize(width: BOX_W, height: BOX_H)), for: [.disabled, .selected])
+        self.setImage(#imageLiteral(resourceName: "btn_check_off_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
+        self.setImage(#imageLiteral(resourceName: "btn_check_off_disable_holo_light").withRenderingMode(.alwaysOriginal), for: .disabled)
+        self.setImage(#imageLiteral(resourceName: "btn_check_on_holo_light").withRenderingMode(.alwaysOriginal), for: .selected)
+        self.setImage(#imageLiteral(resourceName: "btn_check_on_disabled_holo_light").withRenderingMode(.alwaysOriginal), for: [.disabled, .selected])
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        self.setImage(#imageLiteral(resourceName: "btn_check_off_holo_light").withRenderingMode(.alwaysOriginal), for: .normal)
+        self.setImage(#imageLiteral(resourceName: "btn_check_off_disable_holo_light").withRenderingMode(.alwaysOriginal), for: .disabled)
+        self.setImage(#imageLiteral(resourceName: "btn_check_on_holo_light").withRenderingMode(.alwaysOriginal), for: .selected)
+        self.setImage(#imageLiteral(resourceName: "btn_check_on_disabled_holo_light").withRenderingMode(.alwaysOriginal), for: [.disabled, .selected])
     }
 }

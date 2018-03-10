@@ -181,7 +181,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
 
         let hl3 = HorizontalLayout(height: ROW_H2)
         hl3.layoutMargins = UIEdgeInsetsMake(0, 0, ROW_H - ROW_H2, 0)
-        checkboxShowPass = LCheckbox(frame: CGRect(x: 0, y: 0, width: 40, height: ROW_H2))
+        checkboxShowPass = LCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         checkboxShowPass.layoutMargins = UIEdgeInsetsMake(0, 6, 0, 0)
         checkboxShowPass.isUserInteractionEnabled = false
         checkboxShowPass.isSelected = false
@@ -219,7 +219,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         headerView.addSubview(hl3)
         headerView.addSubview(hl4)
 
-        checkboxLogin = LCheckbox(frame: CGRect(x: 0, y: 0, width: 40, height: ROW_H))
+        checkboxLogin = LCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         checkboxLogin.layoutMargins = UIEdgeInsetsMake(0, 6, 0, 0)
         checkboxLogin.isUserInteractionEnabled = false
         let label = UILabel(frame: CGRect(x: 1, y: 0, width: 0, height: ROW_H))
@@ -337,7 +337,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
             doneButton.isEnabled = false
         } else{
             if (userId != oldUserId || password != oldPassword || name != oldName ) &&
-                (userId.count > 1 && password.count > 3) {
+                (userId.count > 1 && password.count > 3 &&
+                    (name.count > 3 || checkboxLogin.isSelected)) {
                 doneButton.isEnabled = true
             } else {
                 doneButton.isEnabled = false

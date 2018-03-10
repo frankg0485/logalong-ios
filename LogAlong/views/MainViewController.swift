@@ -99,9 +99,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         shareViewPresented = false
 
         _ = LJournal.instance.confirmAccountShare(aid: request.accountGid, uid: request.userId, yes: ok)
-
         LPreferences.deleteAccountShareRequest(request: request)
-
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkForRequest), userInfo: nil, repeats: false)
     }
 
@@ -119,26 +117,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "AccountShareRequest") as! ShareAccountConfirmViewController
 
-        controller.modalPresentationStyle = UIModalPresentationStyle.popover
-        controller.popoverPresentationController?.delegate = self
-        controller.preferredContentSize = CGSize(width: 375, height: 230)
-
         controller.accountUserLabelText = "\(request.accountName) : \(request.userName) (\(request.userFullName))"
         controller.request = request
 
-        let popoverPresentationController = controller.popoverPresentationController
+        dismissable = false
+        shareViewPresented = true
 
-        if let _popoverPresentationController = popoverPresentationController {
-            // set the view from which to pop up
-            _popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
-            _popoverPresentationController.sourceView = self.view;
-            _popoverPresentationController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-            // present (id iPhone it is a modal automatic full screen)
-            dismissable = false
-
-            shareViewPresented = true
-            self.present(controller, animated: true, completion: nil)
-        }
+        presentPopover(controller)
     }
 
     @objc func handleGestureLeft(_ gesture: UIGestureRecognizer) {
@@ -277,9 +262,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         presentPasswordPopover()
     }
 
-    func presentPasswordPopover() {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CurrentPasswordViewController") as!CurrentPasswordViewController
-
+    private func presentPopover(_ vc: UIViewController) {
         vc.modalPresentationStyle = UIModalPresentationStyle.popover
         vc.popoverPresentationController?.sourceView = self.view
         vc.popoverPresentationController?.sourceRect =
@@ -287,8 +270,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
         vc.popoverPresentationController!.delegate = self
 
-        vc.canCancel = false
         present(vc, animated: true, completion: nil)
+    }
+
+    private func presentPasswordPopover() {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CurrentPasswordViewController") as!CurrentPasswordViewController
+
+        vc.canCancel = false
+        presentPopover(vc)
     }
     // MARK: - Table view data source
 
