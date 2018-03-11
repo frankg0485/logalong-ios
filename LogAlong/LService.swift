@@ -278,6 +278,12 @@ class LService {
                                 transaction = LTransaction()
                             }
                         }
+
+                        var oldAmount: Double = 0
+                        if !create {
+                            oldAmount = transaction!.amount
+                        }
+
                         let dbAccount = DBAccount.instance
                         transaction!.gid = gid
                         transaction!.accountId = dbAccount.getId(gid: aid)!
@@ -298,7 +304,7 @@ class LService {
                         if (create) {
                             _ = dbTransaction.add(&transaction!)
                         } else {
-                            _ = dbTransaction.update(transaction!)
+                            _ = dbTransaction.update(transaction!, oldAmount: oldAmount)
                         }
 
                     case LProtocol.JRQST_GET_SCHEDULE: fallthrough

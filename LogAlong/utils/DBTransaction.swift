@@ -408,15 +408,17 @@ class DBTransaction: DBGeneric<LTransaction> {
         }
     }
 
-    override func update(_ trans: LTransaction) -> Bool {
+    func update(_ trans: LTransaction, oldAmount: Double) -> Bool {
         if trans.accountId <= 0 || trans.amount == Double(0) {
             LLog.w("\(self)", "failed to update: invalid transaction account or amount")
             return false
         }
 
         if (super.update(trans)) {
-            let amount = (trans.type == .INCOME || trans.type == .TRANSFER_COPY) ? trans.amount : -trans.amount
-            DBAccountBalance.updateAccountBalance(id: trans.accountId, amount: amount, timestamp: trans.timestamp)
+            let amount = (trans.type == .INCOME || trans.type == .TRANSFER_COPY) ? trans.amount - oldAmount : oldAmount - trans.amount
+            if amount != 0 {
+                DBAccountBalance.updateAccountBalance(id: trans.accountId, amount: amount, timestamp: trans.timestamp)
+            }
             return true
         } else {
             return false
@@ -467,12 +469,12 @@ class DBTransaction: DBGeneric<LTransaction> {
         return true
     }
 
-    func update2(_ trans: LTransaction) -> Bool {
+    func update2(_ trans: LTransaction, oldAmount: Double) -> Bool {
         if trans.type != .TRANSFER {
             LLog.e("\(self)", "unexpected error, wrong update API called for invalid transaction type")
             return false
         }
-        if !update(trans) {
+        if !update(trans, oldAmount: oldAmount) {
             LLog.e("\(self)", "failed to update transfer")
             return false
         } else {
@@ -484,7 +486,7 @@ class DBTransaction: DBGeneric<LTransaction> {
                 trans2.id = cpy.id
                 //GID: don't care??
                 //trans2.gid = cpy.gid
-                if !update(trans2) {
+                if !update(trans2, oldAmount: oldAmount) {
                     LLog.e("\(self)", "failed to update transfer copy")
                     return false
                 }
