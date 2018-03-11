@@ -629,6 +629,7 @@
                         <outlet property="addUserButtonWidth" destination="Jnt-Bl-dKj" id="GUS-Jp-xKR"/>
                         <outlet property="addUserToAccountButton" destination="bnb-Uo-5RG" id="UhN-XH-gtb"/>
                         <outlet property="allAccountView" destination="W74-T9-N2o" id="mND-7A-cew"/>
+                        <outlet property="allAccountViewHeight" destination="QeK-jF-x8w" id="2UG-Ye-vb2"/>
                         <outlet property="msgLabel" destination="O8O-fm-Yeo" id="xvE-DO-MxQ"/>
                         <outlet property="msgLabelHeight" destination="EPN-KT-wIJ" id="fO3-QN-eLb"/>
                         <outlet property="okButton" destination="fMp-2f-uYZ" id="wi0-61-Tr5"/>
@@ -637,6 +638,7 @@
                         <outlet property="shareAccountLabel" destination="8mv-Fp-2fa" id="9Xu-kp-jAr"/>
                         <outlet property="tableHeight" destination="Xyp-LY-Dwt" id="CEh-NG-hiz"/>
                         <outlet property="userIdTextField" destination="SnL-Gj-hYn" id="unK-mB-jaH"/>
+                        <outlet property="userIdTextFieldHeight" destination="hIO-wq-O9e" id="mNo-xu-aFK"/>
                         <outlet property="usersTableView" destination="CwT-K0-jHa" id="VJb-Zb-SEK"/>
                     </connections>
                 </viewController>

@@ -642,9 +642,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                     }
                 } else {
                     if record!.type == .TRANSFER {
-                        ret = DBTransaction.instance.update2(record!)
+                        ret = DBTransaction.instance.update2(record!, oldAmount: origRecord.amount)
                     } else {
-                        ret = DBTransaction.instance.update(record!)
+                        ret = DBTransaction.instance.update(record!, oldAmount: origRecord.amount)
                     }
                     if ret {
                         _ = LJournal.instance.updateRecord(record!.id)

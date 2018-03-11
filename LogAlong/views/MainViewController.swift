@@ -114,16 +114,41 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return
         }
 
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "AccountShareRequest") as! ShareAccountConfirmViewController
+        var presentView = false
+        if let _ = UIApplication.shared.topMostViewController() as? MainViewController {
+            presentView = true
+        } else if let _ = UIApplication.shared.topMostViewController() as? RecordsPageViewController {
+            presentView = true
+        }
+        if let _ = UIApplication.shared.topMostViewController() as? SettingsTableViewController {
+            presentView = true
+        }
+        if let _ = UIApplication.shared.topMostViewController() as? ProfileViewController {
+            presentView = true
+        }
+        if let _ = UIApplication.shared.topMostViewController() as? AccountsTableViewController {
+            presentView = true
+        }
 
-        controller.accountUserLabelText = "\(request.accountName) : \(request.userName) (\(request.userFullName))"
-        controller.request = request
+        if presentView {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "AccountShareRequest") as! ShareAccountConfirmViewController
+            vc.accountUserLabelText = "\(request.accountName) : \(request.userName) (\(request.userFullName))"
+            vc.request = request
 
-        dismissable = false
-        shareViewPresented = true
+            if let topView = UIApplication.shared.topMostViewController()?.view {
+                vc.modalPresentationStyle = UIModalPresentationStyle.popover
+                vc.popoverPresentationController?.sourceView = topView
+                vc.popoverPresentationController?.sourceRect =
+                    CGRect(x: topView.bounds.midX, y: topView.bounds.midY - 22, width: 0, height: 0)
+                vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+                vc.popoverPresentationController!.delegate = self
 
-        presentPopover(controller)
+                dismissable = false
+                shareViewPresented = true
+                present(vc, animated: true, completion: nil)
+            }
+        }
     }
 
     @objc func handleGestureLeft(_ gesture: UIGestureRecognizer) {

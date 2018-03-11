@@ -14,35 +14,38 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
     @IBOutlet weak var tableHeight: NSLayoutConstraint!
     @IBOutlet weak var addUserButtonWidth: NSLayoutConstraint!
     @IBOutlet weak var allAccountView: UIView!
+    @IBOutlet weak var allAccountViewHeight: NSLayoutConstraint!
     @IBOutlet weak var addUserToAccountButton: UIButton!
     @IBOutlet weak var usersTableView: UITableView!
     @IBOutlet weak var userIdTextField: UITextField!
+    @IBOutlet weak var userIdTextFieldHeight: NSLayoutConstraint!
     @IBOutlet weak var shareAccountLabel: UILabel!
     @IBOutlet weak var okButton: UIButton!
     @IBOutlet weak var progress: UIActivityIndicatorView!
     @IBOutlet weak var progressWidth: NSLayoutConstraint!
 
-    var checkboxAllAccounts: LCheckbox!
-    var BASE_HEIGHT: CGFloat = 200
-    let MSG_HEIGHT: CGFloat = 35
-    let TABLE_CELL_HEIGHT: CGFloat = 50
-    let PROGRESS_WIDTH: CGFloat = 30
-    let ADD_USER_WIDTH: CGFloat = 30
+    private var checkboxAllAccounts: LCheckbox!
+    private let BASE_HEIGHT: CGFloat = 200
+    private let MSG_HEIGHT: CGFloat = 35
+    private let TABLE_CELL_HEIGHT: CGFloat = 50
+    private let PROGRESS_WIDTH: CGFloat = 30
+    private let ADD_USER_WIDTH: CGFloat = 30
 
-    var timer: Timer?
-    var count: Double = 0
-    var overlayViewController: UIViewController?
+    private var timer: Timer?
+    private var count: Double = 0
+    private var overlayViewController: UIViewController?
 
-    var account: LAccount = LAccount()
-    var ownAccount: Bool = false
+    var account: LAccount!
+    weak var accountsVC: AccountsTableViewController!
     var origSelectedIds: Set<Int64> = []
-    var selectedIds: Set<Int64> = []
-    var userName: String?
 
-    weak var accountsVC: AccountsTableViewController? = nil
+    private var ownAccount: Bool = false
+    private var selectedIds: Set<Int64>!
 
-    var shareUsers: [LUser] = []
-    var checkBoxClicked: [Bool] = []
+    private var userName: String?
+
+    private var shareUsers: [LUser] = []
+    private var checkBoxClicked: [Bool] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +62,7 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
 
         userIdTextField.delegate = self
 
+        selectedIds = origSelectedIds
         if account.getShareIdsStates().shareIds.isEmpty {
             ownAccount = true
         } else {
@@ -68,11 +72,16 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         if !ownAccount {
             usersTableView.isUserInteractionEnabled = false
             okButton.setTitle("Unshare", for: .normal)
+
+            userIdTextField.isHidden = true
+            userIdTextFieldHeight.constant = 0
+            addUserToAccountButton.isHidden = true
+            allAccountView.isHidden = true
+            allAccountViewHeight.constant = 0
         }
 
         populateUsersArray()
-        if ownAccount { okButton.isEnabled = false } else { checkOkButtonState() }
-
+        checkOkButtonState()
         setupDisplay()
         setViewHeight()
     }
@@ -96,6 +105,9 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
 
     private func setViewHeight() {
         var height: CGFloat = BASE_HEIGHT
+        if !ownAccount {
+            height -= 80
+        }
 
         let count = shareUsers.count > 6 ? 6 : shareUsers.count
         let tableH: CGFloat = CGFloat(count) * TABLE_CELL_HEIGHT
@@ -177,18 +189,11 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
     }
 
     private func checkOkButtonState() {
-        /*
         if ownAccount {
-            if (origSelectedIds == selectedIds) || (shareUsers.isEmpty && (!checkBoxClicked.contains(true))) {
-                okButton.isEnabled = false
-            } else {
-                okButton.isEnabled = true
-            }
+            okButton.isEnabled = (origSelectedIds != selectedIds)
         } else {
             okButton.isEnabled = true
         }
-         */
-        okButton.isEnabled = (origSelectedIds != selectedIds)
     }
 
     private func doCheckButton(_ row: Int) {
@@ -292,6 +297,11 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
     }
 
     @IBAction func okButtonClicked(_ sender: UIButton) {
+        if !ownAccount {
+            //this is the case where 'unshare' is clicked
+            selectedIds.removeAll()
+            checkboxAllAccounts.isSelected = false //JIC
+        }
         accountsVC?.onShareAccountDialogExit(checkboxAllAccounts.isSelected, account.id,
                                              selectedIds, origSelections: origSelectedIds)
         dismiss(animated: true, completion: nil)
