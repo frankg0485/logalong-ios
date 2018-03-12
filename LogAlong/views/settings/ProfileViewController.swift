@@ -241,6 +241,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
             checkboxLogin.isSelected = !checkboxLogin.isSelected
             nameView.isHidden = checkboxLogin.isSelected
             profileAction = checkboxLogin.isSelected ? .LOGIN_USER : .CREATE_USER
+            setDoneButtonState()
         } else if showPassView == sender.view {
             checkboxShowPass.isSelected = !checkboxShowPass.isSelected
             passValue.isSecureTextEntry = !checkboxShowPass.isSelected

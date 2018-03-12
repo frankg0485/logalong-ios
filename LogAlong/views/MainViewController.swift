@@ -119,14 +119,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             presentView = true
         } else if let _ = UIApplication.shared.topMostViewController() as? RecordsPageViewController {
             presentView = true
-        }
-        if let _ = UIApplication.shared.topMostViewController() as? SettingsTableViewController {
+        } else if let _ = UIApplication.shared.topMostViewController() as? SettingsTableViewController {
             presentView = true
-        }
-        if let _ = UIApplication.shared.topMostViewController() as? ProfileViewController {
+        } else if let _ = UIApplication.shared.topMostViewController() as? ProfileViewController {
             presentView = true
-        }
-        if let _ = UIApplication.shared.topMostViewController() as? AccountsTableViewController {
+        } else if let _ = UIApplication.shared.topMostViewController() as? AccountsTableViewController {
+            presentView = true
+        } else if let _ = UIApplication.shared.topMostViewController() as? SchedulesTableViewController {
             presentView = true
         }
 

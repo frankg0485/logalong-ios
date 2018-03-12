@@ -19,6 +19,7 @@ struct TypePassed {
 
 class AddTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, FViewControllerDelegate {
 
+    @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var repeatCountView: UIView!
     @IBOutlet weak var repeatIntervalView: UIView!
     @IBOutlet weak var amountDateView: UIView!
@@ -33,6 +34,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     @IBOutlet weak var tagLabel: UILabel!
     @IBOutlet weak var notesTextField: UITextField!
 
+    var infoLabel: UILabel!
     let accountDefaultDesc = NSLocalizedString("Choose account", comment: "")
     let categoryDefaultDesc = NSLocalizedString("Category not specified", comment: "")
     let payerDefaultDesc = NSLocalizedString("Payer not specified", comment: "")
@@ -68,6 +70,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         super.viewDidLoad()
         setupNavigationBarItems()
         createHeader()
+        createFooter()
 
         if isSchedule {
             record = schedule
@@ -93,17 +96,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }
         titleButton.setTitle(LTransaction.getTypeString(record!.type), for: .normal)
 
+        notesTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         notesTextField.delegate = self
-
-        if presentingViewController is NewAdditionTableViewController {
-            let date = Date()
-
-            let dayTimePeriodFormatter = DateFormatter()
-            dayTimePeriodFormatter.dateStyle = .short
-
-            let dateString = dayTimePeriodFormatter.string(from: date)
-            dateButton!.setTitle(dateString, for: .normal)
-        }
 
         amountButton.setTitle(String(record!.amount), for: .normal)
         amountButton.sizeToFit()
@@ -315,6 +309,46 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         amountDateView.addSubview(valueTimeHeader)
     }
 
+    private func createFooter() {
+        let hl = HorizontalLayout(height: 30)
+
+        let spacer = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: 25))
+
+        infoLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 30))
+        infoLabel.textColor = LTheme.Color.light_gray_text_color
+        infoLabel.text = ""
+        infoLabel.font = UIFont.systemFont(ofSize: 11)
+        infoLabel.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 16)
+        infoLabel.contentMode = .right
+
+        hl.addSubview(spacer)
+        hl.addSubview(infoLabel)
+        footerView.addSubview(hl)
+        updateFooterInfo()
+    }
+
+    private func updateFooterInfo() {
+        var txt: String
+
+        let date = Date(milliseconds: record.timestampAccess)
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateStyle = .medium
+        txt = dayTimePeriodFormatter.string(from: date)
+
+        if record.by == LPreferences.getUserIdNum() || record.by <= 0 {
+            txt += " " +  NSLocalizedString("by myself", comment: "")
+        } else {
+            if let name = LPreferences.getShareUserName(record.by) {
+                txt += " " + NSLocalizedString("by ", comment: "") + name
+            }
+            else if let id = LPreferences.getShareUserId(record.by) {
+                txt += " " + NSLocalizedString("by ", comment: "") + id
+            }
+        }
+        infoLabel.text = txt
+        infoLabel.sizeToFit()
+    }
+
     private func updateScheduleDisplay() {
         repeatIntervalButton?.setTitle(String(schedule.repeatInterval), for: .normal)
 
@@ -403,6 +437,27 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
         return false
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let limitLength = 32
+        guard let text = textField.text else { return true }
+        let newLength = text.count + string.count - range.length
+        return newLength <= limitLength
+    }
+
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if let txt = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            record.note = txt
+            updateSaveButtonState()
+        }
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let txt = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            record.note = txt
+            updateSaveButtonState()
+        }
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -603,6 +658,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             return
         }
 
+        record.by = Int64(LPreferences.getUserIdNum())
         record.timestampAccess = Date().currentTimeMillis
 
         if isSchedule {
@@ -651,12 +707,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                     }
                 }
             }
-
-            //if presentingViewController is NewAdditionTableViewController {
-                //dismiss(animated: true, completion: nil)
-            //} else {
-                //performSegue(withIdentifier: "unwindToRecordList", sender: self)
-            //}
         }
         navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
         navigationController?.popViewController(animated: true)
