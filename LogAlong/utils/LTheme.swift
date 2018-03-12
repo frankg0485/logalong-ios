@@ -58,6 +58,10 @@ class LTheme {
         static let row_released_color = UIColor(hex: 0xced0d2)
         static let light_row_released_color = UIColor(hex: 0xdee0e2)
         static let top_bar_background = UIColor(hex: 0x585c60)
+
+        static let expense_selector_normal = UIColor(hex: 0x20ff0000)
+        static let income_selector_normal = UIColor(hex: 0x2000ff00)
+        static let transfer_selector_normal = UIColor(hex: 0x100000ff)
     }
 
     class Dimension {

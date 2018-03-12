@@ -22,12 +22,30 @@ class NewAdditionTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        view.superview?.layer.borderColor = UIColor.white.cgColor
+        view.superview?.layer.borderWidth = 1
+
+        super.viewWillAppear(animated)
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Navigation
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 1:
+            cell.backgroundColor = LTheme.Color.income_selector_normal
+        case 2:
+            cell.backgroundColor = LTheme.Color.transfer_selector_normal
+        default:
+            cell.backgroundColor = LTheme.Color.expense_selector_normal
+        }
+    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 

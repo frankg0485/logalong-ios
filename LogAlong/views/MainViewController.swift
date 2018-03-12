@@ -231,8 +231,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             vc.myNavigationController = self.navigationController
 
-            //149 = 3 * 50 (cell height) - 1 (cell separator height): so to hide the last cell separator
-            vc.preferredContentSize = CGSize(width: 140, height: 149)
+            //164 = 3 * 55 (cell height) - 1 (cell separator height): so to hide the last cell separator
+            vc.preferredContentSize = CGSize(width: 135, height: 164)
 
             dismissable = true
 
