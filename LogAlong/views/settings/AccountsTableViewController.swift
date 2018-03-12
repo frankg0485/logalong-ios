@@ -38,13 +38,6 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
                             listener: self)
 
         LBroadcast.register(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, cb: #selector(self.uiUpdateAccount), listener: self)
-
-        //        tableView.tableFooterView = UIView()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
@@ -272,8 +265,8 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = LTheme.Color.row_released_color
-        cell.layer.borderWidth = 1
-        cell.layer.borderColor = tableView.backgroundColor?.cgColor
+        //cell.layer.borderWidth = 1
+        //cell.layer.borderColor = tableView.backgroundColor?.cgColor
     }
 
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {

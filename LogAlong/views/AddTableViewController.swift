@@ -68,16 +68,15 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBarItems()
-        createHeader()
-        createFooter()
-
         if isSchedule {
             record = schedule
             origSchedule = LScheduledTransaction(schedule: schedule)
         }
-
         origRecord = LTransaction(trans: record!)
+
+        setupNavigationBarItems()
+        createHeader()
+        createFooter()
 
         switch (record!.type) {
         case .EXPENSE:
@@ -289,7 +288,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         amountButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: fontsize)
         amountButton.contentHorizontalAlignment = .left
         amountButton.addTarget(self, action: #selector(self.onAmountClick), for: .touchUpInside)
-        amountButton.frame = CGRect(x: 0, y: 0, width: 80, height: BTN_H)
+        amountButton.frame = CGRect(x: 4, y: 0, width: 0, height: BTN_H)
 
         dateButton = UIButton(type: .custom)
         dateButton.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
@@ -298,9 +297,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         //dateButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: fontsize - 2)
         dateButton.contentHorizontalAlignment = .right
         dateButton.addTarget(self, action: #selector(self.onDateClick), for: .touchUpInside)
-        dateButton.frame = CGRect(x: 0, y: 0, width: 80, height: BTN_H)
+        dateButton.frame = CGRect(x: 4, y: 0, width: 0, height: BTN_H)
 
-        let spacer = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: 25))
+        let spacer = UIView(frame: CGRect(x: 2, y: 0, width: 0, height: 25))
 
         valueTimeHeader.addSubview(amountButton)
         valueTimeHeader.addSubview(spacer)
