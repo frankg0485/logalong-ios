@@ -64,8 +64,8 @@ class SchedulesTableViewController: UITableViewController, UIPopoverPresentation
             vc.myNavigationController = self.navigationController
             vc.isSchedule = true
 
-            //149 = 3 * 50 (cell height) - 1 (cell separator height): so to hide the last cell separator
-            vc.preferredContentSize = CGSize(width: 140, height: 149)
+            //164 = 3 * 55 (cell height) - 1 (cell separator height): so to hide the last cell separator
+            vc.preferredContentSize = CGSize(width: 135, height: 164)
 
             self.present(vc, animated: true, completion: nil)
         }

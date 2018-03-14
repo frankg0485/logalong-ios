@@ -415,7 +415,7 @@ class LService {
 
             //no more active journal, start polling
             if (!moreJournal) {
-                _ = UiRequest.instance.UiPoll()
+                gatedPoll()
                 //serviceHandler.postDelayed(pollRunnable, NETWORK_IDLE_POLLING_MS)
             }
         }
@@ -431,11 +431,13 @@ class LService {
         pollingCount = 0
 
         if !LJournal.instance.flush() {
-            _ = UiRequest.instance.UiPoll()
+            gatedPoll()
         }
     }
 
     @objc func poll(notification: Notification) {
+        pollRequested = false
+
         if let bdata = notification.userInfo as? [String: Any] {
             if (LProtocol.RSPS_OK == (bdata["status"]) as! Int) {
                 let id: Int64 = bdata["id"] as! Int64
@@ -760,7 +762,14 @@ class LService {
 
     @objc func pollAck(notification: Notification) {
         if (!LJournal.instance.flush()) {
-            _ = UiRequest.instance.UiPoll()
+            gatedPoll()
+        }
+    }
+
+    private var pollRequested = false
+    private func gatedPoll() {
+        if !pollRequested {
+            pollRequested = UiRequest.instance.UiPoll()
         }
     }
 }

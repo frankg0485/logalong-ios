@@ -33,6 +33,7 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
 
     var passwordChanged = false
     var delegate: FShowPasswordCellsDelegate?
+    var alreadyDismissed = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -155,6 +156,11 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
     }
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
+        if alreadyDismissed {
+            do_cancel() //JIC
+            return
+        }
+
         if emailSent {
             resetPassword = false
             emailSent = false
@@ -174,6 +180,11 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
         LBroadcast.unregister(LBroadcast.ACTION_SIGN_IN, listener: self)
         LBroadcast.unregister(LBroadcast.ACTION_UI_RESET_PASSWORD, listener: self)
         dismiss(animated: true, completion: nil)
+
+        //FIXME: for unknown reason (maybe this is a simulator only behaviour, but sometime it would complain
+        // "Warning: Attempt to dismiss from view controller ... while a presentation or dismiss is in progress!"
+        // and if that happens, this popover will fail to dismiss, and causes subsequent 'OK' click to error out
+        alreadyDismissed = true
     }
 
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
