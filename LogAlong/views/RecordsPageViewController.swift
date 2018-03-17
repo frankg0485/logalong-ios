@@ -29,6 +29,8 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
     private var viewM: RecordsViewController?
     private var viewR: RecordsViewController?
     private var viewNext: RecordsViewController?
+    private var leftView: UIView?
+    private var rightView: UIView?
 
     private var isVisible: Bool = false
     private var isRefreshPending: Bool = false
@@ -55,6 +57,9 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
 
         setViewControllers([viewM!], direction: .forward, animated: true, completion: nil)
         setSearchButtonImage()
+
+        setupLeftRightControls()
+        displayShowLeftRight()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -116,6 +121,7 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         searchControls = LPreferences.getRecordsSearchControls()
         refreshAll()
         setSearchButtonImage()
+        displayShowLeftRight()
     }
 
     private func setSearchButtonImage() {
@@ -197,10 +203,17 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         }
     }
 
+    private func displayShowLeftRight() {
+        var (y, m) = nextYearMonth(-1)
+        leftView?.isHidden =  (y == navYear && m == navMonth)
+        (y, m) = nextYearMonth(1)
+        rightView?.isHidden = (y == navYear && m == navMonth)
+    }
+
     @objc func onTitleClick() {
         LPreferences.setRecordsViewTimeInterval(nextViewInterval().rawValue)
         titleBtn!.setTitle(getTitle(), for: .normal)
-
+        displayShowLeftRight()
         refreshAll()
     }
 
@@ -243,6 +256,91 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         return UIModalPresentationStyle.none
     }
 
+    @objc func onLeftClick() {
+        if getLeft() {
+            setViewControllers([viewL!], direction: .reverse, animated: true, completion: { done in
+                if done {
+                    let vv = self.viewL
+                    self.viewL = self.viewR
+                    self.viewR = self.viewM
+                    self.viewM = vv
+                    self.navRight()
+                }
+            })
+        }
+    }
+
+    @objc func onRightClick() {
+        if getRight() {
+            setViewControllers([viewR!], direction: .forward, animated: true, completion: { done in
+                if done {
+                    let vv = self.viewR
+                    self.viewR = self.viewL
+                    self.viewL = self.viewM
+                    self.viewM = vv
+                    self.navLeft()
+                }
+            })
+        }
+    }
+
+    private func setupLeftRightControls() {
+        let BTN_W: CGFloat = 80
+        let BTN_H: CGFloat = 80
+        let BTN_S: CGFloat = 20
+        let bgdColor = UIColor(hex: 0x10000000)
+
+        let leftBtn = UIButton(frame: CGRect(x: 0, y: 0, width: BTN_W, height: BTN_H))
+        leftBtn.layoutMargins = UIEdgeInsets(top: 0, left: -BTN_S, bottom: 0, right: 0)
+        leftBtn.addTarget(self, action: #selector(self.onLeftClick), for: .touchUpInside)
+        leftBtn.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
+        leftBtn.backgroundColor = bgdColor
+        leftBtn.layer.cornerRadius = leftBtn.bounds.size.width / 2.0
+        if #available(iOS 11.0, *) {
+            leftBtn.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        } else {
+            // Fallback on earlier versions
+        }
+
+        let rightBtn = UIButton(frame: CGRect(x: 0, y: 0, width: BTN_W, height: BTN_H))
+        rightBtn.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -BTN_S)
+        rightBtn.addTarget(self, action: #selector(self.onRightClick), for: .touchUpInside)
+        rightBtn.setImage(#imageLiteral(resourceName: "ic_action_right").withRenderingMode(.alwaysOriginal), for: .normal)
+        rightBtn.backgroundColor = bgdColor
+        rightBtn.layer.cornerRadius = leftBtn.bounds.size.width / 2.0
+        if #available(iOS 11.0, *) {
+            rightBtn.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+        } else {
+            // Fallback on earlier versions
+        }
+
+        view.addSubview(leftBtn)
+        view.addSubview(rightBtn)
+
+        leftBtn.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal,
+                           toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: -2).isActive = true
+        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal,
+                           toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal,
+                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_W).isActive = true
+        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
+                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_H).isActive = true
+
+        rightBtn.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal,
+                           toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: -2).isActive = true
+        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal,
+                           toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal,
+                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_W).isActive = true
+        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
+                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_H).isActive = true
+
+        leftView = leftBtn
+        rightView = rightBtn
+    }
+
     private var titleBtn: UIButton?
     private var sortBtn: UIButton?
     private var searchBtn: UIButton?
@@ -273,18 +371,6 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         searchBtn!.addTarget(self, action: #selector(self.onSearchClick), for: .touchUpInside)
         searchBtn!.setSize(w: BTN_W, h: BTN_H)
         //searchBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
-
-        /*
-         let rightBtn = UIButton(type: .system)
-         rightBtn.setImage(#imageLiteral(resourceName: "ic_action_right").withRenderingMode(.alwaysOriginal), for: .normal)
-         rightBtn.setSize(w: BTN_W, h: BTN_H)
-         rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
-
-         let leftBtn = UIButton(type: .system)
-         leftBtn.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
-         leftBtn.setSize(w: BTN_W, h: BTN_H)
-         leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S)
-         */
 
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: sortBtn!), UIBarButtonItem(customView: chartBtn)]
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBtn!)
@@ -404,10 +490,12 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
     private func navLeft() {
         (navYear, navMonth) = nextYearMonth(+1)
         //LLog.d("\(self)","Y/M: \(navYear) : \(navMonth)")
+        displayShowLeftRight()
     }
 
     private func navRight() {
         (navYear, navMonth) = nextYearMonth(-1)
         //LLog.d("\(self)","Y/M: \(navYear) : \(navMonth)")
+        displayShowLeftRight()
     }
 }
