@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FViewControllerDelegate: class {
-    func passNumberBack(_ caller: UIViewController, type: TypePassed)
+    func passNumberBack(_ caller: UIViewController, type: TypePassed, okPressed: Bool)
 }
 /*
 protocol FLoginViewControllerDelegate: class {

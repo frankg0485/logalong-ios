@@ -55,6 +55,49 @@ class LA {
     }
 }
 
+extension String {
+    subscript (bounds: CountableClosedRange<Int>) -> String {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return String(self[start...end])
+    }
+
+    subscript (bounds: CountableRange<Int>) -> String {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return String(self[start..<end])
+    }
+
+    subscript (bounds: PartialRangeUpTo<Int>) -> String {
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return String(self[startIndex..<end])
+    }
+
+    subscript (bounds: PartialRangeThrough<Int>) -> String {
+        let end = index(startIndex, offsetBy: bounds.upperBound)
+        return String(self[startIndex...end])
+    }
+
+    subscript (bounds: CountablePartialRangeFrom<Int>) -> String {
+        let start = index(startIndex, offsetBy: bounds.lowerBound)
+        return String(self[start..<endIndex])
+    }
+
+    subscript (i: Int) -> Character {
+        return self[index(startIndex, offsetBy: i)]
+    }
+
+    func indexOf(_ input: String,
+                 options: String.CompareOptions = .literal) -> String.Index? {
+        return self.range(of: input, options: options)?.lowerBound
+    }
+
+    func lastIndexOf(_ string: String) -> Int? {
+        guard let index = range(of: string, options: .backwards) else { return nil }
+        return self.distance(from: self.startIndex, to: index.lowerBound)
+    }
+}
+
 extension UIColor {
     public convenience init(hex: UInt32) {
         let r, g, b: CGFloat

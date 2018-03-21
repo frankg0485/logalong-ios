@@ -50,6 +50,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     var createRecord: Bool = false
     var isSchedule: Bool = false
     var isReadOnly: Bool = false
+    var firstPopup = false
 
     var cancelButton: UIButton!
     var saveButton: UIButton!
@@ -165,8 +166,10 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 withIdentifier: "SelectAmountViewController") as! SelectAmountViewController
 
             vc.delegate = self
-            vc.initValue = record!.amount
+            vc.oldValue = record!.amount
             vc.color = readyForPopover(vc)
+
+            firstPopup = true
             self.present(vc, animated: true, completion: nil)
         }
     }
@@ -464,11 +467,20 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return true
     }
 
-    func passNumberBack(_ caller: UIViewController, type: TypePassed) {
+    func passNumberBack(_ caller: UIViewController, type: TypePassed, okPressed: Bool) {
         if let _ = caller as? SelectAmountViewController {
-            record!.amount = type.double
-            amountButton.setTitle(String(format: "%.2lf", type.double), for: .normal)
-            amountButton.sizeToFit()
+            if !okPressed && firstPopup {
+                navigationController?.popViewController(animated: true)
+            } else {
+                firstPopup = false
+
+                if okPressed {
+                    record!.amount = type.double
+
+                    amountButton.setTitle(String(format: "%.2lf", type.double), for: .normal)
+                    amountButton.sizeToFit()
+                }
+            }
         } else if let sv = caller as? SelectViewController {
             switch sv.selectType {
             case .ACCOUNT:
@@ -482,7 +494,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 categoryLabel.text = DBCategory.instance.get(id: type.int64)?.name
             case .TAG:
                 record!.tagId = type.int64
-                tagLabel.text = DBTag.instance.get(id: type.int64)?.name
+                tagLabel.text = DBTag.instance.get(id: (type.int64))?.name
             case .PAYER: fallthrough
             case .PAYEE:
                 record!.vendorId = type.int64
@@ -586,7 +598,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             vc.color = color
         }  else if let vc = segue.destination as? SelectAmountViewController {
             vc.delegate = self
-            vc.initValue = record!.amount
+            vc.oldValue = record!.amount
             vc.color = color
         }  else if let vc = segue.destination as? DatePickerViewController {
             vc.delegate = self

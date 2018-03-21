@@ -181,7 +181,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
                 type.int64 = ids[0]
             }
 
-            delegate?.passNumberBack(self, type: type)
+            delegate?.passNumberBack(self, type: type, okPressed: true)
         }
 
         dismiss(animated: true, completion: nil)

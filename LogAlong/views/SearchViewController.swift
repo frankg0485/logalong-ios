@@ -182,7 +182,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
 
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SelectAmountViewController")
                 as! SelectAmountViewController
-            vc.initValue = search.value
+            vc.oldValue = search.value
             vc.color = LTheme.Color.base_orange
             vc.delegate = self
 
@@ -278,46 +278,48 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         displayValue()
     }
 
-    func passNumberBack(_ caller: UIViewController, type: TypePassed) {
-        switch searchSelectType {
-        case .ACCOUNT:
-            if (type.allSelected || type.array64!.isEmpty) {
-                search.accounts = [];
-            } else {
-                search.accounts = type.array64!
+    func passNumberBack(_ caller: UIViewController, type: TypePassed, okPressed: Bool) {
+        if okPressed {
+            switch searchSelectType {
+            case .ACCOUNT:
+                if (type.allSelected || type.array64!.isEmpty) {
+                    search.accounts = [];
+                } else {
+                    search.accounts = type.array64!
+                }
+                displayAccounts()
+            case .CATEGORY:
+                if (type.allSelected || type.array64!.isEmpty) {
+                    search.categories = [];
+                } else {
+                    search.categories = type.array64!
+                }
+                displayCategories()
+            case .VENDOR:
+                if (type.allSelected || type.array64!.isEmpty) {
+                    search.vendors = []
+                } else {
+                    search.vendors = type.array64!
+                }
+                displayVendors()
+            case .TAG:
+                if (type.allSelected || type.array64!.isEmpty) {
+                    search.tags = []
+                } else {
+                    search.tags = type.array64!
+                }
+                displayTags()
+            case .FROM:
+                search.from = type.int64
+                displayFromTime()
+            case .TO:
+                search.to = type.int64
+                displayToTime()
+            case .VALUE:
+                search.value = type.double
+                displayValue()
+            default: break
             }
-            displayAccounts()
-        case .CATEGORY:
-            if (type.allSelected || type.array64!.isEmpty) {
-                search.categories = [];
-            } else {
-                search.categories = type.array64!
-            }
-            displayCategories()
-        case .VENDOR:
-            if (type.allSelected || type.array64!.isEmpty) {
-                search.vendors = []
-            } else {
-                search.vendors = type.array64!
-            }
-            displayVendors()
-        case .TAG:
-            if (type.allSelected || type.array64!.isEmpty) {
-                search.tags = []
-            } else {
-                search.tags = type.array64!
-            }
-            displayTags()
-        case .FROM:
-            search.from = type.int64
-            displayFromTime()
-        case .TO:
-            search.to = type.int64
-            displayToTime()
-        case .VALUE:
-            search.value = type.double
-            displayValue()
-        default: break
         }
     }
 

@@ -35,7 +35,7 @@ class DatePickerViewController: UIViewController {
 
     @IBAction func okButtonPressed(_ sender: UIButton) {
         type.int64 = datePicker.date.currentTimeMillis
-        delegate?.passNumberBack(self, type: type)
+        delegate?.passNumberBack(self, type: type, okPressed: true)
 
         dismiss(animated: true, completion: nil)
     }
