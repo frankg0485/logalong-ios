@@ -1679,7 +1679,7 @@
                                     <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="3gU-mp-Mak"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ir4-nW-rMF">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ir4-nW-rMF">
                                 <rect key="frame" x="190" y="238" width="164" height="41.5"/>
                                 <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <size key="titleShadowOffset" width="1" height="1"/>
@@ -1916,16 +1916,14 @@
                             <constraint firstItem="FHz-WI-v9F" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="CHs-Kr-WqP"/>
                             <constraint firstItem="CtU-Ey-6Ns" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="CNn-du-33h"/>
                             <constraint firstItem="VSr-0m-H7B" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="CaT-pg-Qke"/>
-                            <constraint firstItem="Ir4-nW-rMF" firstAttribute="top" secondItem="CtU-Ey-6Ns" secondAttribute="bottom" constant="4.5" id="EvT-9m-mUX"/>
+                            <constraint firstItem="Ir4-nW-rMF" firstAttribute="top" secondItem="CtU-Ey-6Ns" secondAttribute="bottom" constant="5" id="EvT-9m-mUX"/>
                             <constraint firstItem="X4d-u3-jor" firstAttribute="top" secondItem="RYu-3x-get" secondAttribute="bottom" constant="20" id="F0u-PU-Dnu"/>
                             <constraint firstItem="wfQ-lD-dOW" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="FC4-mV-cQ0"/>
                             <constraint firstItem="RY7-W1-YAl" firstAttribute="leading" secondItem="qiJ-qg-zpB" secondAttribute="trailing" constant="5" id="FFV-af-WzQ"/>
                             <constraint firstItem="Ir4-nW-rMF" firstAttribute="baseline" secondItem="69X-Dv-OCd" secondAttribute="baseline" id="FRD-Fa-XQn"/>
                             <constraint firstItem="69X-Dv-OCd" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="FaN-3T-IG8"/>
                             <constraint firstItem="Vb1-9h-M6Q" firstAttribute="leading" secondItem="VSr-0m-H7B" secondAttribute="trailing" constant="5" id="G1A-co-hon"/>
-                            <constraint firstItem="YH6-Yh-W4T" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="GHO-Bz-xCc"/>
                             <constraint firstItem="Tgw-Lp-IAG" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="H98-um-8yR"/>
-                            <constraint firstItem="oSj-Ny-7qe" firstAttribute="top" secondItem="hjf-WB-WLU" secondAttribute="bottom" constant="5" id="HgY-lt-hZi"/>
                             <constraint firstItem="YxV-2B-Rbp" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="HmO-DK-J0d"/>
                             <constraint firstItem="6Rm-yS-YLi" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="ICv-3E-gIi"/>
                             <constraint firstItem="DrS-hk-SGb" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="Iix-rK-V54"/>
@@ -1943,7 +1941,6 @@
                             <constraint firstItem="CtU-Ey-6Ns" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="Ru4-nw-e4M"/>
                             <constraint firstItem="SOR-te-ryn" firstAttribute="leading" secondItem="DrS-hk-SGb" secondAttribute="trailing" constant="5" id="S7S-TS-Vas"/>
                             <constraint firstItem="RYu-3x-get" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="SY1-2r-A2R"/>
-                            <constraint firstItem="VSr-0m-H7B" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="SiZ-6O-TEa"/>
                             <constraint firstItem="YH6-Yh-W4T" firstAttribute="top" secondItem="oSj-Ny-7qe" secondAttribute="bottom" constant="5" id="Sm5-0g-7i4"/>
                             <constraint firstItem="wfQ-lD-dOW" firstAttribute="top" secondItem="VSr-0m-H7B" secondAttribute="bottom" constant="5" id="TnE-6w-Blr"/>
                             <constraint firstItem="qiJ-qg-zpB" firstAttribute="leading" secondItem="YxV-2B-Rbp" secondAttribute="trailing" constant="5" id="Uue-3X-hse"/>
@@ -1972,8 +1969,7 @@
                             <constraint firstItem="6Rm-yS-YLi" firstAttribute="baseline" secondItem="oSj-Ny-7qe" secondAttribute="baseline" id="jld-d9-E5S"/>
                             <constraint firstItem="qiJ-qg-zpB" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="jtA-LZ-qJ4"/>
                             <constraint firstItem="hlE-dm-L8M" firstAttribute="baseline" secondItem="VSr-0m-H7B" secondAttribute="baseline" id="jtv-5T-OP7"/>
-                            <constraint firstItem="X4d-u3-jor" firstAttribute="top" secondItem="Ir4-nW-rMF" secondAttribute="bottom" constant="20.5" id="mHe-7D-QEM"/>
-                            <constraint firstItem="oSj-Ny-7qe" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="mLi-l0-raP"/>
+                            <constraint firstItem="X4d-u3-jor" firstAttribute="top" secondItem="Ir4-nW-rMF" secondAttribute="bottom" constant="20" id="mHe-7D-QEM"/>
                             <constraint firstItem="wfQ-lD-dOW" firstAttribute="leading" secondItem="hjf-WB-WLU" secondAttribute="leading" id="mvd-xI-FWv"/>
                             <constraint firstItem="VSr-0m-H7B" firstAttribute="top" secondItem="YH6-Yh-W4T" secondAttribute="bottom" constant="5" id="nzM-69-d9r"/>
                             <constraint firstItem="YH6-Yh-W4T" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="oki-75-I64"/>
@@ -1981,12 +1977,10 @@
                             <constraint firstItem="HEf-Er-QT8" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="q3A-lp-N0f"/>
                             <constraint firstItem="wfQ-lD-dOW" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="qAf-5N-U2m"/>
                             <constraint firstItem="SOR-te-ryn" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="slR-OW-8j7"/>
-                            <constraint firstItem="69X-Dv-OCd" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="tLW-YX-hO1"/>
                             <constraint firstItem="6Rm-yS-YLi" firstAttribute="trailing" secondItem="hjf-WB-WLU" secondAttribute="trailing" id="tqq-nt-lcg"/>
                             <constraint firstItem="DrS-hk-SGb" firstAttribute="leading" secondItem="oSj-Ny-7qe" secondAttribute="trailing" constant="5" id="vVL-qc-DRI"/>
                             <constraint firstItem="HEf-Er-QT8" firstAttribute="leading" secondItem="CtU-Ey-6Ns" secondAttribute="trailing" constant="5" id="vZT-oL-pd8"/>
                             <constraint firstItem="hlE-dm-L8M" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="xJp-Xu-P84"/>
-                            <constraint firstItem="wfQ-lD-dOW" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="zFs-mY-xSe"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

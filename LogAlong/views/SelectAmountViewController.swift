@@ -65,8 +65,12 @@ class SelectAmountViewController: UIViewController {
     var value: Double = 0
     var operation = ""
 
+    private var isEqual: Bool = false
+    private var isImageReady: Bool = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         if oldValue == Double(0) {
             state = initNoInputState()
             amountTextField.text = "0.0"
@@ -90,7 +94,6 @@ class SelectAmountViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         setUpButtonImages()
-
         super.viewDidAppear(animated)
     }
 
@@ -104,10 +107,8 @@ class SelectAmountViewController: UIViewController {
     func setUpButtonImages() {
         deleteButton.setImage(#imageLiteral(resourceName: "ic_action_backspace").withRenderingMode(.alwaysOriginal), for: .normal)
         backButton.setImage(#imageLiteral(resourceName: "ic_action_undo").withRenderingMode(.alwaysOriginal), for: .normal)
-        okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
         okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept_disabled").withRenderingMode(.alwaysOriginal), for: .disabled)
-
-        okEqualsButton.setTitleColor(.white, for: .normal)
+        okEqualsButton.setImage( isEqual ? #imageLiteral(resourceName: "ic_action_equal").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
 
         deleteButton.imageEdgeInsets = UIEdgeInsetsMake(
             (deleteButton.frame.height - 30) / 2,
@@ -119,14 +120,14 @@ class SelectAmountViewController: UIViewController {
             (backButton.frame.width - 30) / 2,
             (backButton.frame.height - 30) / 2,
             (backButton.frame.width - 30) / 2)
+
         okEqualsButton.imageEdgeInsets = UIEdgeInsetsMake(
             (okEqualsButton.frame.height - 30) / 2,
             (okEqualsButton.frame.width - 30) / 2,
             (okEqualsButton.frame.height - 30) / 2,
             (okEqualsButton.frame.width - 30) / 2)
 
-        print(backButton.frame.height)
-        print(backButton.frame.width)
+        isImageReady = true
     }
 
 
@@ -355,7 +356,11 @@ class SelectAmountViewController: UIViewController {
         decimalPointButton.isEnabled = true
 
         amountTextField.text = "0.0"
-        okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
+        amountTextField.alpha = 0.5
+
+        if isImageReady {okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)}
+        isEqual = false
+
         numberText = ""
         return CalculatorState.INIT_NO_INPUT
     }
@@ -400,8 +405,13 @@ class SelectAmountViewController: UIViewController {
         okEqualsButton.isEnabled = true
 
         firstValueEnd = 0
-        okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
+
+        if isImageReady {okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)}
+        isEqual = false
+
         amountTextField.text = numberText
+        amountTextField.alpha = 1.0
+
         return CalculatorState.INTEGER
     }
 
@@ -439,8 +449,12 @@ class SelectAmountViewController: UIViewController {
         disableEnableOperationButtons(false)
         okEqualsButton.isEnabled = false
 
-        okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
+        if isImageReady {okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)}
+        isEqual = false
+
         amountTextField.text = numberText
+        amountTextField.alpha = 1.0
+
         return CalculatorState.DECIMAL_1_0
     }
 
@@ -496,8 +510,13 @@ class SelectAmountViewController: UIViewController {
         }
 
         firstValueEnd = 0
-        okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
+
+        if isImageReady {okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)}
+        isEqual = false
+
         amountTextField.text = numberText
+        amountTextField.alpha = 1.0
+
         return CalculatorState.DECIMAL
     }
 
@@ -531,7 +550,9 @@ class SelectAmountViewController: UIViewController {
     private func initMathInitState() -> CalculatorState {
         disableEnableOperationButtons(false)
         decimalPointButton.isEnabled = true
-        okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_equal").withRenderingMode(.alwaysOriginal), for: .normal)
+
+        if isImageReady {okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_equal").withRenderingMode(.alwaysOriginal), for: .normal)}
+        isEqual = true
 
         amountTextField.text = numberText
         firstValueEnd = numberText.count
