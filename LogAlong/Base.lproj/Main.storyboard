@@ -1683,14 +1683,13 @@
                                 <rect key="frame" x="190" y="238" width="164" height="41.5"/>
                                 <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <size key="titleShadowOffset" width="1" height="1"/>
-                                <state key="normal" title="OK"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="okButtonPressed:" destination="nSG-e5-vYq" eventType="touchUpInside" id="zku-4c-rHd"/>
+                                    <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="Qih-NL-FxW"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Rm-yS-YLi">
@@ -1813,18 +1812,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CtU-Ey-6Ns">
-                                <rect key="frame" x="190" y="191" width="79.5" height="42"/>
+                                <rect key="frame" x="190" y="191.5" width="79.5" height="42"/>
                                 <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
-                                    <attributedString key="attributedTitle">
-                                        <fragment content="DEL">
-                                            <attributes>
-                                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <font key="NSFont" metaFont="system" size="15"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
+                                    <attributedString key="attributedTitle"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -1832,7 +1824,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="Gt2-50-JqR"/>
+                                    <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="Lzi-8O-1R7"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wfQ-lD-dOW">
@@ -1866,30 +1858,7 @@
                                 <size key="titleShadowOffset" width="1" height="1"/>
                                 <state key="normal">
                                     <attributedString key="attributedTitle">
-                                        <fragment content="CLEAR">
-                                            <attributes>
-                                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <font key="NSFont" metaFont="system" size="15"/>
-                                            </attributes>
-                                        </fragment>
-                                    </attributedString>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="dAC-vk-DL2"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RYu-3x-get">
-                                <rect key="frame" x="105.5" y="238" width="79.5" height="41.5"/>
-                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <size key="titleShadowOffset" width="1" height="1"/>
-                                <state key="normal">
-                                    <attributedString key="attributedTitle">
-                                        <fragment content="=">
+                                        <fragment content="C">
                                             <attributes>
                                                 <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <font key="NSFont" metaFont="system" size="15"/>
@@ -1904,7 +1873,23 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="handleButtonPress:" destination="nSG-e5-vYq" eventType="touchUpInside" id="ADp-jg-s3d"/>
+                                    <action selector="clearPressed:" destination="nSG-e5-vYq" eventType="touchUpInside" id="mCz-CE-PJh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RYu-3x-get">
+                                <rect key="frame" x="105.5" y="238.5" width="79.5" height="41.5"/>
+                                <color key="backgroundColor" red="0.96877023963730569" green="0.55948606033034365" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <size key="titleShadowOffset" width="1" height="1"/>
+                                <state key="normal">
+                                    <attributedString key="attributedTitle"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="backPressed:" destination="nSG-e5-vYq" eventType="touchUpInside" id="5aM-pW-kHw"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1931,6 +1916,8 @@
                             <constraint firstItem="FHz-WI-v9F" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="CHs-Kr-WqP"/>
                             <constraint firstItem="CtU-Ey-6Ns" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="CNn-du-33h"/>
                             <constraint firstItem="VSr-0m-H7B" firstAttribute="width" secondItem="oSj-Ny-7qe" secondAttribute="width" id="CaT-pg-Qke"/>
+                            <constraint firstItem="Ir4-nW-rMF" firstAttribute="top" secondItem="CtU-Ey-6Ns" secondAttribute="bottom" constant="4.5" id="EvT-9m-mUX"/>
+                            <constraint firstItem="X4d-u3-jor" firstAttribute="top" secondItem="RYu-3x-get" secondAttribute="bottom" constant="20" id="F0u-PU-Dnu"/>
                             <constraint firstItem="wfQ-lD-dOW" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="FC4-mV-cQ0"/>
                             <constraint firstItem="RY7-W1-YAl" firstAttribute="leading" secondItem="qiJ-qg-zpB" secondAttribute="trailing" constant="5" id="FFV-af-WzQ"/>
                             <constraint firstItem="Ir4-nW-rMF" firstAttribute="baseline" secondItem="69X-Dv-OCd" secondAttribute="baseline" id="FRD-Fa-XQn"/>
@@ -1985,6 +1972,7 @@
                             <constraint firstItem="6Rm-yS-YLi" firstAttribute="baseline" secondItem="oSj-Ny-7qe" secondAttribute="baseline" id="jld-d9-E5S"/>
                             <constraint firstItem="qiJ-qg-zpB" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="jtA-LZ-qJ4"/>
                             <constraint firstItem="hlE-dm-L8M" firstAttribute="baseline" secondItem="VSr-0m-H7B" secondAttribute="baseline" id="jtv-5T-OP7"/>
+                            <constraint firstItem="X4d-u3-jor" firstAttribute="top" secondItem="Ir4-nW-rMF" secondAttribute="bottom" constant="20.5" id="mHe-7D-QEM"/>
                             <constraint firstItem="oSj-Ny-7qe" firstAttribute="height" secondItem="hjf-WB-WLU" secondAttribute="height" id="mLi-l0-raP"/>
                             <constraint firstItem="wfQ-lD-dOW" firstAttribute="leading" secondItem="hjf-WB-WLU" secondAttribute="leading" id="mvd-xI-FWv"/>
                             <constraint firstItem="VSr-0m-H7B" firstAttribute="top" secondItem="YH6-Yh-W4T" secondAttribute="bottom" constant="5" id="nzM-69-d9r"/>
@@ -2006,9 +1994,23 @@
                     <connections>
                         <outlet property="addButton" destination="6Rm-yS-YLi" id="Mwb-re-dox"/>
                         <outlet property="amountTextField" destination="hjf-WB-WLU" id="G8b-dX-Xug"/>
+                        <outlet property="backButton" destination="RYu-3x-get" id="Ctq-Ya-w4t"/>
+                        <outlet property="button0" destination="wfQ-lD-dOW" id="gNb-IM-3Zg"/>
+                        <outlet property="button1" destination="oSj-Ny-7qe" id="icr-ZB-VfP"/>
+                        <outlet property="button2" destination="DrS-hk-SGb" id="lMb-fK-g8T"/>
+                        <outlet property="button3" destination="SOR-te-ryn" id="sZz-fy-PlA"/>
+                        <outlet property="button4" destination="YH6-Yh-W4T" id="5lv-FR-Dui"/>
+                        <outlet property="button5" destination="YxV-2B-Rbp" id="Crk-ie-a7p"/>
+                        <outlet property="button6" destination="qiJ-qg-zpB" id="O99-Ih-qBD"/>
+                        <outlet property="button7" destination="VSr-0m-H7B" id="6J6-WF-Byd"/>
+                        <outlet property="button8" destination="Vb1-9h-M6Q" id="xgK-EH-HWH"/>
+                        <outlet property="button9" destination="FHz-WI-v9F" id="UVD-Hd-MYn"/>
+                        <outlet property="clearButton" destination="69X-Dv-OCd" id="fgk-k4-hhr"/>
                         <outlet property="decimalPointButton" destination="Tgw-Lp-IAG" id="5II-vS-87e"/>
+                        <outlet property="deleteButton" destination="CtU-Ey-6Ns" id="Yb5-tk-3p3"/>
                         <outlet property="divideButton" destination="HEf-Er-QT8" id="ck9-bU-Zec"/>
                         <outlet property="multiplyButton" destination="hlE-dm-L8M" id="OiM-Nm-xyY"/>
+                        <outlet property="okEqualsButton" destination="Ir4-nW-rMF" id="HPL-4X-WA1"/>
                         <outlet property="subtractButton" destination="RY7-W1-YAl" id="4Uq-2E-3KP"/>
                     </connections>
                 </viewController>
