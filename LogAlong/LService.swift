@@ -291,8 +291,10 @@ class LService {
                         }
 
                         let dbAccount = DBAccount.instance
+                        guard let accountId = dbAccount.getId(gid: aid) else { break }
+
                         transaction!.gid = gid
-                        transaction!.accountId = dbAccount.getId(gid: aid)!
+                        transaction!.accountId = accountId
                         transaction!.accountId2 = dbAccount.getId(gid: aid2) ?? 0
                         transaction!.categoryId = DBCategory.instance.getId(gid: cid) ?? 0
                         transaction!.tagId = DBTag.instance.getId(gid: tid) ?? 0

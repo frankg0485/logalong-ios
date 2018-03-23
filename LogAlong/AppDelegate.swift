@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         LServer.instance.delegate = LProtocol.instance
         LServer.instance.connect()
 
+        //DEBUG CODE
+        //_ = DBTransaction.instance.deleteAll()
         return true
     }
 

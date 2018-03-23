@@ -110,6 +110,22 @@ class DBGeneric<T> {
         return ret
     }
 
+    /*
+    func deleteAll() -> Bool {
+        var ret = false
+
+        do {
+            try DBHelper.instance.db!.run(table!.delete())
+            ret = true
+
+            LBroadcast.post(LBroadcast.ACTION_UI_DB_DATA_CHANGED)
+        } catch {
+            LLog.e("\(self)", "DB deletion all failed")
+        }
+
+        return ret
+    }*/
+
     func update(_ dbase: T) -> Bool {
         var ret = false
 

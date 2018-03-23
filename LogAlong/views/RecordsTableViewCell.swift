@@ -27,19 +27,18 @@ class RecordsTableViewCell: UITableViewCell {
     }
 
     func showRecord(_ record: LTransaction) {
+        guard let acnt = DBAccount.instance.get(id: record.accountId) else { return }
         if (record.type == TransactionType.TRANSFER) {
-            let acnt = DBAccount.instance.get(id: record.accountId)
             if let acnt2 = DBAccount.instance.get(id: record.accountId2) {
-                categoryLabel.text = acnt!.name + " --> " + acnt2.name
+                categoryLabel.text = acnt.name + " --> " + acnt2.name
             } else {
-                categoryLabel.text = acnt!.name + " -->"
+                categoryLabel.text = acnt.name + " -->"
             }
         } else if (record.type == TransactionType.TRANSFER_COPY) {
-            let acnt = DBAccount.instance.get(id: record.accountId)
             if let acnt2 = DBAccount.instance.get(id: record.accountId2) {
-                categoryLabel.text = acnt!.name + " <-- " + acnt2.name
+                categoryLabel.text = acnt.name + " <-- " + acnt2.name
             } else {
-                categoryLabel.text = "--> " + acnt!.name
+                categoryLabel.text = "--> " + acnt.name
             }
         } else {
             if  let cat = DBCategory.instance.get(id: record.categoryId) {
