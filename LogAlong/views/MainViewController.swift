@@ -114,6 +114,12 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             return
         }
 
+        let shareAccept = LPreferences.getShareAccept(request.userId)
+        if ((shareAccept != 0) && (shareAccept + 24 * 3600 > Int64(NSDate().timeIntervalSince1970))) {
+            _ = LJournal.instance.confirmAccountShare(aid: request.accountGid, uid: request.userId, yes: true)
+            return
+        }
+
         var presentView = false
         if let _ = UIApplication.shared.topMostViewController() as? MainViewController {
             presentView = true

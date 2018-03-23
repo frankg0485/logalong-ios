@@ -61,7 +61,9 @@ class LService {
     }
 
     @objc func login(notification: Notification) {
-        _ = LJournal.instance.flush()
+        if !LJournal.instance.flush() {
+            gatedPoll()
+        }
     }
 
     @objc func newJournalAvailable(notification: Notification) {
