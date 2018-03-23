@@ -12,6 +12,7 @@ class LService {
     static let instance = LService()
     var pollingCount = 0
     var journalPostErrorCount = 0
+    private var loggedIn = false
 
     private static let NOTIFICATION_UPDATE_USER_PROFILE: UInt16 = 0x001
     private static let NOTIFICATION_ADD_SHARE_USER: UInt16 = 0x002
@@ -61,13 +62,16 @@ class LService {
     }
 
     @objc func login(notification: Notification) {
+        loggedIn = true
         if !LJournal.instance.flush() {
             gatedPoll()
         }
     }
 
     @objc func newJournalAvailable(notification: Notification) {
-        _ = LJournal.instance.flush()
+        if loggedIn {
+            _ = LJournal.instance.flush()
+        }
     }
 
     @objc func postJournal(notification: Notification) {

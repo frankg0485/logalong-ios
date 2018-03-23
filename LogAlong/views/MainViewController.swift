@@ -117,6 +117,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let shareAccept = LPreferences.getShareAccept(request.userId)
         if ((shareAccept != 0) && (shareAccept + 24 * 3600 > Int64(NSDate().timeIntervalSince1970))) {
             _ = LJournal.instance.confirmAccountShare(aid: request.accountGid, uid: request.userId, yes: true)
+            LPreferences.deleteAccountShareRequest(request: request)
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkForRequest), userInfo: nil, repeats: false)
             return
         }
 
