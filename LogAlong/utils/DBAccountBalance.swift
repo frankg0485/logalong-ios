@@ -150,7 +150,13 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
                 if (lastAccountId == 0) {
                     lastAccountId = accountId
                     lastYear = year
+
+                    _ = DBAccountBalance.instance.remove(accountId: accountId)
                 } else if (lastAccountId != accountId || lastYear != year) {
+                    if lastAccountId != accountId {
+                        _ = DBAccountBalance.instance.remove(accountId: accountId)
+                    }
+
                     addUpdateAccountBalance(doubles, lastAccountId, lastYear)
 
                     lastAccountId = accountId
