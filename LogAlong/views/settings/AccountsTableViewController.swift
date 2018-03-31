@@ -374,22 +374,22 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
                 let acnt = accounts.remove(at: indexPath.row)
                 DBAccount.deleteEntries(of: acnt.id)
                 if DBAccount.instance.remove(id: acnt.id) {
-                    _ = LJournal.instance.deleteAccount(acnt.id)
+                    _ = LJournal.instance.deleteAccount(gid: acnt.gid)
                 }
             case .CATEGORY:
                 let cat = categories.remove(at: indexPath.row)
                 if DBCategory.instance.remove(id: cat.id) {
-                    _ = LJournal.instance.deleteCategory(cat.id)
+                    _ = LJournal.instance.deleteCategory(gid: cat.gid)
                 }
             case .VENDOR:
                 let vend = vendors.remove(at: indexPath.row)
                 if DBVendor.instance.remove(id: vend.id) {
-                    _ = LJournal.instance.deleteVendor(vend.id)
+                    _ = LJournal.instance.deleteVendor(gid: vend.gid)
                 }
             case .TAG:
                 let tag = tags.remove(at: indexPath.row)
                 if DBTag.instance.remove(id: tag.id) {
-                    _ = LJournal.instance.deleteTag(tag.id)
+                    _ = LJournal.instance.deleteTag(gid: tag.gid)
                 }
             }
 

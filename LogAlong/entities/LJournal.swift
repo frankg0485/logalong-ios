@@ -183,6 +183,11 @@ class LJournal {
                 return nil
             }
         }
+        static func fake_fetch(_ jdata: LBuffer) -> JLTransaction? {
+            let details = LTransactionDetails()
+            details.gid = jdata.getLongAutoInc()
+            return JLTransaction(details: details)
+        }
     }
 
     private class JLScheduledTransaction : LScheduledTransaction, GenericJD {
@@ -263,6 +268,11 @@ class LJournal {
                 return nil
             }
         }
+        static func fake_fetch(_ jdata: LBuffer) -> JLScheduledTransaction? {
+            let schedule = LScheduledTransaction()
+            schedule.gid = jdata.getLongAutoInc()
+            return JLScheduledTransaction(schedule: schedule)
+        }
     }
 
     private class JLAccount: LAccount, GenericJD {
@@ -299,6 +309,11 @@ class LJournal {
             } else {
                 return nil
             }
+        }
+        static func fake_fetch(_ jdata: LBuffer) -> JLAccount? {
+            let account = LAccount()
+            account.gid = jdata.getLongAutoInc()
+            return JLAccount(account: account)
         }
     }
 
@@ -337,6 +352,11 @@ class LJournal {
                 return nil
             }
         }
+        static func fake_fetch(_ jdata: LBuffer) -> JLCategory? {
+            let category = LCategory()
+            category.gid = jdata.getLongAutoInc()
+            return JLCategory(category: category)
+        }
     }
 
     private class JLTag: LTag, GenericJD {
@@ -371,6 +391,11 @@ class LJournal {
             } else {
                 return nil
             }
+        }
+        static func fake_fetch(_ jdata: LBuffer) -> JLTag? {
+            let tag = LTag()
+            tag.gid = jdata.getLongAutoInc()
+            return JLTag(tag: tag)
         }
     }
 
@@ -407,6 +432,11 @@ class LJournal {
             } else {
                 return nil
             }
+        }
+        static func fake_fetch(_ jdata: LBuffer) -> JLVendor? {
+            let vendor = LVendor()
+            vendor.gid = jdata.getLongAutoInc()
+            return JLVendor(vendor: vendor)
         }
     }
 
@@ -448,37 +478,37 @@ class LJournal {
         case LProtocol.JRQST_UPDATE_RECORD:
             (retVal, newEntry, removeEntry) = recordJournalFlushAction.update(JLTransaction.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_RECORD:
-            (retVal, newEntry, removeEntry) = recordJournalFlushAction.delete(JLTransaction.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = recordJournalFlushAction.delete(JLTransaction.fake_fetch, jdata, ndata)
         case LProtocol.JRQST_ADD_SCHEDULE:
             (retVal, newEntry, removeEntry) = scheduleJournalFlushAction.add(JLScheduledTransaction.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_SCHEDULE:
             (retVal, newEntry, removeEntry) = scheduleJournalFlushAction.update(JLScheduledTransaction.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_SCHEDULE:
-            (retVal, newEntry, removeEntry) = scheduleJournalFlushAction.delete(JLScheduledTransaction.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = scheduleJournalFlushAction.delete(JLScheduledTransaction.fake_fetch, jdata, ndata)
         case LProtocol.JRQST_ADD_ACCOUNT:
             (retVal, newEntry, removeEntry) = accountJournalFlushAction.add(JLAccount.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_ACCOUNT:
             (retVal, newEntry, removeEntry) = accountJournalFlushAction.update(JLAccount.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_ACCOUNT:
-            (retVal, newEntry, removeEntry) = accountJournalFlushAction.delete(JLAccount.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = accountJournalFlushAction.delete(JLAccount.fake_fetch, jdata, ndata)
         case LProtocol.JRQST_ADD_CATEGORY:
             (retVal, newEntry, removeEntry) = categoryJournalFlushAction.add(JLCategory.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_CATEGORY:
             (retVal, newEntry, removeEntry) = categoryJournalFlushAction.update(JLCategory.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_CATEGORY:
-            (retVal, newEntry, removeEntry) = categoryJournalFlushAction.delete(JLCategory.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = categoryJournalFlushAction.delete(JLCategory.fake_fetch, jdata, ndata)
         case LProtocol.JRQST_ADD_TAG:
             (retVal, newEntry, removeEntry) = tagJournalFlushAction.add(JLTag.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_TAG:
             (retVal, newEntry, removeEntry) = tagJournalFlushAction.update(JLTag.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_TAG:
-            (retVal, newEntry, removeEntry) = tagJournalFlushAction.delete(JLTag.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = tagJournalFlushAction.delete(JLTag.fake_fetch, jdata, ndata)
         case LProtocol.JRQST_ADD_VENDOR:
             (retVal, newEntry, removeEntry) = vendorJournalFlushAction.add(JLVendor.fetch, jdata, ndata)
         case LProtocol.JRQST_UPDATE_VENDOR:
             (retVal, newEntry, removeEntry) = vendorJournalFlushAction.update(JLVendor.fetch, jdata, ndata)
         case LProtocol.JRQST_DELETE_VENDOR:
-            (retVal, newEntry, removeEntry) = vendorJournalFlushAction.delete(JLVendor.fetch, jdata, ndata)
+            (retVal, newEntry, removeEntry) = vendorJournalFlushAction.delete(JLVendor.fake_fetch, jdata, ndata)
         default:
             break
         }
@@ -573,8 +603,8 @@ class LJournal {
         return postById(id, LProtocol.JRQST_UPDATE_RECORD);
     }
 
-    func deleteRecord(_ id: Int64) -> Bool {
-        return postById(id, LProtocol.JRQST_DELETE_RECORD);
+    func deleteRecord(gid: Int64) -> Bool {
+        return postById(gid, LProtocol.JRQST_DELETE_RECORD);
     }
 
     func getSchedule(_ id: Int64) -> Bool {
@@ -589,8 +619,8 @@ class LJournal {
         return postById(id, LProtocol.JRQST_UPDATE_SCHEDULE);
     }
 
-    func deleteSchedule(_ id: Int64) -> Bool {
-        return postById(id, LProtocol.JRQST_DELETE_SCHEDULE);
+    func deleteSchedule(gid: Int64) -> Bool {
+        return postById(gid, LProtocol.JRQST_DELETE_SCHEDULE);
     }
 
     func addAccount(_ id: Int64) -> Bool {
@@ -601,8 +631,8 @@ class LJournal {
         return postById(id, LProtocol.JRQST_UPDATE_ACCOUNT);
     }
 
-    func deleteAccount(_ id: Int64) -> Bool {
-        return postById(id, LProtocol.JRQST_DELETE_ACCOUNT);
+    func deleteAccount(gid: Int64) -> Bool {
+        return postById(gid, LProtocol.JRQST_DELETE_ACCOUNT);
     }
 
     func addCategory(_ id: Int64) -> Bool {
@@ -613,8 +643,8 @@ class LJournal {
         return postById(id, LProtocol.JRQST_UPDATE_CATEGORY);
     }
 
-    func deleteCategory(_ id: Int64) -> Bool {
-        return postById(id, LProtocol.JRQST_DELETE_CATEGORY);
+    func deleteCategory(gid: Int64) -> Bool {
+        return postById(gid, LProtocol.JRQST_DELETE_CATEGORY);
     }
 
     func addTag(_ id: Int64) -> Bool {
@@ -625,8 +655,8 @@ class LJournal {
         return postById(id, LProtocol.JRQST_UPDATE_TAG);
     }
 
-    func deleteTag(_ id: Int64) -> Bool {
-        return postById(id, LProtocol.JRQST_DELETE_TAG);
+    func deleteTag(gid: Int64) -> Bool {
+        return postById(gid, LProtocol.JRQST_DELETE_TAG);
     }
 
     func addVendor(_ id: Int64) -> Bool {
@@ -637,8 +667,8 @@ class LJournal {
         return postById(id, LProtocol.JRQST_UPDATE_VENDOR);
     }
 
-    func deleteVendor(_ id: Int64) -> Bool {
-        return postById(id, LProtocol.JRQST_DELETE_VENDOR);
+    func deleteVendor(gid: Int64) -> Bool {
+        return postById(gid, LProtocol.JRQST_DELETE_VENDOR);
     }
 
     func addUserToAccount(uid: Int64,  aid: Int64) -> Bool {

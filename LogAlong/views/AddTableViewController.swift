@@ -420,7 +420,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         if .delete == editingStyle {
             if isSchedule {
                 if DBScheduledTransaction.instance.remove(id: schedule.id) {
-                    _ = LJournal.instance.deleteSchedule(schedule.id)
+                    _ = LJournal.instance.deleteSchedule(gid: schedule.gid)
                 }
             } else {
                 var ret = false
@@ -430,7 +430,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                     ret = DBTransaction.instance.remove(id: record.id)
                 }
                 if ret {
-                    _ = LJournal.instance.deleteRecord(record.id)
+                    _ = LJournal.instance.deleteRecord(gid: record.gid)
                 }
             }
             onCancelClick()
