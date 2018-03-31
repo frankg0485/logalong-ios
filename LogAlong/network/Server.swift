@@ -30,12 +30,17 @@ final class LServer: NSObject {
     var outputStream: OutputStream!
     var streamCount = 0;
 
-    var username = ""
+    var connectRequested = false
 
     static let PORT_NO = 8000
     static let SERVER_NAME = "192.168.1.111"
 
     func connect() {
+        if connectRequested { return }
+        connectRequested = true
+
+        rxBytes = 0
+
         var readStream: Unmanaged<CFReadStream>?
         var writeStream: Unmanaged<CFWriteStream>?
 
@@ -62,6 +67,8 @@ final class LServer: NSObject {
     func disconnect() {
         inputStream.close()
         outputStream.close()
+
+        connectRequested = false
     }
 
     func send(data: UnsafeMutablePointer<UInt8>, bytes: Int) {

@@ -58,7 +58,10 @@ class LService {
     func stop() {
         LBroadcast.unregister(LBroadcast.ACTION_LOG_IN, listener: self)
         LBroadcast.unregister(LBroadcast.ACTION_NEW_JOURNAL_AVAILABLE, listener: self)
+        LBroadcast.unregister(LBroadcast.ACTION_POST_JOURNAL, listener: self)
         LBroadcast.unregister(LBroadcast.ACTION_PUSH_NOTIFICATION, listener: self)
+        LBroadcast.unregister(LBroadcast.ACTION_POLL, listener: self)
+        LBroadcast.unregister(LBroadcast.ACTION_POLL_ACK, listener: self)
     }
 
     @objc func login(notification: Notification) {
