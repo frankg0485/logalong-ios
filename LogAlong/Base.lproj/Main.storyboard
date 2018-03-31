@@ -460,6 +460,68 @@
             </objects>
             <point key="canvasLocation" x="4353" y="-270"/>
         </scene>
+        <!--Profile Reminder View Controller-->
+        <scene sceneID="FEs-RF-Sr4">
+            <objects>
+                <viewController storyboardIdentifier="ProfileReminder" id="04y-Hd-nij" customClass="ProfileReminderViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vTd-Wg-0ob"/>
+                        <viewControllerLayoutGuide type="bottom" id="EKr-5i-jjm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nkL-Jk-TzI">
+                        <rect key="frame" x="0.0" y="0.0" width="345" height="200"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kxT-tQ-O1z">
+                                <rect key="frame" x="136" y="8" width="74" height="20"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Reminder">
+                                        <attributes>
+                                            <font key="NSFont" size="17" name=".SFNSText-Bold"/>
+                                            <font key="NSOriginalFont" size="17" name=".SFNSText-Bold"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Please complete your profile settings then come back." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RpL-ce-m4A">
+                                <rect key="frame" x="19" y="75.5" width="307" height="49.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="11o-PP-vrj">
+                                <rect key="frame" x="19" y="162" width="307" height="30"/>
+                                <state key="normal" title="OK"/>
+                                <connections>
+                                    <action selector="okButtonPressed:" destination="04y-Hd-nij" eventType="touchUpInside" id="kcn-XN-0dH"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="11o-PP-vrj" secondAttribute="trailing" constant="19" id="70Q-yY-btC"/>
+                            <constraint firstItem="RpL-ce-m4A" firstAttribute="centerX" secondItem="nkL-Jk-TzI" secondAttribute="centerX" id="Eio-4b-IUF"/>
+                            <constraint firstItem="11o-PP-vrj" firstAttribute="leading" secondItem="nkL-Jk-TzI" secondAttribute="leading" constant="19" id="Ek3-p9-u5g"/>
+                            <constraint firstAttribute="trailing" secondItem="RpL-ce-m4A" secondAttribute="trailing" constant="19" id="Jzi-Cx-l5I"/>
+                            <constraint firstItem="RpL-ce-m4A" firstAttribute="leading" secondItem="nkL-Jk-TzI" secondAttribute="leading" constant="19" id="Reu-sc-YAK"/>
+                            <constraint firstItem="EKr-5i-jjm" firstAttribute="top" secondItem="11o-PP-vrj" secondAttribute="bottom" constant="8" id="ZC1-Ce-isp"/>
+                            <constraint firstItem="11o-PP-vrj" firstAttribute="centerX" secondItem="nkL-Jk-TzI" secondAttribute="centerX" id="f1L-uH-hoh"/>
+                            <constraint firstItem="kxT-tQ-O1z" firstAttribute="top" secondItem="vTd-Wg-0ob" secondAttribute="bottom" constant="8" id="gmK-n0-onY"/>
+                            <constraint firstItem="RpL-ce-m4A" firstAttribute="centerY" secondItem="nkL-Jk-TzI" secondAttribute="centerY" id="rT0-Og-apW"/>
+                            <constraint firstItem="kxT-tQ-O1z" firstAttribute="centerX" secondItem="nkL-Jk-TzI" secondAttribute="centerX" id="zcx-le-kfK"/>
+                        </constraints>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="345" height="200"/>
+                    <size key="freeformSize" width="345" height="200"/>
+                    <connections>
+                        <outlet property="okButton" destination="11o-PP-vrj" id="LBE-Ff-gqm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qEO-1E-036" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5008.8000000000002" y="-59.370314842578715"/>
+        </scene>
         <!--Share Account View Controller-->
         <scene sceneID="ve8-fY-XrD">
             <objects>

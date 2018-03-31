@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		010797E61F6778FA00623C04 /* LCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010797E51F6778FA00623C04 /* LCategory.swift */; };
+		0122DD0A2064678F004A7C3E /* ProfileReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0122DD092064678F004A7C3E /* ProfileReminderViewController.swift */; };
 		01253CF41F5318BE005B4D8C /* SelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */; };
 		0128AE481EC4829B007A999B /* AccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0128AE471EC4829B007A999B /* AccountsTableViewController.swift */; };
 		012F32501FA7D64F0004EC14 /* BarChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */; };
@@ -199,6 +200,7 @@
 
 /* Begin PBXFileReference section */
 		010797E51F6778FA00623C04 /* LCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LCategory.swift; sourceTree = "<group>"; };
+		0122DD092064678F004A7C3E /* ProfileReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileReminderViewController.swift; sourceTree = "<group>"; };
 		01253CF31F5318BE005B4D8C /* SelectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTableViewCell.swift; sourceTree = "<group>"; };
 		0128AE471EC4829B007A999B /* AccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsTableViewController.swift; sourceTree = "<group>"; };
 		012F324F1FA7D64F0004EC14 /* BarChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartViewController.swift; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 				0128AE471EC4829B007A999B /* AccountsTableViewController.swift */,
 				01DE2C111F449D8600ED5D9C /* AccountsTableViewCell.swift */,
 				CB1C92272047B0DA0008D1E9 /* ProfileViewController.swift */,
+				0122DD092064678F004A7C3E /* ProfileReminderViewController.swift */,
 				0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */,
 				01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */,
 			);
@@ -679,6 +682,7 @@
 			files = (
 				01B61A701FF8396600899F21 /* LUser.swift in Sources */,
 				CBF135CE1FF0214E00E7E8AE /* LLayout.swift in Sources */,
+				0122DD0A2064678F004A7C3E /* ProfileReminderViewController.swift in Sources */,
 				01FBE7F61F439D5A00A0B514 /* CreateViewController.swift in Sources */,
 				014893D71EEB0332005E3C94 /* MainTabViewController.swift in Sources */,
 				CB3154DF1FBD3AA6006F9DE4 /* Crc32.swift in Sources */,
