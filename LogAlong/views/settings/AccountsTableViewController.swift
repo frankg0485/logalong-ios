@@ -240,12 +240,23 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     }
 
     @IBAction func shareButtonClicked(_ sender: UIButton) {
-        if let cell = sender.superview?.superview as? AccountsTableViewCell {
-            let name = cell.nameLabel.text!
-            if let account = DBAccount.instance.get(name: name) {
-                presentShareView(account)
+        if LPreferences.getUserIdNum() == 0 {
+            presentReminderView()
+        } else {
+            if let cell = sender.superview?.superview as? AccountsTableViewCell {
+                let name = cell.nameLabel.text!
+                if let account = DBAccount.instance.get(name: name) {
+                    presentShareView(account)
+                }
             }
         }
+    }
+
+    func presentReminderView() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ProfileReminder") as! ProfileReminderViewController
+
+        presentPopOver(controller)
     }
 
     func presentShareView(_ account: LAccount) {
