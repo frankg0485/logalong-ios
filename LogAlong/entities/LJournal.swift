@@ -15,7 +15,7 @@ protocol GenericJD {
 }
 
 class LJournal {
-    static let MAX_ERROR_RETRIES = 10
+    static let MAX_ERROR_RETRIES = 3
     static let MAX_JOURNAL_LENGTH = 512
     static let instance = LJournal()
 

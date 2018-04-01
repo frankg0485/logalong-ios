@@ -143,6 +143,14 @@ class DBTransaction: DBGeneric<LTransaction> {
         details.account.gid = row[DBHelper.instance.accounts[DBHelper.gid]]
         details.account.name = row[DBHelper.instance.accounts[DBHelper.name]]!
 
+        if details.type == .TRANSFER || details.type == .TRANSFER_COPY {
+            if let acnt = DBAccount.instance.get(id: details.accountId2) {
+                details.account2.id = details.accountId2
+                details.account2.gid = acnt.gid
+                details.account2.name = acnt.name
+            }
+        }
+
         if let name = row[DBHelper.instance.categories[DBHelper.name]] {
             details.category.name = name
             details.category.id = row[DBHelper.instance.categories[DBHelper.id]]
