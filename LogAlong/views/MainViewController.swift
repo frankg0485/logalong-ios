@@ -249,10 +249,17 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     @objc func onScheduleClick() {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SchedulesTableViewController")
+        var vc: UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SchedulesTableViewController")
             as! SchedulesTableViewController
 
-        self.navigationController?.pushViewController(vc, animated: true)
+        if LPreferences.getUserIdNum() == 0 {
+            vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProfileReminder")
+                as! ProfileReminderViewController
+
+            presentPopover(vc)
+        } else {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
     @objc func shareAccountRequest(notification: Notification) -> Void {

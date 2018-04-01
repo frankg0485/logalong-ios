@@ -13,6 +13,9 @@ class ProfileReminderViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.preferredContentSize.height = LTheme.Dimension.popover_height_small
+        self.preferredContentSize.width = LTheme.Dimension.popover_width
         // Do any additional setup after loading the view.
     }
 
