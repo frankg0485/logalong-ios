@@ -77,6 +77,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
             bottomView.isHidden = true
             optionButton.isHidden = false
             idValue.text = userId
+            idValue.isEnabled = false
             nameValue.text = name
             profileAction = .UPDATE_USER
         }
