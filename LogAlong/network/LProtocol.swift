@@ -292,6 +292,10 @@ final class LProtocol : LServerDelegate {
                     let jret = pkt.getShortAutoInc()
                     bdata["jret"] = jret
 
+                    if jret != LProtocol.RSPS_OK {
+                        LLog.w("\(self)", "journal post returned error")
+                    }
+
                     switch (jrqstId) {
                     case LProtocol.JRQST_ADD_ACCOUNT:
                         if (LProtocol.RSPS_OK == jret) {

@@ -101,14 +101,15 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
                 viewL = viewR
                 viewR = viewM
                 navRight()
+                viewM = viewNext
             } else if viewNext == viewR {
                 viewR = viewL
                 viewL = viewM
                 navLeft()
+                viewM = viewNext
             } else {
                 LLog.e("\(self)", "unexpected state: prev: \(previousViewControllers[0]), next: \(String(describing: viewNext))")
             }
-            viewM = viewNext
         }
     }
 

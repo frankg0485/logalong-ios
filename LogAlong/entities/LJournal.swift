@@ -26,9 +26,6 @@ class LJournal {
     private var lastFlushId: Int = 0
     private var postCount = 0;
     private var flushCount = 0;
-
-    private var removeEntry = false
-    private var newEntry = false
     private var errorCount = 0
 
     private class GenericJournalFlushAction<D: GenericJD> {

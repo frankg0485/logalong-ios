@@ -370,9 +370,9 @@ class DBTransaction: DBGeneric<LTransaction> {
                 return rdDetails(row)
             }
         } catch {
-            LLog.e("\(self)", "unable to find row with id: \(id)")
+            LLog.e("\(self)", "query error @row id: \(id)")
         }
-
+        LLog.e("\(self)", "unable to find row with id: \(id)")
         return nil
     }
 
