@@ -127,6 +127,7 @@ final class LProtocol : LServerDelegate {
     }
 
     func start() {
+        state = LConnectionState.DISCONNECTED
         scrambler = genScrambler();
         let version : UInt16 = 1; //TODO: get app version on the fly
         let iosId : UInt16 = 2;
