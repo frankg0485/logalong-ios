@@ -25,6 +25,7 @@ class LPreferences {
     static let userPassword = "userPassword"
     static let shareAccept = "shareAccept"
     static let shareAccountRequest = "shareAccountRequest"
+    static let lastSavedValues = "lastSavedValues"
 
     static func getRecordsSearchControls() -> LRecordSearch {
         let defaultTo: Int64 = Date().currentTimeMillis
@@ -163,6 +164,14 @@ class LPreferences {
 
     static func setShareAccept(_ uid: Int64, _ acceptTimeS: Int64) {
         return defaults.set(acceptTimeS, forKey: shareAccept + "." + String(uid))
+    }
+
+    static func setLastSavedValues(_ savedValues: [String : Int64]) {
+        defaults.set(savedValues, forKey: lastSavedValues)
+    }
+
+    static func getLastSavedValues() -> [String : Int64]? {
+        return defaults.object(forKey: lastSavedValues) as? [String : Int64]
     }
 
     static func getEmptyAccountShareRequest() -> Int {

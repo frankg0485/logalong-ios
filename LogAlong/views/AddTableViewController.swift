@@ -72,20 +72,26 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         if isSchedule {
             record = schedule
             origSchedule = LScheduledTransaction(schedule: schedule)
+        } else if createRecord {
+            loadTimestampValues()
         }
+
         origRecord = LTransaction(trans: record!)
 
         setupNavigationBarItems()
         createHeader()
         createFooter()
 
+
         switch (record!.type) {
         case .EXPENSE:
             navigationController?.navigationBar.barTintColor = LTheme.Color.base_red
             amountButton!.setTitleColor(LTheme.Color.base_red, for: .normal)
+
         case .INCOME:
             navigationController?.navigationBar.barTintColor = LTheme.Color.base_green
             amountButton!.setTitleColor(LTheme.Color.base_green, for: .normal)
+
         default:
             navigationController?.navigationBar.barTintColor = LTheme.Color.base_blue
             amountButton!.setTitleColor(LTheme.Color.base_blue, for: .normal)
@@ -172,6 +178,58 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             firstPopup = true
             self.present(vc, animated: true, completion: nil)
         }
+    }
+
+    private func loadTimestampValues() {
+        if let recordValues = LPreferences.getLastSavedValues() {
+            if ((Date().currentTimeMillis - recordValues["lastTimestamp"]!) >= 3600000) {
+                clearLastSavedValues()
+                return
+            }
+
+            if record.type == .TRANSFER {
+                record.accountId = recordValues["transAccountId"]!
+                record.accountId2 = recordValues["transAccountId2"]!
+            } else {
+                record.accountId = recordValues["accountId"]!
+                record.categoryId = recordValues["categoryId"]!
+                record.vendorId = recordValues["payeeId"]!
+                record.tagId = recordValues["tagId"]!
+            }
+            record.timestamp = recordValues["date"]!
+        }
+    }
+
+    private func saveTimestampValues() {
+        var recordValues = LPreferences.getLastSavedValues() ?? [String : Int64]()
+
+        if record.type == .TRANSFER {
+            recordValues["transAccountId"] = record.accountId
+            recordValues["transAccountId2"] = record.accountId2
+        } else {
+            recordValues["accountId"] = record.accountId
+            recordValues["categoryId"] = record.categoryId
+            recordValues["payeeId"] = record.vendorId
+            recordValues["tagId"] = record.tagId
+        }
+        recordValues["lastTimestamp"] = Date().currentTimeMillis
+        recordValues["date"] = record.timestamp
+
+        LPreferences.setLastSavedValues(recordValues)
+    }
+
+    private func clearLastSavedValues() {
+        var values = [String : Int64]()
+        values["accountId"] = 0
+        values["categoryId"] = 0
+        values["payeeId"] = 0
+        values["tagId"] = 0
+        values["date"] = 0
+        values["transAccountId"] = 0
+        values["transAccountId2"] = 0
+        values["lastTimestamp"] = 0
+
+        LPreferences.setLastSavedValues(values)
     }
 
     private func setupNavigationBarItems() {
@@ -707,6 +765,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                     if ret {
                         _ = LJournal.instance.addRecord(record!.id)
                     }
+
+                    saveTimestampValues()
                 } else {
                     if record!.type == .TRANSFER {
                         ret = DBTransaction.instance.update2(record!, oldAmount: origRecord.amount)
