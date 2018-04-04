@@ -13,6 +13,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
 
     @IBOutlet weak var headerView: HorizontalLayout!
     @IBOutlet weak var tableView: UITableView!
+    weak var pageController: RecordsPageViewController?
 
     private var search: LRecordSearch?
     private var dataLoaded = false
@@ -40,6 +41,8 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     func refresh(delay: Double = 0) {
         viewTimeInterval = LPreferences.getRecordsViewTimeInterval()
         viewSortMode = LPreferences.getRecordsViewSortMode()
+        imgHeader?.setImage(getOrderIcon(), for: .normal)
+
         if (dataLoaded) {
             if let item = workItem {
                 item.cancel()
@@ -110,8 +113,9 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
                                 }
                             }
 
-                            self.labelHeader!.text = txt
-                            self.labelHeader!.sizeToFit()
+                            self.imgHeader?.setImage(self.getOrderIcon(), for: .normal)
+                            self.btnHeader?.setTitle(txt, for: .normal)
+                            //self.btnHeader?.sizeToFit()
 
                             self.labelBalance!.textColor = balance >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
                             self.labelBalance!.text = String(format: "%.2f", abs(balance))
@@ -141,14 +145,16 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         refresh()
     }
 
-    private var labelHeader: UILabel?
+    private var imgHeader: UIButton?
+    private var btnHeader: UIButton?
     private var labelBalance: UILabel?
     private var labelIncome: UILabel?
     private var labelExpense: UILabel?
 
     private func setupBalanceHeader() {
-        let (_, h, b, i, e) = createHeader(view: headerView)
-        labelHeader = h
+        let (_, _, b, i, e, imgBtn, btn) = createHeader(view: headerView)
+        imgHeader = imgBtn
+        btnHeader = btn
         labelExpense = e
         labelIncome = i
         labelBalance = b
@@ -157,8 +163,21 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         tableView.tableFooterView = UIView()
     }
 
+    private func getOrderIcon() -> UIImage {
+        if LPreferences.getRecordsViewAscend() {
+            return #imageLiteral(resourceName: "ic_action_expand").withRenderingMode(.alwaysOriginal)
+        } else {
+            return #imageLiteral(resourceName: "ic_action_collapse").withRenderingMode(.alwaysOriginal)
+        }
+    }
+
+    @objc func onOrderClick() {
+        LPreferences.setRecordsViewAscend(!LPreferences.getRecordsViewAscend())
+        pageController?.notifyToUpdateAllPages()
+    }
+
     private func createHeader(view: UIView? = nil, txt: String = "", balance: Double = 0, income: Double = 0, expense: Double = 0)
-        -> (view: UIView, txtLabel: UILabel, balanceLabel: UILabel, incomeLabel: UILabel, expenseLabel: UILabel)
+        -> (view: UIView, txtLabel: UILabel?, balanceLabel: UILabel, incomeLabel: UILabel, expenseLabel: UILabel, btn: UIButton?, imgBtn: UIButton?)
     {
         var hView: UIView
         if (view == nil) {
@@ -169,12 +188,31 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         hView.backgroundColor = LTheme.Color.balance_header_bgd_color
 
         let fontsize: CGFloat = LTheme.Dimension.balance_header_font_size
-        let labelHeader = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 25))
-        labelHeader.layoutMargins = UIEdgeInsetsMake(0, LTheme.Dimension.balance_header_left_margin, 0, 0)
-        labelHeader.font = labelHeader.font.withSize(fontsize)
-        labelHeader.font = UIFont.boldSystemFont(ofSize: fontsize)
-        labelHeader.text = txt
-        labelHeader.sizeToFit()
+
+        var btn: UIButton?
+        var imgBtn: UIButton?
+        var labelHeader: UILabel?
+        if (view != nil) {
+            imgBtn = UIButton(frame: CGRect(x: 0, y: 0, width: LTheme.Dimension.balance_header_left_margin,
+                                            height: LTheme.Dimension.balance_header_left_margin))
+            imgBtn!.addTarget(self, action: #selector(self.onOrderClick), for: .touchUpInside)
+            imgBtn!.setImage(getOrderIcon(), for: .normal)
+            imgBtn!.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+
+            btn = UIButton(frame: CGRect(x: 1, y: 0, width: 100, height: 25))
+            btn?.contentHorizontalAlignment = .left
+            btn!.addTarget(self, action: #selector(self.onOrderClick), for: .touchUpInside)
+            btn!.titleLabel?.font = UIFont.boldSystemFont(ofSize: fontsize)
+            btn!.setTitleColor(UIColor.black, for: .normal)
+            btn!.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        } else {
+            labelHeader = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 25))
+            labelHeader!.layoutMargins = UIEdgeInsetsMake(0, LTheme.Dimension.balance_header_left_margin, 0, 0)
+            //labelHeader.font = labelHeader.font.withSize(fontsize)
+            labelHeader!.font = UIFont.boldSystemFont(ofSize: fontsize)
+            labelHeader!.text = txt
+            labelHeader!.sizeToFit()
+        }
 
         //let spacer = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: 25))
 
@@ -208,7 +246,12 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         pr.text = ")"
         pr.sizeToFit()
 
-        hView.addSubview(labelHeader)
+        if (view != nil) {
+            hView.addSubview(imgBtn!)
+            hView.addSubview(btn!)
+        } else {
+            hView.addSubview(labelHeader!)
+        }
         //hView.addSubview(spacer)
         hView.addSubview(labelBalance)
         hView.addSubview(pl)
@@ -216,7 +259,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         hView.addSubview(labelExpense)
         hView.addSubview(pr)
 
-        return (hView, labelHeader, labelBalance, labelIncome, labelExpense)
+        return (hView, labelHeader, labelBalance, labelIncome, labelExpense, imgBtn, btn)
     }
 
     // MARK: - Table view data source
@@ -238,10 +281,10 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let (v, h, b, i, e) = createHeader()
+        let (v, h, b, i, e, _, _) = createHeader()
         let sect = loader!.getSection(section)
-        h.text = sect.txt
-        h.sizeToFit()
+        h!.text = sect.txt
+        h!.sizeToFit()
 
         var balance: Double = 0
         if (viewSortMode == RecordsViewSortMode.ACCOUNT.rawValue) {

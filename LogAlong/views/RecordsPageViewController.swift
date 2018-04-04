@@ -218,10 +218,7 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         refreshAll()
     }
 
-    @objc func onSortClick() {
-        LPreferences.setRecordsViewSortMode(nextSortMode().rawValue)
-        sortBtn!.setImage(getSortIcon(), for: .normal)
-
+    func notifyToUpdateAllPages() {
         if let view = viewM {
             view.refresh()
         }
@@ -231,6 +228,12 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         if let view = viewR {
             view.refresh(delay: 0.5)
         }
+    }
+
+    @objc func onSortClick() {
+        LPreferences.setRecordsViewSortMode(nextSortMode().rawValue)
+        sortBtn!.setImage(getSortIcon(), for: .normal)
+        notifyToUpdateAllPages()
     }
 
     @objc func onChartClick() {
@@ -385,6 +388,10 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         viewL = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsViewController") as? RecordsViewController
         viewM = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsViewController") as? RecordsViewController
         viewR = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RecordsViewController") as? RecordsViewController
+
+        viewL!.pageController = self
+        viewM!.pageController = self
+        viewR!.pageController = self
 
         viewM!.loadData(year: navYear, month: navMonth)
     }
