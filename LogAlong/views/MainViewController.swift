@@ -13,6 +13,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     @IBOutlet weak var headerView: HorizontalLayout!
     @IBOutlet weak var tableView: UITableView!
     let ADD_BUTTON_EXTRA_SPACE: CGFloat = 120
+    let TITLE_FONT_SIZE: CGFloat = 18
 
     var labelBalance: UILabel!
     var addBtn: UIButton!
@@ -31,7 +32,11 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         setupNavigationBarItems()
         createHeader()
 
-        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.warn_text_color], for: .normal)
+        if LPreferences.getUserIdNum() > 0 {
+            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_light_blue], for: .normal)
+        } else {
+            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_dark_blue], for: .normal)
+        }
 
         accountBalances.scan()
         labelBalance.textColor = accountBalances.total >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
@@ -51,11 +56,17 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         LBroadcast.register(LBroadcast.ACTION_NETWORK_CONNECTED,
                             cb: #selector(self.networkConnected),
                             listener: self)
+        LBroadcast.register(LBroadcast.ACTION_NETWORK_DISCONNECTED,
+                            cb: #selector(self.networkDisconnected),
+                            listener: self)
         LBroadcast.register(LBroadcast.ACTION_UI_SHARE_ACCOUNT, cb: #selector(self.shareAccountRequest), listener: self)
 
         LBroadcast.register(LBroadcast.ACTION_UI_DB_DATA_CHANGED,
                             cb: #selector(self.dbDataChanged),
                             listener: self)
+
+        //workaround to refresh tabitem title size
+        LBroadcast.post(LBroadcast.ACTION_NETWORK_DISCONNECTED);
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -274,9 +285,18 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }
     }
 
+    @objc func networkDisconnected(notification: Notification) -> Void {
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: TITLE_FONT_SIZE)], for: .normal)
+        if LPreferences.getUserIdNum() > 0 {
+            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_light_blue], for: .selected)
+        } else {
+            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_dark_blue], for: .selected)
+        }
+        //LLog.d("\(self)", "network disconnected")
+    }
     @objc func networkConnected(notification: Notification) -> Void {
-        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18)], for: .normal)
-        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.blue], for: .selected)
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: TITLE_FONT_SIZE)], for: .normal)
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_dark_blue], for: .selected)
         LLog.d("\(self)", "network connected")
     }
 

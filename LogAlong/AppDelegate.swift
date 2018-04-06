@@ -26,10 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         service.start()
-
-        // TODO: check persistent storage to determine whether to start server
         LServer.instance.delegate = LProtocol.instance
-        LServer.instance.connect()
+
+        if LPreferences.getUserIdNum() > 0 {
+            LServer.instance.connect()
+        }
 
         //DEBUG CODE
         //_ = DBTransaction.instance.deleteAll()
@@ -44,13 +45,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     func registerBackgroundTask() {
         backgroundTask = UIApplication.shared.beginBackgroundTask {
-            self.endBackgroundTask()
+            self.endBackgroundTask(true)
         }
     }
 
-    func endBackgroundTask() {
+    func endBackgroundTask(_ done: Bool) {
         LLog.d("\(self)", "Background task ended.")
         if (backgroundTask != UIBackgroundTaskInvalid) {
+            if done {
+                LServer.instance.disconnect()
+            }
             UIApplication.shared.endBackgroundTask(backgroundTask)
             backgroundTask = UIBackgroundTaskInvalid
         }
@@ -69,8 +73,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         workItem = DispatchWorkItem {
             DBAccountBalance.rescan()
 
-            DispatchQueue.main.async(execute: {
-                self.endBackgroundTask()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 15, execute: {
+                self.endBackgroundTask(true)
             })
         }
         DispatchQueue.global(qos: .default).async(execute: workItem!)
@@ -84,12 +88,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         //DBAccountBalance.rescanCancel()
-        LServer.instance.connect()
+        endBackgroundTask(false)
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        if uiRequest.state == .DISCONNECTED {
+        if uiRequest.state == .DISCONNECTED && LPreferences.getUserIdNum() > 0 {
             LLog.d("\(self)", "connection lost: reconnecting ...")
             LServer.instance.connect()
         }

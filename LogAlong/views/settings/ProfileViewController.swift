@@ -52,6 +52,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        LServer.instance.connect()
         setupNavigationBarItems()
         setupDisplay()
         progress.isHidden = true
