@@ -293,10 +293,6 @@ final class LProtocol : LServerDelegate {
                     let jret = pkt.getShortAutoInc()
                     bdata["jret"] = jret
 
-                    if jret != LProtocol.RSPS_OK {
-                        LLog.w("\(self)", "journal post returned error")
-                    }
-
                     switch (jrqstId) {
                     case LProtocol.JRQST_ADD_ACCOUNT:
                         if (LProtocol.RSPS_OK == jret) {
@@ -412,8 +408,22 @@ final class LProtocol : LServerDelegate {
                             bdata["enabled"] = pkt.getByteAutoInc()
                         }
 
+                    case LProtocol.JRQST_UPDATE_ACCOUNT: break
+                    case LProtocol.JRQST_DELETE_ACCOUNT: break
+                    case LProtocol.JRQST_UPDATE_CATEGORY: break
+                    case LProtocol.JRQST_DELETE_CATEGORY: break
+                    case LProtocol.JRQST_UPDATE_TAG: break
+                    case LProtocol.JRQST_DELETE_TAG: break
+                    case LProtocol.JRQST_UPDATE_VENDOR: break
+                    case LProtocol.JRQST_DELETE_VENDOR: break
+                    case LProtocol.JRQST_UPDATE_RECORD: break
+                    case LProtocol.JRQST_DELETE_RECORD: break
+                    case LProtocol.JRQST_UPDATE_SCHEDULE: break
+                    case LProtocol.JRQST_DELETE_SCHEDULE: break
+                    case LProtocol.JRQST_CONFIRM_ACCOUNT_SHARE: break
+                    case LProtocol.JRQST_ADD_USER_TO_ACCOUNT: break
                     default:
-                        LLog.w("\(self)", "unknown journal request: \(jrqstId)")
+                        LLog.w("\(self)", "unknown journal request: \(LProtocol.journalRequestString(jrqstId))")
                     }
                 }
                 LBroadcast.post(LBroadcast.ACTION_POST_JOURNAL, sender: nil, data: bdata)
@@ -499,5 +509,69 @@ final class LProtocol : LServerDelegate {
         }
 
         return pktBuf.getOffset();
+    }
+
+    //debugging support
+    static func journalRequestString(_ code: UInt16) -> String {
+        switch (code) {
+        case LProtocol.JRQST_ADD_ACCOUNT : return "ADD_ACCOUNT"
+        case LProtocol.JRQST_UPDATE_ACCOUNT : return "UPDATE_ACCOUNT"
+        case LProtocol.JRQST_DELETE_ACCOUNT : return "DELETE_ACCOUNT"
+
+        case LProtocol.JRQST_ADD_CATEGORY : return "ADD_CATEGORY"
+        case LProtocol.JRQST_UPDATE_CATEGORY : return "UPDATE_CATEGORY"
+        case LProtocol.JRQST_DELETE_CATEGORY : return "DELETE_CATEGORY"
+
+        case LProtocol.JRQST_ADD_TAG : return "ADD_TAG"
+        case LProtocol.JRQST_UPDATE_TAG : return "UPDATE_TAG"
+        case LProtocol.JRQST_DELETE_TAG : return "DELETE_TAG"
+
+        case LProtocol.JRQST_ADD_VENDOR : return "ADD_VENDOR"
+        case LProtocol.JRQST_UPDATE_VENDOR : return "UPDATE_VENDOR"
+        case LProtocol.JRQST_DELETE_VENDOR : return "DELETE_VENDOR"
+
+        case LProtocol.JRQST_ADD_RECORD : return "ADD_RECORD"
+        case LProtocol.JRQST_UPDATE_RECORD : return "UPDATE_RECORD"
+        case LProtocol.JRQST_DELETE_RECORD : return "DELETE_RECORD"
+
+        case LProtocol.JRQST_ADD_SCHEDULE : return "ADD_SCHEDULE"
+        case LProtocol.JRQST_UPDATE_SCHEDULE : return "UPDATE_SCHEDULE"
+        case LProtocol.JRQST_DELETE_SCHEDULE : return "DELETE_SCHEDULE"
+
+        case LProtocol.JRQST_GET_ACCOUNTS : return "GET_ACCOUNTS"
+        case LProtocol.JRQST_GET_CATEGORIES : return "GET_CATEGORIES"
+        case LProtocol.JRQST_GET_TAGS : return "GET_TAGS"
+        case LProtocol.JRQST_GET_VENDORS : return "GET_VENDORS"
+        case LProtocol.JRQST_GET_RECORD : return "GET_RECORD"
+        case LProtocol.JRQST_GET_RECORDS : return "GET_RECORDS"
+        case LProtocol.JRQST_GET_ACCOUNT_RECORDS : return "GET_ACCOUNT_RECORDS"
+        case LProtocol.JRQST_GET_ACCOUNT_USERS : return "GET_ACCOUNT_USERS"
+        case LProtocol.JRQST_GET_SCHEDULE : return "GET_SCHEDULE"
+        case LProtocol.JRQST_GET_SCHEDULES : return "GET_SCHEDULES"
+        case LProtocol.JRQST_GET_ACCOUNT_SCHEDULES : return "GET_ACCOUNT_SCHEDULES"
+
+        case LProtocol.JRQST_ADD_USER_TO_ACCOUNT : return "ADD_USER_TO_ACCOUNT"
+        case LProtocol.JRQST_REMOVE_USER_FROM_ACCOUNT : return "REMOVE_USER_FROM_ACCOUNT"
+        case LProtocol.JRQST_CONFIRM_ACCOUNT_SHARE : return "CONFIRM_ACCOUNT_SHARE"
+        default: return "unknown journal request code"
+        }
+    }
+
+    static func requestString(code: UInt16) -> String {
+        switch (code) {
+        case LProtocol.RQST_SCRAMBLER_SEED : return "SCRAMBLER_SEED"
+        case LProtocol.RQST_GET_USER_BY_NAME : return "GET_USER_BY_NAME"
+        case LProtocol.RQST_CREATE_USER : return "CREATE_USER"
+        case LProtocol.RQST_SIGN_IN : return "SIGN_IN"
+        case LProtocol.RQST_LOG_IN : return "LOG_IN"
+        case LProtocol.RQST_RESET_PASSWORD : return "RESET_PASSWORD"
+        case LProtocol.RQST_UPDATE_USER_PROFILE : return "UPDATE_USER_PROFILE"
+        case LProtocol.RQST_POST_JOURNAL : return "POST_JOURNAL"
+        case LProtocol.RQST_POLL : return "POLL"
+        case LProtocol.RQST_POLL_ACK : return "POLL_ACK"
+        case LProtocol.RQST_UTC_SYNC : return "UTC_SYNC"
+        case LProtocol.RQST_PING : return "PING"
+        default: return "unknown request code"
+        }
     }
 }

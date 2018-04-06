@@ -10,6 +10,7 @@ import Foundation
 
 class LService {
     static let instance = LService()
+    let MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION = 5
     var pollingCount = 0
     var journalPostErrorCount = 0
     private var loggedIn = false
@@ -89,7 +90,7 @@ class LService {
                 let jret : UInt16 = bdata["jret"] as! UInt16
                 LLog.d("\(self)", "post journal rsps ok, rqstId: \(jrqstId) status: \(jret)")
                 if (LProtocol.RSPS_OK != jret) {
-                    LLog.w("\(self)", "journal request \(jrqstId) failed.")
+                    LLog.w("\(self)", "journal request \(LProtocol.journalRequestString(jrqstId)) failed.")
                 } else {
                     switch (jrqstId) {
                     case LProtocol.JRQST_ADD_ACCOUNT:
@@ -439,7 +440,7 @@ class LService {
         //we'll keep polling up to MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION times, till a positive
         //polling result from server: this is to handle the case where server sends the notification
         //but underlying database hasn't got a chance to flush.
-        pollingCount = 0
+        pollingCount = MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION
 
         if !LJournal.instance.flush() {
             gatedPoll()
@@ -742,30 +743,26 @@ class LService {
                     _ = LJournal.instance.getAllTags()
 
                 default:
+                    LLog.w("\(self)", "unknown notification: \(nid)")
                     break
                 }
 
-                //pollingCount = MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION
+                pollingCount = 0
                 _ = UiRequest.instance.UiPollAck(id)
 
             } else {
                 //no more
-                LLog.d("\(self)", "flushing journal upon polling ends ...")
                 if (!LJournal.instance.flush()) {
-                    /*if (LFragmentActivity.upRunning) {
-                     //server.UiUtcSync()
-                     if (pollingCount++ < MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION) {
-                     serviceHandler.postDelayed(pollRunnable, NETWORK_IDLE_POLLING_MS)
-                     }
-
-                     Intent uiIntent = new Intent(LBroadcastReceiver.action(LBroadcastReceiver
-                     .ACTION_UI_NET_IDLE))
-                     LocalBroadcastManager.getInstance(LApp.ctx).sendBroadcast(uiIntent)
-                     } else {
-                     LLog.d(TAG, "no activity visible, shutdown now")
-                     serviceHandler.postDelayed(serviceShutdownRunnable,
-                     SERVICE_SHUTDOWN_MS)
-                     }*/
+                    if (pollingCount > 0) {
+                        LLog.d("\(self)", "flushing journal upon polling ends ... \(pollingCount)")
+                        let delay: Double = Double(1 << (MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION - pollingCount))
+                        pollingCount -= 1
+                        //LService is guaranteed to run from within main thread, hence it is safe
+                        //to asynchronously schedule a delayed poll here.
+                        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: {
+                            self.gatedPoll()
+                        })
+                    }
                 }
             }
         }
