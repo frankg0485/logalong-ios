@@ -118,16 +118,16 @@ class LService {
 
                     case LProtocol.JRQST_GET_ACCOUNTS:
                         let gid = bdata["gid"] as! Int64
-                        //let uid = bdata["uid"] as! Int64
+                        let uid = bdata["uid"] as! Int64
                         let name = bdata["name"] as! String
 
                         if let account = DBAccount.instance.get(gid: gid) {
-                            //account.setOwner(uid)
+                            account.setOwner(uid)
                             account.name = name
                             _ = DBAccount.instance.update(account)
                         } else {
                             var account = LAccount()
-                            //account.setOwner(uid)
+                            account.setOwner(uid)
                             account.gid = gid
                             account.name = name
                             _ = DBAccount.instance.add(&account)
@@ -139,7 +139,7 @@ class LService {
 
                         let dbAccount = DBAccount.instance
                         if let account = dbAccount.get(gid: gid) {
-                            //account.setSharedIdsString(intent.getStringExtra("users"))
+                            account.share = bdata["users"] as! String
                             _ = dbAccount.update(account)
                         } else {
                             LLog.w("\(self)", "account: \(gid) no longer exists")
