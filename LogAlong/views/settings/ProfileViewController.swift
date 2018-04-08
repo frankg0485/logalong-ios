@@ -148,6 +148,9 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         idValue.placeholder = NSLocalizedString("userid", comment: "")
         idValue.font = UIFont.boldSystemFont(ofSize: FONT_H)
         idValue.textColor = LTheme.Color.base_text_color
+        idValue.autocorrectionType = .no
+        idValue.autocapitalizationType = .none
+        idValue.spellCheckingType = .no
         idValue.delegate = self
         idValue.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
 
@@ -209,6 +212,9 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         nameValue.placeholder = NSLocalizedString("Your Name", comment: "")
         nameValue.font = UIFont.boldSystemFont(ofSize: FONT_H)
         nameValue.textColor = LTheme.Color.base_text_color
+        nameValue.autocapitalizationType = .none
+        nameValue.autocorrectionType = .no
+        nameValue.spellCheckingType = .no
         nameValue.delegate = self
         nameValue.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         nameView = hl4
