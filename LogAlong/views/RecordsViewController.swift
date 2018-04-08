@@ -53,9 +53,9 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
                 self.loaderNew = DBLoader(year: self.year, month: self.month, sort: self.viewSortMode,
                                           interval: self.viewTimeInterval, asc: LPreferences.getRecordsViewAscend(),
                                           search: self.search!)
-                self.accountBalances.scan()
 
                 DispatchQueue.main.async(execute: {
+                    self.accountBalances.scan()
                     self.loader = self.loaderNew
 
                     if (self.isViewLoaded) {

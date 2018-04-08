@@ -111,7 +111,12 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
     static func rescanCancel() {
         cancel = true
     }
-    static func rescan() {
+    static func rescan(reset: Bool = true) {
+        if Thread.isMainThread {
+            LLog.w("\(self)", "API is not supposed to be called from mainthread");
+            return
+        }
+
         cancel = false
 
         let acnts = DBAccount.instance.getAll()
@@ -122,7 +127,9 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
 
         if (accounts.count == 0) {
             LLog.d("\(self)", "no account left, deleting all balances");
-            DBAccountBalance.instance.removeAll() //clean up balances if all accounts are removed.
+            DispatchQueue.main.sync {
+                DBAccountBalance.instance.removeAll() //clean up balances if all accounts are removed.
+            }
             return
         }
 
@@ -150,14 +157,19 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
                 if (lastAccountId == 0) {
                     lastAccountId = accountId
                     lastYear = year
-
-                    _ = DBAccountBalance.instance.remove(accountId: accountId)
+                    DispatchQueue.main.sync {
+                        if reset { _ = DBAccountBalance.instance.remove(accountId: accountId) }
+                    }
                 } else if (lastAccountId != accountId || lastYear != year) {
                     if lastAccountId != accountId {
-                        _ = DBAccountBalance.instance.remove(accountId: accountId)
+                        DispatchQueue.main.sync {
+                            if reset { _ = DBAccountBalance.instance.remove(accountId: accountId) }
+                        }
                     }
 
-                    addUpdateAccountBalance(doubles, lastAccountId, lastYear)
+                    DispatchQueue.main.sync {
+                        addUpdateAccountBalance(doubles, lastAccountId, lastYear)
+                    }
 
                     lastAccountId = accountId
                     lastYear = year
@@ -172,51 +184,16 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
         }
 
         if (lastYear != 0) {
-            addUpdateAccountBalance(doubles, lastAccountId, lastYear)
+            DispatchQueue.main.sync {
+                addUpdateAccountBalance(doubles, lastAccountId, lastYear)
+            }
         }
 
-        for a in accounts {
-            _ = DBAccountBalance.instance.remove(accountId: a)
+        DispatchQueue.main.sync {
+            for a in accounts {
+                _ = DBAccountBalance.instance.remove(accountId: a)
+            }
         }
+        LLog.d("\(self)", "rescan completed")
     }
 }
-
-
-/*
- public static void getAccountSummaryForCurrentCursor(LAccountSummary summary, Cursor cursor, long[] accountIds) {
- double income = 0;
- double expense = 0;
-
- if (cursor != null && cursor.getCount() > 0) {
- cursor.moveToFirst();
- do {
- double value = cursor.getDouble(cursor.getColumnIndexOrThrow(DBHelper.TABLE_COLUMN_AMOUNT));
- long account1 = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.TABLE_COLUMN_ACCOUNT));
- long account2 = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.TABLE_COLUMN_ACCOUNT2));
- int type = cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.TABLE_COLUMN_TYPE));
- if (type == LTransaction.TRANSACTION_TYPE_INCOME) income += value;
- else if (type == LTransaction.TRANSACTION_TYPE_EXPENSE) expense += value;
- int considerTransfer = 2;
- if (null != accountIds) {
- for (int ii = 0; ii < accountIds.length; ii++) {
- if (accountIds[ii] == account1 || accountIds[ii] == account2) {
- considerTransfer++;
- }
- }
- }
-
- if (considerTransfer != 2) {
- if (type == LTransaction.TRANSACTION_TYPE_TRANSFER) {
- expense += value;
- } else if (type == LTransaction.TRANSACTION_TYPE_TRANSFER_COPY) {
- income += value;
- }
- }
- } while (cursor.moveToNext());
- }
- summary.setBalance(income - expense);
- summary.setIncome(income);
- summary.setExpense(expense);
- }
- }
-*/

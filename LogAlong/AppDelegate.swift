@@ -50,8 +50,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func endBackgroundTask(_ done: Bool) {
-        LLog.d("\(self)", "Background task ended.")
         if (backgroundTask != UIBackgroundTaskInvalid) {
+            LLog.d("\(self)", "Background task ended.")
             if done {
                 LServer.instance.disconnect()
             }
