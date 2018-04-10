@@ -444,17 +444,33 @@ class LJournal {
     private lazy var recordJournalFlushAction: GenericJournalFlushAction<JLTransaction> = GenericJournalFlushAction<JLTransaction>()
     private lazy var scheduleJournalFlushAction: GenericJournalFlushAction<JLScheduledTransaction> = GenericJournalFlushAction<JLScheduledTransaction>()
 
-    func flush() -> Bool {
+    private var inProgress: Bool = false
+    func flushingInProgress() -> Bool {
+        return inProgress
+    }
 
+    func remove(_ journalId: Int) {
+        _ = DBJournal.instance.remove(id: journalId)
+        inProgress = false
+    }
+
+    // poll when there is no active journal, hence flush only return false when,
+    // - there's actually no journal left: nil == entry, or
+    // - previous journal posting hasn't been responded: lastFlushId == entry.journalId
+    func flush() -> Bool {
         let entry = DBJournal.instance.get()
         if (nil == entry) {
+            // self-healing: reset progress to false, if there's no journal left, to prevent
+            // stale progress state upon app resuming from background.
+            inProgress = false
             return false
         }
 
         if (lastFlushId == entry?.journalId && (Date().currentTimeMillis - lastFlushMs < 15000)) {
             //so not to keep flushing the same journal over and over
             LLog.w("\(self)", "journal flush request ignored: \(entry!.journalId)")
-            LLog.d("\(self)", "lastFlushMs: \(lastFlushMs) delta: \(lastFlushMs - Date().currentTimeMillis)")
+            LLog.d("\(self)", "lastFlushMs: \(lastFlushMs) delta: \(Date().currentTimeMillis - lastFlushMs)")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: {self.flush()})
             return false;
         }
         LLog.d("\(self)", "total flushing count: \(flushCount)")
@@ -515,18 +531,19 @@ class LJournal {
             errorCount += 1
             if (errorCount > LJournal.MAX_ERROR_RETRIES) {
                 removeEntry = true;
-                LLog.e("\(self)", "db entry gid not available, journal request dropped");
+                LLog.e("\(self)", "db entry gid not available, journal request dropped")
             } else {
-                return false;
+                return true
             }
         }
 
         errorCount = 0;
         if (removeEntry) {
             DBJournal.instance.remove(id: entry!.journalId)
-            return false;
+            return true
         }
 
+        inProgress = true
         if (newEntry) {
             let entry2 = LJournalEntry(journalId: entry!.journalId, datap: ndata.getBuf(), bytes: ndata.getLen())
             UiRequest.instance.UiPostJournal(entry!.journalId, data: entry2.data)

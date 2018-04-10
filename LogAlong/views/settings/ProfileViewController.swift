@@ -40,6 +40,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
     var oldPassword: String = ""
     var profileAction: ProfileAction = .UPDATE_USER
     var pushDb = false
+    var pushingDb = false
 
     var timer: Timer?
     var count: Double = 0
@@ -485,6 +486,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
 
                     resetTimer(LServer.REQUEST_TIMEOUT_SECONDS)
                     _ = UiRequest.instance.UiLogIn(userId, password)
+
+                    doneButton.isEnabled = false
                     pushDb = true
                 }
             }
@@ -497,6 +500,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
     }
 
     @objc func login(notification: Notification) -> Void {
+        if pushingDb {return} // this must be the case where app resumed from background
+
         var success = false
 
         stopTimer()
@@ -531,6 +536,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
     }
 
     private func pushLocalDb() {
+        pushingDb = true
+
         for account in DBAccount.instance.getAll() {
             //publishProgress(account.getName());
             _ = LJournal.instance.addAccount(account.id)

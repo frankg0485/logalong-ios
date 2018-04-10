@@ -73,7 +73,7 @@ class LService {
     }
 
     @objc func newJournalAvailable(notification: Notification) {
-        if loggedIn {
+        if loggedIn && !LJournal.instance.flushingInProgress() {
             _ = LJournal.instance.flush()
         }
     }
@@ -403,7 +403,7 @@ class LService {
                 }
 
                 if (LProtocol.RSPS_OK == ret) {
-                    _ = DBJournal.instance.remove(id: journalId)
+                    LJournal.instance.remove(journalId)
                     LLog.d("\(self)", "flushing journal upon completion ...")
                     moreJournal = LJournal.instance.flush()
                 }
@@ -420,7 +420,7 @@ class LService {
                 } else {
                     journalPostErrorCount = 0
                     LLog.e("\(self)", "fatal journal post error, journal skipped")
-                    _ = DBJournal.instance.remove(id: journalId)
+                    LJournal.instance.remove(journalId)
                     moreJournal = LJournal.instance.flush()
                 }
             }
@@ -442,8 +442,10 @@ class LService {
         //but underlying database hasn't got a chance to flush.
         pollingCount = MAX_POLLING_COUNT_UPON_PUSH_NOTIFICATION
 
-        if !LJournal.instance.flush() {
-            gatedPoll()
+        if !LJournal.instance.flushingInProgress() {
+            if !LJournal.instance.flush() {
+                gatedPoll()
+            }
         }
     }
 
@@ -779,6 +781,44 @@ class LService {
     private func gatedPoll() {
         if !pollRequested {
             pollRequested = UiRequest.instance.UiPoll()
+        }
+    }
+
+    //debugging support
+    static func notificationString(code: UInt16) -> String {
+        switch (code) {
+        case LService.NOTIFICATION_ADD_ACCOUNT: return "ADD_ACCOUNT"
+        case LService.NOTIFICATION_UPDATE_ACCOUNT: return "UPDATE_ACCOUNT"
+        case LService.NOTIFICATION_DELETE_ACCOUNT: return "DELETE_ACCOUNT"
+        case LService.NOTIFICATION_UPDATE_ACCOUNT_GID: return "UPDATE_ACCOUNT_GID"
+        case LService.NOTIFICATION_ADD_CATEGORY: return "ADD_CATEGORY"
+        case LService.NOTIFICATION_UPDATE_CATEGORY: return "UPDATE_CATEGORY"
+        case LService.NOTIFICATION_DELETE_CATEGORY: return "DELETE_CATEGORY"
+        case LService.NOTIFICATION_ADD_TAG: return "ADD_TAG"
+        case LService.NOTIFICATION_UPDATE_TAG: return "UPDATE_TAG"
+        case LService.NOTIFICATION_DELETE_TAG: return "DELETE_TAG"
+        case LService.NOTIFICATION_ADD_VENDOR: return "ADD_VENDOR"
+        case LService.NOTIFICATION_UPDATE_VENDOR: return "UPDATE_VENDOR"
+        case LService.NOTIFICATION_DELETE_VENDOR: return "DELETE_VENDOR"
+        case LService.NOTIFICATION_GET_RECORD: return "GET_RECORD"
+        case LService.NOTIFICATION_UPDATE_RECORD: return "UPDATE_RECORD"
+        case LService.NOTIFICATION_DELETE_RECORD: return "DELETE_RECORD"
+        case LService.NOTIFICATION_GET_RECORDS: return "GET_RECORDS"
+        case LService.NOTIFICATION_ADD_SCHEDULE: return "ADD_SCHEDULE"
+        case LService.NOTIFICATION_UPDATE_SCHEDULE: return "UPDATE_SCHEDULE"
+        case LService.NOTIFICATION_DELETE_SCHEDULE: return "DELETE_SCHEDULE"
+        case LService.NOTIFICATION_UPDATE_USER_PROFILE: return "UPDATE_USER_PROFILE"
+        case LService.NOTIFICATION_ADD_SHARE_USER: return "ADD_SHARE_USER"
+        case LService.NOTIFICATION_REQUEST_ACCOUNT_SHARE: return "REQUEST_ACCOUNT_SHARE"
+        case LService.NOTIFICATION_DECLINE_ACCOUNT_SHARE: return "DECLINE_ACCOUNT_SHARE"
+        case LService.NOTIFICATION_UPDATE_ACCOUNT_USER: return "UPDATE_ACCOUNT_USER"
+        case LService.NOTIFICATION_GET_ACCOUNT_RECORDS: return "GET_ACCOUNT_RECORDS"
+        case LService.NOTIFICATION_GET_ACCOUNT_SCHEDULES: return "GET_ACCOUNT_SCHEDULES"
+        case LService.NOTIFICATION_GET_ACCOUNTS: return "GET_ACCOUNTS"
+        case LService.NOTIFICATION_GET_CATEGORIES: return "GET_CATEGORIES"
+        case LService.NOTIFICATION_GET_VENDORS: return "GET_VENDORS"
+        case LService.NOTIFICATION_GET_TAGS: return "GET_TAGS"
+        default: return "unknown notification"
         }
     }
 }

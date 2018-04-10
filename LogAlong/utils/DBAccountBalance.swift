@@ -112,8 +112,8 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
         cancel = true
     }
     static func rescan(reset: Bool = true) {
-        if Thread.isMainThread {
-            LLog.w("\(self)", "API is not supposed to be called from mainthread");
+        if !Thread.isMainThread {
+            LLog.w("\(self)", "API must run from mainthread");
             return
         }
 
@@ -127,9 +127,7 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
 
         if (accounts.count == 0) {
             LLog.d("\(self)", "no account left, deleting all balances");
-            DispatchQueue.main.sync {
-                DBAccountBalance.instance.removeAll() //clean up balances if all accounts are removed.
-            }
+            DBAccountBalance.instance.removeAll() //clean up balances if all accounts are removed.
             return
         }
 
@@ -139,10 +137,6 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
 
         do {
             for row in try DBHelper.instance.db!.prepare(DBTransaction.instance.table!.order(DBHelper.accountId.asc, DBHelper.timestamp.asc)) {
-                if cancel {
-                    return
-                }
-
                 let accountId = row[DBHelper.accountId]
                 if accountId == 0 {
                     LLog.w("\(self)", "unexpected invalid account id")
@@ -155,21 +149,20 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
                 let (year, month, _) = LA.ymd(milliseconds: row[DBHelper.timestamp])
 
                 if (lastAccountId == 0) {
+                    if cancel {return}
+
                     lastAccountId = accountId
                     lastYear = year
-                    DispatchQueue.main.sync {
-                        if reset { _ = DBAccountBalance.instance.remove(accountId: accountId) }
-                    }
+                    if reset { _ = DBAccountBalance.instance.remove(accountId: accountId) }
                 } else if (lastAccountId != accountId || lastYear != year) {
                     if lastAccountId != accountId {
-                        DispatchQueue.main.sync {
+                        if !cancel {
                             if reset { _ = DBAccountBalance.instance.remove(accountId: accountId) }
                         }
                     }
 
-                    DispatchQueue.main.sync {
-                        addUpdateAccountBalance(doubles, lastAccountId, lastYear)
-                    }
+                    addUpdateAccountBalance(doubles, lastAccountId, lastYear)
+                    if cancel && lastAccountId != accountId {return}
 
                     lastAccountId = accountId
                     lastYear = year
@@ -184,15 +177,11 @@ class DBAccountBalance : DBGeneric<LAccountYearBalance> {
         }
 
         if (lastYear != 0) {
-            DispatchQueue.main.sync {
-                addUpdateAccountBalance(doubles, lastAccountId, lastYear)
-            }
+            addUpdateAccountBalance(doubles, lastAccountId, lastYear)
         }
 
-        DispatchQueue.main.sync {
-            for a in accounts {
-                _ = DBAccountBalance.instance.remove(accountId: a)
-            }
+        for a in accounts {
+            _ = DBAccountBalance.instance.remove(accountId: a)
         }
         LLog.d("\(self)", "rescan completed")
     }

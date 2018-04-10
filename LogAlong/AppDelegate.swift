@@ -71,8 +71,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         registerBackgroundTask()
         workItem = DispatchWorkItem {
-            DBAccountBalance.rescan()
-
+            DispatchQueue.main.sync {
+                DBAccountBalance.rescan()
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 15, execute: {
                 self.endBackgroundTask(true)
             })
@@ -87,14 +88,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        //DBAccountBalance.rescanCancel()
+        DBAccountBalance.rescanCancel()
         endBackgroundTask(false)
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        if uiRequest.state == .DISCONNECTED && LPreferences.getUserIdNum() > 0 {
-            LLog.d("\(self)", "connection lost: reconnecting ...")
+        if LPreferences.getUserIdNum() > 0 {
+            //LLog.d("\(self)", "connection lost: reconnecting ...")
             LServer.instance.connect()
         }
     }

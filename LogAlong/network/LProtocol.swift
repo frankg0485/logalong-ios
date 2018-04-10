@@ -14,6 +14,8 @@ enum LConnectionState {
     case LOGGED_IN
 }
 
+// LProtocol runs in network background thread, posts requests to LService.
+// which runs in main thread.
 final class LProtocol : LServerDelegate {
     static let instance = LProtocol()
 
@@ -159,6 +161,7 @@ final class LProtocol : LServerDelegate {
             return 1;
         }
 
+        //LLog.d("\(self)", "consuming packet ...")
         LTransport.scramble(pkt, scrambler);
         pkt.skip(6);
         let status = pkt.getShortAutoInc();
@@ -247,7 +250,7 @@ final class LProtocol : LServerDelegate {
             }
 
         case LConnectionState.LOGGED_IN:
-            LLog.d("\(self)", "user logged in")
+            LLog.d("\(self)", "user logged in, rsps for: \(LProtocol.requestString(code: rsps ^ LProtocol.RSPS))")
             switch (rsps) {
             case LProtocol.RSPS | LProtocol.RQST_UPDATE_USER_PROFILE:
                 LBroadcast.post(LBroadcast.ACTION_UPDATE_USER_PROFILE, sender: nil, data: bdata)
@@ -445,6 +448,7 @@ final class LProtocol : LServerDelegate {
 
                     bytes = pkt.getShortAutoInc()
                     bdata["blob"] = pkt.getBytesAutoInc(Int(bytes))
+                    LLog.d("\(self)", "\(LService.notificationString(code: bdata["nid"] as! UInt16))")
                 }
 
                 LBroadcast.post(LBroadcast.ACTION_POLL, sender: nil, data: bdata)
@@ -472,6 +476,7 @@ final class LProtocol : LServerDelegate {
         }
 
         pkt.setOffset(origOffset + Int(total));
+        //LLog.d("\(self)", "packet consumed.")
         return 1;
     }
 
