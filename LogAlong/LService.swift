@@ -498,6 +498,7 @@ class LService {
                     if let account = dbAccount.get(gid: gid) {
                         //TODO: LTask.start(new DBAccount.MyAccountDeleteTask(), account.getId())
                         _ = dbAccount.remove(id: account.id)
+                        DBAccount.deleteEntries(of: account.id)
                         LBroadcast.post(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, sender: nil, data: bdata)
                     }
 

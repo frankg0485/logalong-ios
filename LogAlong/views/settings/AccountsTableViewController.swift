@@ -154,7 +154,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     }
 
     func do_account_share_update(_ accountId: Int64, _ selections: Set<Int64>, _ origSelections: Set<Int64>) {
-        let account = DBAccount.instance.get(id: accountId)!
+        guard let account = DBAccount.instance.get(id: accountId) else { return }
         if (selections.isEmpty) {
             if (account.getOwner() == LPreferences.getUserIdNum()) {
                 //removing everyone from shared group
@@ -185,7 +185,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             }
 
             if (newShare) {
-                // new share request: new memeber is added to group
+                // new share request: new member is added to group
                 account.addShareUser(ii, LAccount.ACCOUNT_SHARE_INVITED)
                 _ = journal.addUserToAccount(uid: ii, aid: account.gid)
             }
