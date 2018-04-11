@@ -476,6 +476,12 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if .delete == editingStyle {
+            if DBAccount.instance.get(id: record.accountId) == nil ||
+                (record.type == .TRANSFER && DBAccount.instance.get(id: record.accountId2) == nil) {
+                LLog.d("\(self)", "account no longer exists, commit action ignored")
+                return onCancelClick()
+            }
+
             if isSchedule {
                 if DBScheduledTransaction.instance.remove(id: schedule.id) {
                     _ = LJournal.instance.deleteSchedule(gid: schedule.gid)
@@ -751,6 +757,12 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     @objc func onSaveClick() {
         if tableView.isEditing || isReadOnly {
             return
+        }
+
+        if DBAccount.instance.get(id: record.accountId) == nil ||
+            (record.type == .TRANSFER && DBAccount.instance.get(id: record.accountId2) == nil) {
+            LLog.d("\(self)", "account no longer exists, save action ignored")
+            return onCancelClick()
         }
 
         record.by = Int64(LPreferences.getUserIdNum())
