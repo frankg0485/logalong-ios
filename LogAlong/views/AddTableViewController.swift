@@ -543,20 +543,46 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             switch sv.selectType {
             case .ACCOUNT:
                 record!.accountId = type.int64
-                accountLabel.text = DBAccount.instance.get(id: type.int64)?.name
+                if let name = DBAccount.instance.get(id: type.int64)?.name {
+                    accountLabel.text = name
+                } else {
+                    accountLabel.text = accountDefaultDesc
+                }
             case .ACCOUNT2:
                 record!.accountId2 = type.int64
-                categoryLabel.text = DBAccount.instance.get(id: type.int64)?.name
+                if let name = DBAccount.instance.get(id: type.int64)?.name {
+                    categoryLabel.text = name
+                } else {
+                    categoryLabel.text = accountDefaultDesc
+                }
             case .CATEGORY:
                 record!.categoryId = type.int64
-                categoryLabel.text = DBCategory.instance.get(id: type.int64)?.name
+                if let name = DBCategory.instance.get(id: type.int64)?.name {
+                    categoryLabel.text = name
+                } else {
+                    categoryLabel.text = categoryDefaultDesc
+                }
             case .TAG:
                 record!.tagId = type.int64
-                tagLabel.text = DBTag.instance.get(id: (type.int64))?.name
-            case .PAYER: fallthrough
+                if let name = DBTag.instance.get(id: (type.int64))?.name {
+                    tagLabel.text = name
+                } else {
+                    tagLabel.text = tagDefaultDesc
+                }
+            case .PAYER:
+                record!.vendorId = type.int64
+                if let name = DBVendor.instance.get(id: type.int64)?.name {
+                    payeeLabel.text = name
+                } else {
+                    payeeLabel.text = payerDefaultDesc
+                }
             case .PAYEE:
                 record!.vendorId = type.int64
-                payeeLabel.text = DBVendor.instance.get(id: type.int64)?.name
+                if let name = DBVendor.instance.get(id: type.int64)?.name {
+                    payeeLabel.text = name
+                } else {
+                    payeeLabel.text = payeeDefaultDesc
+                }
             default:
                 LLog.e("\(self)", "unknown request type")
             }

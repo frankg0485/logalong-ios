@@ -72,7 +72,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         if multiSelection {
             allSwitch?.isOn = isAllChecked()
         }
-        okButton.isEnabled = false
+        okButton.isEnabled = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -140,7 +140,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
                 checked[ii] = on
             }
             tableView.reloadData()
-            okButton.isEnabled = true
+            //okButton.isEnabled = true
         }
     }
 
@@ -168,22 +168,18 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         let ids = getCheckedIds()
         var type: TypePassed = TypePassed(double: 0, int: 0, int64: 0, array64: nil, allSelected: false)
 
-        if ids.isEmpty {
-            LLog.e("\(self)", "unexpected empty selection")
+        if multiSelection {
+            type.array64 = ids
+            type.allSelected = isAllChecked()
         } else {
-            if multiSelection {
-                type.array64 = ids
-                type.allSelected = isAllChecked()
-            } else {
-                if ids.count != 1 {
-                    LLog.e("\(self)", "unexpected multiple selection")
-                }
+            if ids.count == 1 {
                 type.int64 = ids[0]
+            } else {
+                type.int64 = 0
             }
-
-            delegate?.passNumberBack(self, type: type, okPressed: true)
         }
 
+        delegate?.passNumberBack(self, type: type, okPressed: true)
         dismiss(animated: true, completion: nil)
     }
 
@@ -210,11 +206,9 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         checked[indexPath.row] = true
 
         if multiSelection {
-            okButton.isEnabled = isAnyChecked()
+            //okButton.isEnabled = isAnyChecked()
             allSwitch?.isOn = isAllChecked()
         } else {
-            okButton.isEnabled = true
-
             if (myIndexPath != indexPath.row && myIndexPath != -1) {
                 checked[myIndexPath] = false
                 if let cell = tableView.cellForRow(at: IndexPath(row: myIndexPath, section: 0)) {
@@ -226,13 +220,16 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
+            cell.accessoryType = .none
+        }
+        checked[indexPath.row] = false
+
         if multiSelection {
-            if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-                cell.accessoryType = .none
-            }
-            checked[indexPath.row] = false
-            okButton.isEnabled = isAnyChecked()
+            //okButton.isEnabled = isAnyChecked()
             allSwitch?.isOn = isAllChecked()
+        } else {
+            myIndexPath = -1;
         }
     }
 
