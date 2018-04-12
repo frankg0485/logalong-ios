@@ -117,7 +117,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
         if multiSelection {
             allSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 40, height: 25))
-            allSwitch!.addTarget(self, action: #selector(onSelectAllClick), for: .touchUpInside)
+            allSwitch!.addTarget(self, action: #selector(onSelectAllClick), for: .valueChanged)
             layout.addSubview(allSwitch!)
 
             let label = UILabel(frame: CGRect(x: 0, y: 0, width: 30, height: 30))

@@ -380,7 +380,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         hlayout.layoutMargins.right = 0
 
         allViewSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
-        allViewSwitch.addTarget(self, action: #selector(onShowAllClick), for: .touchUpInside)
+        allViewSwitch.addTarget(self, action: #selector(onShowAllClick), for: .valueChanged)
         hlayout.addSubview(allViewSwitch)
 
         let label = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 30))
@@ -418,7 +418,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         hlayout.layoutMargins.right = 0
 
         timeSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
-        timeSwitch.addTarget(self, action: #selector(onAllTimeClick), for: .touchUpInside)
+        timeSwitch.addTarget(self, action: #selector(onAllTimeClick), for: .valueChanged)
         hlayout.addSubview(timeSwitch)
 
         let label = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 30))
@@ -468,7 +468,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         hlayout.layoutMargins.right = 0
 
         valueSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
-        valueSwitch.addTarget(self, action: #selector(onClickValueSwitch), for: .touchUpInside)
+        valueSwitch.addTarget(self, action: #selector(onClickValueSwitch), for: .valueChanged)
         hlayout.addSubview(valueSwitch)
 
         let label = UILabel(frame: CGRect(x: 1, y: 0, width: 80, height: 30))
