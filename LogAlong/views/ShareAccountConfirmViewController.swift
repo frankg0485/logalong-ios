@@ -73,7 +73,10 @@ class ShareAccountConfirmViewController: UIViewController {
 
         if let tabController = presentingViewController as? MainTabViewController {
             if let navigationController = tabController.viewControllers![1] as? UINavigationController {
-                if let mainController = navigationController.topViewController as? MainViewController {
+                //Only mainViewController displays share popup, topViewController can be any
+                //view controller(i.e. ScheduleViewController) that's pushed by the main
+                //view controller
+                if let mainController = navigationController.viewControllers[0] as? MainViewController {
                     mainController.onShareAccountConfirmDialogExit(ok, request!)
                 }
             }
