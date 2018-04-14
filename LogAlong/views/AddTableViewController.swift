@@ -534,6 +534,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     func passNumberBack(_ caller: UIViewController, type: TypePassed, okPressed: Bool) {
         if let _ = caller as? SelectAmountViewController {
             if !okPressed && firstPopup {
+                navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
                 navigationController?.popViewController(animated: true)
             } else {
                 firstPopup = false
