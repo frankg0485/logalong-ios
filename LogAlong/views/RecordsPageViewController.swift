@@ -24,13 +24,13 @@ enum RecordsViewSortMode: Int {
 
 class RecordsPageViewController: UIPageViewController, UIPageViewControllerDataSource,
 UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
-
     private var viewL: RecordsViewController?
     private var viewM: RecordsViewController?
     private var viewR: RecordsViewController?
     private var viewNext: RecordsViewController?
     private var leftView: UIView?
     private var rightView: UIView?
+    private var addBtn: UIButton!
 
     private var isVisible: Bool = false
     private var isRefreshPending: Bool = false
@@ -288,6 +288,27 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         }
     }
 
+    @objc func onAddClick() {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "NewAdditionTableViewController")
+            as? NewAdditionTableViewController {
+
+            vc.modalPresentationStyle = UIModalPresentationStyle.popover
+            vc.popoverPresentationController?.sourceView = addBtn
+            vc.popoverPresentationController?.sourceRect = CGRect(x: addBtn.bounds.midX,
+                                                                  y: addBtn.bounds.maxY, width: 0, height: 0)
+
+            vc.popoverPresentationController?.permittedArrowDirections = .up
+            vc.popoverPresentationController!.delegate = self
+
+            vc.myNavigationController = self.navigationController
+
+            //164 = 3 * 55 (cell height) - 1 (cell separator height): so to hide the last cell separator
+            vc.preferredContentSize = CGSize(width: 135, height: 164)
+
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+
     private func setupLeftRightControls() {
         let BTN_W: CGFloat = 80
         let BTN_H: CGFloat = 80
@@ -362,22 +383,28 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         sortBtn = UIButton(type: .system)
         sortBtn?.addTarget(self, action: #selector(self.onSortClick), for: .touchUpInside)
         sortBtn!.setImage(getSortIcon(), for: .normal)
-        sortBtn!.setSize(w: BTN_W + BTN_S, h: BTN_H)
-        sortBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S)
+        sortBtn!.setSize(w: BTN_W + (BTN_S * 4), h: BTN_H)
+        sortBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S * 4)
 
         let chartBtn = UIButton(type: .system)
         chartBtn.addTarget(self, action: #selector(self.onChartClick), for: .touchUpInside)
         chartBtn.setImage(#imageLiteral(resourceName: "pie_chart_dark").withRenderingMode(.alwaysOriginal), for: .normal)
-        chartBtn.setSize(w: BTN_W - 2 + BTN_S, h: BTN_H - 2)
-        chartBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
+        chartBtn.setSize(w: BTN_W - 2 + (BTN_S * 4), h: BTN_H - 2)
+        chartBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S * 2, 0, BTN_S * 2)
+
+        addBtn = UIButton(type: .system)
+        addBtn.addTarget(self, action: #selector(self.onAddClick), for: .touchUpInside)
+        addBtn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
+        addBtn.setSize(w: BTN_W + (BTN_S * 4), h: BTN_H)
+        addBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S * 4, 0, 0)
 
         searchBtn = UIButton(type: .system)
         searchBtn!.addTarget(self, action: #selector(self.onSearchClick), for: .touchUpInside)
-        searchBtn!.setSize(w: BTN_W, h: BTN_H)
-        //searchBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
+        searchBtn!.setSize(w: BTN_W + (BTN_S * 4), h: BTN_H)
+        searchBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S * 2, 0, BTN_S * 2)
 
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: sortBtn!), UIBarButtonItem(customView: chartBtn)]
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: searchBtn!)
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: addBtn), UIBarButtonItem(customView: searchBtn!)]
 
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background

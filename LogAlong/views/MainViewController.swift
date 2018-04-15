@@ -12,7 +12,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     @IBOutlet weak var headerView: HorizontalLayout!
     @IBOutlet weak var tableView: UITableView!
-    let ADD_BUTTON_EXTRA_SPACE: CGFloat = 120
+    let BUTTON_EXTRA_SPACE: CGFloat = 120
     let TITLE_FONT_SIZE: CGFloat = 18
 
     var labelBalance: UILabel!
@@ -196,14 +196,14 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         addBtn = UIButton(type: .system)
         addBtn.addTarget(self, action: #selector(self.onAddClick), for: .touchUpInside)
         addBtn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
-        addBtn.setSize(w: BTN_W + ADD_BUTTON_EXTRA_SPACE, h: BTN_H)
-        addBtn.imageEdgeInsets = UIEdgeInsetsMake(0, ADD_BUTTON_EXTRA_SPACE, 0, 0)
+        addBtn.setSize(w: BTN_W + BUTTON_EXTRA_SPACE, h: BTN_H)
+        addBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BUTTON_EXTRA_SPACE, 0, 0)
 
         let scheduleBtn = UIButton(type: .system)
         scheduleBtn.addTarget(self, action: #selector(self.onScheduleClick), for: .touchUpInside)
         scheduleBtn.setImage(#imageLiteral(resourceName: "ic_action_alarms").withRenderingMode(.alwaysOriginal), for: .normal)
-        scheduleBtn.setSize(w: BTN_W, h: BTN_H)
-        //scheduleBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0)
+        scheduleBtn.setSize(w: BTN_W + BUTTON_EXTRA_SPACE, h: BTN_H)
+        scheduleBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BUTTON_EXTRA_SPACE)
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: scheduleBtn)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addBtn)
@@ -242,7 +242,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             vc.modalPresentationStyle = UIModalPresentationStyle.popover
             vc.popoverPresentationController?.sourceView = addBtn
-            vc.popoverPresentationController?.sourceRect = CGRect(x: addBtn.bounds.midX + ADD_BUTTON_EXTRA_SPACE,
+            vc.popoverPresentationController?.sourceRect = CGRect(x: addBtn.bounds.midX + BUTTON_EXTRA_SPACE,
                                                                   y: addBtn.bounds.maxY, width: 0, height: 0)
 
             vc.popoverPresentationController?.permittedArrowDirections = .up
