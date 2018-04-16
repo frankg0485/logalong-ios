@@ -18,7 +18,7 @@ enum SearchSelectType {
     case VALUE
 }
 
-class SearchViewController: UIViewController, UIPopoverPresentationControllerDelegate, FViewControllerDelegate {
+class SearchViewController: UIViewController, UIPopoverPresentationControllerDelegate, FViewControllerDelegate, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var separator1: UIView!
@@ -201,6 +201,21 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         LBroadcast.post(LBroadcast.ACTION_UI_DB_SEARCH_CHANGED)
     }
 
+    @objc func showAllTapped() {
+        allViewSwitch.isOn = !allViewSwitch.isOn
+        onShowAllClick()
+    }
+
+    @objc func allTimeTapped() {
+        timeSwitch.isOn = !timeSwitch.isOn
+        onAllTimeClick()
+    }
+
+    @objc func byValueViewTapped() {
+        valueSwitch.isOn = !valueSwitch.isOn
+        onClickValueSwitch()
+    }
+
     private func displayMe(ids: [Int64], btn: UIButton, name: (Int64) -> String?) {
         if (ids.isEmpty) {
             btn.setTitle(NSLocalizedString("all", comment: ""), for: .normal)
@@ -379,6 +394,10 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         hlayout.layoutMargins.left = 0
         hlayout.layoutMargins.right = 0
 
+        let showAllTap = UITapGestureRecognizer(target: self, action: #selector(showAllTapped))
+        showAllTap.delegate = self
+        showAllView.addGestureRecognizer(showAllTap)
+
         allViewSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
         allViewSwitch.addTarget(self, action: #selector(onShowAllClick), for: .valueChanged)
         hlayout.addSubview(allViewSwitch)
@@ -416,6 +435,10 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         hlayout.layoutMargins.bottom = 0
         hlayout.layoutMargins.left = 0
         hlayout.layoutMargins.right = 0
+
+        let allTimeTap = UITapGestureRecognizer(target: self, action: #selector(allTimeTapped))
+        allTimeTap.delegate = self
+        allTimeView.addGestureRecognizer(allTimeTap)
 
         timeSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
         timeSwitch.addTarget(self, action: #selector(onAllTimeClick), for: .valueChanged)
@@ -473,7 +496,12 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
 
         let label = UILabel(frame: CGRect(x: 1, y: 0, width: 80, height: 30))
         label.text = NSLocalizedString("By Value", comment: "")
+        label.isUserInteractionEnabled = true
         hlayout.addSubview(label)
+
+        let labelTap = UITapGestureRecognizer(target: self, action: #selector(byValueViewTapped))
+        labelTap.delegate = self
+        label.addGestureRecognizer(labelTap)
 
         valueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 30))
         valueBtn.addTarget(self, action: #selector(onClickValue), for: .touchUpInside)

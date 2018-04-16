@@ -294,8 +294,9 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
 
             vc.modalPresentationStyle = UIModalPresentationStyle.popover
             vc.popoverPresentationController?.sourceView = addBtn
-            vc.popoverPresentationController?.sourceRect = CGRect(x: addBtn.bounds.midX,
+            vc.popoverPresentationController?.sourceRect = CGRect(x: addBtn.bounds.midX + 5 * 4,
                                                                   y: addBtn.bounds.maxY, width: 0, height: 0)
+            //5 = BTN_S in setupNavigationBarItems()
 
             vc.popoverPresentationController?.permittedArrowDirections = .up
             vc.popoverPresentationController!.delegate = self
