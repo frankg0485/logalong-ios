@@ -13,7 +13,7 @@ struct NameWithId {
     var id: Int64 = 0
 }
 
-class CreateViewController: UIViewController, UITextFieldDelegate {
+class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureRecognizerDelegate {
 
     //var creation: NameWithId? = NameWithId(name: "", id: 0)
     var delegate: FPassCreationBackDelegate!
@@ -193,14 +193,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func checkOkButtonState() {
-        if !isCreate {
-            okButton.isEnabled = true
-            return
-        }
-
         var state = false
         if let name = nameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
-            if !name.isEmpty && name.count > 1 {
+            if name.count > 1 {
                 switch (createType) {
                 case .ACCOUNT: fallthrough
                 case .ACCOUNT2:
@@ -237,7 +232,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         okButton.isEnabled = state
     }
 
-    @IBAction func onOptionalSwitchClick(_ sender: Any) {
+    func optionalSwitchClick() {
         if createType == .ACCOUNT || createType == .ACCOUNT2 {
             account!.showBalance = optionalSwitch.isOn
         } else {
@@ -254,7 +249,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    @IBAction func onPayerSwitchClick(_ sender: Any) {
+    func payerSwitchClick() {
         if payerSwitch.isOn {
             if optionalSwitch.isOn {
                 vendor!.type = .PAYEE_PAYER
@@ -266,11 +261,38 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
             optionalSwitch.isOn = true
         }
     }
+    @IBAction func onOptionalSwitchClick(_ sender: Any) {
+        optionalSwitchClick()
+    }
+
+    @IBAction func onPayerSwitchClick(_ sender: Any) {
+        payerSwitchClick()
+    }
+
+    @objc func optionalLabelTapped() {
+        optionalSwitch.isOn = !optionalSwitch.isOn
+        optionalSwitchClick()
+    }
+
+    @objc func payerLabelTapped() {
+        payerSwitch.isOn = !payerSwitch.isOn
+        payerSwitchClick()
+    }
+
+    @objc func payeeLabelTapped() {
+        optionalSwitch.isOn = !optionalSwitch.isOn
+        optionalSwitchClick()
+    }
 
     private func setOptionalDisplay() {
+        optionalLabel.isUserInteractionEnabled = true
+        payerLabel.isUserInteractionEnabled = true
         switch (createType!) {
         case .ACCOUNT: fallthrough
         case .ACCOUNT2:
+            let labelTapped = UITapGestureRecognizer(target: self, action: #selector(self.optionalLabelTapped))
+            labelTapped.delegate = self
+            optionalLabel.addGestureRecognizer(labelTapped)
             optionalLabel.text = NSLocalizedString("Show balance", comment: "")
             payerLabel.isHidden = true
             payerSwitch.isHidden = true
@@ -293,6 +315,12 @@ class CreateViewController: UIViewController, UITextFieldDelegate {
                 payerSwitch.isOn = true
                 optionalSwitch.isOn = true
             }
+            var vendorLabelTapped = UITapGestureRecognizer(target: self, action: #selector(self.payerLabelTapped))
+            vendorLabelTapped.delegate = self
+            payerLabel.addGestureRecognizer(vendorLabelTapped)
+
+            vendorLabelTapped = UITapGestureRecognizer(target: self, action: #selector(self.payeeLabelTapped))
+            optionalLabel.addGestureRecognizer(vendorLabelTapped)
         case .TAG: fallthrough
         case .CATEGORY:
             optionalLabel.isHidden = true

@@ -327,9 +327,22 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
                 initChecked(id: tag.id, index: ii)
                 ii += 1
             }
-        //TODO: separate payer/payee support
-        case .PAYER: fallthrough
-        case .PAYEE: fallthrough
+        case .PAYER:
+            for payer in DBVendor.instance.getAll() {
+                if (payer.type == .PAYER) || (payer.type == .PAYEE_PAYER) {
+                    selections.append(NameWithId(name: payer.name, id: payer.id))
+                    initChecked(id: payer.id, index: ii)
+                    ii += 1
+                }
+            }
+        case .PAYEE:
+            for payee in DBVendor.instance.getAll() {
+                if (payee.type == .PAYEE) || (payee.type == .PAYEE_PAYER) {
+                    selections.append(NameWithId(name: payee.name, id: payee.id))
+                    initChecked(id: payee.id, index: ii)
+                    ii += 1
+                }
+            }
         case .VENDOR:
             for vendor in DBVendor.instance.getAll() {
                 selections.append(NameWithId(name: vendor.name, id: vendor.id))
