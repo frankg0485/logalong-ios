@@ -199,6 +199,20 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         return selections.count
     }
 
+    func deselectRow(_ indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) {
+            cell.accessoryType = .none
+        }
+        checked[indexPath.row] = false
+
+        if multiSelection {
+            //okButton.isEnabled = isAnyChecked()
+            allSwitch?.isOn = isAllChecked()
+        } else {
+            myIndexPath = -1;
+        }
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
             cell.accessoryType = .checkmark
@@ -210,27 +224,15 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
             allSwitch?.isOn = isAllChecked()
         } else {
             if (myIndexPath != indexPath.row && myIndexPath != -1) {
-                checked[myIndexPath] = false
-                if let cell = tableView.cellForRow(at: IndexPath(row: myIndexPath, section: 0)) {
-                    cell.accessoryType = .none
-                }
+                tableView.deselectRow(at: IndexPath(row: myIndexPath, section: 0), animated: true)
+                deselectRow(IndexPath(row: myIndexPath, section: 0))
             }
             myIndexPath = indexPath.row
         }
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath as IndexPath) {
-            cell.accessoryType = .none
-        }
-        checked[indexPath.row] = false
-
-        if multiSelection {
-            //okButton.isEnabled = isAnyChecked()
-            allSwitch?.isOn = isAllChecked()
-        } else {
-            myIndexPath = -1;
-        }
+        deselectRow(indexPath)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -305,6 +307,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     func checkIdentifierAndPopulateArray() {
         selections.removeAll()
+        checked.removeAll()
 
         var ii = 0
         switch (selectType) {
