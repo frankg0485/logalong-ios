@@ -173,6 +173,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
             vc.delegate = self
             vc.oldValue = record!.amount
+            vc.allowZero = false
             vc.color = readyForPopover(vc)
 
             firstPopup = true

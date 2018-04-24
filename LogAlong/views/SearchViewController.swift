@@ -183,6 +183,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SelectAmountViewController")
                 as! SelectAmountViewController
             vc.oldValue = search.value
+            vc.allowZero = true
             vc.color = LTheme.Color.base_orange
             vc.delegate = self
 

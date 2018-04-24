@@ -304,7 +304,6 @@
 			isa = PBXGroup;
 			children = (
 				CB1073611FCE6D0E00390032 /* DBAccount.swift */,
-				CBC13E1A201B23EF000DCF98 /* DBAccountBalance.swift */,
 				CB1073631FCE6F6E00390032 /* DBCategory.swift */,
 				CB1073651FCE735900390032 /* DBGeneric.swift */,
 				CB10735F1FCE62D900390032 /* DBHelper.swift */,
@@ -319,6 +318,7 @@
 				CBF135CD1FF0214E00E7E8AE /* LLayout.swift */,
 				CBFB02182048508900AA8813 /* LCheckbox.swift */,
 				CBC374961FBE54890098721C /* LLog.swift */,
+				CBC13E1A201B23EF000DCF98 /* DBAccountBalance.swift */,
 				014281A11FBD15870071ED8F /* LPreferences.swift */,
 				CB3E5F9F1FEDEAD300C64CBD /* LTheme.swift */,
 				014893D21EDFA368005E3C94 /* Protocols.swift */,

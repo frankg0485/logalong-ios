@@ -64,6 +64,7 @@ class SelectAmountViewController: UIViewController {
     var oldValue: Double = 0
     var value: Double = 0
     var operation = ""
+    var allowZero = false
 
     private var isEqual: Bool = false
     private var isImageReady: Bool = false
@@ -343,6 +344,8 @@ class SelectAmountViewController: UIViewController {
             appendToString("0")
             appendToString(".")
             return initDecimal10State()
+        case okEqualsButton:
+            if (allowZero) { saveLog() }
         default:
             break
         }
@@ -352,7 +355,7 @@ class SelectAmountViewController: UIViewController {
 
     private func initNoInputState() -> CalculatorState {
         disableEnableOperationButtons(false)
-        okEqualsButton.isEnabled = false
+        okEqualsButton.isEnabled = allowZero ? true : false
         decimalPointButton.isEnabled = true
 
         amountTextField.text = "0.0"
@@ -438,6 +441,8 @@ class SelectAmountViewController: UIViewController {
                 removeLastBit()
                 amountTextField.text = numberText
             }
+        case okEqualsButton:
+            if (allowZero) { saveLog() }
         default:
             break
         }
@@ -447,7 +452,7 @@ class SelectAmountViewController: UIViewController {
     private func initDecimal10State() -> CalculatorState {
         decimalPointButton.isEnabled = false
         disableEnableOperationButtons(false)
-        okEqualsButton.isEnabled = false
+        okEqualsButton.isEnabled = allowZero ? true : false
 
         if isImageReady {okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)}
         isEqual = false
@@ -463,10 +468,13 @@ class SelectAmountViewController: UIViewController {
         case button9, button8, button7, button6, button5, button4, button3, button2, button1, button0:
             if (appendToString(getDigit(btn))) {
                 amountTextField.text = numberText
-                if (string2value(numberText) >= 0.01) {
-                    okEqualsButton.isEnabled = true
-                } else {
-                    okEqualsButton.isEnabled = false
+                if allowZero { okEqualsButton.isEnabled = true }
+                else {
+                    if (string2value(numberText) >= 0.01) {
+                        okEqualsButton.isEnabled = true
+                    } else {
+                        okEqualsButton.isEnabled = false
+                    }
                 }
             }
 
@@ -503,10 +511,13 @@ class SelectAmountViewController: UIViewController {
         decimalPointButton.isEnabled = false
         disableEnableOperationButtons(true)
 
-        if (string2value(numberText) >= 0.01) {
-            okEqualsButton.isEnabled = true
-        } else {
-            okEqualsButton.isEnabled = false
+        if allowZero { okEqualsButton.isEnabled = true }
+        else {
+            if (string2value(numberText) >= 0.01) {
+                okEqualsButton.isEnabled = true
+            } else {
+                okEqualsButton.isEnabled = false
+            }
         }
 
         firstValueEnd = 0
