@@ -237,19 +237,19 @@ class LService {
 
                     case LProtocol.JRQST_GET_VENDORS:
                         let gid = bdata["gid"] as! Int64
-                        //let type = bdata["type"] as! Int
+                        let type = bdata["type"] as! UInt8
                         let name = bdata["name"] as! String
                         let dbVendor = DBVendor.instance
                         var vendor = dbVendor.get(gid: gid)
                         if (nil != vendor) {
                             vendor!.name = name
-                            //vendor!.type = type
+                            vendor!.type = VendorType(rawValue: type)!
                             _ = dbVendor.update(vendor!)
                         } else {
                             vendor = LVendor()
                             vendor!.gid = gid
                             vendor!.name = name
-                            //vendor!.type = type
+                            vendor!.type = VendorType(rawValue: type)!
                             _ = dbVendor.add(&vendor!)
                         }
 
