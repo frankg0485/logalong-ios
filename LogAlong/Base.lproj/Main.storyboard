@@ -970,6 +970,13 @@
                                     <view contentMode="scaleToFill" restorationIdentifier="ContentView" translatesAutoresizingMaskIntoConstraints="NO" id="TcE-EL-p4M">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                                         <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NET-bZ-mxi" userLabel="By Value Group View" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
+                                                <rect key="frame" x="8" y="461" width="359" height="50"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="WYB-iR-dr3"/>
+                                                </constraints>
+                                            </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lux-98-aTY" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
                                                 <rect key="frame" x="8" y="8" width="359" height="50"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -982,6 +989,13 @@
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="C7o-mf-bJY"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A3D-Hd-Y4b" userLabel="Separator3">
+                                                <rect key="frame" x="8" y="460" width="359" height="1"/>
+                                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="tTl-40-SgK"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="roO-TN-PoH" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
@@ -1026,21 +1040,27 @@
                                             <constraint firstItem="roO-TN-PoH" firstAttribute="top" secondItem="oDd-yF-tcL" secondAttribute="bottom" id="2FC-Kb-Xby"/>
                                             <constraint firstItem="MjM-Kt-WbX" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="5EL-dY-Ecz"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="O2s-cg-CRt" secondAttribute="trailing" id="9Dm-OK-M1H"/>
+                                            <constraint firstItem="NET-bZ-mxi" firstAttribute="top" secondItem="A3D-Hd-Y4b" secondAttribute="bottom" id="9Ls-H0-Rif"/>
                                             <constraint firstItem="Rpl-A7-4jb" firstAttribute="top" secondItem="iMb-EU-ZwS" secondAttribute="bottom" id="9d2-u4-jDQ"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="Lux-98-aTY" secondAttribute="trailing" id="9gk-V0-tQ1"/>
                                             <constraint firstItem="O2s-cg-CRt" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="CZK-3O-rVf"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="Rpl-A7-4jb" secondAttribute="trailing" id="DyO-94-0KQ"/>
+                                            <constraint firstItem="A3D-Hd-Y4b" firstAttribute="top" secondItem="MjM-Kt-WbX" secondAttribute="bottom" id="LFZ-Zj-deU"/>
                                             <constraint firstItem="iMb-EU-ZwS" firstAttribute="top" secondItem="O2s-cg-CRt" secondAttribute="bottom" id="MzW-RK-KBl"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="A3D-Hd-Y4b" secondAttribute="trailing" id="OXm-9d-6ic"/>
                                             <constraint firstItem="O2s-cg-CRt" firstAttribute="top" secondItem="roO-TN-PoH" secondAttribute="bottom" id="OxY-kn-hgp"/>
                                             <constraint firstItem="oDd-yF-tcL" firstAttribute="top" secondItem="Lux-98-aTY" secondAttribute="bottom" id="P9T-hy-B3Q"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="NET-bZ-mxi" secondAttribute="trailing" id="PYm-za-OYn"/>
                                             <constraint firstItem="Lux-98-aTY" firstAttribute="top" secondItem="TcE-EL-p4M" secondAttribute="topMargin" id="R5z-pS-Dci"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="oDd-yF-tcL" secondAttribute="trailing" id="YUJ-5Z-2Pl"/>
                                             <constraint firstAttribute="height" constant="300" id="ZDt-78-JE9"/>
                                             <constraint firstItem="MjM-Kt-WbX" firstAttribute="top" secondItem="Rpl-A7-4jb" secondAttribute="bottom" id="bb2-YQ-0GE"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="iMb-EU-ZwS" secondAttribute="trailing" id="hTZ-6C-ZOG"/>
                                             <constraint firstAttribute="trailingMargin" secondItem="MjM-Kt-WbX" secondAttribute="trailing" id="iwv-y7-tAF"/>
+                                            <constraint firstItem="NET-bZ-mxi" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="kM0-u2-f9n"/>
                                             <constraint firstItem="roO-TN-PoH" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="lQ0-ax-BRr"/>
                                             <constraint firstItem="Rpl-A7-4jb" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="lSd-qT-tuW"/>
+                                            <constraint firstItem="A3D-Hd-Y4b" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="mf6-FE-xUd"/>
                                             <constraint firstItem="oDd-yF-tcL" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="rJs-o1-seJ"/>
                                             <constraint firstItem="iMb-EU-ZwS" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="vcl-rP-Etb"/>
                                             <constraint firstItem="Lux-98-aTY" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="weA-cZ-ZrD"/>
@@ -1071,12 +1091,15 @@
                         <outlet property="allTimeGroupHeightConstraint" destination="Z6m-dp-8CN" id="l5D-10-RHL"/>
                         <outlet property="allTimeGroupView" destination="Rpl-A7-4jb" id="jkE-Lp-BmL"/>
                         <outlet property="allTimeView" destination="O2s-cg-CRt" id="mQo-wZ-Ozb"/>
+                        <outlet property="byValueGroupHeightConstraint" destination="WYB-iR-dr3" id="TCF-P5-hA2"/>
+                        <outlet property="byValueGroupView" destination="NET-bZ-mxi" id="DTu-y6-JgA"/>
                         <outlet property="byValueView" destination="MjM-Kt-WbX" id="6Ax-d4-Hyb"/>
                         <outlet property="contentView" destination="TcE-EL-p4M" id="g3n-Zl-1en"/>
                         <outlet property="headerView" destination="C59-Og-LU5" id="u0s-Mq-ItM"/>
                         <outlet property="scrollContentHeightConstraint" destination="ZDt-78-JE9" id="H2S-Ah-XKC"/>
                         <outlet property="separator1" destination="oDd-yF-tcL" id="Fzn-sF-ZIT"/>
                         <outlet property="separator2" destination="iMb-EU-ZwS" id="ClJ-kd-M8M"/>
+                        <outlet property="separator3" destination="A3D-Hd-Y4b" id="6ZS-8c-q1b"/>
                         <outlet property="showAllGroupHeightConstraint" destination="qy5-g0-rF4" id="SjH-LQ-2Ip"/>
                         <outlet property="showAllGroupView" destination="roO-TN-PoH" id="7kp-Ax-1DF"/>
                         <outlet property="showAllView" destination="Lux-98-aTY" id="n39-jT-iO1"/>
@@ -1084,7 +1107,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tza-av-9cx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-191" y="483"/>
+            <point key="canvasLocation" x="-191.19999999999999" y="482.60869565217394"/>
         </scene>
         <!--Charts Page View Controller-->
         <scene sceneID="Tb6-OK-EOh">
