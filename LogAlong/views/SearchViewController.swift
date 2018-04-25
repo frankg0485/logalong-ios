@@ -13,9 +13,10 @@ enum SearchSelectType {
     case CATEGORY
     case VENDOR
     case TAG
-    case FROM
-    case TO
-    case VALUE
+    case FROM_TIME
+    case TO_TIME
+    case FROM_VALUE
+    case TO_VALUE
 }
 
 class SearchViewController: UIViewController, UIPopoverPresentationControllerDelegate, FViewControllerDelegate, UIGestureRecognizerDelegate {
@@ -23,14 +24,17 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var separator1: UIView!
     @IBOutlet weak var separator2: UIView!
+    @IBOutlet weak var separator3: UIView!
     @IBOutlet weak var headerView: HorizontalLayout!
     @IBOutlet weak var showAllView: HorizontalLayout!
     @IBOutlet weak var allTimeView: HorizontalLayout!
     @IBOutlet weak var byValueView: HorizontalLayout!
     @IBOutlet weak var showAllGroupView: VerticalLayout!
     @IBOutlet weak var allTimeGroupView: VerticalLayout!
+    @IBOutlet weak var byValueGroupView: VerticalLayout!
     @IBOutlet weak var showAllGroupHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var allTimeGroupHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var byValueGroupHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollContentHeightConstraint: NSLayoutConstraint!
 
     var allViewSwitch: UISwitch!
@@ -46,6 +50,8 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     var toTimeBtn: UIButton!
     var filterByBtn: UIButton!
     var valueBtn: UIButton!
+    var fromValueBtn: UIButton!
+    var toValueBtn: UIButton!
 
     var searchSelectType: SearchSelectType!
     var search: LRecordSearch!
@@ -57,6 +63,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     let contentSizeBaseHeight: CGFloat = 210 // headerHeight + 3 * sectionHeaderHeight + overhead
     let showAllGroupHeight: CGFloat = 202 //4 * (entryHeight + entryBottomMargin) + 2
     let allTimeGroupHeight: CGFloat = 102 //2 * (entryHeight + entryBottomMargin) + 2
+    let byValueGroupHeight: CGFloat = 52
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,9 +74,11 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         createByValue()
 
         search = LPreferences.getRecordsSearchControls()
+        search.value = 0
         allViewSwitch.isOn = search.all
         timeSwitch.isOn = search.allTime
         valueSwitch.isOn = search.byValue
+        separator3.isHidden = !valueSwitch.isOn
 
         onShowAllClick()
         onAllTimeClick()
@@ -162,12 +171,12 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
 
     @objc func onClickFromTime() {
-        searchSelectType = .FROM
+        searchSelectType = .FROM_TIME
         presentTime(search.from)
     }
 
     @objc func onClickToTime() {
-        searchSelectType = .TO
+        searchSelectType = .TO_TIME
         presentTime(search.to)
     }
 
@@ -176,10 +185,18 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         displayFilterBy()
     }
 
-    @objc func onClickValue() {
-        if search.byValue {
-            searchSelectType = .VALUE
+    @objc func onClickFromValue() {
+        searchSelectType = .FROM_VALUE
+        presentAmountPicker()
+    }
 
+    @objc func onClickToValue() {
+        searchSelectType = .TO_VALUE
+        presentAmountPicker()
+    }
+
+    private func presentAmountPicker() {
+        if search.byValue {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SelectAmountViewController")
                 as! SelectAmountViewController
             vc.oldValue = search.value
@@ -192,6 +209,17 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
 
     @objc func onClickValueSwitch() {
+        if !valueSwitch.isOn {
+            byValueGroupView.isHidden = true
+            byValueGroupHeightConstraint.constant = 0
+            separator3.isHidden = true
+        } else {
+            byValueGroupView.isHidden = false
+            byValueGroupHeightConstraint.constant = allTimeGroupHeight
+            separator3.isHidden = false
+        }
+        setContentHeight()
+
         search.byValue = valueSwitch.isOn
     }
 
@@ -278,9 +306,12 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         filterByBtn.sizeToFit()
     }
 
-    private func displayValue() {
-        valueBtn.setTitle(String(search.value), for: .normal)
-        valueBtn.sizeToFit()
+    private func displayFromValue() {
+
+    }
+
+    private func displayToValue() {
+
     }
 
     private func displayValues() {
@@ -291,7 +322,8 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         displayFromTime()
         displayToTime()
         displayFilterBy()
-        displayValue()
+        displayFromValue()
+        displayToValue()
     }
 
     func passNumberBack(_ caller: UIViewController, type: TypePassed, okPressed: Bool) {
@@ -325,15 +357,15 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
                     search.tags = type.array64!
                 }
                 displayTags()
-            case .FROM:
+            case .FROM_TIME:
                 search.from = type.int64
                 displayFromTime()
-            case .TO:
+            case .TO_TIME:
                 search.to = type.int64
                 displayToTime()
-            case .VALUE:
+            /*case .VALUE:
                 search.value = type.double
-                displayValue()
+                displayValue()*/
             default: break
             }
         }
@@ -346,6 +378,9 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         }
         if !timeSwitch.isOn {
             height += allTimeGroupHeight
+        }
+        if valueSwitch.isOn {
+            height += byValueGroupHeight
         }
         preferredContentSize.height = height
         scrollContentHeightConstraint.constant = height - headerHeight
@@ -500,17 +535,37 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         label.isUserInteractionEnabled = true
         hlayout.addSubview(label)
 
-        let labelTap = UITapGestureRecognizer(target: self, action: #selector(byValueViewTapped))
-        labelTap.delegate = self
-        label.addGestureRecognizer(labelTap)
+        let viewTap = UITapGestureRecognizer(target: self, action: #selector(byValueViewTapped))
+        viewTap.delegate = self
+        byValueView.addGestureRecognizer(viewTap)
 
-        valueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 30))
-        valueBtn.addTarget(self, action: #selector(onClickValue), for: .touchUpInside)
-        //valueBtn.setTitle("1234.78", for: .normal)
-        valueBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
-        valueBtn.contentHorizontalAlignment = .right
-        //valueBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 32)
-        hlayout.addSubview(valueBtn)
         byValueView.addSubview(hlayout)
+
+        let layout = HorizontalLayout(height: entryHeight)
+        layout.layoutMargins.top = 0
+        layout.layoutMargins.bottom = entryBottomMargin
+
+        fromValueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        fromValueBtn.addTarget(self, action: #selector(onClickFromValue), for: .touchUpInside)
+        fromValueBtn.setTitle(NSLocalizedString("---", comment: ""), for: .normal)
+        fromValueBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        fromValueBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        fromValueBtn.contentHorizontalAlignment = .center
+        layout.addSubview(fromValueBtn)
+
+        let toLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 40))
+        toLabel.textColor = LTheme.Color.gray_text_color
+        toLabel.text = NSLocalizedString("to", comment: "")
+        layout.addSubview(toLabel)
+
+        toValueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        toValueBtn.addTarget(self, action: #selector(onClickToValue), for: .touchUpInside)
+        toValueBtn.setTitle(NSLocalizedString("---", comment: ""), for: .normal)
+        toValueBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        toValueBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        toValueBtn.contentHorizontalAlignment = .center
+        layout.addSubview(toValueBtn)
+
+        byValueGroupView.addSubview(layout)
     }
 }
