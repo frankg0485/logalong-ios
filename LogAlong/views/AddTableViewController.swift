@@ -173,7 +173,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
             vc.delegate = self
             vc.oldValue = record!.amount
-            vc.allowZero = false
             vc.color = readyForPopover(vc)
 
             firstPopup = true
@@ -189,15 +188,15 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             }
 
             if record.type == .TRANSFER {
-                record.accountId = recordValues["transAccountId"]!
-                record.accountId2 = recordValues["transAccountId2"]!
+                record.accountId = recordValues["transAccountId"] ?? 0
+                record.accountId2 = recordValues["transAccountId2"] ?? 0
             } else {
-                record.accountId = recordValues["accountId"]!
-                record.categoryId = recordValues["categoryId"]!
-                record.vendorId = recordValues["payeeId"]!
-                record.tagId = recordValues["tagId"]!
+                record.accountId = recordValues["accountId"] ?? 0
+                record.categoryId = recordValues["categoryId"] ?? 0
+                record.vendorId = recordValues["payeeId"] ?? 0
+                record.tagId = recordValues["tagId"] ?? 0
             }
-            record.timestamp = recordValues["date"]!
+            record.timestamp = recordValues["date"] ?? 0
         }
     }
 
