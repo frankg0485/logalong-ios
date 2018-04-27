@@ -36,15 +36,18 @@ class LPreferences {
         let from: Int64 = (defaults.object(forKey: recordsSearchControls + ".from") ?? defaultFrom) as! Int64
         let to: Int64 = (defaults.object(forKey: recordsSearchControls + ".to") ?? defaultTo) as! Int64
         let byEditTime: Bool = (defaults.object(forKey: recordsSearchControls + ".byEditTime") ?? false) as! Bool
-        let byValue: Bool = (defaults.object(forKey: recordsSearchControls + ".byValue") ?? false) as! Bool
-        let value: Double = (defaults.object(forKey: recordsSearchControls + ".value") ?? Double(0)) as! Double
+        let allValue: Bool = (defaults.object(forKey: recordsSearchControls + ".allValue") ?? false) as! Bool
+
+        var fromValue: Double = (defaults.object(forKey: recordsSearchControls + ".fromValue") ?? Double(0)) as! Double
+        var toValue: Double = (defaults.object(forKey: recordsSearchControls + ".toValue") ?? Double(0)) as! Double
+        if (toValue < fromValue) && (toValue != 0) { swap(&toValue, &fromValue) }
 
         let accounts: [Int64] = (defaults.array(forKey: recordsSearchControls + ".accounts") ?? [Int64]()) as! [Int64]
         let categories: [Int64] = (defaults.array(forKey: recordsSearchControls + ".categories") ?? [Int64]()) as! [Int64]
         let vendors: [Int64] = (defaults.array(forKey: recordsSearchControls + ".vendors") ?? [Int64]()) as! [Int64]
         let tags: [Int64] = (defaults.array(forKey: recordsSearchControls + ".tags") ?? [Int64]()) as! [Int64]
 
-        return LRecordSearch(all: all, allTime: allTime, from: from, to: to, byEditTime: byEditTime, byValue: byValue, value: value,
+        return LRecordSearch(all: all, allTime: allTime, from: from, to: to, byEditTime: byEditTime, allValue: allValue, fromValue: fromValue, toValue: toValue,
                              accounts: accounts, categories: categories, vendors: vendors, tags: tags)
     }
 
@@ -54,8 +57,9 @@ class LPreferences {
         defaults.set(controls.from, forKey: recordsSearchControls + ".from")
         defaults.set(controls.to, forKey: recordsSearchControls + ".to")
         defaults.set(controls.byEditTime, forKey: recordsSearchControls + ".byEditTime")
-        defaults.set(controls.byValue, forKey: recordsSearchControls + ".byValue")
-        defaults.set(controls.value, forKey: recordsSearchControls + ".value")
+        defaults.set(controls.allValue, forKey: recordsSearchControls + ".allValue")
+        defaults.set(controls.fromValue, forKey: recordsSearchControls + ".fromValue")
+        defaults.set(controls.toValue, forKey: recordsSearchControls + ".toValue")
 
         defaults.set(controls.accounts, forKey: recordsSearchControls + ".accounts")
         defaults.set(controls.categories, forKey: recordsSearchControls + ".categories")

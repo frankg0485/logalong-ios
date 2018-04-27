@@ -254,7 +254,7 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
                 list.append(kv.key)
             } else {
                 if (nil == lastGroup) {
-                    list.remove(at: list.count - 1)
+                    if list.count > 0 { list.removeLast() }
                     extraPieEntries.append(PieChartDataEntry(value: lastValue, label: lastKey))
 
                     lastGroup = lastKey + " ..."

@@ -89,7 +89,7 @@ UIPopoverPresentationControllerDelegate {
     private func setSearchButtonImage() {
         if (searchControls.all || (searchControls.accounts.isEmpty && searchControls.categories.isEmpty &&
             searchControls.vendors.isEmpty && searchControls.tags.isEmpty)) &&
-            searchControls.allTime && !searchControls.byValue {
+            searchControls.allTime && searchControls.allValue {
             searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
         } else {
             searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search_enabled").withRenderingMode(.alwaysOriginal), for: .normal)

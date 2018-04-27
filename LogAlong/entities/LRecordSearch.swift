@@ -14,8 +14,9 @@ struct LRecordSearch {
     var from: Int64
     var to: Int64
     var byEditTime: Bool
-    var byValue: Bool
-    var value: Double
+    var allValue: Bool
+    var fromValue: Double
+    var toValue: Double
     var accounts: [Int64]
     var categories: [Int64]
     var vendors: [Int64]

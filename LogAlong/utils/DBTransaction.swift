@@ -349,8 +349,15 @@ class DBTransaction: DBGeneric<LTransaction> {
                 }
             }
 
-            if search.byValue {
-                query = query.filter(table![DBHelper.amount] == search.value)
+            if !search.allValue {
+                var fromValue = search.fromValue
+                var toValue = search.toValue
+                if (toValue < fromValue) && (toValue != 0) { swap(&fromValue, &toValue) }
+                if toValue == 0 {
+                    query = query.filter(table![DBHelper.amount] >= fromValue)
+                } else {
+                    query = query.filter((toValue >= table![DBHelper.amount]) && (table![DBHelper.amount] >= fromValue))
+                }
             }
         }
 
