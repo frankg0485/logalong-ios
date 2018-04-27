@@ -970,11 +970,11 @@
                                     <view contentMode="scaleToFill" restorationIdentifier="ContentView" translatesAutoresizingMaskIntoConstraints="NO" id="TcE-EL-p4M">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NET-bZ-mxi" userLabel="By Value Group View" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NET-bZ-mxi" userLabel="All Value Group View" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
                                                 <rect key="frame" x="8" y="461" width="359" height="50"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="WYB-iR-dr3"/>
+                                                    <constraint firstAttribute="height" constant="50" id="WYB-iR-dr3" userLabel="All Value Group Height Constraint"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lux-98-aTY" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
@@ -1026,7 +1026,7 @@
                                                     <constraint firstAttribute="height" constant="100" id="Z6m-dp-8CN"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjM-Kt-WbX" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjM-Kt-WbX" userLabel="All Value View" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
                                                 <rect key="frame" x="8" y="410" width="359" height="50"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -1091,9 +1091,9 @@
                         <outlet property="allTimeGroupHeightConstraint" destination="Z6m-dp-8CN" id="l5D-10-RHL"/>
                         <outlet property="allTimeGroupView" destination="Rpl-A7-4jb" id="jkE-Lp-BmL"/>
                         <outlet property="allTimeView" destination="O2s-cg-CRt" id="mQo-wZ-Ozb"/>
-                        <outlet property="byValueGroupHeightConstraint" destination="WYB-iR-dr3" id="TCF-P5-hA2"/>
-                        <outlet property="byValueGroupView" destination="NET-bZ-mxi" id="DTu-y6-JgA"/>
-                        <outlet property="byValueView" destination="MjM-Kt-WbX" id="6Ax-d4-Hyb"/>
+                        <outlet property="allValueGroupHeightConstraint" destination="WYB-iR-dr3" id="zjH-gD-paS"/>
+                        <outlet property="allValueGroupView" destination="NET-bZ-mxi" id="If0-gP-DJp"/>
+                        <outlet property="allValueView" destination="MjM-Kt-WbX" id="x6p-SH-WxO"/>
                         <outlet property="contentView" destination="TcE-EL-p4M" id="g3n-Zl-1en"/>
                         <outlet property="headerView" destination="C59-Og-LU5" id="u0s-Mq-ItM"/>
                         <outlet property="scrollContentHeightConstraint" destination="ZDt-78-JE9" id="H2S-Ah-XKC"/>
