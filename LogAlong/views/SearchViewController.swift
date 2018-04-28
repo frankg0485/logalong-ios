@@ -45,6 +45,13 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     var categoriesBtn: UIButton!
     var vendorsBtn: UIButton!
     var tagsBtn: UIButton!
+    var typesBtn: UIButton!
+
+    var accountsCheckbox: LCheckbox!
+    var categoriesCheckbox: LCheckbox!
+    var vendorsCheckbox: LCheckbox!
+    var tagsCheckbox: LCheckbox!
+    var typesCheckbox: LCheckbox!
 
     var fromTimeBtn: UIButton!
     var toTimeBtn: UIButton!
@@ -60,9 +67,9 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     let entryBottomMargin: CGFloat = 5
     let sectionHeaderHeight: CGFloat = 50
     let contentSizeBaseHeight: CGFloat = 210 // headerHeight + 3 * sectionHeaderHeight + overhead
-    let showAllGroupHeight: CGFloat = 202 //4 * (entryHeight + entryBottomMargin) + 2
+    let showAllGroupHeight: CGFloat = 252 //5 * (entryHeight + entryBottomMargin) + 2
     let allTimeGroupHeight: CGFloat = 102 //2 * (entryHeight + entryBottomMargin) + 2
-    let allValueGroupHeight: CGFloat = 52
+    let allValueGroupHeight: CGFloat = 52 //1 * (entryHeight + entryBottomMargin) + 2
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +77,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         createHeader()
         createShowAll()
         createAllTime()
-        createallValue()
+        createAllValue()
 
         search = LPreferences.getRecordsSearchControls()
         allViewSwitch.isOn = search.all
@@ -155,6 +162,30 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     @objc func onClickTags() {
         searchSelectType = .TAG
         presentSelection(.TAG, values: search.tags)
+    }
+
+    @objc func onClickTypes() {
+
+    }
+
+    @objc func onClickAccountsCheckbox() {
+        accountsCheckbox.isSelected = !accountsCheckbox.isSelected
+    }
+
+    @objc func onClickCategoriesCheckbox() {
+        categoriesCheckbox.isSelected = !categoriesCheckbox.isSelected
+    }
+
+    @objc func onClickVendorsCheckbox() {
+        vendorsCheckbox.isSelected = !vendorsCheckbox.isSelected
+    }
+
+    @objc func onClickTagsCheckbox() {
+        tagsCheckbox.isSelected = !tagsCheckbox.isSelected
+    }
+
+    @objc func onClickTypesCheckbox() {
+        typesCheckbox.isSelected = !tagsCheckbox.isSelected
     }
 
     private func presentTime(_ initValue: Int64) {
@@ -412,14 +443,22 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         headerView.backgroundColor = LTheme.Color.dialog_border_color
     }
 
-    private func createShowAllEntry(_ str: String) -> (HorizontalLayout, UIButton) {
+    private func createShowAllEntry(_ str: String, _ allTime: Bool) -> (HorizontalLayout, UIButton, LCheckbox, UILabel) {
         let layout = HorizontalLayout(height: entryHeight)
         layout.layoutMargins.top = 0
         layout.layoutMargins.bottom = entryBottomMargin
 
+        let checkbox = LCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        if !allTime {
+            checkbox.layoutMargins = UIEdgeInsetsMake(0, 6, 0, 0)
+            checkbox.isSelected = false
+            layout.addSubview(checkbox)
+        }
+
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 40))
         label.textColor = LTheme.Color.gray_text_color
         label.text = str
+        label.isUserInteractionEnabled = true
         layout.addSubview(label)
 
         let valueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
@@ -429,7 +468,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         valueBtn.contentHorizontalAlignment = .right
         layout.addSubview(valueBtn)
 
-        return (layout, valueBtn)
+        return (layout, valueBtn, checkbox, label)
     }
 
     private func createShowAll() {
@@ -447,30 +486,56 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         allViewSwitch.addTarget(self, action: #selector(onShowAllClick), for: .valueChanged)
         hlayout.addSubview(allViewSwitch)
 
-        let label = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 30))
-        label.text = NSLocalizedString("Show All", comment: "")
-        hlayout.addSubview(label)
+        let showAllLabel = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 30))
+        showAllLabel.text = NSLocalizedString("Show All", comment: "")
+        hlayout.addSubview(showAllLabel)
         showAllView.addSubview(hlayout)
 
-        var (layout, btn) = createShowAllEntry(NSLocalizedString("Accounts", comment: ""))
+        var tapped = UITapGestureRecognizer(target: self, action: #selector(onClickAccountsCheckbox))
+        var (layout, btn, checkbox, label) = createShowAllEntry(NSLocalizedString("Accounts", comment: ""), false)
         accountsBtn = btn
         accountsBtn.addTarget(self, action: #selector(onClickAccounts), for: .touchUpInside)
+        accountsCheckbox = checkbox
+        accountsCheckbox.addTarget(self, action: #selector(onClickAccountsCheckbox), for: .touchUpInside)
+        label.addGestureRecognizer(tapped)
         showAllGroupView.addSubview(layout)
 
-        (layout, btn) = createShowAllEntry(NSLocalizedString("Categories", comment: ""))
+        tapped = UITapGestureRecognizer(target: self, action: #selector(onClickCategoriesCheckbox))
+        (layout, btn, checkbox, label) = createShowAllEntry(NSLocalizedString("Categories", comment: ""), false)
         categoriesBtn = btn
         categoriesBtn.addTarget(self, action: #selector(onClickCategories), for: .touchUpInside)
+        categoriesCheckbox = checkbox
+        categoriesCheckbox.addTarget(self, action: #selector(onClickCategoriesCheckbox), for: .touchUpInside)
+        label.addGestureRecognizer(tapped)
         showAllGroupView.addSubview(layout)
 
-        (layout, btn) = createShowAllEntry(NSLocalizedString("Payee/Payers", comment: ""))
+        tapped = UITapGestureRecognizer(target: self, action: #selector(onClickVendorsCheckbox))
+        (layout, btn, checkbox, label) = createShowAllEntry(NSLocalizedString("Payee/Payers", comment: ""), false)
         vendorsBtn = btn
         vendorsBtn.addTarget(self, action: #selector(onClickVendors), for: .touchUpInside)
+        vendorsCheckbox = checkbox
+        vendorsCheckbox.addTarget(self, action: #selector(onClickVendorsCheckbox), for: .touchUpInside)
+        label.addGestureRecognizer(tapped)
         showAllGroupView.addSubview(layout)
 
-        (layout, btn) = createShowAllEntry(NSLocalizedString("Tags", comment: ""))
+        tapped = UITapGestureRecognizer(target: self, action: #selector(onClickTagsCheckbox))
+        (layout, btn, checkbox, label) = createShowAllEntry(NSLocalizedString("Tags", comment: ""), false)
         tagsBtn = btn
         tagsBtn.addTarget(self, action: #selector(onClickTags), for: .touchUpInside)
+        tagsCheckbox = checkbox
+        tagsCheckbox.addTarget(self, action: #selector(onClickTagsCheckbox), for: .touchUpInside)
+        label.addGestureRecognizer(tapped)
         showAllGroupView.addSubview(layout)
+
+        tapped = UITapGestureRecognizer(target: self, action: #selector(onClickTagsCheckbox))
+        (layout, btn, checkbox, label) = createShowAllEntry(NSLocalizedString("Types", comment: ""), false)
+        typesBtn = btn
+        typesBtn.addTarget(self, action: #selector(onClickTypes), for: .touchUpInside)
+        typesCheckbox = checkbox
+        typesCheckbox.addTarget(self, action: #selector(onClickTypesCheckbox), for: .touchUpInside)
+        label.addGestureRecognizer(tapped)
+        showAllGroupView.addSubview(layout)
+
         showAllGroupHeightConstraint.constant = showAllGroupHeight
     }
 
@@ -520,15 +585,16 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         layout.addSubview(toTimeBtn)
         allTimeGroupView.addSubview(layout)
 
-        let (layout2, btn) = createShowAllEntry(NSLocalizedString("Filter by", comment: ""))
+        let (layout2, btn, _, _) = createShowAllEntry(NSLocalizedString("Filter by", comment: ""), true)
         filterByBtn = btn
         filterByBtn.addTarget(self, action: #selector(onClickFilterBy), for: .touchUpInside)
+        layout2.layoutSubviews()
         allTimeGroupView.addSubview(layout2)
 
         allTimeGroupHeightConstraint.constant = allTimeGroupHeight
     }
 
-    private func createallValue() {
+    private func createAllValue() {
         let hlayout = HorizontalLayout(height: sectionHeaderHeight)
         hlayout.layoutMargins.top = 0
         hlayout.layoutMargins.bottom = 0
