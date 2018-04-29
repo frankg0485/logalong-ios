@@ -170,18 +170,46 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
 
     @objc func onClickAccountsCheckbox() {
         accountsCheckbox.isSelected = !accountsCheckbox.isSelected
+        if accountsCheckbox.isSelected {
+            search.searchAccounts = true
+            accountsBtn.isEnabled = true
+        } else {
+            search.searchAccounts = false
+            accountsBtn.isEnabled = false
+        }
     }
 
     @objc func onClickCategoriesCheckbox() {
         categoriesCheckbox.isSelected = !categoriesCheckbox.isSelected
+        if categoriesCheckbox.isSelected {
+            search.searchCategories = true
+            categoriesBtn.isEnabled = true
+        } else {
+            search.searchCategories = false
+            categoriesBtn.isEnabled = false
+        }
     }
 
     @objc func onClickVendorsCheckbox() {
         vendorsCheckbox.isSelected = !vendorsCheckbox.isSelected
+        if vendorsCheckbox.isSelected {
+            search.searchVendors = true
+            vendorsBtn.isEnabled = true
+        } else {
+            search.searchVendors = false
+            vendorsBtn.isEnabled = false
+        }
     }
 
     @objc func onClickTagsCheckbox() {
         tagsCheckbox.isSelected = !tagsCheckbox.isSelected
+        if tagsCheckbox.isSelected {
+            search.searchTags = true
+            tagsBtn.isEnabled = true
+        } else {
+            search.searchTags = false
+            tagsBtn.isEnabled = false
+        }
     }
 
     @objc func onClickTypesCheckbox() {
@@ -257,6 +285,18 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
 
     @objc func onCancelClick() {
+        if search.searchAccounts && (!search.accounts.isEmpty) ||
+           search.searchCategories && (!search.categories.isEmpty) ||
+           search.searchVendors && (!search.vendors.isEmpty) ||
+           search.searchTags && (!search.tags.isEmpty) {}
+        else {
+            search.all = true
+        }
+
+        if (search.fromValue < 0.01) && (search.toValue < 0.01) {
+            search.allValue = true
+        }
+
         dismiss(animated: true, completion: nil)
 
         LPreferences.setRecordsSearchControls(controls: search)
@@ -299,18 +339,26 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
 
     private func displayAccounts() {
         displayMe(ids: search.accounts, btn: accountsBtn) {DBAccount.instance.get(id: $0)?.name}
+        accountsBtn.isEnabled = search.searchAccounts
+        accountsCheckbox.isSelected = search.searchAccounts
     }
 
     private func displayCategories() {
         displayMe(ids: search.categories, btn: categoriesBtn) {DBCategory.instance.get(id: $0)?.name}
+        categoriesBtn.isEnabled = search.searchCategories
+        categoriesCheckbox.isSelected = search.searchCategories
     }
 
     private func displayVendors() {
         displayMe(ids: search.vendors, btn: vendorsBtn) {DBVendor.instance.get(id: $0)?.name}
+        vendorsBtn.isEnabled = search.searchVendors
+        vendorsCheckbox.isSelected = search.searchVendors
     }
 
     private func displayTags() {
         displayMe(ids: search.tags, btn: tagsBtn) {DBTag.instance.get(id: $0)?.name}
+        tagsBtn.isEnabled = search.searchTags
+        tagsCheckbox.isSelected = search.searchTags
     }
 
     private func displayTime(ms: Int64, btn: UIButton) {
@@ -356,11 +404,11 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         displayCategories()
         displayVendors()
         displayTags()
-        displayFromTime()
-        displayToTime()
         displayFilterBy()
         displayFromValue()
         displayToValue()
+        displayFromTime()
+        displayToTime()
     }
 
     func passNumberBack(_ caller: UIViewController, type: TypePassed, okPressed: Bool) {
@@ -588,7 +636,6 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         let (layout2, btn, _, _) = createShowAllEntry(NSLocalizedString("Filter by", comment: ""), true)
         filterByBtn = btn
         filterByBtn.addTarget(self, action: #selector(onClickFilterBy), for: .touchUpInside)
-        layout2.layoutSubviews()
         allTimeGroupView.addSubview(layout2)
 
         allTimeGroupHeightConstraint.constant = allTimeGroupHeight

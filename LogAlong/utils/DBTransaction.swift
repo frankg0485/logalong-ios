@@ -289,7 +289,7 @@ class DBTransaction: DBGeneric<LTransaction> {
         if let search = by {
             if !search.all {
                 var filter: Expression<Bool>? = nil
-                if !search.accounts.isEmpty {
+                if !search.accounts.isEmpty && search.searchAccounts {
                     for acnt in search.accounts {
                         if let ff = filter {
                             filter = ff || (table![DBHelper.accountId] == acnt
@@ -303,7 +303,7 @@ class DBTransaction: DBGeneric<LTransaction> {
                 }
 
                 filter = nil
-                if !search.categories.isEmpty {
+                if !search.categories.isEmpty && search.searchCategories {
                     for cat in search.categories {
                         if let ff = filter {
                             filter = ff || (table![DBHelper.categoryId] == cat)
@@ -315,7 +315,7 @@ class DBTransaction: DBGeneric<LTransaction> {
                 }
 
                 filter = nil
-                if !search.vendors.isEmpty {
+                if !search.vendors.isEmpty && search.searchVendors {
                     for ven in search.vendors {
                         if let ff = filter {
                             filter = ff || (table![DBHelper.vendorId] == ven)
@@ -327,7 +327,7 @@ class DBTransaction: DBGeneric<LTransaction> {
                 }
 
                 filter = nil
-                if !search.tags.isEmpty {
+                if !search.tags.isEmpty && search.searchTags {
                     for tag in search.tags {
                         if let ff = filter {
                             filter = ff || (table![DBHelper.tagId] == tag)
@@ -350,13 +350,10 @@ class DBTransaction: DBGeneric<LTransaction> {
             }
 
             if !search.allValue {
-                var fromValue = search.fromValue
-                var toValue = search.toValue
-                if (toValue < fromValue) && (toValue != 0) { swap(&fromValue, &toValue) }
-                if toValue == 0 {
-                    query = query.filter(table![DBHelper.amount] >= fromValue)
+                if search.toValue == 0 {
+                    query = query.filter(table![DBHelper.amount] >= search.fromValue)
                 } else {
-                    query = query.filter((toValue >= table![DBHelper.amount]) && (table![DBHelper.amount] >= fromValue))
+                    query = query.filter((search.toValue >= table![DBHelper.amount]) && (table![DBHelper.amount] >= search.fromValue))
                 }
             }
         }

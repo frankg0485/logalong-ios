@@ -63,8 +63,11 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
                             self.headerView!.isHidden = false
 
                             if let ss = self.search {
-                                self.labelBalance?.isHidden = !ss.allValue || !ss.allTime ||
-                                    (!ss.all && (!ss.categories.isEmpty || !ss.vendors.isEmpty || !ss.tags.isEmpty))
+                                if ss.all && ss.allValue && ss.allTime {
+                                    self.labelBalance?.isHidden = false
+                                } else {
+                                    self.labelBalance?.isHidden = true
+                                }
                             }
 
                             var income: Double = 0

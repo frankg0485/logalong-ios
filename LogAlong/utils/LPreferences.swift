@@ -33,10 +33,12 @@ class LPreferences {
 
         let all: Bool = (defaults.object(forKey: recordsSearchControls + ".all") ?? true) as! Bool
         let allTime: Bool = (defaults.object(forKey: recordsSearchControls + ".allTime") ?? true) as! Bool
-        let from: Int64 = (defaults.object(forKey: recordsSearchControls + ".from") ?? defaultFrom) as! Int64
-        let to: Int64 = (defaults.object(forKey: recordsSearchControls + ".to") ?? defaultTo) as! Int64
+        var from: Int64 = (defaults.object(forKey: recordsSearchControls + ".from") ?? defaultFrom) as! Int64
+        var to: Int64 = (defaults.object(forKey: recordsSearchControls + ".to") ?? defaultTo) as! Int64
+        if (to < from) { swap(&to, &from) }
+
         let byEditTime: Bool = (defaults.object(forKey: recordsSearchControls + ".byEditTime") ?? false) as! Bool
-        let allValue: Bool = (defaults.object(forKey: recordsSearchControls + ".allValue") ?? false) as! Bool
+        let allValue: Bool = (defaults.object(forKey: recordsSearchControls + ".allValue") ?? true) as! Bool
 
         var fromValue: Double = (defaults.object(forKey: recordsSearchControls + ".fromValue") ?? Double(0)) as! Double
         var toValue: Double = (defaults.object(forKey: recordsSearchControls + ".toValue") ?? Double(0)) as! Double
@@ -46,9 +48,13 @@ class LPreferences {
         let categories: [Int64] = (defaults.array(forKey: recordsSearchControls + ".categories") ?? [Int64]()) as! [Int64]
         let vendors: [Int64] = (defaults.array(forKey: recordsSearchControls + ".vendors") ?? [Int64]()) as! [Int64]
         let tags: [Int64] = (defaults.array(forKey: recordsSearchControls + ".tags") ?? [Int64]()) as! [Int64]
+        let searchAccounts: Bool = (defaults.object(forKey: recordsSearchControls + ".searchAccounts") ?? true) as! Bool
+        let searchCategories: Bool = (defaults.object(forKey: recordsSearchControls + ".searchCategories") ?? true) as! Bool
+        let searchVendors: Bool = (defaults.object(forKey: recordsSearchControls + ".searchVendors") ?? true) as! Bool
+        let searchTags: Bool = (defaults.object(forKey: recordsSearchControls + ".searchTags") ?? true) as! Bool
 
         return LRecordSearch(all: all, allTime: allTime, from: from, to: to, byEditTime: byEditTime, allValue: allValue, fromValue: fromValue, toValue: toValue,
-                             accounts: accounts, categories: categories, vendors: vendors, tags: tags)
+                             accounts: accounts, categories: categories, vendors: vendors, tags: tags, searchAccounts: searchAccounts, searchCategories: searchCategories, searchVendors: searchVendors, searchTags: searchTags)
     }
 
     static func setRecordsSearchControls(controls: LRecordSearch) {
@@ -65,6 +71,10 @@ class LPreferences {
         defaults.set(controls.categories, forKey: recordsSearchControls + ".categories")
         defaults.set(controls.vendors, forKey: recordsSearchControls + ".vendors")
         defaults.set(controls.tags, forKey: recordsSearchControls + ".tags")
+        defaults.set(controls.searchAccounts, forKey: recordsSearchControls + ".searchAccounts")
+        defaults.set(controls.searchCategories, forKey: recordsSearchControls + ".searchCategories")
+        defaults.set(controls.searchVendors, forKey: recordsSearchControls + ".searchVendors")
+        defaults.set(controls.searchTags, forKey: recordsSearchControls + ".searchTags")
     }
 
     static func getRecordsViewAscend() -> Bool {
