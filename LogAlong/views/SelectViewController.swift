@@ -16,6 +16,7 @@ enum SelectType {
     case PAYEE
     case VENDOR
     case TAG
+    case TYPE
 }
 
 class SelectViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
@@ -100,6 +101,8 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         case .VENDOR:
             //return multiSelection ? NSLocalizedString("Select Payee/Payers", comment: "") : NSLocalizedString("Select Payee/Payer", comment: "")
             return NSLocalizedString("Payee/Payer", comment: "")
+        case .TYPE:
+            return NSLocalizedString("Type", comment: "")
         default:
             return ""
         }
@@ -353,6 +356,22 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
                 ii += 1
             }
             break
+        case .TYPE:
+            for ii in 1...3 {
+                var name = ""
+                switch ii {
+                case 1:
+                    name = NSLocalizedString("Expense", comment: "")
+                case 2:
+                    name = NSLocalizedString("Income", comment: "")
+                case 3:
+                    name = NSLocalizedString("Transfer", comment: "")
+                default:
+                    LLog.e("\(self)", "Unexpected type value: \(ii)")
+                }
+                selections.append(NameWithId(name: name, id: Int64(ii)))
+                initChecked(id: Int64(ii), index: ii - 1)
+            }
         default:
             LLog.e("\(self)", "unknown request type")
         }

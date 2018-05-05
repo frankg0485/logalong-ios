@@ -13,6 +13,7 @@ enum SearchSelectType {
     case CATEGORY
     case VENDOR
     case TAG
+    case TYPE
     case FROM_TIME
     case TO_TIME
     case FROM_VALUE
@@ -165,7 +166,8 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
 
     @objc func onClickTypes() {
-
+        searchSelectType = .TYPE
+        presentSelection(.TYPE, values: search.types)
     }
 
     @objc func onClickAccountsCheckbox() {
@@ -213,7 +215,14 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     }
 
     @objc func onClickTypesCheckbox() {
-        typesCheckbox.isSelected = !tagsCheckbox.isSelected
+        typesCheckbox.isSelected = !typesCheckbox.isSelected
+        if typesCheckbox.isSelected {
+            search.searchTypes = true
+            typesBtn.isEnabled = true
+        } else {
+            search.searchTypes = false
+            typesBtn.isEnabled = false
+        }
     }
 
     private func presentTime(_ initValue: Int64) {
@@ -288,7 +297,8 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         if search.searchAccounts && (!search.accounts.isEmpty) ||
            search.searchCategories && (!search.categories.isEmpty) ||
            search.searchVendors && (!search.vendors.isEmpty) ||
-           search.searchTags && (!search.tags.isEmpty) {}
+           search.searchTags && (!search.tags.isEmpty) ||
+           search.searchTypes && (!search.types.isEmpty) {}
         else {
             search.all = true
         }
@@ -361,6 +371,25 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         tagsCheckbox.isSelected = search.searchTags
     }
 
+    private func displayTypes() {
+        displayMe(ids: search.types, btn: typesBtn) {
+            var name = ""
+            switch $0 {
+            case 1:
+                name = NSLocalizedString("Expense", comment: "")
+            case 2:
+                name = NSLocalizedString("Income", comment: "")
+            case 3:
+                name = NSLocalizedString("Transfer", comment: "")
+            default:
+                LLog.e("\(self)", "Unexpected type :\($0)")
+            }
+            return name
+        }
+        typesBtn.isEnabled = search.searchTypes
+        typesCheckbox.isSelected = search.searchTypes
+    }
+
     private func displayTime(ms: Int64, btn: UIButton) {
         let date = Date(milliseconds: ms)
         let dayTimePeriodFormatter = DateFormatter()
@@ -404,6 +433,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         displayCategories()
         displayVendors()
         displayTags()
+        displayTypes()
         displayFilterBy()
         displayFromValue()
         displayToValue()
@@ -442,6 +472,13 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
                     search.tags = type.array64!
                 }
                 displayTags()
+            case .TYPE:
+                if (type.allSelected || type.array64!.isEmpty) {
+                    search.types = []
+                } else {
+                    search.types = type.array64!
+                }
+                displayTypes()
             case .FROM_TIME:
                 search.from = type.int64
                 displayFromTime()
@@ -575,7 +612,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         label.addGestureRecognizer(tapped)
         showAllGroupView.addSubview(layout)
 
-        tapped = UITapGestureRecognizer(target: self, action: #selector(onClickTagsCheckbox))
+        tapped = UITapGestureRecognizer(target: self, action: #selector(onClickTypesCheckbox))
         (layout, btn, checkbox, label) = createShowAllEntry(NSLocalizedString("Types", comment: ""), false)
         typesBtn = btn
         typesBtn.addTarget(self, action: #selector(onClickTypes), for: .touchUpInside)

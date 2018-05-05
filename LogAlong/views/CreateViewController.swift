@@ -99,6 +99,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 tag = DBTag.instance.get(name: entryName!)
                 nameTextField.placeholder = tag?.name
             }
+        case .TYPE:
+            LLog.e("\(self)", "Unexpected: type select in CreateViewController")
         }
 
         setOptionalDisplay()
@@ -172,8 +174,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                         _ = LJournal.instance.updateTag(tag!.id)
                     }
                 }
+            case .TYPE:
+                LLog.e("\(self)", "Unexpected: type select in CreateViewController")
             }
-
             delegate.creationCallback(created: true)
         }
         dismiss(animated: true, completion: nil)
@@ -327,6 +330,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
             optionalSwitch.isHidden = true
             payerLabel.isHidden = true
             payerSwitch.isHidden = true
+        case .TYPE:
+            LLog.e("\(self)", "Unexpected: type select in CreateViewController")
         }
     }
 }

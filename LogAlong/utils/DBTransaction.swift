@@ -337,6 +337,25 @@ class DBTransaction: DBGeneric<LTransaction> {
                     }
                     query = query.filter(filter!)
                 }
+
+                filter = nil
+                if !search.types.isEmpty && search.searchTypes {
+                    for type in search.types {
+                        let dbType = type * 10
+                        if let ff = filter {
+                            if dbType == 30 { filter = ff || ((table![DBHelper.type] == Int(dbType)) || (table![DBHelper.type] == Int(dbType + 1)))
+                            } else {
+                                filter = ff || (table![DBHelper.type] == Int(dbType))
+                            }
+                        } else {
+                            if dbType == 30 { filter = ((table![DBHelper.type] == Int(dbType)) || (table![DBHelper.type] == Int(dbType + 1)))
+                            } else {
+                                filter = (table![DBHelper.type] == Int(dbType))
+                            }
+                        }
+                    }
+                    query = query.filter(filter!)
+                }
             }
 
             if !search.allTime {

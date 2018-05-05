@@ -21,8 +21,10 @@ struct LRecordSearch {
     var categories: [Int64]
     var vendors: [Int64]
     var tags: [Int64]
+    var types: [Int64]
     var searchAccounts: Bool
     var searchCategories: Bool
     var searchVendors: Bool
     var searchTags: Bool
+    var searchTypes: Bool
 }
