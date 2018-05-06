@@ -32,11 +32,12 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         getEntries()
 
         tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = nil
 
         LBroadcast.register(LBroadcast.ACTION_UI_DB_DATA_CHANGED,
                             cb: #selector(self.dbDataChanged),
                             listener: self)
-
         LBroadcast.register(LBroadcast.ACTION_UI_UPDATE_ACCOUNT, cb: #selector(self.uiUpdateAccount), listener: self)
     }
 
@@ -274,11 +275,11 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     //------------------ VENDOR ---------------------------
     //------------------ TAG ------------------------------
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cell.backgroundColor = LTheme.Color.row_released_color
-        //cell.layer.borderWidth = 1
-        //cell.layer.borderColor = tableView.backgroundColor?.cgColor
-    }
+/*    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        //cell.backgroundColor = LTheme.Color.row_released_color
+        cell.layer.borderWidth = 1
+        cell.layer.borderColor = tableView.backgroundColor?.cgColor
+    }*/
 
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
         return false
@@ -340,7 +341,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
             }
 
             if shareImageNumber == 0 {
-                cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+                cell.shareButton.setImage(#imageLiteral(resourceName: "ic_action_share_dark").withRenderingMode(.alwaysOriginal), for: .normal)
             }
 
         case .CATEGORY:

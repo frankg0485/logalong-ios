@@ -56,11 +56,13 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         usersTableView.delegate = self
         usersTableView.dataSource = self
         usersTableView.tableFooterView = UIView()
-        usersTableView.backgroundColor = LTheme.Color.light_row_released_color
+        //usersTableView.backgroundColor = LTheme.Color.light_row_released_color
         usersTableView.layer.cornerRadius = 5
         usersTableView.clipsToBounds = true
 
         userIdTextField.delegate = self
+        userIdTextField.autocorrectionType = .no
+        userIdTextField.autocapitalizationType = .none
 
         selectedIds = origSelectedIds
         if account.getShareIdsStates().shareIds.isEmpty {
@@ -337,14 +339,14 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
                 cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share_green").withRenderingMode(.alwaysOriginal), for: .normal)
             case LAccount.ACCOUNT_SHARE_NA: fallthrough
             default:
-                cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+                cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share_dark").withRenderingMode(.alwaysOriginal), for: .normal)
             }
         } else {
-            cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share").withRenderingMode(.alwaysOriginal), for: .normal)
+            cell.shareStatusButton.setImage(#imageLiteral(resourceName: "ic_action_share_dark").withRenderingMode(.alwaysOriginal), for: .normal)
         }
 
         cell.checkButton.isSelected = checkBoxClicked[row]
-        cell.backgroundColor = LTheme.Color.light_row_released_color
+        //cell.backgroundColor = LTheme.Color.light_row_released_color
         return cell
     }
 }

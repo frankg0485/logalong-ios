@@ -43,6 +43,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
 
         nameTextField.delegate = self
         nameTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        nameTextField.autocorrectionType = .no
+        nameTextField.autocapitalizationType = .none
         nameTextField.becomeFirstResponder()
 
         switch (createType!) {
