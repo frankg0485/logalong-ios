@@ -2457,7 +2457,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="345" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_action_share_green" translatesAutoresizingMaskIntoConstraints="NO" id="HaO-au-DWB">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_action_share_dark" translatesAutoresizingMaskIntoConstraints="NO" id="HaO-au-DWB">
                                 <rect key="frame" x="10" y="15" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="UKL-Cb-n52"/>
@@ -2559,7 +2559,7 @@
     </scenes>
     <resources>
         <image name="ic_action_overflow" width="48" height="48"/>
-        <image name="ic_action_share_green" width="48" height="48"/>
+        <image name="ic_action_share_dark" width="48" height="48"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Ion-X4-MwX"/>
