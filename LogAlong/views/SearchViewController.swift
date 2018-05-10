@@ -441,6 +441,14 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         displayToTime()
     }
 
+    func getGeneralMilliseconds(_ fromTime: Bool, millis: Int64) -> Int64 {
+        let comp = LA.ymd(milliseconds: millis)
+        let date = Date(year: comp.year, month: comp.month, day: comp.day)
+
+        if fromTime { return date.currentTimeMillis }
+        else { return date.currentTimeMillis + 24 * 3600 * 1000 -  1 }
+    }
+
     func passNumberBack(_ caller: UIViewController, type: TypePassed, okPressed: Bool) {
         if okPressed {
             switch searchSelectType {
@@ -480,10 +488,10 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
                 }
                 displayTypes()
             case .FROM_TIME:
-                search.from = type.int64
+                search.from = getGeneralMilliseconds(true, millis: type.int64)
                 displayFromTime()
             case .TO_TIME:
-                search.to = type.int64
+                search.to = getGeneralMilliseconds(false, millis: type.int64)
                 displayToTime()
             case .FROM_VALUE:
                 search.fromValue = type.double

@@ -82,7 +82,6 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         createHeader()
         createFooter()
 
-
         switch (record!.type) {
         case .EXPENSE:
             navigationController?.navigationBar.barTintColor = LTheme.Color.base_red
@@ -192,11 +191,11 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 record.accountId2 = recordValues["transAccountId2"] ?? 0
             } else {
                 record.accountId = recordValues["accountId"] ?? 0
-                record.categoryId = recordValues["categoryId"] ?? 0
-                record.vendorId = recordValues["payeeId"] ?? 0
-                record.tagId = recordValues["tagId"] ?? 0
+                //record.categoryId = recordValues["categoryId"] ?? 0
+                //record.vendorId = recordValues["payeeId"] ?? 0
+                //record.tagId = recordValues["tagId"] ?? 0
             }
-            record.timestamp = recordValues["date"] ?? 0
+            record.timestamp = (recordValues["date"] ?? 0) + 1
         }
     }
 
@@ -208,9 +207,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             recordValues["transAccountId2"] = record.accountId2
         } else {
             recordValues["accountId"] = record.accountId
-            recordValues["categoryId"] = record.categoryId
-            recordValues["payeeId"] = record.vendorId
-            recordValues["tagId"] = record.tagId
+            //recordValues["categoryId"] = record.categoryId
+            //recordValues["payeeId"] = record.vendorId
+            //recordValues["tagId"] = record.tagId
         }
         recordValues["lastTimestamp"] = Date().currentTimeMillis
         recordValues["date"] = record.timestamp
@@ -221,9 +220,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     private func clearLastSavedValues() {
         var values = [String : Int64]()
         values["accountId"] = 0
-        values["categoryId"] = 0
-        values["payeeId"] = 0
-        values["tagId"] = 0
+        //values["categoryId"] = 0
+        //values["payeeId"] = 0
+        //values["tagId"] = 0
         values["date"] = 0
         values["transAccountId"] = 0
         values["transAccountId2"] = 0

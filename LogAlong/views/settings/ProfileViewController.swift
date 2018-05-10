@@ -158,7 +158,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         optionButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: ROW_H))
         optionButton.addTarget(self, action: #selector(onClickOption), for: .touchUpInside)
         optionButton.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
-        optionButton.setImage(#imageLiteral(resourceName: "ic_action_overflow").withRenderingMode(.alwaysOriginal), for: .normal)
+        optionButton.setImage(#imageLiteral(resourceName: "ic_action_overflow_dark").withRenderingMode(.alwaysOriginal), for: .normal)
         optionButton.imageEdgeInsets = UIEdgeInsetsMake(9, 6, 9, 12);
         hl1.addSubview(idLabel)
         hl1.addSubview(idValue)

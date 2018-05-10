@@ -33,8 +33,19 @@ class DatePickerViewController: UIViewController {
         super.viewWillAppear(animated)
     }
 
+    func getDate() -> Int64 {
+        let pickerComponents = LA.ymd(date: datePicker.date)
+
+        var dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: Date())
+        dateComponents.year = pickerComponents.year
+        dateComponents.month = pickerComponents.month + 1
+        dateComponents.day = pickerComponents.day
+
+        return (Calendar.current.date(from: dateComponents)?.currentTimeMillis)!
+    }
+
     @IBAction func okButtonPressed(_ sender: UIButton) {
-        type.int64 = datePicker.date.currentTimeMillis
+        type.int64 = getDate()
         delegate?.passNumberBack(self, type: type, okPressed: true)
 
         dismiss(animated: true, completion: nil)
