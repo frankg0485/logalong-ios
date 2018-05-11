@@ -90,7 +90,7 @@ UIPopoverPresentationControllerDelegate {
         if (searchControls.all || (searchControls.accounts.isEmpty && searchControls.categories.isEmpty &&
             searchControls.vendors.isEmpty && searchControls.tags.isEmpty)) &&
             searchControls.allTime && searchControls.allValue {
-            searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
+            searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search_dark").withRenderingMode(.alwaysOriginal), for: .normal)
         } else {
             searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search_enabled").withRenderingMode(.alwaysOriginal), for: .normal)
         }
@@ -212,34 +212,35 @@ UIPopoverPresentationControllerDelegate {
     private func setupButtons() {
         let BTN_W: CGFloat = LTheme.Dimension.bar_button_width
         let BTN_H: CGFloat = LTheme.Dimension.bar_button_height
-        let BTN_S: CGFloat = 15 //LTheme.Dimension.bar_button_space
-        let BAR_H: CGFloat = 30
+        let BTN_S_W: CGFloat = 20 //LTheme.Dimension.bar_button_space
+        let BTN_S_H: CGFloat = 10 //LTheme.Dimension.bar_button_space
+        let BAR_H: CGFloat = BTN_H + 2 * BTN_S_H
 
         bottomBar = HorizontalLayout(height: BAR_H)
 
         chartBtn = UIButton(type: .system)
         chartBtn.addTarget(self, action: #selector(self.onChartClick), for: .touchUpInside)
         chartBtn.setImage(#imageLiteral(resourceName: "chart_light").withRenderingMode(.alwaysOriginal), for: .normal)
-        chartBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S, height: BTN_H)
-        chartBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
+        chartBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S_W + 10, height: BAR_H)
+        chartBtn.imageEdgeInsets = UIEdgeInsetsMake(BTN_S_H, 10, BTN_S_H, BTN_S_W)
 
         searchBtn = UIButton(type: .system)
         searchBtn.addTarget(self, action: #selector(self.onSearchClick), for: .touchUpInside)
-        searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search").withRenderingMode(.alwaysOriginal), for: .normal)
-        searchBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S, height: BTN_H)
-        searchBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S, 0, 0)
+        searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search_dark").withRenderingMode(.alwaysOriginal), for: .normal)
+        searchBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + 2 * BTN_S_W, height: BAR_H)
+        searchBtn.imageEdgeInsets = UIEdgeInsetsMake(BTN_S_H, BTN_S_W, BTN_S_H, BTN_S_W)
 
         let leftBtn = UIButton(type: .system)
         leftBtn.addTarget(self, action: #selector(self.onLeftClick), for: .touchUpInside)
         leftBtn.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
-        leftBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S, height: BTN_H)
-        leftBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S)
+        leftBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + 2 * BTN_S_W, height: BAR_H)
+        leftBtn.imageEdgeInsets = UIEdgeInsetsMake(BTN_S_H, BTN_S_W, BTN_S_H, BTN_S_W)
 
         let rightBtn = UIButton(type: .system)
         rightBtn.addTarget(self, action: #selector(self.onRightClick), for: .touchUpInside)
         rightBtn.setImage(#imageLiteral(resourceName: "ic_action_right").withRenderingMode(.alwaysOriginal), for: .normal)
-        rightBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S, height: BTN_H)
-        rightBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S)
+        rightBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + 2 * BTN_S_W, height: BAR_H)
+        rightBtn.imageEdgeInsets = UIEdgeInsetsMake(BTN_S_H, BTN_S_W, BTN_S_H, BTN_S_W)
 
         let spacer = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: BTN_H))
 
@@ -253,14 +254,14 @@ UIPopoverPresentationControllerDelegate {
         let cancelBtn = UIButton(type: .system)
         cancelBtn.addTarget(self, action: #selector(self.onCancelClick), for: .touchUpInside)
         cancelBtn.setImage(#imageLiteral(resourceName: "ic_action_cancel").withRenderingMode(.alwaysOriginal), for: .normal)
-        cancelBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S, height: BTN_H)
-        cancelBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S)
+        cancelBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + 2 * BTN_S_W, height: BAR_H)
+        cancelBtn.imageEdgeInsets = UIEdgeInsetsMake(BTN_S_H, BTN_S_W, BTN_S_H, BTN_S_W)
         view.addSubview(cancelBtn)
 
         // apply layout constraints after veiw has been added to hierarchy
         bottomBar.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(item: bottomBar, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 0).isActive = true
+                           toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 5).isActive = true
         NSLayoutConstraint(item: bottomBar, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal,
                            toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: bottomBar, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal,
@@ -270,13 +271,13 @@ UIPopoverPresentationControllerDelegate {
 
         cancelBtn.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.topMargin, multiplier: 1.0, constant: 5).isActive = true
+                           toItem: view, attribute: NSLayoutAttribute.topMargin, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal,
                            toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0).isActive = true
         NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_W + BTN_S).isActive = true
+                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_W + 2 * BTN_S_W).isActive = true
         NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_H).isActive = true
+                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BAR_H).isActive = true
 
         // progress indicator
         progress = UIActivityIndicatorView(activityIndicatorStyle: .gray)

@@ -56,6 +56,7 @@ class LTheme {
         static let released_dialog_btn_background = UIColor(hex: 0xa4a6a8)
         static let topbar_bgd_color = UIColor(hex: 0x585c60)
         static let balance_header_bgd_color = UIColor(hex: 0xe4e6e8)
+        static let section_header_bgd_color = UIColor(hex: 0xf0f0f0)
         static let row_released_color = UIColor(hex: 0xced0d2)
         static let light_row_released_color = UIColor(hex: 0xdee0e2)
         static let top_bar_background = UIColor(hex: 0x585c60)

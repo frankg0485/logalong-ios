@@ -309,15 +309,16 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
     }
 
     private func setupLeftRightControls() {
-        let BTN_W: CGFloat = 80
-        let BTN_H: CGFloat = 80
-        let BTN_S: CGFloat = 20
+        let BTN_W: CGFloat = 60
+        let BTN_H: CGFloat = 60
+        //let BTN_S: CGFloat = 20
         let bgdColor = UIColor(hex: 0x10000000)
 
         let leftBtn = UIButton(frame: CGRect(x: 0, y: 0, width: BTN_W, height: BTN_H))
-        leftBtn.layoutMargins = UIEdgeInsets(top: 0, left: -BTN_S, bottom: 0, right: 0)
+        //leftBtn.layoutMargins = UIEdgeInsets(top: 0, left: -BTN_S, bottom: 0, right: 0)
         leftBtn.addTarget(self, action: #selector(self.onLeftClick), for: .touchUpInside)
         leftBtn.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
+        leftBtn.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         leftBtn.backgroundColor = bgdColor
         leftBtn.layer.cornerRadius = leftBtn.bounds.size.width / 2.0
         if #available(iOS 11.0, *) {
@@ -327,9 +328,10 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         }
 
         let rightBtn = UIButton(frame: CGRect(x: 0, y: 0, width: BTN_W, height: BTN_H))
-        rightBtn.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -BTN_S)
+        //rightBtn.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -BTN_S)
         rightBtn.addTarget(self, action: #selector(self.onRightClick), for: .touchUpInside)
         rightBtn.setImage(#imageLiteral(resourceName: "ic_action_right").withRenderingMode(.alwaysOriginal), for: .normal)
+        rightBtn.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         rightBtn.backgroundColor = bgdColor
         rightBtn.layer.cornerRadius = leftBtn.bounds.size.width / 2.0
         if #available(iOS 11.0, *) {

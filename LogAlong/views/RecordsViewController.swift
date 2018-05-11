@@ -179,16 +179,17 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         pageController?.notifyToUpdateAllPages()
     }
 
-    private func createHeader(view: UIView? = nil, txt: String = "", balance: Double = 0, income: Double = 0, expense: Double = 0)
+    private func createHeader(view: UIView? = nil)
         -> (view: UIView, txtLabel: UILabel?, balanceLabel: UILabel, incomeLabel: UILabel, expenseLabel: UILabel, btn: UIButton?, imgBtn: UIButton?)
     {
         var hView: UIView
         if (view == nil) {
             hView = HorizontalLayout(height: 25)
+            hView.backgroundColor = LTheme.Color.section_header_bgd_color
         } else {
             hView = view!
+            hView.backgroundColor = LTheme.Color.balance_header_bgd_color
         }
-        hView.backgroundColor = LTheme.Color.balance_header_bgd_color
 
         let fontsize: CGFloat = LTheme.Dimension.balance_header_font_size
 
@@ -213,7 +214,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
             labelHeader!.layoutMargins = UIEdgeInsetsMake(0, LTheme.Dimension.balance_header_left_margin, 0, 0)
             //labelHeader.font = labelHeader.font.withSize(fontsize)
             labelHeader!.font = UIFont.boldSystemFont(ofSize: fontsize)
-            labelHeader!.text = txt
+            labelHeader!.text = ""
             labelHeader!.sizeToFit()
         }
 
