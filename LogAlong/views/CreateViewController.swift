@@ -127,13 +127,19 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
     }
 
     @IBAction func okButtonClicked(_ sender: UIButton) {
-        if let name = nameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
+        if let new_name = nameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
+            var name = new_name
+            if name.isEmpty { // OK is clicked due to other change from switch
+                name = entryName!
+            }
+
             switch (createType!) {
             case .ACCOUNT: fallthrough
             case .ACCOUNT2:
                 account!.name = name
                 if isCreate {
                     if DBAccount.instance.add(&account!) {
+                        DBAccountBalance.updateAccountBalance(id: account!.id, amount: 0, timestamp: Date().currentTimeMillis)
                         _ = LJournal.instance.addAccount(account!.id)
                     }
                 } else {
@@ -252,6 +258,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 payerSwitch.isOn = true
             }
         }
+        okButton.isEnabled = true
     }
 
     func payerSwitchClick() {
@@ -265,6 +272,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
             vendor!.type = .PAYEE
             optionalSwitch.isOn = true
         }
+        okButton.isEnabled = true
     }
     @IBAction func onOptionalSwitchClick(_ sender: Any) {
         optionalSwitchClick()

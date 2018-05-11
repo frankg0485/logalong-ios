@@ -80,11 +80,14 @@ class LAccountBalances {
     var accounts = [LAccount]()
     var total: Double = 0
 
-    func scan() {
+    func scan(all: Bool = true) {
         accounts.removeAll()
         balances.removeAll()
         total = 0
         for account in DBAccount.instance.getAll() {
+            if (!all && !account.showBalance) {
+                continue
+            }
             if let ayb = DBAccountBalance.instance.get(accountId: account.id) {
                 let ab = LAccountBalance(accountId: account.id)
                 for b in ayb {

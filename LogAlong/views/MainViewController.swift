@@ -38,7 +38,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
             navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_dark_blue], for: .normal)
         }
 
-        accountBalances.scan()
+        accountBalances.scan(all: false)
         labelBalance.textColor = accountBalances.total >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
         labelBalance.text = String(format: "%.2f", abs(accountBalances.total))
         labelBalance.sizeToFit()
@@ -95,7 +95,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         if isVisible {
             isRefreshPending = false
 
-            accountBalances.scan()
+            accountBalances.scan(all: false)
             labelBalance.textColor = accountBalances.total >= 0 ? LTheme.Color.base_green : LTheme.Color.base_red
             labelBalance.text = String(format: "%.2f", abs(accountBalances.total))
             labelBalance.sizeToFit()
@@ -229,7 +229,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         labelBalance = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 25))
         labelBalance.textAlignment = .right
         labelBalance.layoutMargins = UIEdgeInsetsMake(0, 0, 0, LTheme.Dimension.balance_header_right_margin)
-        labelBalance.font = labelBalance.font.withSize(fontsize)
+        labelBalance.font = labelBalance.font.withSize(fontsize + 4)
         labelBalance.sizeToFit()
 
         headerView.addSubview(labelHeader)
