@@ -137,7 +137,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         let FONT_H: CGFloat = 20
 
         let hl1 = HorizontalLayout(height: ROW_H)
-        hl1.backgroundColor = LTheme.Color.row_released_color
+        //hl1.backgroundColor = LTheme.Color.row_released_color
         hl1.layoutMargins = UIEdgeInsetsMake(LTheme.Dimension.list_item_space, 0, 0, 0)
         let idLabel = UILabel(frame: CGRect(x: 0, y: 0, width: LABEL_W, height: ROW_H))
         idLabel.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
@@ -160,12 +160,20 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         optionButton.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
         optionButton.setImage(#imageLiteral(resourceName: "ic_action_overflow_dark").withRenderingMode(.alwaysOriginal), for: .normal)
         optionButton.imageEdgeInsets = UIEdgeInsetsMake(9, 6, 9, 12);
+
         hl1.addSubview(idLabel)
         hl1.addSubview(idValue)
         hl1.addSubview(optionButton)
 
+        let separatorLayout = HorizontalLayout(height: 1)
+        separatorLayout.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        let separator1 = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: 1))
+        separator1.backgroundColor = LTheme.Color.default_bgd_color
+        separator1.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        separatorLayout.addSubview(separator1)
+
         let hl2 = HorizontalLayout(height: ROW_H)
-        hl2.backgroundColor = LTheme.Color.row_released_color
+        //hl2.backgroundColor = LTheme.Color.row_released_color
         hl2.layoutMargins = UIEdgeInsetsMake(LTheme.Dimension.list_item_space, 0, 0, 0)
 
         let passLabel = UILabel(frame: CGRect(x: 0, y: 0, width: LABEL_W, height: ROW_H))
@@ -185,8 +193,10 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         hl2.addSubview(passLabel)
         hl2.addSubview(passValue)
 
-        let hl3 = HorizontalLayout(height: ROW_H2)
-        hl3.layoutMargins = UIEdgeInsetsMake(0, 0, ROW_H - ROW_H2, 0)
+        let hl3 = HorizontalLayout(height: ROW_H - 5)
+        hl3.layoutMargins = UIEdgeInsetsMake(0, 0, ROW_H - ROW_H2 - 10, 0)
+        hl3.backgroundColor = LTheme.Color.default_bgd_color
+
         checkboxShowPass = LCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         checkboxShowPass.layoutMargins = UIEdgeInsetsMake(0, 6, 0, 0)
         checkboxShowPass.isUserInteractionEnabled = false
@@ -201,8 +211,9 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         hl3.addSubview(label0)
 
         let hl4 = HorizontalLayout(height: ROW_H)
-        hl4.backgroundColor = LTheme.Color.row_released_color
+        //hl4.backgroundColor = LTheme.Color.row_released_color
         hl4.layoutMargins = UIEdgeInsetsMake(LTheme.Dimension.list_item_space, 0, 0, 0)
+
         let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: LABEL_W, height: ROW_H))
         nameLabel.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
         nameLabel.text = NSLocalizedString("Name", comment: "")
@@ -224,6 +235,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         hl4.addSubview(nameValue)
 
         headerView.addSubview(hl1)
+        headerView.addSubview(separatorLayout)
         headerView.addSubview(hl2)
         headerView.addSubview(hl3)
         headerView.addSubview(hl4)

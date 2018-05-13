@@ -12,6 +12,7 @@ class LTheme {
     class Color {
         static let input_bgd_color = UIColor(hex: 0xe4e6e8)
         static let base_menu_color = UIColor(hex: 0xa4a6a8)
+        static let default_bgd_color = UIColor(hex: 0xfafafa)
         static let base_bgd_color = UIColor(hex: 0xd4d6d8)
         static let base_fgd_color = UIColor(hex: 0xdee2e6)
         static let base_bgd_separator_color = UIColor(hex: 0xc4c6c8)
