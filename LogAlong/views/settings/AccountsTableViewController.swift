@@ -465,7 +465,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         let controller = storyboard.instantiateViewController(withIdentifier: "CreateViewController") as! CreateViewController
 
         controller.isCreate = create
-        controller.entryName = name
+        controller.entryName = name ?? ""
 
         switch (listType!) {
         case .ACCOUNT:

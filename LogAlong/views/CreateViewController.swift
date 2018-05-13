@@ -19,7 +19,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
     var delegate: FPassCreationBackDelegate!
     var createType: SelectType!
     var isCreate: Bool = true
-    var entryName: String?
+    var entryName: String = ""
+    var optionalSwitchOrig: Bool = true
+    var payerSwitchOrig: Bool = true
     var account: LAccount?
     var category: LCategory?
     var vendor: LVendor?
@@ -57,7 +59,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 account?.showBalance = true
             } else {
                 newLabel.text = NSLocalizedString("Edit Account", comment: "")
-                account = DBAccount.instance.get(name: entryName!)
+                account = DBAccount.instance.get(name: entryName)
                 nameTextField.placeholder = account?.name
             }
         case .CATEGORY:
@@ -67,7 +69,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 category = LCategory()
             } else {
                 newLabel.text = NSLocalizedString("Edit Category", comment: "")
-                category = DBCategory.instance.get(name: entryName!)
+                category = DBCategory.instance.get(name: entryName)
                 nameTextField.placeholder = category?.name
             }
         case .PAYEE:
@@ -88,7 +90,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 vendor?.type = .PAYEE_PAYER
             } else {
                 newLabel.text = NSLocalizedString("Edit Payee/Payer", comment: "")
-                vendor = DBVendor.instance.get(name: entryName!)
+                vendor = DBVendor.instance.get(name: entryName)
                 nameTextField.placeholder = vendor?.name
             }
         case .TAG:
@@ -98,7 +100,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 tag = LTag()
             } else {
                 newLabel.text = NSLocalizedString("Edit Tag", comment: "")
-                tag = DBTag.instance.get(name: entryName!)
+                tag = DBTag.instance.get(name: entryName)
                 nameTextField.placeholder = tag?.name
             }
         case .TYPE:
@@ -130,7 +132,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
         if let new_name = nameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
             var name = new_name
             if name.isEmpty { // OK is clicked due to other change from switch
-                name = entryName!
+                name = entryName
             }
 
             switch (createType!) {
@@ -205,7 +207,13 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
 
     private func checkOkButtonState() {
         var state = false
-        if let name = nameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
+        var name = ""
+        if let new_name = nameTextField.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) {
+            name = new_name
+            if name.isEmpty {
+                //rename/edit entry, but there's no user input yet detected
+                name = entryName
+            }
             if name.count > 1 {
                 switch (createType) {
                 case .ACCOUNT: fallthrough
@@ -240,7 +248,12 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 }
             }
         }
-        okButton.isEnabled = state
+
+        if (name.count <= 1) {
+            okButton.isEnabled = false
+        } else {
+            okButton.isEnabled = state || optionalSwitchOrig != optionalSwitch.isOn || payerSwitchOrig != payerSwitch.isOn
+        }
     }
 
     func optionalSwitchClick() {
@@ -258,7 +271,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 payerSwitch.isOn = true
             }
         }
-        okButton.isEnabled = true
+        checkOkButtonState()
     }
 
     func payerSwitchClick() {
@@ -272,8 +285,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
             vendor!.type = .PAYEE
             optionalSwitch.isOn = true
         }
-        okButton.isEnabled = true
+        checkOkButtonState()
     }
+
     @IBAction func onOptionalSwitchClick(_ sender: Any) {
         optionalSwitchClick()
     }
@@ -310,6 +324,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
             payerLabel.isHidden = true
             payerSwitch.isHidden = true
             optionalSwitch.isOn = account!.showBalance
+
+            optionalSwitchOrig = optionalSwitch.isOn
         case .PAYEE: fallthrough
         case .PAYER:
             payerSwitch.isEnabled = false
@@ -334,6 +350,9 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
 
             vendorLabelTapped = UITapGestureRecognizer(target: self, action: #selector(self.payeeLabelTapped))
             optionalLabel.addGestureRecognizer(vendorLabelTapped)
+
+            optionalSwitchOrig = optionalSwitch.isOn
+            payerSwitchOrig = payerSwitch.isOn
         case .TAG: fallthrough
         case .CATEGORY:
             optionalLabel.isHidden = true
