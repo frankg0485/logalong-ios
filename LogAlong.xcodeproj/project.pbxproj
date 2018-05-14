@@ -51,6 +51,7 @@
 		CB3154DF1FBD3AA6006F9DE4 /* Crc32.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3154DE1FBD3AA6006F9DE4 /* Crc32.swift */; };
 		CB3E5FA01FEDEAD300C64CBD /* LTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3E5F9F1FEDEAD300C64CBD /* LTheme.swift */; };
 		CB4118F020157AA80087E8AE /* SelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4118EF20157AA80087E8AE /* SelectViewController.swift */; };
+		CB4764B220A927A1000B0077 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4764B120A927A1000B0077 /* AddViewController.swift */; };
 		CB4DAC581FFC828F00B8C664 /* LRecordSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4DAC571FFC828F00B8C664 /* LRecordSearch.swift */; };
 		CB51B5581FBBDF26002CABA1 /* LProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB51B5571FBBDF26002CABA1 /* LProtocol.swift */; };
 		CB51B55A1FBBFBF6002CABA1 /* LTransport.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB51B5591FBBFBF6002CABA1 /* LTransport.swift */; };
@@ -244,6 +245,7 @@
 		CB3154DE1FBD3AA6006F9DE4 /* Crc32.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Crc32.swift; path = network/Crc32.swift; sourceTree = "<group>"; };
 		CB3E5F9F1FEDEAD300C64CBD /* LTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LTheme.swift; sourceTree = "<group>"; };
 		CB4118EF20157AA80087E8AE /* SelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectViewController.swift; sourceTree = "<group>"; };
+		CB4764B120A927A1000B0077 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		CB4DAC571FFC828F00B8C664 /* LRecordSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LRecordSearch.swift; sourceTree = "<group>"; };
 		CB51B5571FBBDF26002CABA1 /* LProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LProtocol.swift; path = network/LProtocol.swift; sourceTree = "<group>"; };
 		CB51B5591FBBFBF6002CABA1 /* LTransport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LTransport.swift; path = network/LTransport.swift; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */,
+				CB4764B120A927A1000B0077 /* AddViewController.swift */,
 				CB15D4EC1FC3D7E7005D8B43 /* charts */,
 				01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */,
 				CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */,
@@ -710,6 +713,7 @@
 				CBC01B4D1FAEAA420092B184 /* DatePickerViewController.swift in Sources */,
 				CB1073601FCE62D900390032 /* DBHelper.swift in Sources */,
 				CBEAFF35202BD4BC00866790 /* ChartsPageViewController.swift in Sources */,
+				CB4764B220A927A1000B0077 /* AddViewController.swift in Sources */,
 				CBEB3E5F2002BE7C00A34432 /* RecordsViewController.swift in Sources */,
 				CB006DC7203FAAFC005059BB /* DBScheduledTransaction.swift in Sources */,
 				CB51B55A1FBBFBF6002CABA1 /* LTransport.swift in Sources */,

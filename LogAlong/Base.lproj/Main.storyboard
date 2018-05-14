@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -1215,7 +1215,6 @@
                     <tabBarItem key="tabBarItem" title="Settings" id="R3I-lZ-3gc"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="2ca-cm-Pyv">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -1304,7 +1303,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ry3-Gf-reJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1262" y="483"/>
+            <point key="canvasLocation" x="1172" y="483"/>
         </scene>
         <!--Date Picker View Controller-->
         <scene sceneID="ufU-oQ-tZG">
@@ -1364,12 +1363,58 @@
             </objects>
             <point key="canvasLocation" x="1261" y="1133"/>
         </scene>
+        <!--Add View Controller-->
+        <scene sceneID="Zus-9x-nix">
+            <objects>
+                <viewController storyboardIdentifier="AddViewController" id="GLb-Dz-NVO" customClass="AddViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wo4-dr-mxh"/>
+                        <viewControllerLayoutGuide type="bottom" id="1Pb-0X-9zl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="VWZ-J5-qar">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6LF-fV-ICo">
+                                <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="q9F-w4-7Ul"/>
+                                </constraints>
+                            </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OCn-Gq-xvT">
+                                <rect key="frame" x="0.0" y="20" width="375" height="597"/>
+                                <connections>
+                                    <segue destination="58n-ox-X6M" kind="embed" id="bw5-v9-QUb"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="OCn-Gq-xvT" firstAttribute="leading" secondItem="VWZ-J5-qar" secondAttribute="leading" id="8I4-fT-7qt"/>
+                            <constraint firstItem="1Pb-0X-9zl" firstAttribute="top" secondItem="6LF-fV-ICo" secondAttribute="bottom" id="Ecn-FN-N0z"/>
+                            <constraint firstAttribute="trailing" secondItem="6LF-fV-ICo" secondAttribute="trailing" id="Qbg-8Y-eW9"/>
+                            <constraint firstItem="6LF-fV-ICo" firstAttribute="leading" secondItem="VWZ-J5-qar" secondAttribute="leading" id="Sdr-33-NAL"/>
+                            <constraint firstAttribute="trailing" secondItem="OCn-Gq-xvT" secondAttribute="trailing" id="cEh-Ks-W7g"/>
+                            <constraint firstItem="6LF-fV-ICo" firstAttribute="top" secondItem="OCn-Gq-xvT" secondAttribute="bottom" id="pJA-EH-R9d"/>
+                            <constraint firstItem="OCn-Gq-xvT" firstAttribute="top" secondItem="wo4-dr-mxh" secondAttribute="bottom" id="tU7-CH-2VM"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="bottomBar" destination="6LF-fV-ICo" id="FnM-kx-TSs"/>
+                        <outlet property="containterView" destination="OCn-Gq-xvT" id="WPd-IB-khF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ay9-aS-OBZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1860" y="483"/>
+        </scene>
         <!--Add Table View Controller-->
         <scene sceneID="iXq-J6-Nvp">
             <objects>
                 <tableViewController storyboardIdentifier="AddTableViewController" id="58n-ox-X6M" customClass="AddTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="MS3-l5-TwK">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="597"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1538,7 +1583,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rPl-CG-lRW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="ZTN-hO-UNK" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1985" y="483"/>
+            <point key="canvasLocation" x="2594" y="484"/>
         </scene>
         <!--Select Amount View Controller-->
         <scene sceneID="oe5-zl-rDu">
@@ -2412,7 +2457,6 @@
                     <tabBarItem key="tabBarItem" title="Records" id="evA-x8-6A6"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="xql-cj-Cb8">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -2433,7 +2477,6 @@
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="a0v-HE-PcE">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
