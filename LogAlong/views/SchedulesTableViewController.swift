@@ -129,8 +129,8 @@ class SchedulesTableViewController: UITableViewController, UIPopoverPresentation
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddTableViewController")
-            as! AddTableViewController
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddViewController")
+            as! AddViewController
         let selectedRecord = schedules[indexPath.row]
         vc.schedule = selectedRecord
         vc.isSchedule = true

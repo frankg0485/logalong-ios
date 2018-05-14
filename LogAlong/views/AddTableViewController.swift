@@ -54,6 +54,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     var cancelButton: UIButton!
     var saveButton: UIButton!
+    var saveButton2: UIButton!
     var deleteButton: UIButton!
     var titleButton: UIButton!
 
@@ -66,6 +67,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     var origRecord: LTransaction!
     var origSchedule: LScheduledTransaction!
+    var myNavigationController: UINavigationController?
+    var myNavigationItem: UINavigationItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,15 +87,15 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
         switch (record!.type) {
         case .EXPENSE:
-            navigationController?.navigationBar.barTintColor = LTheme.Color.base_red
+            myNavigationController?.navigationBar.barTintColor = LTheme.Color.base_red
             amountButton!.setTitleColor(LTheme.Color.base_red, for: .normal)
 
         case .INCOME:
-            navigationController?.navigationBar.barTintColor = LTheme.Color.base_green
+            myNavigationController?.navigationBar.barTintColor = LTheme.Color.base_green
             amountButton!.setTitleColor(LTheme.Color.base_green, for: .normal)
 
         default:
-            navigationController?.navigationBar.barTintColor = LTheme.Color.base_blue
+            myNavigationController?.navigationBar.barTintColor = LTheme.Color.base_blue
             amountButton!.setTitleColor(LTheme.Color.base_blue, for: .normal)
 
             payeeCell.isHidden = true
@@ -175,7 +178,9 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
             vc.color = readyForPopover(vc)
 
             firstPopup = true
-            self.present(vc, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                self.present(vc, animated: true, completion: nil)
+            })
         }
     }
 
@@ -238,7 +243,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         titleButton = UIButton(type: .custom)
         //titleButton.addTarget(self, action: #selector(self.onTitleClick), for: .touchUpInside)
         titleButton.setSize(w: 80, h: 30)
-        navigationItem.titleView = titleButton
+        myNavigationItem.titleView = titleButton
 
         cancelButton = UIButton(type: .system)
         cancelButton.addTarget(self, action: #selector(self.onCancelClick), for: .touchUpInside)
@@ -254,21 +259,21 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         saveButton.imageEdgeInsets = UIEdgeInsetsMake(0, 40, 0, 0)
         saveButton.setSize(w: BTN_W + 40, h: BTN_H)
 
-        if createRecord {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
-        } else {
-            let deleteButton = UIButton(type: .system)
-            deleteButton.addTarget(self, action: #selector(self.onDeleteClick), for: .touchUpInside)
-            deleteButton.setImage(#imageLiteral(resourceName: "ic_action_discard").withRenderingMode(.alwaysOriginal), for: .normal)
-            deleteButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 15)
-            deleteButton.setSize(w: BTN_W + 20, h: BTN_H)
-            navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: cancelButton),
-                                                 UIBarButtonItem(customView: deleteButton)]
-        }
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: saveButton)
+        //if createRecord {
+            myNavigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
+        //} else {
+        //    let deleteButton = UIButton(type: .system)
+        //    deleteButton.addTarget(self, action: #selector(self.onDeleteClick), for: .touchUpInside)
+        //    deleteButton.setImage(#imageLiteral(resourceName: "ic_action_discard").withRenderingMode(.alwaysOriginal), for: .normal)
+        //    deleteButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 15)
+        //    deleteButton.setSize(w: BTN_W + 20, h: BTN_H)
+        //    myNavigationItem.leftBarButtonItems = [UIBarButtonItem(customView: cancelButton),
+        //                                         UIBarButtonItem(customView: deleteButton)]
+        //}
+        myNavigationItem.rightBarButtonItem = UIBarButtonItem(customView: saveButton)
 
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barStyle = .black
+        myNavigationController?.navigationBar.isTranslucent = false
+        myNavigationController?.navigationBar.barStyle = .black
     }
 
     let entryHeight: CGFloat = 45
@@ -533,8 +538,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     func passNumberBack(_ caller: UIViewController, type: TypePassed, okPressed: Bool) {
         if let _ = caller as? SelectAmountViewController {
             if !okPressed && firstPopup {
-                navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
-                navigationController?.popViewController(animated: true)
+                myNavigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
+                myNavigationController?.popViewController(animated: true)
             } else {
                 firstPopup = false
 
@@ -817,8 +822,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 }
             }
         }
-        navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
-        navigationController?.popViewController(animated: true)
+        myNavigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
+        myNavigationController?.popViewController(animated: true)
     }
 
     @objc func onDeleteClick() {
@@ -830,8 +835,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     }
 
     @objc func onCancelClick() {
-        navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
-        navigationController?.popViewController(animated: true)
+        myNavigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
+        myNavigationController?.popViewController(animated: true)
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
@@ -877,6 +882,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         } else {
             saveButton.isEnabled = isRecordValid() && (createRecord || isRecordChanged())
         }
+        saveButton2.isEnabled = saveButton.isEnabled
     }
 
     private func displayDateMs(_ ms: Int64) {

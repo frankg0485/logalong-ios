@@ -50,8 +50,8 @@ class NewAdditionTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         if let mnc = self.myNavigationController {
-            if let nvc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddTableViewController")
-                as? AddTableViewController {
+            if let nvc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddViewController")
+                as? AddViewController {
 
                 var record: LTransaction?
 

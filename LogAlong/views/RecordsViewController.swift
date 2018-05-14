@@ -318,8 +318,9 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let nvc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddTableViewController")
-            as? AddTableViewController {
+        if let nvc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AddViewController")
+            as? AddViewController {
+
             var selectedRecord: LTransaction?
             selectedRecord = loader!.getRecord(section: indexPath.section, row: indexPath.row)
             if selectedRecord!.type == .TRANSFER_COPY {
