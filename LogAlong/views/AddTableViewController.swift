@@ -248,16 +248,16 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         cancelButton = UIButton(type: .system)
         cancelButton.addTarget(self, action: #selector(self.onCancelClick), for: .touchUpInside)
         cancelButton.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
-        cancelButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20)
-        cancelButton.setSize(w: BTN_W + 20, h: BTN_H)
+        cancelButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 60)
+        cancelButton.setSize(w: BTN_W + 60, h: BTN_H)
 
         saveButton = UIButton(type: .system)
         saveButton.addTarget(self, action: #selector(self.onSaveClick), for: .touchUpInside)
         saveButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
         saveButton.setImage(#imageLiteral(resourceName: "ic_action_accept_disabled").withRenderingMode(.alwaysOriginal), for: .disabled)
 
-        saveButton.imageEdgeInsets = UIEdgeInsetsMake(0, 40, 0, 0)
-        saveButton.setSize(w: BTN_W + 40, h: BTN_H)
+        saveButton.imageEdgeInsets = UIEdgeInsetsMake(0, 60, 0, 0)
+        saveButton.setSize(w: BTN_W + 60, h: BTN_H)
 
         //if createRecord {
             myNavigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
