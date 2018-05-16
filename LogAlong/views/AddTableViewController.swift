@@ -70,6 +70,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     var myNavigationController: UINavigationController?
     var myNavigationItem: UINavigationItem!
 
+    var chooseEntry: SelectType?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if isSchedule {
@@ -470,6 +472,28 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        LLog.d("\(self)", "selecting row: \(indexPath.row)")
+        chooseEntry = nil
+        switch indexPath.row {
+        case 3:
+            chooseEntry = .ACCOUNT
+        case 4:
+            chooseEntry = .CATEGORY
+        case 5:
+            chooseEntry = .VENDOR
+        case 6:
+            chooseEntry = .TAG
+        default:
+            break
+        }
+        if nil != chooseEntry {
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "ChooseEntry", sender: self)
+            }
+        }
+    }
+
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         if (isSchedule && indexPath.row == 0) || (!isSchedule && indexPath.row == 2) {
             return .delete
@@ -646,11 +670,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         var color = LTheme.Color.base_blue
-        if (segue.identifier == "ChooseAccount")
+        if (segue.identifier == "ChooseEntry")
             || (segue.identifier == "ChooseAmount")
-            || (segue.identifier == "ChooseCategory")
-            || (segue.identifier == "ChoosePayee")
-            || (segue.identifier == "ChooseTag")
             || (segue.identifier == "ChooseDate") {
 
             let vc = segue.destination
@@ -658,7 +679,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }
 
         if let vc = segue.destination as? SelectViewController {
-            if segue.identifier == "ChooseAccount" {
+            if chooseEntry == .ACCOUNT {
                 if record!.type == .TRANSFER_COPY {
                     vc.selectType = .ACCOUNT2
                     vc.initValues = [record!.accountId2]
@@ -666,7 +687,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                     vc.selectType = .ACCOUNT
                     vc.initValues = [record!.accountId]
                 }
-            } else if segue.identifier == "ChooseCategory" {
+            } else if chooseEntry == .CATEGORY {
                 if record!.type == .TRANSFER {
                     vc.selectType = .ACCOUNT2
                     vc.initValues = [record!.accountId2]
@@ -677,10 +698,10 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                     vc.selectType = .CATEGORY
                     vc.initValues = [record!.categoryId]
                 }
-            } else if segue.identifier == "ChooseTag" {
+            } else if chooseEntry == .TAG {
                 vc.selectType = .TAG
                 vc.initValues = [record!.tagId]
-            } else if segue.identifier == "ChoosePayee" {
+            } else if chooseEntry == .VENDOR {
                 if (record!.type == .INCOME) {
                     vc.selectType = .PAYER
                 } else {
@@ -747,16 +768,18 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         if tableView.isEditing || isReadOnly {
             return
         }
-
-        performSegue(withIdentifier: "ChooseAmount", sender: self)
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "ChooseAmount", sender: self)
+        }
     }
 
     @objc func onDateClick() {
         if tableView.isEditing || isReadOnly {
             return
         }
-
-        performSegue(withIdentifier: "ChooseDate", sender: self)
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "ChooseDate", sender: self)
+        }
     }
 
     @objc func onSaveClick() {
