@@ -8,11 +8,11 @@
 
 import UIKit
 
-class MainTabViewController: UITabBarController {
+class MainTabViewController: UITabBarController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.delegate = self
         let ICON_W = LTheme.Dimension.tab_bar_icon_width
         let ICON_H = LTheme.Dimension.tab_bar_icon_height
 
@@ -40,5 +40,12 @@ class MainTabViewController: UITabBarController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let vc = viewController as? UINavigationController {
+            vc.navigationBar.barTintColor = LTheme.Color.top_bar_background
+            vc.popToRootViewController(animated: true)
+        }
     }
 }
