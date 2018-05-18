@@ -27,6 +27,14 @@ class LPreferences {
     static let shareAccountRequest = "shareAccountRequest"
     static let lastSavedValues = "lastSavedValues"
 
+    static private func getGeneralMilliseconds(_ fromTime: Bool, millis: Int64) -> Int64 {
+        let comp = LA.ymd(milliseconds: millis)
+        let date = Date(year: comp.year, month: comp.month, day: comp.day)
+
+        if fromTime { return date.currentTimeMillis }
+        else { return date.currentTimeMillis + 24 * 3600 * 1000 -  1 }
+    }
+
     static func getRecordsSearchControls() -> LRecordSearch {
         let defaultTo: Int64 = Date().currentTimeMillis
         let defaultFrom: Int64 = defaultTo - Int64(4 * 7 * 24 * 3600 * 1000)
@@ -35,7 +43,12 @@ class LPreferences {
         let allTime: Bool = (defaults.object(forKey: recordsSearchControls + ".allTime") ?? true) as! Bool
         var from: Int64 = (defaults.object(forKey: recordsSearchControls + ".from") ?? defaultFrom) as! Int64
         var to: Int64 = (defaults.object(forKey: recordsSearchControls + ".to") ?? defaultTo) as! Int64
-        if (to < from) { swap(&to, &from) }
+        if (to < from) {
+            swap(&to, &from)
+
+            from = getGeneralMilliseconds(true, millis: from)
+            to = getGeneralMilliseconds(false, millis: to)
+        }
 
         let byEditTime: Bool = (defaults.object(forKey: recordsSearchControls + ".byEditTime") ?? false) as! Bool
         let allValue: Bool = (defaults.object(forKey: recordsSearchControls + ".allValue") ?? true) as! Bool
