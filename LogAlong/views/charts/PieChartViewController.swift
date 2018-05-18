@@ -14,6 +14,7 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
 
     private var isVisible = false
     private var isRefreshPending = false
+    private var hasData = false
 
     var year: Int = 2018
     var expenseCategories = Dictionary<String, Double>()
@@ -323,6 +324,9 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         //legend.wordWrapEnabled = true
 
         pieChartView.chartDescription?.text = ""
+
+        pieChartView.isHidden = !hasData
+        centerLabel.isHidden = !hasData
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -359,10 +363,17 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
     }
 
     func refresh(year: Int, data: Dictionary<String, Double>?) {
+        hasData = false
         if data != nil {
-            expenseCategories = data!
-            self.year = year
+            if data!.count > 0 {
+                pieChartView.isHidden = false
+                centerLabel.isHidden = false
+                expenseCategories = data!
+                self.year = year
+                hasData = true
+            }
         }
+
         if isVisible {
             isRefreshPending = false
             createPieChart()

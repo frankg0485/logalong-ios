@@ -127,23 +127,24 @@ UIPopoverPresentationControllerDelegate {
         workItem = DispatchWorkItem {
             let loader = DBLoader(year: year, month: 0, sort: RecordsViewSortMode.CATEGORY.rawValue,
                                    interval: RecordsViewInterval.ANNUALLY.rawValue, asc: true, search: self.searchControls)
-            var chartData = MyChartData(expenseCategories:[:], expenses: [], incomes: [])
-            chartData.incomes = loader.records.annualIncomes
-            chartData.expenses = loader.records.annualExpenses
-            for sect in loader.records.sections {
-                chartData.expenseCategories[sect.txt] = sect.expense
+            if loader.getSectionCount() > 0 {
+                var chartData = MyChartData(expenseCategories:[:], expenses: [], incomes: [])
+                chartData.incomes = loader.records.annualIncomes
+                chartData.expenses = loader.records.annualExpenses
+                for sect in loader.records.sections {
+                    chartData.expenseCategories[sect.txt] = sect.expense
+                }
+                self.chartDataSet[year] = chartData
             }
-            self.chartDataSet[year] = chartData
-
             DispatchQueue.main.async(execute: {
                 self.progress.stopAnimating()
-                self.refreshChart(chartData)
+                self.refreshChart()
             })
         }
         DispatchQueue.global(qos: .userInteractive).async(execute: workItem!)
     }
 
-    private func refreshChart(_ data: MyChartData) {
+    private func refreshChart() {
         pieVC.refresh(year: curYear, data: chartDataSet[curYear]?.expenseCategories)
         barVC.refresh(year: curYear, incomes: chartDataSet[curYear]?.incomes, expenses: chartDataSet[curYear]?.expenses)
     }
@@ -188,8 +189,8 @@ UIPopoverPresentationControllerDelegate {
     @objc func onLeftClick() {
         if (curYear > startYear) {
             curYear -= 1
-            if let data = chartDataSet[curYear] {
-                refreshChart(data)
+            if let _ = chartDataSet[curYear] {
+                refreshChart()
             } else {
                 progress.startAnimating()
                 reloadData(curYear)
@@ -200,8 +201,8 @@ UIPopoverPresentationControllerDelegate {
     @objc func onRightClick() {
         if (curYear < endYear) {
             curYear += 1
-            if let data = chartDataSet[curYear] {
-                refreshChart(data)
+            if let _ = chartDataSet[curYear] {
+                refreshChart()
             } else {
                 progress.startAnimating()
                 reloadData(curYear)

@@ -18,11 +18,14 @@ class BarChartViewController: UIViewController {
 
     private var isVisible = false
     private var isRefreshPending = false
+    private var hasData = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         barChartView.superview!.backgroundColor = LTheme.Color.base_bgd_color
         createBarChart()
+
+        barChartView.isHidden = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -136,13 +139,17 @@ class BarChartViewController: UIViewController {
         barChartView.xAxis.axisMinimum = 0
         barChartView.xAxis.axisMaximum = 12
         barChartView.groupBars(fromX: 0, groupSpace: groupSpace, barSpace: barSpace)
+
+        barChartView.isHidden = !hasData
     }
 
     func refresh(year: Int, incomes: [Double]?, expenses: [Double]?) {
+        hasData = false
         if incomes != nil && expenses != nil {
             self.incomes = incomes!
             self.expenses = expenses!
             self.year = year
+            hasData = true
         }
 
         if self.isVisible {
