@@ -168,7 +168,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         let separatorLayout = HorizontalLayout(height: 1)
         separatorLayout.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
         let separator1 = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: 1))
-        separator1.backgroundColor = LTheme.Color.default_bgd_color
+        separator1.backgroundColor = LTheme.Color.light_row_released_color
         separator1.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
         separatorLayout.addSubview(separator1)
 

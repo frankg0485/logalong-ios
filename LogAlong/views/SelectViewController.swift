@@ -127,10 +127,10 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
             label.text = NSLocalizedString("all", comment: "")
             layout.addSubview(label)
         } else {
-            let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 25 + 10, height: 25))
+            let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 125 + 10, height: 25))
             btn.addTarget(self, action: #selector(onAddClick), for: .touchUpInside)
             btn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
-            btn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10)
+            btn.imageEdgeInsets = UIEdgeInsetsMake(0, 100, 0, 10)
             layout.addSubview(btn)
         }
         headerView.addSubview(layout)
