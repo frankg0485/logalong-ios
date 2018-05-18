@@ -255,7 +255,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
             dismissable = true
 
-            self.present(vc, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                self.present(vc, animated: true, completion: nil)
+            }
         }
     }
 

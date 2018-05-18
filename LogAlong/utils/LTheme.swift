@@ -68,7 +68,7 @@ class LTheme {
     }
 
     class Dimension {
-        static let amount_picker_width: CGFloat = 360
+        static let amount_picker_width: CGFloat = 320
         static let amount_picker_height: CGFloat = 320
 
         static let table_view_cell_height = 44

@@ -170,7 +170,10 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         if isSchedule {
             updateScheduleDisplay()
         }
+    }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if createRecord && !isSchedule {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(
                 withIdentifier: "SelectAmountViewController") as! SelectAmountViewController
