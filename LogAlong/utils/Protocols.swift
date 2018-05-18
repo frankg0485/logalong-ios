@@ -21,7 +21,7 @@ protocol FNotifyLoginViewControllerDelegate: class {
 }
 */
 protocol FPassCreationBackDelegate: class {
-    func creationCallback(created: Bool)
+    func creationCallback(created: Bool, name: String, id: Int64)
 }
 /*
 protocol FPassNameIdPasswordDelegate: class {

@@ -486,7 +486,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         return UIModalPresentationStyle.none
     }
 
-    func creationCallback(created: Bool) {
+    func creationCallback(created: Bool, name: String, id: Int64) {
         //if created {
         //    getEntries()
         //    tableView.reloadData()

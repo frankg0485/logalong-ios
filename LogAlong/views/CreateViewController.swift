@@ -134,6 +134,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
             if name.isEmpty { // OK is clicked due to other change from switch
                 name = entryName
             }
+            var id: Int64 = 0
 
             switch (createType!) {
             case .ACCOUNT: fallthrough
@@ -143,6 +144,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                     if DBAccount.instance.add(&account!) {
                         DBAccountBalance.updateAccountBalance(id: account!.id, amount: 0, timestamp: Date().currentTimeMillis)
                         _ = LJournal.instance.addAccount(account!.id)
+                        id = account!.id
                     }
                 } else {
                     if DBAccount.instance.update(account!) {
@@ -154,6 +156,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 if isCreate {
                     if DBCategory.instance.add(&category!) {
                         _ = LJournal.instance.addCategory(category!.id)
+                        id = category!.id
                     }
                 } else {
                     if DBCategory.instance.update(category!) {
@@ -167,6 +170,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 if isCreate {
                     if DBVendor.instance.add(&vendor!) {
                         _ = LJournal.instance.addVendor(vendor!.id)
+                        id = vendor!.id
                     }
                 } else {
                     if DBVendor.instance.update(vendor!) {
@@ -178,6 +182,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 if isCreate {
                     if DBTag.instance.add(&tag!) {
                         _ = LJournal.instance.addTag(tag!.id)
+                        id = tag!.id
                     }
                 } else {
                     if DBTag.instance.update(tag!) {
@@ -187,7 +192,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
             case .TYPE:
                 LLog.e("\(self)", "Unexpected: type select in CreateViewController")
             }
-            delegate.creationCallback(created: true)
+            delegate.creationCallback(created: true, name: name, id: id)
         }
         dismiss(animated: true, completion: nil)
     }

@@ -186,8 +186,15 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         dismiss(animated: true, completion: nil)
     }
 
-    func creationCallback(created: Bool) {
+    func creationCallback(created: Bool, name: String, id: Int64) {
         if (created) {
+            if !multiSelection {
+                initValues.removeAll()
+            }
+
+            if !wasChecked(id: id) {
+                initValues.append(id)
+            }
             reloadTableView()
         }
     }
