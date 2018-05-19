@@ -178,6 +178,10 @@ UIPopoverPresentationControllerDelegate {
         self.present(vc, animated: true, completion: nil)
     }
 
+    // this is required for iOS8.3 and later
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return UIModalPresentationStyle.none
     }
