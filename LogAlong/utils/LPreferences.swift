@@ -37,7 +37,7 @@ class LPreferences {
 
     static func getRecordsSearchControls() -> LRecordSearch {
         let defaultTo: Int64 = Date().currentTimeMillis
-        let defaultFrom: Int64 = defaultTo - Int64(4 * 7 * 24 * 3600 * 1000)
+        let defaultFrom: Int64 = defaultTo - Int64(Int64(4 * 7 * 24 * 3600) * 1000)
 
         let all: Bool = (defaults.object(forKey: recordsSearchControls + ".all") ?? true) as! Bool
         let allTime: Bool = (defaults.object(forKey: recordsSearchControls + ".allTime") ?? true) as! Bool
