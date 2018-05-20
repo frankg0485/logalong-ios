@@ -36,9 +36,7 @@ UIPopoverPresentationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let d = UIApplication.shared.delegate as? AppDelegate {
-            d.shouldRotate = true
-        }
+        LA.lockOrientation(.landscape)
 
         setupViewControllers()
         setViewControllers([pieVC!], direction: .forward, animated: true, completion: nil)
@@ -58,10 +56,7 @@ UIPopoverPresentationControllerDelegate {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        if let d = UIApplication.shared.delegate as? AppDelegate {
-            d.shouldRotate = false
-            UIDevice.current.setValue(Int(UIInterfaceOrientation.portrait.rawValue), forKey: "orientation")
-        }
+        LA.lockOrientation(.portrait, andRotateTo: .portrait)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -70,6 +65,8 @@ UIPopoverPresentationControllerDelegate {
             refreshAll()
         }
         super.viewDidAppear(animated)
+        LA.lockOrientation(.landscape)
+        // AppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
     }
 
     override func viewDidDisappear(_ animated: Bool) {

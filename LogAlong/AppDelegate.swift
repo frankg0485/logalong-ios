@@ -11,10 +11,12 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    internal var shouldRotate = false
     var window: UIWindow?
     let uiRequest = UiRequest.instance
     let service = LService.instance
+
+    /// set orientations you want to be allowed in this property by default
+    var orientationLock = UIInterfaceOrientationMask.portrait
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -82,11 +84,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        if shouldRotate {
-            DispatchQueue.main.async {
-                UIDevice.current.setValue(Int(UIInterfaceOrientation.landscapeRight.rawValue), forKey: "orientation")
-            }
-        }
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         DBAccountBalance.rescanCancel()
         endBackgroundTask(false)
@@ -106,18 +103,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return shouldRotate ? .allButUpsideDown : .portrait
-        /*
-        if let rootViewController = self.topViewControllerWithRootViewController(window?.rootViewController) {
-            if (rootViewController.responds(to: Selector(("canRotate")))) {
-                // Unlock landscape view orientations for this view controller
-                return .allButUpsideDown;
-            }
-        }
-
-        // Only allow portrait (standard behaviour)
-        return .portrait;
-         */
+        return self.orientationLock
     }
 
     /*
