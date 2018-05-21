@@ -33,7 +33,7 @@ final class LServer: NSObject {
     var connectRequested = false
 
     static let PORT_NO = 8000
-    static let SERVER_NAME = "192.168.1.111"
+    static let SERVER_NAME = "192.168.1.112"
 
     func connect() {
         if connectRequested { return }

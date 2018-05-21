@@ -56,7 +56,10 @@ UIPopoverPresentationControllerDelegate {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         LA.lockOrientation(.portrait, andRotateTo: .portrait)
+
+        UIApplication.shared.isStatusBarHidden = false
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -72,6 +75,12 @@ UIPopoverPresentationControllerDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         isVisible = false
         super.viewDidDisappear(animated)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        UIApplication.shared.isStatusBarHidden = true
     }
 
     @objc func dbDataChanged(notification: Notification) -> Void {
