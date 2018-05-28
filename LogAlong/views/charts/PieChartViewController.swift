@@ -272,14 +272,10 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
             count += 1
         }
 
-        if currentExpenseCats.count <= list.count {
-            for kv in currentExpenseCats {
-                pieEntries.append(PieChartDataEntry(value: kv.value, label: kv.key))
-            }
-        } else {
-            for key in list {
-                pieEntries.append(PieChartDataEntry(value: currentExpenseCats[key]!, label: key))
-            }
+        for key in list {
+            pieEntries.append(PieChartDataEntry(value: currentExpenseCats[key]!, label: key))
+        }
+        if currentExpenseCats.count > list.count {
             pieEntries.append(PieChartDataEntry(value: lastGroupValue, label: lastGroup))
         }
 

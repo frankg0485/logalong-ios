@@ -117,10 +117,10 @@ class BarChartViewController: UIViewController {
         let dataSet1 = BarChartDataSet(values: yVals1, label: NSLocalizedString("Expense", comment: ""))
         let dataSet2 = BarChartDataSet(values: yVals2, label: NSLocalizedString("Income", comment: "") + " - " + String(year))
 
-        dataSet1.colors = [UIColor.red]
+        dataSet1.colors = [UIColor(hex: 0xffcc0000)]
         dataSet1.drawValuesEnabled = false
 
-        dataSet2.colors = [UIColor.green]
+        dataSet2.colors = [UIColor(hex: 0xff669900)]
         dataSet2.drawValuesEnabled = false
 
         var dataSets = [BarChartDataSet]();
