@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -2590,6 +2590,101 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mmb-8x-cBl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-908" y="286.95652173913044"/>
+        </scene>
+        <!--Unshare Account Confirm View Controller-->
+        <scene sceneID="cjh-Fw-NZE">
+            <objects>
+                <viewController storyboardIdentifier="UnshareAccountConfirm" id="QA6-S0-KNY" customClass="UnshareAccountConfirmViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="8yF-p4-HEH"/>
+                        <viewControllerLayoutGuide type="bottom" id="i33-IF-Abu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7Vb-9P-DAn">
+                        <rect key="frame" x="0.0" y="0.0" width="345" height="232"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unshare" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k9F-2G-WAY">
+                                <rect key="frame" x="16" y="8" width="313" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="UAd-hn-7yH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8m-Fg-BZp">
+                                <rect key="frame" x="15" y="194" width="157" height="30"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancelClicked:" destination="QA6-S0-KNY" eventType="touchUpInside" id="HYV-2G-66m"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zO7-KQ-pfj">
+                                <rect key="frame" x="172" y="194" width="157" height="30"/>
+                                <state key="normal" title="OK"/>
+                                <connections>
+                                    <action selector="okClicked:" destination="QA6-S0-KNY" eventType="touchUpInside" id="tov-bD-yL8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jdd-3h-4xE" customClass="LCheckbox" customModule="LogAlong" customModuleProvider="target">
+                                <rect key="frame" x="16" y="122" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="2Dd-oe-gTg"/>
+                                    <constraint firstAttribute="height" constant="25" id="M2Y-GP-S0o"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="checkboxClicked:" destination="QA6-S0-KNY" eventType="touchUpInside" id="0Wf-9X-LLN"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="This account and all of its records will be deleted." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="CF0-eQ-dJT">
+                                <rect key="frame" x="11" y="52" width="318" height="43"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unshare and delete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OiQ-ND-vo8">
+                                <rect key="frame" x="46" y="126" width="272" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="i33-IF-Abu" firstAttribute="top" secondItem="zO7-KQ-pfj" secondAttribute="bottom" constant="8" id="0l6-3h-cPn"/>
+                            <constraint firstItem="Jdd-3h-4xE" firstAttribute="top" secondItem="CF0-eQ-dJT" secondAttribute="bottom" constant="27" id="11b-q0-HVV"/>
+                            <constraint firstItem="OiQ-ND-vo8" firstAttribute="leading" secondItem="Jdd-3h-4xE" secondAttribute="trailing" constant="5" id="6Rz-QX-pgC"/>
+                            <constraint firstItem="f8m-Fg-BZp" firstAttribute="height" secondItem="zO7-KQ-pfj" secondAttribute="height" id="83G-U2-TmG"/>
+                            <constraint firstItem="f8m-Fg-BZp" firstAttribute="top" secondItem="Jdd-3h-4xE" secondAttribute="bottom" constant="47" id="9pr-o3-Wf7"/>
+                            <constraint firstAttribute="trailing" secondItem="k9F-2G-WAY" secondAttribute="trailing" constant="16" id="Dq5-JN-ZKh"/>
+                            <constraint firstItem="zO7-KQ-pfj" firstAttribute="leading" secondItem="f8m-Fg-BZp" secondAttribute="trailing" id="FCb-lD-M8e"/>
+                            <constraint firstItem="Jdd-3h-4xE" firstAttribute="leading" secondItem="7Vb-9P-DAn" secondAttribute="leading" constant="16" id="H8w-KE-phj"/>
+                            <constraint firstItem="CF0-eQ-dJT" firstAttribute="top" secondItem="k9F-2G-WAY" secondAttribute="bottom" constant="23" id="L9f-cL-Te9"/>
+                            <constraint firstItem="CF0-eQ-dJT" firstAttribute="leading" secondItem="7Vb-9P-DAn" secondAttribute="leading" constant="11" id="Q7n-xo-QfX"/>
+                            <constraint firstItem="zO7-KQ-pfj" firstAttribute="top" secondItem="OiQ-ND-vo8" secondAttribute="bottom" constant="51" id="QLM-75-oNj"/>
+                            <constraint firstItem="f8m-Fg-BZp" firstAttribute="width" secondItem="zO7-KQ-pfj" secondAttribute="width" id="X8M-tf-bqH"/>
+                            <constraint firstItem="i33-IF-Abu" firstAttribute="top" secondItem="f8m-Fg-BZp" secondAttribute="bottom" constant="8" id="ezc-77-ENv"/>
+                            <constraint firstItem="zO7-KQ-pfj" firstAttribute="leading" secondItem="f8m-Fg-BZp" secondAttribute="trailing" id="f17-jj-b90"/>
+                            <constraint firstItem="f8m-Fg-BZp" firstAttribute="top" secondItem="OiQ-ND-vo8" secondAttribute="bottom" constant="51" id="g6l-s0-fbp"/>
+                            <constraint firstAttribute="trailing" secondItem="zO7-KQ-pfj" secondAttribute="trailing" constant="16" id="jHa-i7-e9p"/>
+                            <constraint firstAttribute="trailing" secondItem="OiQ-ND-vo8" secondAttribute="trailing" constant="27" id="lBC-ZG-23f"/>
+                            <constraint firstItem="OiQ-ND-vo8" firstAttribute="top" secondItem="CF0-eQ-dJT" secondAttribute="bottom" constant="31" id="mMZ-dm-StH"/>
+                            <constraint firstAttribute="trailing" secondItem="CF0-eQ-dJT" secondAttribute="trailing" constant="16" id="nAg-Uz-UMF"/>
+                            <constraint firstItem="k9F-2G-WAY" firstAttribute="top" secondItem="8yF-p4-HEH" secondAttribute="bottom" constant="8" id="pDv-uG-r8A"/>
+                            <constraint firstItem="f8m-Fg-BZp" firstAttribute="leading" secondItem="7Vb-9P-DAn" secondAttribute="leading" constant="15" id="rnb-eF-05S"/>
+                            <constraint firstItem="k9F-2G-WAY" firstAttribute="leading" secondItem="7Vb-9P-DAn" secondAttribute="leading" constant="16" id="zEb-Jn-Tgg"/>
+                        </constraints>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="345" height="232"/>
+                    <size key="freeformSize" width="345" height="232"/>
+                    <connections>
+                        <outlet property="okButton" destination="zO7-KQ-pfj" id="3yG-uv-NHA"/>
+                        <outlet property="unshareCheckbox" destination="Jdd-3h-4xE" id="unF-Ja-9QB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ozP-GM-RkW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5008.8000000000002" y="616.1919040479761"/>
         </scene>
     </scenes>
     <resources>

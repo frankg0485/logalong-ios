@@ -31,6 +31,7 @@
 		019CCD4E1E6DC7C5002EF989 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD4D1E6DC7C5002EF989 /* MainTableViewCell.swift */; };
 		019CCD501E6DC7D0002EF989 /* RecordsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */; };
 		019CCD541E748042002EF989 /* LTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019CCD531E748042002EF989 /* LTransaction.swift */; };
+		01ADD0FA20BF428800A78210 /* UnshareAccountConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01ADD0F920BF428800A78210 /* UnshareAccountConfirmViewController.swift */; };
 		01B61A701FF8396600899F21 /* LUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B61A6F1FF8396600899F21 /* LUser.swift */; };
 		01B61A7B1FF8460100899F21 /* UsersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */; };
 		01CEE4DF201E9C17008F447A /* ShareAccountConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CEE4DE201E9C17008F447A /* ShareAccountConfirmViewController.swift */; };
@@ -225,6 +226,7 @@
 		019CCD4D1E6DC7C5002EF989 /* MainTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		019CCD4F1E6DC7D0002EF989 /* RecordsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordsTableViewCell.swift; sourceTree = "<group>"; };
 		019CCD531E748042002EF989 /* LTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LTransaction.swift; sourceTree = "<group>"; };
+		01ADD0F920BF428800A78210 /* UnshareAccountConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnshareAccountConfirmViewController.swift; sourceTree = "<group>"; };
 		01B61A6F1FF8396600899F21 /* LUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LUser.swift; sourceTree = "<group>"; };
 		01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersTableViewCell.swift; sourceTree = "<group>"; };
 		01CEE4DE201E9C17008F447A /* ShareAccountConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAccountConfirmViewController.swift; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 				CB15D4ED1FC3D7EE005D8B43 /* settings */,
 				01CEE4DE201E9C17008F447A /* ShareAccountConfirmViewController.swift */,
 				01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */,
+				01ADD0F920BF428800A78210 /* UnshareAccountConfirmViewController.swift */,
 				01B61A7A1FF8460100899F21 /* UsersTableViewCell.swift */,
 			);
 			path = views;
@@ -735,6 +738,7 @@
 				CB51B5581FBBDF26002CABA1 /* LProtocol.swift in Sources */,
 				0128AE481EC4829B007A999B /* AccountsTableViewController.swift in Sources */,
 				01569DB71FF5BC4000D68807 /* ShareAccountViewController.swift in Sources */,
+				01ADD0FA20BF428800A78210 /* UnshareAccountConfirmViewController.swift in Sources */,
 				014893CF1EDE6106005E3C94 /* SelectAmountViewController.swift in Sources */,
 				CBB51D2A1FE496CF000CD233 /* LVendor.swift in Sources */,
 				CBAA495A1FC51CCA00E77834 /* UiRequest.swift in Sources */,
