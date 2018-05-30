@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate {
     @IBOutlet weak var msgLabel: UILabel!
     @IBOutlet weak var msgLabelHeight: NSLayoutConstraint!
     @IBOutlet weak var tableHeight: NSLayoutConstraint!
@@ -301,12 +301,34 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
     @IBAction func okButtonClicked(_ sender: UIButton) {
         if !ownAccount {
             //this is the case where 'unshare' is clicked
-            selectedIds.removeAll()
-            checkboxAllAccounts.isSelected = false //JIC
+            presentUnshareConfirm()
+        } else {
+            accountsVC?.onShareAccountDialogExit(checkboxAllAccounts.isSelected, account.id, selectedIds, origSelections: origSelectedIds)
+            dismiss(animated: true, completion: nil)
         }
-        accountsVC?.onShareAccountDialogExit(checkboxAllAccounts.isSelected, account.id,
-                                             selectedIds, origSelections: origSelectedIds)
-        dismiss(animated: true, completion: nil)
+    }
+
+    func presentUnshareConfirm() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "UnshareAccountConfirm") as! UnshareAccountConfirmViewController
+
+        vc.modalPresentationStyle = UIModalPresentationStyle.popover
+        vc.popoverPresentationController?.sourceView = self.view
+        vc.popoverPresentationController?.sourceRect =
+            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY - 22, width: 0, height: 0)
+        vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
+        vc.popoverPresentationController!.delegate = self
+
+        self.present(vc, animated: true, completion: nil)
+    }
+
+    func confirmExit(_ confirm: Bool) {
+        if confirm {
+            selectedIds.removeAll()
+            checkboxAllAccounts.isSelected = false
+            accountsVC?.onShareAccountDialogExit(checkboxAllAccounts.isSelected, account.id, selectedIds, origSelections: origSelectedIds)
+        }
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -348,5 +370,13 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         cell.checkButton.isSelected = checkBoxClicked[row]
         //cell.backgroundColor = LTheme.Color.light_row_released_color
         return cell
+    }
+
+    func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
+        return false
+    }
+
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
     }
 }
