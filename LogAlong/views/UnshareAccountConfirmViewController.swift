@@ -12,10 +12,10 @@ class UnshareAccountConfirmViewController: UIViewController, UIPopoverPresentati
 
     @IBOutlet weak var unshareCheckbox: LCheckbox!
     @IBOutlet weak var okButton: UIButton!
+    @IBOutlet weak var unshareMessage: UITextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         // Do any additional setup after loading the view.
     }
 

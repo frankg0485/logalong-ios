@@ -315,7 +315,7 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         vc.modalPresentationStyle = UIModalPresentationStyle.popover
         vc.popoverPresentationController?.sourceView = self.view
         vc.popoverPresentationController?.sourceRect =
-            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY - 22, width: 0, height: 0)
+            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
         vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
         vc.popoverPresentationController!.delegate = self
 
