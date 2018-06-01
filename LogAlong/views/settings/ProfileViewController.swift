@@ -52,6 +52,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = LTheme.Color.default_bgd_color
 
         LServer.instance.connect()
         setupNavigationBarItems()

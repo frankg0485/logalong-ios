@@ -26,6 +26,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.backgroundColor = LTheme.Color.default_bgd_color
         setupSwipe()
         tableView.dataSource = self
         tableView.delegate = self
@@ -342,6 +343,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     // MARK: - Table view data source
 
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = LTheme.Color.default_bgd_color
+    }
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1

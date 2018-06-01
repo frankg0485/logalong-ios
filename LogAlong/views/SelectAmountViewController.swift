@@ -83,6 +83,8 @@ class SelectAmountViewController: UIViewController {
 
         self.preferredContentSize.width = LTheme.Dimension.amount_picker_width
         self.preferredContentSize.height = LTheme.Dimension.amount_picker_height
+
+        view.backgroundColor = LTheme.Color.default_bgd_color
     }
 
     override func viewWillAppear(_ animated: Bool) {

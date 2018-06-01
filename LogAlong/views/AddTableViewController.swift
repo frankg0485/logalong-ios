@@ -74,6 +74,8 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = LTheme.Color.default_bgd_color
+
         if isSchedule {
             record = schedule
             origSchedule = LScheduledTransaction(schedule: schedule)
@@ -643,6 +645,11 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }
 
         updateSaveButtonState()
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == 7 { cell.backgroundColor = UIColor.groupTableViewBackground }
+        else { cell.backgroundColor = LTheme.Color.default_bgd_color }
     }
 
     // MARK: - Navigation

@@ -14,6 +14,8 @@ class SettingsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = LTheme.Color.default_bgd_color
+        tableView.backgroundColor = LTheme.Color.default_bgd_color
         setupSwipe()
         setupNavigationBarItems()
 
@@ -51,6 +53,9 @@ class SettingsTableViewController: UITableViewController {
         self.view.addGestureRecognizer(swipeRight)
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = LTheme.Color.default_bgd_color
+    }
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let nvc = segue.destination as? AccountsTableViewController {

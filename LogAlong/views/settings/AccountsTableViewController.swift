@@ -28,6 +28,9 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = LTheme.Color.default_bgd_color
+        tableView.backgroundColor = LTheme.Color.default_bgd_color
+
         setupNavigationBarItems()
         getEntries()
 
@@ -275,11 +278,9 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     //------------------ VENDOR ---------------------------
     //------------------ TAG ------------------------------
 
-/*    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        //cell.backgroundColor = LTheme.Color.row_released_color
-        cell.layer.borderWidth = 1
-        cell.layer.borderColor = tableView.backgroundColor?.cgColor
-    }*/
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = LTheme.Color.default_bgd_color
+    }
 
     func popoverPresentationControllerShouldDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) -> Bool {
         return false

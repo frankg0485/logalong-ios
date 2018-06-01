@@ -10,9 +10,13 @@ import UIKit
 
 class ProfileReminderViewController: UIViewController {
     @IBOutlet weak var okButton: UIButton!
+    @IBOutlet weak var reminderTextView: UITextView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = LTheme.Color.default_bgd_color
+        reminderTextView.backgroundColor = LTheme.Color.default_bgd_color
 
         self.preferredContentSize.height = LTheme.Dimension.popover_height_small
         self.preferredContentSize.width = LTheme.Dimension.popover_width

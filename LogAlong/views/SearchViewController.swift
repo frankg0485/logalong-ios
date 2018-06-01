@@ -75,6 +75,8 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = LTheme.Color.default_bgd_color
+
         createHeader()
         createShowAll()
         createAllTime()

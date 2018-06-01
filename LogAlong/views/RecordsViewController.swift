@@ -30,6 +30,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.backgroundColor = LTheme.Color.default_bgd_color
         //LLog.d("\(self)", "view did load")
         tableView.dataSource = self
         tableView.delegate = self
@@ -273,6 +274,10 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         } else {
             return 0
         }
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = LTheme.Color.default_bgd_color
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

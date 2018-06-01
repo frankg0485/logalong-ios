@@ -37,6 +37,9 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = LTheme.Color.default_bgd_color
+
         preferredContentSize.width = LTheme.Dimension.popover_width
         preferredContentSize.height = LTheme.Dimension.popover_height_small + 20
 

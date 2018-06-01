@@ -45,7 +45,9 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = LTheme.Color.default_bgd_color
         headerView.backgroundColor = LTheme.Color.dialog_border_color
+        tableView.backgroundColor = view.backgroundColor
         createHeader()
 
         self.preferredContentSize.width = LTheme.Dimension.popover_width
@@ -221,6 +223,10 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         } else {
             myIndexPath = -1;
         }
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = view.backgroundColor
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

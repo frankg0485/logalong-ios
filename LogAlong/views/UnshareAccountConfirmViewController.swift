@@ -16,6 +16,11 @@ class UnshareAccountConfirmViewController: UIViewController, UIPopoverPresentati
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.backgroundColor = LTheme.Color.default_bgd_color
+
+        self.preferredContentSize.width = LTheme.Dimension.popover_width
+        self.preferredContentSize.height = LTheme.Dimension.popover_height_small
         // Do any additional setup after loading the view.
     }
 

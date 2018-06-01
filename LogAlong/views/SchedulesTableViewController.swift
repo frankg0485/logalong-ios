@@ -18,6 +18,8 @@ class SchedulesTableViewController: UITableViewController, UIPopoverPresentation
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = LTheme.Color.default_bgd_color
+        tableView.backgroundColor = LTheme.Color.default_bgd_color
         schedules = DBScheduledTransaction.instance.getAll()
 
         setupNavigationBarItems()
@@ -112,6 +114,10 @@ class SchedulesTableViewController: UITableViewController, UIPopoverPresentation
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = LTheme.Color.default_bgd_color
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -40,6 +40,8 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
         self.preferredContentSize.width = LTheme.Dimension.popover_width
         self.preferredContentSize.height = LTheme.Dimension.popover_height_small
 
+        view.backgroundColor = LTheme.Color.default_bgd_color
+
         optionalLabel.textColor = LTheme.Color.dark_gray_text_color
         payerLabel.textColor = LTheme.Color.dark_gray_text_color
 

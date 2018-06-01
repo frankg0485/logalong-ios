@@ -26,6 +26,7 @@ class AddViewController: UIViewController {
     var addTableVC: AddTableViewController?
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        view.backgroundColor = LTheme.Color.default_bgd_color
         switch segue.destination {
         case let vc as AddTableViewController:
             if isSchedule {

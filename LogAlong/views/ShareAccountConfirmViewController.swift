@@ -17,7 +17,7 @@ class ShareAccountConfirmViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.view.backgroundColor = LTheme.Color.dialog_bg_color
+        view.backgroundColor = LTheme.Color.default_bgd_color
 
         preferredContentSize.width = LTheme.Dimension.popover_width
         preferredContentSize.height = 240

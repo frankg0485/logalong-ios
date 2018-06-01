@@ -53,6 +53,8 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
 
         self.preferredContentSize.width = LTheme.Dimension.popover_width
 
+        view.backgroundColor = LTheme.Color.default_bgd_color
+
         usersTableView.delegate = self
         usersTableView.dataSource = self
         usersTableView.tableFooterView = UIView()
