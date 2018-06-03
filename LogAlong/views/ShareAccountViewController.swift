@@ -55,6 +55,8 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
 
         view.backgroundColor = LTheme.Color.default_bgd_color
 
+        addUserToAccountButton.isEnabled = false
+
         usersTableView.delegate = self
         usersTableView.dataSource = self
         usersTableView.tableFooterView = UIView()
@@ -65,7 +67,7 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         userIdTextField.delegate = self
         userIdTextField.autocorrectionType = .no
         userIdTextField.autocapitalizationType = .none
-
+        userIdTextField.addTarget(self, action: #selector(textFieldEditingDidChange(_:)), for: UIControlEvents.editingChanged)
         selectedIds = origSelectedIds
         if account.getShareIdsStates().shareIds.isEmpty {
             ownAccount = true
@@ -99,6 +101,12 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+
+    @objc func textFieldEditingDidChange(_ sender: Any) {
+        userIdTextField.text = userIdTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        if (userIdTextField.text ?? "" == LPreferences.getUserId()) || ((userIdTextField.text ?? "").count < 2) { addUserToAccountButton.isEnabled = false }
+        else { addUserToAccountButton.isEnabled = true }
     }
 
     private func setTapGesture(_ view: UIView) {
@@ -295,6 +303,16 @@ class ShareAccountViewController: UIViewController, UITextFieldDelegate, UITable
         textField.resignFirstResponder()
         return true
     }
+
+    /*func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        var userId = textField.text! + string
+        if !userId.isEmpty { userId = userId.trimmingCharacters(in: .whitespacesAndNewlines)[...(userId.count - range.length - 1)] }
+
+        if userId == LPreferences.getUserId() { addUserToAccountButton.isEnabled = false }
+        else { addUserToAccountButton.isEnabled = true }
+
+        return true
+    }*/
 
     @IBAction func cancelButtonClicked(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
