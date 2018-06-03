@@ -88,6 +88,10 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         valueSwitch.isOn = search.allValue
         separator3.isHidden = valueSwitch.isOn
 
+        if search.all { showAllGroupView.isHidden = true }
+        if search.allTime { allTimeGroupView.isHidden = true }
+        if search.allValue { allValueGroupView.isHidden = true }
+
         onShowAllClick()
         onAllTimeClick()
         displayValues()
