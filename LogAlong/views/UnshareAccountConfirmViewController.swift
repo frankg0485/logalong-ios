@@ -13,6 +13,7 @@ class UnshareAccountConfirmViewController: UIViewController, UIPopoverPresentati
     @IBOutlet weak var unshareCheckbox: LCheckbox!
     @IBOutlet weak var okButton: UIButton!
     @IBOutlet weak var unshareMessage: UITextView!
+    @IBOutlet weak var checkboxMessage: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,7 @@ class UnshareAccountConfirmViewController: UIViewController, UIPopoverPresentati
 
         self.preferredContentSize.width = LTheme.Dimension.popover_width
         self.preferredContentSize.height = LTheme.Dimension.popover_height_small
+        checkboxMessage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(doCheckbox)))
         // Do any additional setup after loading the view.
     }
 
@@ -29,13 +31,16 @@ class UnshareAccountConfirmViewController: UIViewController, UIPopoverPresentati
         // Dispose of any resources that can be recreated.
     }
 
-    @IBAction func checkboxClicked(_ sender: UIButton) {
+    @objc func doCheckbox() {
         unshareCheckbox.isSelected = !unshareCheckbox.isSelected
         if unshareCheckbox.isSelected {
             okButton.isEnabled = true
         } else {
             okButton.isEnabled = false
         }
+    }
+    @IBAction func checkboxClicked(_ sender: UIButton) {
+        doCheckbox()
     }
 
     @IBAction func cancelClicked(_ sender: UIButton) {

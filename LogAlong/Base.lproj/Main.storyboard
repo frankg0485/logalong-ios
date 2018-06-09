@@ -2601,7 +2601,7 @@
                                     <action selector="okClicked:" destination="QA6-S0-KNY" eventType="touchUpInside" id="tov-bD-yL8"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unshare and delete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OiQ-ND-vo8">
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unshare and delete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OiQ-ND-vo8">
                                 <rect key="frame" x="46" y="122" width="272" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
@@ -2652,6 +2652,7 @@
                     <value key="contentSizeForViewInPopover" type="size" width="375" height="200"/>
                     <size key="freeformSize" width="345" height="232"/>
                     <connections>
+                        <outlet property="checkboxMessage" destination="OiQ-ND-vo8" id="cBv-j1-LJo"/>
                         <outlet property="okButton" destination="zO7-KQ-pfj" id="3yG-uv-NHA"/>
                         <outlet property="unshareCheckbox" destination="Jdd-3h-4xE" id="unF-Ja-9QB"/>
                         <outlet property="unshareMessage" destination="CF0-eQ-dJT" id="eAN-ei-2Qf"/>
