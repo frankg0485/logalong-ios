@@ -332,6 +332,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
     private func startTimer(_ interval: Double) {
         resetTimer(interval)
 
+        tabBarController?.tabBar.isUserInteractionEnabled = false
+
         progress.isHidden = false
         progress.startAnimating()
 
@@ -347,6 +349,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         progress.isHidden = true
         timer?.invalidate()
         overlayViewController?.dismiss(animated: false, completion: nil)
+
+        tabBarController?.tabBar.isUserInteractionEnabled = true
     }
 
     private func hideTextFieldCursor() {
