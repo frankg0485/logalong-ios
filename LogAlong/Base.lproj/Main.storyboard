@@ -431,9 +431,9 @@
                                     <constraints>
                                         <constraint firstItem="aSn-bu-MwN" firstAttribute="centerY" secondItem="roV-om-ymx" secondAttribute="centerY" id="4Yu-a4-avH"/>
                                         <constraint firstItem="uWC-bR-dAq" firstAttribute="leading" secondItem="roV-om-ymx" secondAttribute="leadingMargin" priority="900" id="DEH-2e-mUY"/>
+                                        <constraint firstAttribute="trailing" secondItem="aSn-bu-MwN" secondAttribute="trailing" constant="16" id="DSy-WV-6Ne"/>
                                         <constraint firstItem="nH9-Mg-5nf" firstAttribute="leading" secondItem="roV-om-ymx" secondAttribute="leading" constant="5" id="PPj-nr-XVp"/>
                                         <constraint firstItem="nH9-Mg-5nf" firstAttribute="centerY" secondItem="roV-om-ymx" secondAttribute="centerY" id="SgX-Ey-YE0"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="aSn-bu-MwN" secondAttribute="trailing" id="iQl-Ao-BIT"/>
                                         <constraint firstItem="uWC-bR-dAq" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="nH9-Mg-5nf" secondAttribute="trailing" constant="5" id="vNm-cy-VOP"/>
                                         <constraint firstItem="uWC-bR-dAq" firstAttribute="centerY" secondItem="roV-om-ymx" secondAttribute="centerY" id="w2x-e8-cgu"/>
                                     </constraints>
