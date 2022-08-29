@@ -46,7 +46,7 @@ class BarChartViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    class MyXAxisValueFormatter: NSObject, IAxisValueFormatter {
+    class MyXAxisValueFormatter: NSObject, AxisValueFormatter {
         private let months: [String] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         func stringForValue(_ value: Double, axis: AxisBase?) -> String {
             if let axis = axis {
@@ -62,7 +62,7 @@ class BarChartViewController: UIViewController {
         }
     }
 
-    class MyYAxisValueFormatter: NSObject, IAxisValueFormatter {
+    class MyYAxisValueFormatter: NSObject, AxisValueFormatter {
         func stringForValue(_ value: Double, axis: AxisBase?) -> String {
             if axis != nil {
                 let numberFormatter = NumberFormatter()
@@ -74,7 +74,7 @@ class BarChartViewController: UIViewController {
     }
 
     func createBarChart() {
-        barChartView.chartDescription?.text =  ""
+        barChartView.chartDescription.text =  ""
 
         // scaling can now only be done on x- and y-axis separately
         barChartView.pinchZoomEnabled = false
@@ -114,8 +114,8 @@ class BarChartViewController: UIViewController {
             yVals2.append(BarChartDataEntry(x: Double(ii), y: incomes[ii]))
         }
 
-        let dataSet1 = BarChartDataSet(values: yVals1, label: NSLocalizedString("Expense", comment: ""))
-        let dataSet2 = BarChartDataSet(values: yVals2, label: NSLocalizedString("Income", comment: "") + " - " + String(year))
+        let dataSet1 = BarChartDataSet(entries: yVals1, label: NSLocalizedString("Expense", comment: ""))
+        let dataSet2 = BarChartDataSet(entries: yVals2, label: NSLocalizedString("Income", comment: "") + " - " + String(year))
 
         dataSet1.colors = [UIColor(hex: 0xffcc0000)]
         dataSet1.drawValuesEnabled = false

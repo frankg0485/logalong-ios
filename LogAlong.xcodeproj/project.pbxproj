@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,7 +19,6 @@
 		014893D71EEB0332005E3C94 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014893D61EEB0332005E3C94 /* MainTabViewController.swift */; };
 		015183E71FE4911A002AC812 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B261FAEA2FF0092B184 /* SQLite.framework */; };
 		015183E81FE4911A002AC812 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B261FAEA2FF0092B184 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		015183F11FE57EF0002AC812 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0151840C1FE61538002AC812 /* CurrentPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151840B1FE61538002AC812 /* CurrentPasswordViewController.swift */; };
 		015367321F9D588F001BCB89 /* PieChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015367311F9D588F001BCB89 /* PieChartViewController.swift */; };
 		01569DB71FF5BC4000D68807 /* ShareAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01569DB61FF5BC4000D68807 /* ShareAccountViewController.swift */; };
@@ -40,6 +39,8 @@
 		01FBE7F61F439D5A00A0B514 /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */; };
 		01FBE7FA1F43A00800A0B514 /* NewAdditionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */; };
 		01FDE4911F78066300A7DD78 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */; };
+		C2DC185928BC52C100309555 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; platformFilter = ios; };
+		C2DC185A28BC52C100309555 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB006DC7203FAAFC005059BB /* DBScheduledTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB006DC6203FAAFC005059BB /* DBScheduledTransaction.swift */; };
 		CB1073551FCE599E00390032 /* LJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1073541FCE599E00390032 /* LJournal.swift */; };
 		CB1073601FCE62D900390032 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB10735F1FCE62D900390032 /* DBHelper.swift */; };
@@ -64,7 +65,6 @@
 		CBB51D2A1FE496CF000CD233 /* LVendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D291FE496CF000CD233 /* LVendor.swift */; };
 		CBB51D2C1FE49EC2000CD233 /* DBTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D2B1FE49EC2000CD233 /* DBTag.swift */; };
 		CBB51D2E1FE49EDB000CD233 /* DBVendor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB51D2D1FE49EDB000CD233 /* DBVendor.swift */; };
-		CBC01B461FAEA4C70092B184 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; };
 		CBC01B491FAEAA080092B184 /* LAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B481FAEAA080092B184 /* LAccount.swift */; };
 		CBC01B4B1FAEAA270092B184 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */; };
 		CBC01B4D1FAEAA420092B184 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC01B4C1FAEAA420092B184 /* DatePickerViewController.swift */; };
@@ -95,13 +95,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = EE247AD21C3F04ED00AE3E12;
 			remoteInfo = "SQLite iOS";
-		};
-		015183F21FE57EF0002AC812 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CBC01B3C1FAEA3AB0092B184 /* Charts.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = A58A4ED274A941CA248EA921;
-			remoteInfo = Charts;
 		};
 		019CCD381E6DAF65002EF989 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -183,7 +176,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				015183E81FE4911A002AC812 /* SQLite.framework in Embed Frameworks */,
-				015183F11FE57EF0002AC812 /* Charts.framework in Embed Frameworks */,
+				C2DC185A28BC52C100309555 /* Charts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,7 +283,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				015183E71FE4911A002AC812 /* SQLite.framework in Frameworks */,
-				CBC01B461FAEA4C70092B184 /* Charts.framework in Frameworks */,
+				C2DC185928BC52C100309555 /* Charts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,7 +505,6 @@
 			);
 			dependencies = (
 				015183EA1FE4911A002AC812 /* PBXTargetDependency */,
-				015183F31FE57EF0002AC812 /* PBXTargetDependency */,
 			);
 			name = LogAlong;
 			productName = LogAlong;
@@ -544,13 +536,13 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1340;
 				ORGANIZATIONNAME = "Swoag Technology";
 				TargetAttributes = {
 					019CCD201E6DAF64002EF989 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = EMR65N9MP5;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1340;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -560,7 +552,7 @@
 					};
 					019CCD361E6DAF65002EF989 = {
 						CreatedOnToolsVersion = 8.2.1;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1340;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 019CCD201E6DAF64002EF989;
 					};
@@ -568,7 +560,7 @@
 			};
 			buildConfigurationList = 019CCD1C1E6DAF64002EF989 /* Build configuration list for PBXProject "LogAlong" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -776,11 +768,6 @@
 			name = "SQLite iOS";
 			targetProxy = 015183E91FE4911A002AC812 /* PBXContainerItemProxy */;
 		};
-		015183F31FE57EF0002AC812 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Charts;
-			targetProxy = 015183F21FE57EF0002AC812 /* PBXContainerItemProxy */;
-		};
 		019CCD391E6DAF65002EF989 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 019CCD201E6DAF64002EF989 /* LogAlong */;
@@ -812,6 +799,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -832,6 +820,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -856,7 +845,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -870,6 +859,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -890,6 +880,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -908,10 +899,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -925,13 +917,17 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = EMR65N9MP5;
 				INFOPLIST_FILE = LogAlong/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.swoag.LogAlong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "LogAlong-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -944,12 +940,16 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = EMR65N9MP5;
 				INFOPLIST_FILE = LogAlong/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.swoag.LogAlong;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "LogAlong-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -960,11 +960,15 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = LogAlongTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.LogAlongTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LogAlong.app/LogAlong";
 			};
 			name = Debug;
@@ -975,11 +979,15 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = LogAlongTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.LogAlongTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LogAlong.app/LogAlong";
 			};
 			name = Release;

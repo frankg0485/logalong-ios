@@ -222,7 +222,7 @@ class CreateViewController: UIViewController, UITextFieldDelegate, UIGestureReco
                 name = entryName
             }
             if name.count > 1 {
-                switch (createType) {
+                switch (createType!) {
                 case .ACCOUNT: fallthrough
                 case .ACCOUNT2:
                     if let _ = DBAccount.instance.get(name: name) {

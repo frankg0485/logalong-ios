@@ -85,7 +85,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
     }
 
     private func getHeaderTitle() -> String {
-        switch (selectType) {
+        switch (selectType!) {
         case .ACCOUNT: fallthrough
         case .ACCOUNT2:
             //return multiSelection ? NSLocalizedString("Select Accounts", comment: "") : NSLocalizedString("Select Account", comment: "")
@@ -105,8 +105,6 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
             return NSLocalizedString("Payee/Payer", comment: "")
         case .TYPE:
             return NSLocalizedString("Type", comment: "")
-        default:
-            return ""
         }
     }
 
@@ -132,7 +130,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
             let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 125 + 10, height: 25))
             btn.addTarget(self, action: #selector(onAddClick), for: .touchUpInside)
             btn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
-            btn.imageEdgeInsets = UIEdgeInsetsMake(0, 100, 0, 10)
+            btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 100, bottom: 0, right: 10)
             layout.addSubview(btn)
         }
         headerView.addSubview(layout)
@@ -326,7 +324,7 @@ UIPopoverPresentationControllerDelegate, FPassCreationBackDelegate {
         checked.removeAll()
 
         var ii = 0
-        switch (selectType) {
+        switch (selectType!) {
         case .ACCOUNT: fallthrough
         case .ACCOUNT2:
             for account in DBAccount.instance.getAll() {

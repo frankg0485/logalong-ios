@@ -113,22 +113,22 @@ class SelectAmountViewController: UIViewController {
         okEqualsButton.setImage(#imageLiteral(resourceName: "ic_action_accept_disabled").withRenderingMode(.alwaysOriginal), for: .disabled)
         okEqualsButton.setImage( isEqual ? #imageLiteral(resourceName: "ic_action_equal").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
 
-        deleteButton.imageEdgeInsets = UIEdgeInsetsMake(
-            (deleteButton.frame.height - 30) / 2,
-            (deleteButton.frame.width - 30) / 2,
-            (deleteButton.frame.height - 30) / 2,
-            (deleteButton.frame.width - 30) / 2)
-        backButton.imageEdgeInsets = UIEdgeInsetsMake(
-            (backButton.frame.height - 30) / 2,
-            (backButton.frame.width - 30) / 2,
-            (backButton.frame.height - 30) / 2,
-            (backButton.frame.width - 30) / 2)
+        deleteButton.imageEdgeInsets = UIEdgeInsets(
+            top: (deleteButton.frame.height - 30) / 2,
+            left: (deleteButton.frame.width - 30) / 2,
+            bottom: (deleteButton.frame.height - 30) / 2,
+            right: (deleteButton.frame.width - 30) / 2)
+        backButton.imageEdgeInsets = UIEdgeInsets(
+            top: (backButton.frame.height - 30) / 2,
+            left: (backButton.frame.width - 30) / 2,
+            bottom: (backButton.frame.height - 30) / 2,
+            right: (backButton.frame.width - 30) / 2)
 
-        okEqualsButton.imageEdgeInsets = UIEdgeInsetsMake(
-            (okEqualsButton.frame.height - 30) / 2,
-            (okEqualsButton.frame.width - 30) / 2,
-            (okEqualsButton.frame.height - 30) / 2,
-            (okEqualsButton.frame.width - 30) / 2)
+        okEqualsButton.imageEdgeInsets = UIEdgeInsets(
+            top: (okEqualsButton.frame.height - 30) / 2,
+            left: (okEqualsButton.frame.width - 30) / 2,
+            bottom: (okEqualsButton.frame.height - 30) / 2,
+            right: (okEqualsButton.frame.width - 30) / 2)
 
         isImageReady = true
     }
@@ -153,7 +153,7 @@ class SelectAmountViewController: UIViewController {
         }
     }
 
-    private func appendToString(_ ch: String) -> Bool {
+    @discardableResult private func appendToString(_ ch: String) -> Bool {
         var ret = false
         if (numberText.count < MAX_INPUT_LENGTH) {
             if ((ch >= "0") && (ch <= "9")) {
@@ -205,7 +205,7 @@ class SelectAmountViewController: UIViewController {
         return LastChar.EMPTY
     }
 
-    private func removeLastBit() -> LastChar {
+    @discardableResult private func removeLastBit() -> LastChar {
         if (numberText.isEmpty) {
             return LastChar.EMPTY
         }
@@ -250,8 +250,8 @@ class SelectAmountViewController: UIViewController {
 
     private func applyMath() -> Bool {
         var ret = true
-        var str1 = numberText[0..<(firstValueEnd - 3)]
-        var str2 = numberText[firstValueEnd..<numberText.count]
+        let str1 = numberText[0..<(firstValueEnd - 3)]
+        let str2 = numberText[firstValueEnd..<numberText.count]
         let val1 = string2value(str1)
         let val2 = string2value(str2)
 

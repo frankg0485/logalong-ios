@@ -96,13 +96,13 @@ class CurrentPasswordViewController: UIViewController, UITextFieldDelegate, UIGe
         let ROW_H2: CGFloat = 35
 
         if let hl3 = showPassView {
-            hl3.layoutMargins = UIEdgeInsetsMake(0, 0, ROW_H - ROW_H2, 0)
+            hl3.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: ROW_H - ROW_H2, right: 0)
             checkboxShowPass = LCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-            checkboxShowPass.layoutMargins = UIEdgeInsetsMake(0, 6, 0, 0)
+            checkboxShowPass.layoutMargins = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
             checkboxShowPass.isUserInteractionEnabled = false
             checkboxShowPass.isSelected = false
             let label0 = UILabel(frame: CGRect(x: 1, y: 0, width: 0, height: ROW_H2))
-            label0.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+            label0.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             label0.text = NSLocalizedString("show password", comment: "")
             label0.textColor = LTheme.Color.light_gray_text_color
 

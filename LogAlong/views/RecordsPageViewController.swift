@@ -344,24 +344,24 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         view.addSubview(rightBtn)
 
         leftBtn.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal,
-                           toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: -2).isActive = true
-        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0).isActive = true
-        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_W).isActive = true
-        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_H).isActive = true
+        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: self.view.safeAreaLayoutGuide, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -2).isActive = true
+        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: BTN_W).isActive = true
+        NSLayoutConstraint(item: leftBtn, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: BTN_H).isActive = true
 
         rightBtn.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal,
-                           toItem: self.bottomLayoutGuide, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: -2).isActive = true
-        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0).isActive = true
-        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_W).isActive = true
-        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_H).isActive = true
+        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: self.view.safeAreaLayoutGuide, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: -2).isActive = true
+        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: BTN_W).isActive = true
+        NSLayoutConstraint(item: rightBtn, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: BTN_H).isActive = true
 
         leftView = leftBtn
         rightView = rightBtn
@@ -385,24 +385,24 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         sortBtn?.addTarget(self, action: #selector(self.onSortClick), for: .touchUpInside)
         sortBtn!.setImage(getSortIcon(), for: .normal)
         sortBtn!.setSize(w: BTN_W + (BTN_S * 4), h: BTN_H)
-        sortBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BTN_S * 4)
+        sortBtn!.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: BTN_S * 4)
 
         let chartBtn = UIButton(type: .system)
         chartBtn.addTarget(self, action: #selector(self.onChartClick), for: .touchUpInside)
         chartBtn.setImage(#imageLiteral(resourceName: "pie_chart_dark").withRenderingMode(.alwaysOriginal), for: .normal)
         chartBtn.setSize(w: BTN_W - 2 + (BTN_S * 4), h: BTN_H - 2)
-        chartBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S * 2, 0, BTN_S * 2)
+        chartBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: BTN_S * 2, bottom: 0, right: BTN_S * 2)
 
         addBtn = UIButton(type: .system)
         addBtn.addTarget(self, action: #selector(self.onAddClick), for: .touchUpInside)
         addBtn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
         addBtn.setSize(w: BTN_W + (BTN_S * 4), h: BTN_H)
-        addBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S * 4, 0, 0)
+        addBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: BTN_S * 4, bottom: 0, right: 0)
 
         searchBtn = UIButton(type: .system)
         searchBtn!.addTarget(self, action: #selector(self.onSearchClick), for: .touchUpInside)
         searchBtn!.setSize(w: BTN_W + (BTN_S * 4), h: BTN_H)
-        searchBtn!.imageEdgeInsets = UIEdgeInsetsMake(0, BTN_S * 2, 0, BTN_S * 2)
+        searchBtn!.imageEdgeInsets = UIEdgeInsets(top: 0, left: BTN_S * 2, bottom: 0, right: BTN_S * 2)
 
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: sortBtn!), UIBarButtonItem(customView: chartBtn)]
         navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: addBtn), UIBarButtonItem(customView: searchBtn!)]

@@ -106,13 +106,13 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
 
         cancelButton.addTarget(self, action: #selector(self.cancelButtonClicked), for: .touchUpInside)
         cancelButton.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
-        cancelButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20)
+        cancelButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
         cancelButton.setSize(w: BTN_W + 20, h: BTN_H)
 
         doneButton.addTarget(self, action: #selector(self.doneButtonClicked), for: .touchUpInside)
         doneButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
         doneButton.setImage(#imageLiteral(resourceName: "ic_action_accept_disabled").withRenderingMode(.alwaysOriginal), for: .disabled)
-        doneButton.imageEdgeInsets = UIEdgeInsetsMake(0, 40, 0, 0)
+        doneButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
         doneButton.setSize(w: BTN_W + 40, h: BTN_H)
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
@@ -139,14 +139,14 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
 
         let hl1 = HorizontalLayout(height: ROW_H)
         //hl1.backgroundColor = LTheme.Color.row_released_color
-        hl1.layoutMargins = UIEdgeInsetsMake(LTheme.Dimension.list_item_space, 0, 0, 0)
+        hl1.layoutMargins = UIEdgeInsets(top: LTheme.Dimension.list_item_space, left: 0, bottom: 0, right: 0)
         let idLabel = UILabel(frame: CGRect(x: 0, y: 0, width: LABEL_W, height: ROW_H))
-        idLabel.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
+        idLabel.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         idLabel.text = NSLocalizedString("User ID", comment: "")
         idLabel.textColor = LTheme.Color.gray_text_color
 
         idValue = UITextField(frame: CGRect(x: 1, y: 0, width: 0, height: ROW_H))
-        idValue.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        idValue.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         idValue.placeholder = NSLocalizedString("userid", comment: "")
         idValue.font = UIFont.boldSystemFont(ofSize: FONT_H)
         idValue.textColor = LTheme.Color.base_text_color
@@ -158,31 +158,31 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
 
         optionButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: ROW_H))
         optionButton.addTarget(self, action: #selector(onClickOption), for: .touchUpInside)
-        optionButton.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        optionButton.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         optionButton.setImage(#imageLiteral(resourceName: "ic_action_overflow_dark").withRenderingMode(.alwaysOriginal), for: .normal)
-        optionButton.imageEdgeInsets = UIEdgeInsetsMake(9, 6, 9, 12);
+        optionButton.imageEdgeInsets = UIEdgeInsets(top: 9, left: 6, bottom: 9, right: 12);
 
         hl1.addSubview(idLabel)
         hl1.addSubview(idValue)
         hl1.addSubview(optionButton)
 
         let separatorLayout = HorizontalLayout(height: 1)
-        separatorLayout.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        separatorLayout.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         let separator1 = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: 1))
         separator1.backgroundColor = LTheme.Color.light_row_released_color
-        separator1.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        separator1.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         separatorLayout.addSubview(separator1)
 
         let hl2 = HorizontalLayout(height: ROW_H)
         //hl2.backgroundColor = LTheme.Color.row_released_color
-        hl2.layoutMargins = UIEdgeInsetsMake(LTheme.Dimension.list_item_space, 0, 0, 0)
+        hl2.layoutMargins = UIEdgeInsets(top: LTheme.Dimension.list_item_space, left: 0, bottom: 0, right: 0)
 
         let passLabel = UILabel(frame: CGRect(x: 0, y: 0, width: LABEL_W, height: ROW_H))
-        passLabel.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
+        passLabel.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         passLabel.text = NSLocalizedString("Password", comment: "")
         passLabel.textColor = LTheme.Color.gray_text_color
         passValue = UITextField(frame: CGRect(x: 1, y: 0, width: 0, height: ROW_H))
-        passValue.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        passValue.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         passValue.placeholder = NSLocalizedString("password", comment: "")
         passValue.font = UIFont.boldSystemFont(ofSize: FONT_H)
         passValue.textColor = LTheme.Color.base_text_color
@@ -195,15 +195,15 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         hl2.addSubview(passValue)
 
         let hl3 = HorizontalLayout(height: ROW_H - 5)
-        hl3.layoutMargins = UIEdgeInsetsMake(0, 0, ROW_H - ROW_H2 - 10, 0)
+        hl3.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: ROW_H - ROW_H2 - 10, right: 0)
         hl3.backgroundColor = LTheme.Color.default_bgd_color
 
         checkboxShowPass = LCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        checkboxShowPass.layoutMargins = UIEdgeInsetsMake(0, 6, 0, 0)
+        checkboxShowPass.layoutMargins = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
         checkboxShowPass.isUserInteractionEnabled = false
         checkboxShowPass.isSelected = false
         let label0 = UILabel(frame: CGRect(x: 1, y: 0, width: 0, height: ROW_H2))
-        label0.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        label0.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         label0.text = NSLocalizedString("show password", comment: "")
         label0.textColor = LTheme.Color.light_gray_text_color
         showPassView = hl3
@@ -213,15 +213,15 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
 
         let hl4 = HorizontalLayout(height: ROW_H)
         //hl4.backgroundColor = LTheme.Color.row_released_color
-        hl4.layoutMargins = UIEdgeInsetsMake(LTheme.Dimension.list_item_space, 0, 0, 0)
+        hl4.layoutMargins = UIEdgeInsets(top: LTheme.Dimension.list_item_space, left: 0, bottom: 0, right: 0)
 
         let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: LABEL_W, height: ROW_H))
-        nameLabel.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
+        nameLabel.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         nameLabel.text = NSLocalizedString("Name", comment: "")
         nameLabel.textColor = LTheme.Color.gray_text_color
 
         nameValue = UITextField(frame: CGRect(x: 1, y: 0, width: 0, height: ROW_H))
-        nameValue.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        nameValue.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         nameValue.placeholder = NSLocalizedString("Your Name", comment: "")
         nameValue.font = UIFont.boldSystemFont(ofSize: FONT_H)
         nameValue.textColor = LTheme.Color.base_text_color
@@ -242,10 +242,10 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, FShowPasswor
         headerView.addSubview(hl4)
 
         checkboxLogin = LCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        checkboxLogin.layoutMargins = UIEdgeInsetsMake(0, 6, 0, 0)
+        checkboxLogin.layoutMargins = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
         checkboxLogin.isUserInteractionEnabled = false
         let label = UILabel(frame: CGRect(x: 1, y: 0, width: 0, height: ROW_H))
-        label.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+        label.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         label.text = NSLocalizedString("Login with existing user ID", comment: "")
         label.textColor = LTheme.Color.light_gray_text_color
         bottomView.addSubview(checkboxLogin)

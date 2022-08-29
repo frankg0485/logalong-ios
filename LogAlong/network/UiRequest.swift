@@ -101,7 +101,7 @@ class UiRequest: NSObject {
         return true
     }
 
-    func UiPostJournal(_ journalId: Int, data: [UInt8]) -> Bool {
+    @discardableResult func UiPostJournal(_ journalId: Int, data: [UInt8]) -> Bool {
         LTransport.send_rqst(LProtocol.RQST_POST_JOURNAL, d32: UInt32(journalId),
                              datab: data, offset: 0, bytes: data.count, scrambler: LProtocol.instance.scrambler);
         return true

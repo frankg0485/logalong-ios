@@ -157,8 +157,8 @@ UIPopoverPresentationControllerDelegate {
 
     @objc func onChartClick() {
         let nextVC = showingPieChart ? barVC : pieVC
-        let direction: UIPageViewControllerNavigationDirection = showingPieChart ? .forward : .reverse
-        setViewControllers([nextVC], direction: direction, animated: true, completion: { (complete) -> Void in
+        let direction: UIPageViewController.NavigationDirection = showingPieChart ? .forward : .reverse
+        setViewControllers([nextVC!], direction: direction, animated: true, completion: { (complete) -> Void in
             if (complete) {
                 self.showingPieChart = !self.showingPieChart
                 if self.showingPieChart {
@@ -233,25 +233,25 @@ UIPopoverPresentationControllerDelegate {
         chartBtn.addTarget(self, action: #selector(self.onChartClick), for: .touchUpInside)
         chartBtn.setImage(#imageLiteral(resourceName: "chart_light").withRenderingMode(.alwaysOriginal), for: .normal)
         chartBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + BTN_S_W + 10, height: BAR_H)
-        chartBtn.imageEdgeInsets = UIEdgeInsetsMake(BTN_S_H, 10, BTN_S_H, BTN_S_W)
+        chartBtn.imageEdgeInsets = UIEdgeInsets(top: BTN_S_H, left: 10, bottom: BTN_S_H, right: BTN_S_W)
 
         searchBtn = UIButton(type: .system)
         searchBtn.addTarget(self, action: #selector(self.onSearchClick), for: .touchUpInside)
         searchBtn.setImage(#imageLiteral(resourceName: "ic_action_search_dark").withRenderingMode(.alwaysOriginal), for: .normal)
         searchBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + 2 * BTN_S_W, height: BAR_H)
-        searchBtn.imageEdgeInsets = UIEdgeInsetsMake(BTN_S_H, BTN_S_W, BTN_S_H, BTN_S_W)
+        searchBtn.imageEdgeInsets = UIEdgeInsets(top: BTN_S_H, left: BTN_S_W, bottom: BTN_S_H, right: BTN_S_W)
 
         let leftBtn = UIButton(type: .system)
         leftBtn.addTarget(self, action: #selector(self.onLeftClick), for: .touchUpInside)
         leftBtn.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
         leftBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + 2 * BTN_S_W, height: BAR_H)
-        leftBtn.imageEdgeInsets = UIEdgeInsetsMake(BTN_S_H, BTN_S_W, BTN_S_H, BTN_S_W)
+        leftBtn.imageEdgeInsets = UIEdgeInsets(top: BTN_S_H, left: BTN_S_W, bottom: BTN_S_H, right: BTN_S_W)
 
         let rightBtn = UIButton(type: .system)
         rightBtn.addTarget(self, action: #selector(self.onRightClick), for: .touchUpInside)
         rightBtn.setImage(#imageLiteral(resourceName: "ic_action_right").withRenderingMode(.alwaysOriginal), for: .normal)
         rightBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + 2 * BTN_S_W, height: BAR_H)
-        rightBtn.imageEdgeInsets = UIEdgeInsetsMake(BTN_S_H, BTN_S_W, BTN_S_H, BTN_S_W)
+        rightBtn.imageEdgeInsets = UIEdgeInsets(top: BTN_S_H, left: BTN_S_W, bottom: BTN_S_H, right: BTN_S_W)
 
         let spacer = UIView(frame: CGRect(x: 1, y: 0, width: 0, height: BTN_H))
 
@@ -266,39 +266,39 @@ UIPopoverPresentationControllerDelegate {
         cancelBtn.addTarget(self, action: #selector(self.onCancelClick), for: .touchUpInside)
         cancelBtn.setImage(#imageLiteral(resourceName: "ic_action_cancel").withRenderingMode(.alwaysOriginal), for: .normal)
         cancelBtn.frame = CGRect(x: 0, y: 0, width: BTN_W + 2 * BTN_S_W, height: BAR_H)
-        cancelBtn.imageEdgeInsets = UIEdgeInsetsMake(BTN_S_H, BTN_S_W, BTN_S_H, BTN_S_W)
+        cancelBtn.imageEdgeInsets = UIEdgeInsets(top: BTN_S_H, left: BTN_S_W, bottom: BTN_S_H, right: BTN_S_W)
         view.addSubview(cancelBtn)
 
         // apply layout constraints after veiw has been added to hierarchy
         bottomBar.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(item: bottomBar, attribute: NSLayoutAttribute.bottom, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.bottom, multiplier: 1.0, constant: 5).isActive = true
-        NSLayoutConstraint(item: bottomBar, attribute: NSLayoutAttribute.leading, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.leading, multiplier: 1.0, constant: 0).isActive = true
-        NSLayoutConstraint(item: bottomBar, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0).isActive = true
-        NSLayoutConstraint(item: bottomBar, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BAR_H).isActive = true
+        NSLayoutConstraint(item: bottomBar!, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: 5).isActive = true
+        NSLayoutConstraint(item: bottomBar!, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: bottomBar!, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: bottomBar!, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: BAR_H).isActive = true
 
         cancelBtn.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.topMargin, multiplier: 1.0, constant: 0).isActive = true
-        NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: 0).isActive = true
-        NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BTN_W + 2 * BTN_S_W).isActive = true
-        NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: BAR_H).isActive = true
+        NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.topMargin, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: BTN_W + 2 * BTN_S_W).isActive = true
+        NSLayoutConstraint(item: cancelBtn, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: BAR_H).isActive = true
 
         // progress indicator
-        progress = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        progress = UIActivityIndicatorView(style: .gray)
         view.addSubview(progress)
         //progress.center = view.convert(view.center, from:view.superview)
         progress.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(item: progress, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.centerX, multiplier: 1.0, constant: 0).isActive = true
-        NSLayoutConstraint(item: progress, attribute: NSLayoutAttribute.centerY, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.centerY, multiplier: 1.0, constant: -20).isActive = true
+        NSLayoutConstraint(item: progress!, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: progress!, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1.0, constant: -20).isActive = true
         //NSLayoutConstraint(item: progress, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal,
         //                   toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: 80).isActive = true
         //NSLayoutConstraint(item: progress, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,

@@ -34,9 +34,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         createHeader()
 
         if LPreferences.getUserIdNum() > 0 {
-            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_light_blue], for: .normal)
+            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: LTheme.Color.base_light_blue], for: .normal)
         } else {
-            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_dark_blue], for: .normal)
+            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: LTheme.Color.base_dark_blue], for: .normal)
         }
 
         accountBalances.scan(all: false)
@@ -198,13 +198,13 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         addBtn.addTarget(self, action: #selector(self.onAddClick), for: .touchUpInside)
         addBtn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
         addBtn.setSize(w: BTN_W + BUTTON_EXTRA_SPACE, h: BTN_H)
-        addBtn.imageEdgeInsets = UIEdgeInsetsMake(0, BUTTON_EXTRA_SPACE, 0, 0)
+        addBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: BUTTON_EXTRA_SPACE, bottom: 0, right: 0)
 
         let scheduleBtn = UIButton(type: .system)
         scheduleBtn.addTarget(self, action: #selector(self.onScheduleClick), for: .touchUpInside)
         scheduleBtn.setImage(#imageLiteral(resourceName: "ic_action_alarms").withRenderingMode(.alwaysOriginal), for: .normal)
         scheduleBtn.setSize(w: BTN_W + BUTTON_EXTRA_SPACE, h: BTN_H)
-        scheduleBtn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, BUTTON_EXTRA_SPACE)
+        scheduleBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: BUTTON_EXTRA_SPACE)
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: scheduleBtn)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addBtn)
@@ -221,7 +221,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         let fontsize: CGFloat = LTheme.Dimension.balance_header_font_size
         let labelHeader = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
-        labelHeader.layoutMargins = UIEdgeInsetsMake(0, LTheme.Dimension.balance_header_left_margin, 0, 0)
+        labelHeader.layoutMargins = UIEdgeInsets(top: 0, left: LTheme.Dimension.balance_header_left_margin, bottom: 0, right: 0)
         //labelHeader.font = labelHeader.font.withSize(fontsize)
         labelHeader.font = UIFont.boldSystemFont(ofSize: fontsize)
         labelHeader.text = NSLocalizedString("Balance", comment: "")
@@ -229,7 +229,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
 
         labelBalance = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 25))
         labelBalance.textAlignment = .right
-        labelBalance.layoutMargins = UIEdgeInsetsMake(0, 0, 0, LTheme.Dimension.balance_header_right_margin)
+        labelBalance.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: LTheme.Dimension.balance_header_right_margin)
         labelBalance.font = labelBalance.font.withSize(fontsize + 4)
         labelBalance.sizeToFit()
 
@@ -289,17 +289,17 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
 
     @objc func networkDisconnected(notification: Notification) -> Void {
-        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: TITLE_FONT_SIZE)], for: .normal)
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: TITLE_FONT_SIZE)], for: .normal)
         if LPreferences.getUserIdNum() > 0 {
-            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_light_blue], for: .selected)
+            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: LTheme.Color.base_light_blue], for: .selected)
         } else {
-            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_dark_blue], for: .selected)
+            navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: LTheme.Color.base_dark_blue], for: .selected)
         }
         //LLog.d("\(self)", "network disconnected")
     }
     @objc func networkConnected(notification: Notification) -> Void {
-        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.font: UIFont.systemFont(ofSize: TITLE_FONT_SIZE)], for: .normal)
-        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: LTheme.Color.base_dark_blue], for: .selected)
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: TITLE_FONT_SIZE)], for: .normal)
+        navigationController?.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: LTheme.Color.base_dark_blue], for: .selected)
         LLog.d("\(self)", "network connected")
     }
 

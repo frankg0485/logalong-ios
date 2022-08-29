@@ -140,15 +140,15 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         view.addSubview(entryView)
 
         entryView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint(item: entryView, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.top, multiplier: 1.0, constant: entryViewTop).isActive = true
-        NSLayoutConstraint(item: entryView, attribute: NSLayoutAttribute.trailing, relatedBy: NSLayoutRelation.equal,
-                           toItem: view, attribute: NSLayoutAttribute.trailing, multiplier: 1.0, constant: -8).isActive = true
+        NSLayoutConstraint(item: entryView!, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: entryViewTop).isActive = true
+        NSLayoutConstraint(item: entryView!, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1.0, constant: -8).isActive = true
 
-        NSLayoutConstraint(item: entryView, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: entryViewWidth).isActive = true
-        entryViewHeight = NSLayoutConstraint(item: entryView, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal,
-                           toItem: nil, attribute: NSLayoutAttribute.notAnAttribute, multiplier: 1.0, constant: entryViewMaxHeight)
+        NSLayoutConstraint(item: entryView!, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: entryViewWidth).isActive = true
+        entryViewHeight = NSLayoutConstraint(item: entryView!, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal,
+                                             toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: entryViewMaxHeight)
 
         entryViewHeight.isActive = true
         entryView.isHidden = true
@@ -175,7 +175,7 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
 
         let pe: PieChartDataEntry = entry as! PieChartDataEntry
-        let index = pieEntries.index(of: pe)
+        let index = pieEntries.firstIndex(of: pe)
 
         subEntries.removeAll()
 
@@ -279,7 +279,7 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
             pieEntries.append(PieChartDataEntry(value: lastGroupValue, label: lastGroup))
         }
 
-        let set = PieChartDataSet(values: pieEntries, label: "")
+        let set = PieChartDataSet(entries: pieEntries, label: "")
         set.sliceSpace = 1.0
         set.selectionShift = 5.0
         set.colors = colors
@@ -319,7 +319,7 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         //legend.maxSizePercent = 10
         //legend.wordWrapEnabled = true
 
-        pieChartView.chartDescription?.text = ""
+        pieChartView.chartDescription.text = ""
 
         pieChartView.isHidden = !hasData
         centerLabel.isHidden = !hasData

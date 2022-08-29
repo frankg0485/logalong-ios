@@ -28,7 +28,7 @@ class DBJournal {
 
         do {
             let insert = table.insert(DBHelper.journalId <- journal.journalId,
-                                      DBHelper.data <- Data(bytes: journal.data))
+                                      DBHelper.data <- Data(journal.data))
             let rowid = try DBHelper.instance.db!.run(insert)
             ret = (rowid != 0)
         } catch {
@@ -38,7 +38,7 @@ class DBJournal {
         return ret
     }
 
-    func remove(id: Int) -> Bool {
+    @discardableResult func remove(id: Int) -> Bool {
         var ret = false
 
         do {

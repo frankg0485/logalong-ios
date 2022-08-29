@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol LServerDelegate: class {
+protocol LServerDelegate: AnyObject {
     func start()
     func received(data: UnsafeMutablePointer<UInt8>, bytes: Int) -> Int
 }
@@ -57,8 +57,8 @@ final class LServer: NSObject {
         inputStream.delegate = self
         outputStream.delegate = self
 
-        inputStream.schedule(in: .main, forMode: .commonModes)
-        outputStream.schedule(in: .main, forMode: .commonModes)
+        inputStream.schedule(in: .main, forMode: RunLoop.Mode.common)
+        outputStream.schedule(in: .main, forMode: RunLoop.Mode.common)
 
         inputStream.open()
         outputStream.open()

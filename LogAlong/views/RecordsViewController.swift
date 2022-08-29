@@ -202,17 +202,17 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
                                             height: LTheme.Dimension.balance_header_left_margin))
             imgBtn!.addTarget(self, action: #selector(self.onOrderClick), for: .touchUpInside)
             imgBtn!.setImage(getOrderIcon(), for: .normal)
-            imgBtn!.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+            imgBtn!.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
             btn = UIButton(frame: CGRect(x: 1, y: 0, width: 100, height: 25))
             btn?.contentHorizontalAlignment = .left
             btn!.addTarget(self, action: #selector(self.onOrderClick), for: .touchUpInside)
             btn!.titleLabel?.font = UIFont.boldSystemFont(ofSize: fontsize)
             btn!.setTitleColor(UIColor.black, for: .normal)
-            btn!.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0)
+            btn!.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         } else {
             labelHeader = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 25))
-            labelHeader!.layoutMargins = UIEdgeInsetsMake(0, LTheme.Dimension.balance_header_left_margin, 0, 0)
+            labelHeader!.layoutMargins = UIEdgeInsets(top: 0, left: LTheme.Dimension.balance_header_left_margin, bottom: 0, right: 0)
             //labelHeader.font = labelHeader.font.withSize(fontsize)
             labelHeader!.font = UIFont.boldSystemFont(ofSize: fontsize)
             labelHeader!.text = ""
@@ -224,30 +224,30 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         let labelBalance = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
         labelBalance.font = labelBalance.font.withSize(fontsize)
         //labelBalance.translatesAutoresizingMaskIntoConstraints = false
-        labelBalance.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 2)
+        labelBalance.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 2)
         labelBalance.sizeToFit()
 
         let pl = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 25))
-        pl.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 2)
+        pl.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 2)
         pl.font = pl.font.withSize(fontsize)
         pl.text = "("
         pl.sizeToFit()
 
         let labelIncome = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
-        labelIncome.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 5)
+        labelIncome.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         labelIncome.font = labelIncome.font.withSize(fontsize)
         labelIncome.textColor = LTheme.Color.base_green
         labelIncome.sizeToFit()
 
         let labelExpense = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 25))
-        labelExpense.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 2)
+        labelExpense.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 2)
         labelExpense.font = labelExpense.font.withSize(fontsize)
         labelExpense.textColor = LTheme.Color.base_red
         labelExpense.sizeToFit()
 
         let pr = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 25))
         pr.font = pr.font.withSize(fontsize)
-        pr.layoutMargins = UIEdgeInsetsMake(0, 0, 0, LTheme.Dimension.balance_header_right_margin)
+        pr.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: LTheme.Dimension.balance_header_right_margin)
         pr.text = ")"
         pr.sizeToFit()
 
@@ -355,7 +355,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
 
     // Override to support editing the table view.
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             _ = DBTransaction.instance.remove(id: loader!.getRecord(section: indexPath.section, row: indexPath.row).id)
@@ -365,7 +365,7 @@ class RecordsViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
     }
 

@@ -22,7 +22,7 @@ class MainTabViewController: UITabBarController, UITabBarControllerDelegate {
         let img0 = #imageLiteral(resourceName: "ic_action_go_to_today-dark").resizedImageWithinRect(rectSize: CGSize(width: ICON_W, height: ICON_H))
         tabBar.items![0].image = img0.image(alpha: 0.8).withRenderingMode(.alwaysOriginal)
         tabBar.items![0].selectedImage = img0.withRenderingMode(.alwaysOriginal)
-        tabBar.items![0].imageInsets = UIEdgeInsetsMake(8, 0, -8, 0)
+        tabBar.items![0].imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)
         tabBar.items![0].title = ""
 
         tabBar.items![1].titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -12)
@@ -33,7 +33,7 @@ class MainTabViewController: UITabBarController, UITabBarControllerDelegate {
         let img2 = #imageLiteral(resourceName: "ic_action_settings-dark").resizedImageWithinRect(rectSize: CGSize(width: ICON_W - 2, height: ICON_H - 2))
         tabBar.items![2].image = img2.image(alpha: 0.8).withRenderingMode(.alwaysOriginal)
         tabBar.items![2].selectedImage = img2.withRenderingMode(.alwaysOriginal)
-        tabBar.items![2].imageInsets = UIEdgeInsetsMake(8, 0, -8, 0)
+        tabBar.items![2].imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)
         tabBar.items![2].title = ""
     }
 

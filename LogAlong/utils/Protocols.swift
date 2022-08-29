@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol FViewControllerDelegate: class {
+protocol FViewControllerDelegate: AnyObject {
     func passNumberBack(_ caller: UIViewController, type: TypePassed, okPressed: Bool)
 }
 /*
@@ -20,7 +20,7 @@ protocol FNotifyLoginViewControllerDelegate: class {
     func notifyShowHideNameCell(hide: Bool)
 }
 */
-protocol FPassCreationBackDelegate: class {
+protocol FPassCreationBackDelegate: AnyObject {
     func creationCallback(created: Bool, name: String, id: Int64)
 }
 /*
@@ -44,7 +44,7 @@ protocol FNotifyShowPasswordDelegate: class {
     func showPassword(show: Bool)
 }
 */
-protocol FShowPasswordCellsDelegate: class {
+protocol FShowPasswordCellsDelegate: AnyObject {
     func showPasswordCells()
 }
 /*

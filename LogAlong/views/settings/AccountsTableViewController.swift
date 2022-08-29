@@ -86,19 +86,19 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
         let cancelButton = UIButton(type: .system)
         cancelButton.addTarget(self, action: #selector(self.onCancelClick), for: .touchUpInside)
         cancelButton.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
-        cancelButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20)
+        cancelButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
         cancelButton.setSize(w: BTN_W + 20, h: BTN_H)
 
         let addButton = UIButton(type: .system)
         addButton.addTarget(self, action: #selector(self.onAddClick), for: .touchUpInside)
         addButton.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
-        addButton.imageEdgeInsets = UIEdgeInsetsMake(0, 40, 0, 0)
+        addButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 0)
         addButton.setSize(w: BTN_W + 40, h: BTN_H)
 
         let deleteButton = UIButton(type: .system)
         deleteButton.addTarget(self, action: #selector(self.onDeleteClick), for: .touchUpInside)
         deleteButton.setImage(#imageLiteral(resourceName: "ic_action_discard").withRenderingMode(.alwaysOriginal), for: .normal)
-        deleteButton.imageEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 15)
+        deleteButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 15)
         deleteButton.setSize(w: BTN_W + 20, h: BTN_H)
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: cancelButton),
                                              UIBarButtonItem(customView: deleteButton)]
@@ -370,7 +370,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
      }
      */
 
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         if tableView.isEditing {
             return .delete
         }
@@ -379,7 +379,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
     }
 
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             switch (listType!) {

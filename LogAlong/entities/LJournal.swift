@@ -36,7 +36,7 @@ class LJournal {
             return d.add_data(jdata)
         }
 
-        private func do_update(_ jdata: LBuffer, _ d : D) -> Bool {
+        @discardableResult private func do_update(_ jdata: LBuffer, _ d : D) -> Bool {
             jdata.clear();
             jdata.putShortAutoInc(UInt16(d.getRequestCode() + 1));
             jdata.putLongAutoInc(d.getGid())
@@ -457,7 +457,7 @@ class LJournal {
     // poll when there is no active journal, hence flush only return false when,
     // - there's actually no journal left: nil == entry, or
     // - previous journal posting hasn't been responded: lastFlushId == entry.journalId
-    func flush() -> Bool {
+    @discardableResult func flush() -> Bool {
         let entry = DBJournal.instance.get()
         if (nil == entry) {
             // self-healing: reset progress to false, if there's no journal left, to prevent

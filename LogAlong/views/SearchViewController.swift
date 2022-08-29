@@ -461,7 +461,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
 
     func passNumberBack(_ caller: UIViewController, type: TypePassed, okPressed: Bool) {
         if okPressed {
-            switch searchSelectType {
+            switch searchSelectType! {
             case .ACCOUNT:
                 if (type.allSelected || type.array64!.isEmpty) {
                     search.accounts = [];
@@ -509,7 +509,6 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
             case .TO_VALUE:
                 search.toValue = type.double
                 displayToValue()
-            default: break
             }
         }
     }
@@ -540,7 +539,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 25 + 10, height: 25))
         btn.addTarget(self, action: #selector(onCancelClick), for: .touchUpInside)
         btn.setImage(#imageLiteral(resourceName: "ic_action_cancel").withRenderingMode(.alwaysOriginal), for: .normal)
-        btn.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10)
+        btn.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         headerView.addSubview(btn)
 
         headerView.backgroundColor = LTheme.Color.dialog_border_color
@@ -553,7 +552,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
 
         let checkbox = LCheckbox(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         if !allTime {
-            checkbox.layoutMargins = UIEdgeInsetsMake(0, 6, 0, 0)
+            checkbox.layoutMargins = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 0)
             checkbox.isSelected = false
             layout.addSubview(checkbox)
         }

@@ -96,14 +96,14 @@ class SchedulesTableViewController: UITableViewController, UIPopoverPresentation
         let cancelButton = UIButton(type: .system)
         cancelButton.addTarget(self, action: #selector(self.onCancelClick), for: .touchUpInside)
         cancelButton.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
-        cancelButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20)
+        cancelButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 20)
         cancelButton.setSize(w: BTN_W + 20, h: BTN_H)
 
         addBtn = UIButton(type: .system)
         addBtn.addTarget(self, action: #selector(self.onAddClick), for: .touchUpInside)
         addBtn.setImage(#imageLiteral(resourceName: "ic_action_new").withRenderingMode(.alwaysOriginal), for: .normal)
         addBtn.setSize(w: BTN_W + ADD_BUTTON_EXTRA_SPACE, h: BTN_H)
-        addBtn.imageEdgeInsets = UIEdgeInsetsMake(0, ADD_BUTTON_EXTRA_SPACE, 0, 0)
+        addBtn.imageEdgeInsets = UIEdgeInsets(top: 0, left: ADD_BUTTON_EXTRA_SPACE, bottom: 0, right: 0)
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelButton)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addBtn)

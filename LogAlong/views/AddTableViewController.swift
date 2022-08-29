@@ -255,7 +255,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         cancelButton = UIButton(type: .system)
         cancelButton.addTarget(self, action: #selector(self.onCancelClick), for: .touchUpInside)
         cancelButton.setImage(#imageLiteral(resourceName: "ic_action_left").withRenderingMode(.alwaysOriginal), for: .normal)
-        cancelButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 60)
+        cancelButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 60)
         cancelButton.setSize(w: BTN_W + 60, h: BTN_H)
 
         saveButton = UIButton(type: .system)
@@ -263,7 +263,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         saveButton.setImage(#imageLiteral(resourceName: "ic_action_accept").withRenderingMode(.alwaysOriginal), for: .normal)
         saveButton.setImage(#imageLiteral(resourceName: "ic_action_accept_disabled").withRenderingMode(.alwaysOriginal), for: .disabled)
 
-        saveButton.imageEdgeInsets = UIEdgeInsetsMake(0, 60, 0, 0)
+        saveButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 60, bottom: 0, right: 0)
         saveButton.setSize(w: BTN_W + 60, h: BTN_H)
 
         //if createRecord {
@@ -294,7 +294,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 40))
         label.textColor = LTheme.Color.gray_text_color
         label.text = NSLocalizedString("Repeat", comment: "")
-        label.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
+        label.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         layout.addSubview(label)
 
         repeatCountButton = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
@@ -303,7 +303,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         repeatCountButton!.setTitleColor(LTheme.Color.base_text_color, for: .normal)
         repeatCountButton!.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         repeatCountButton!.contentHorizontalAlignment = .right
-        repeatCountButton!.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
+        repeatCountButton!.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 18)
         layout.addSubview(repeatCountButton!)
 
         repeatCountView.addSubview(layout)
@@ -317,7 +317,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 120, height: 40))
         label.textColor = LTheme.Color.gray_text_color
         label.text = NSLocalizedString("Repeat every", comment: "")
-        label.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
+        label.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         layout.addSubview(label)
 
         repeatIntervalButton = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
@@ -326,7 +326,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         repeatIntervalButton!.setTitleColor(LTheme.Color.base_text_color, for: .normal)
         repeatIntervalButton!.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         repeatIntervalButton!.contentHorizontalAlignment = .right
-        repeatIntervalButton!.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 10)
+        repeatIntervalButton!.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         layout.addSubview(repeatIntervalButton!)
 
         repeatUnitButton = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
@@ -335,7 +335,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         repeatUnitButton!.setTitleColor(LTheme.Color.base_text_color, for: .normal)
         repeatUnitButton!.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         repeatUnitButton!.contentHorizontalAlignment = .right
-        repeatUnitButton!.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
+        repeatUnitButton!.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 18)
         layout.addSubview(repeatUnitButton!)
 
         repeatIntervalView.addSubview(layout)
@@ -355,7 +355,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
 
         amountButton = UIButton(type: .custom)
         //amountButton.translatesAutoresizingMaskIntoConstraints = false
-        amountButton.layoutMargins = UIEdgeInsetsMake(0, 16, 0, 0)
+        amountButton.layoutMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         amountButton.titleLabel?.font = amountButton!.titleLabel?.font.withSize(fontsize)
         amountButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: fontsize)
         amountButton.contentHorizontalAlignment = .left
@@ -363,7 +363,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         amountButton.frame = CGRect(x: 4, y: 0, width: 0, height: BTN_H)
 
         dateButton = UIButton(type: .custom)
-        dateButton.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 18)
+        dateButton.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 18)
         dateButton.titleLabel?.font = dateButton!.titleLabel?.font.withSize(fontsize - 2)
         dateButton.setTitleColor(UIColor.black, for: .normal)
         //dateButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: fontsize - 2)
@@ -389,7 +389,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         infoLabel.textColor = LTheme.Color.light_gray_text_color
         infoLabel.text = ""
         infoLabel.font = UIFont.systemFont(ofSize: 11)
-        infoLabel.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 16)
+        infoLabel.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 16)
         infoLabel.contentMode = .right
 
         hl.addSubview(spacer)
@@ -499,7 +499,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }
     }
 
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         if (isSchedule && indexPath.row == 0) || (!isSchedule && indexPath.row == 2) {
             return .delete
         } else {
@@ -507,7 +507,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
         }
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if .delete == editingStyle {
             if DBAccount.instance.get(id: record.accountId) == nil ||
                 (record.type == .TRANSFER && DBAccount.instance.get(id: record.accountId2) == nil) {
@@ -580,7 +580,7 @@ class AddTableViewController: UITableViewController, UIPopoverPresentationContro
                 }
             }
         } else if let sv = caller as? SelectViewController {
-            switch sv.selectType {
+            switch sv.selectType! {
             case .ACCOUNT:
                 record!.accountId = type.int64
                 if let name = DBAccount.instance.get(id: type.int64)?.name {

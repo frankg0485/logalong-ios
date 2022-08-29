@@ -18,14 +18,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// set orientations you want to be allowed in this property by default
     var orientationLock = UIInterfaceOrientationMask.portrait
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UIApplication.shared.setMinimumBackgroundFetchInterval(3600)
 
-        let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
+        /*let statusBar: UIView = UIApplication.shared.value(forKey: "statusBar") as! UIView
         if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {
             statusBar.backgroundColor = UIColor.white
-        }
+        }*/
 
         service.start()
         LServer.instance.delegate = LProtocol.instance
@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
 
-    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier.invalid
     func registerBackgroundTask() {
         backgroundTask = UIApplication.shared.beginBackgroundTask {
             self.endBackgroundTask(true)
@@ -52,13 +52,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func endBackgroundTask(_ done: Bool) {
-        if (backgroundTask != UIBackgroundTaskInvalid) {
+        if (backgroundTask != UIBackgroundTaskIdentifier.invalid) {
             LLog.d("\(self)", "Background task ended.")
             if done {
                 LServer.instance.disconnect()
             }
             UIApplication.shared.endBackgroundTask(backgroundTask)
-            backgroundTask = UIBackgroundTaskInvalid
+            backgroundTask = UIBackgroundTaskIdentifier.invalid
         }
     }
 
