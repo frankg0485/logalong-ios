@@ -142,8 +142,8 @@ class PieChartViewController: UIViewController, ChartViewDelegate, UITableViewDa
         entryView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(item: entryView!, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal,
                            toItem: view, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: entryViewTop).isActive = true
-        NSLayoutConstraint(item: entryView!, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal,
-                           toItem: view, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1.0, constant: -8).isActive = true
+        NSLayoutConstraint(item: entryView!, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal,
+                           toItem: view, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1.0, constant: -8).isActive = true
 
         NSLayoutConstraint(item: entryView!, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal,
                            toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: entryViewWidth).isActive = true

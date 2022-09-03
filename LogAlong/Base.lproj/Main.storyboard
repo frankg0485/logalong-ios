@@ -140,19 +140,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPa-5Q-4V9">
-                                                    <rect key="frame" x="16" y="10" width="207" height="18"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="207" id="dSW-NU-GvS"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="16" y="10" width="59" height="18"/>
                                                     <fontDescription key="fontDescription" name=".SFNSDisplay" family=".SF NS Display" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dec 24,2017" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pfd-aQ-hzJ">
-                                                    <rect key="frame" x="16" y="29" width="86" height="16"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="86" id="bpU-fc-faE"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="16" y="29" width="76" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -164,7 +158,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BiT-zE-6B6">
-                                                    <rect key="frame" x="99" y="29" width="22" height="16"/>
+                                                    <rect key="frame" x="89" y="29" width="22" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -1165,16 +1159,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qAM-zp-jjT" customClass="PieChartView" customModule="Charts">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qAM-zp-jjT" customClass="PieChartView" customModule="Charts">
                                 <rect key="frame" x="0.0" y="1" width="375" height="665"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </view>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="fiX-HG-8mQ" firstAttribute="top" secondItem="qAM-zp-jjT" secondAttribute="bottom" constant="1" id="3k1-JI-IBf"/>
-                            <constraint firstItem="qAM-zp-jjT" firstAttribute="top" secondItem="cAE-Rh-zJI" secondAttribute="top" constant="1" id="KCm-OW-Ykq"/>
-                            <constraint firstAttribute="trailing" secondItem="qAM-zp-jjT" secondAttribute="trailing" id="SCW-km-msz"/>
-                            <constraint firstItem="qAM-zp-jjT" firstAttribute="leading" secondItem="cAE-Rh-zJI" secondAttribute="leading" id="ixB-V0-cDj"/>
-                        </constraints>
                     </view>
                     <connections>
                         <outlet property="pieChartView" destination="qAM-zp-jjT" id="d4U-jV-D3N"/>

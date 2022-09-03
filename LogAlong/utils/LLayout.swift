@@ -86,8 +86,10 @@ class HorizontalLayout : LLayout {
             view.frame.origin.x = width
             width += view.frame.width + view.layoutMargins.right
         }
-
-        self.frame.size.width = width
+        print("the view is: " + self.description)
+        print("before: \(self.frame.size.width)")
+        self.frame.size.width = width.rounded()
+        print("after: \(self.frame.size.width)")
     }
 
     override func addSubview(_ view: UIView) {
