@@ -18,6 +18,8 @@ class RecordsTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        categoryLabel.font = UIFont.systemFont(ofSize: UIFont.systemFontSize)
+        dateLabel.font = UIFont.systemFont(ofSize: UIFont.systemFontSize)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

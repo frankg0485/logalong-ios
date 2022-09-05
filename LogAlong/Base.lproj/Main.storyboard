@@ -11,7 +11,7 @@
         <scene sceneID="0Jf-Wd-zGi">
             <objects>
                 <tableViewController storyboardIdentifier="NewAdditionTableViewController" id="Fhp-gV-GDC" customClass="NewAdditionTableViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="static" style="plain" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" id="F5y-tX-l7K">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="static" style="plain" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="F5y-tX-l7K">
                         <rect key="frame" x="0.0" y="0.0" width="131" height="164"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -98,7 +98,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YfE-mO-bql" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="486" y="1057"/>
+            <point key="canvasLocation" x="485.60000000000002" y="1056.9715142428786"/>
         </scene>
         <!--Records Page View Controller-->
         <scene sceneID="lVZ-xg-KzZ">
@@ -158,7 +158,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BiT-zE-6B6">
-                                                    <rect key="frame" x="89" y="29" width="22" height="16"/>
+                                                    <rect key="frame" x="97" y="29" width="22" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -174,7 +174,7 @@
                                                 <constraint firstItem="aPa-5Q-4V9" firstAttribute="leading" secondItem="xm5-Tm-alI" secondAttribute="leadingMargin" id="abf-W8-fJj"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="XD7-JG-MYR" secondAttribute="trailing" id="q4L-90-OBN"/>
                                                 <constraint firstItem="BiT-zE-6B6" firstAttribute="trailing" secondItem="XD7-JG-MYR" secondAttribute="leading" priority="250" id="quW-DW-NZ2"/>
-                                                <constraint firstItem="BiT-zE-6B6" firstAttribute="leading" secondItem="Pfd-aQ-hzJ" secondAttribute="trailing" priority="750" constant="-3" id="s0z-wU-556"/>
+                                                <constraint firstItem="BiT-zE-6B6" firstAttribute="leading" secondItem="Pfd-aQ-hzJ" secondAttribute="trailing" priority="750" constant="5" id="s0z-wU-556"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>

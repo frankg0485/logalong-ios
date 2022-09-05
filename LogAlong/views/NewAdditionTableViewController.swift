@@ -35,8 +35,13 @@ class NewAdditionTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Navigation
-
+    override func viewSafeAreaInsetsDidChange() {
+        if #available(iOS 11.0, *) {
+            super.viewSafeAreaInsetsDidChange()
+            self.tableView.contentInset = UIEdgeInsets(top: self.tableView.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 1:
@@ -47,7 +52,8 @@ class NewAdditionTableViewController: UITableViewController {
             cell.backgroundColor = LTheme.Color.expense_selector_normal
         }
     }
-
+    
+    // MARK: - Navigation
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         if let mnc = self.myNavigationController {
