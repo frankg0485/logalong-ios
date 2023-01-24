@@ -80,7 +80,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         titleButton = UIButton(type: .custom)
         //titleButton.addTarget(self, action: #selector(self.onTitleClick), for: .touchUpInside)
-        titleButton.setSize(w: 180, h: 30)
+        //titleButton.setSize(w: 180, h: 30)
         navigationItem.titleView = titleButton
 
         let cancelButton = UIButton(type: .system)
@@ -97,7 +97,7 @@ class AccountsTableViewController: UITableViewController, UIPopoverPresentationC
 
         let deleteButton = UIButton(type: .system)
         deleteButton.addTarget(self, action: #selector(self.onDeleteClick), for: .touchUpInside)
-        deleteButton.setImage(#imageLiteral(resourceName: "ic_action_discard").withRenderingMode(.alwaysOriginal), for: .normal)
+        deleteButton.setImage(#imageLiteral(resourceName: "ic_action_discard_dark").withRenderingMode(.alwaysOriginal), for: .normal)
         deleteButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 15)
         deleteButton.setSize(w: BTN_W + 20, h: BTN_H)
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: cancelButton),

@@ -49,7 +49,7 @@ class MainTabViewController: UITabBarController, UITabBarControllerDelegate {
 
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if let vc = viewController as? UINavigationController {
-            vc.navigationBar.barTintColor = LTheme.Color.top_bar_background
+            //vc.navigationBar.barTintColor = LTheme.Color.top_bar_background
             vc.popToRootViewController(animated: true)
         }
     }

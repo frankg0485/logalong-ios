@@ -408,7 +408,7 @@ UIPageViewControllerDelegate, UIPopoverPresentationControllerDelegate {
         navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: addBtn), UIBarButtonItem(customView: searchBtn!)]
 
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
+        //navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
         navigationController?.navigationBar.barStyle = .black
     }
 

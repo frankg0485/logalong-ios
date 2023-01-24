@@ -211,7 +211,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         //UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.onAddClick))
 
         navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
+        //navigationController?.navigationBar.barTintColor = LTheme.Color.top_bar_background
         navigationController?.navigationBar.barStyle = .black
     }
 
