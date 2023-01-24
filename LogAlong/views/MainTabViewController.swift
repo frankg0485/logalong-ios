@@ -25,7 +25,12 @@ class MainTabViewController: UITabBarController, UITabBarControllerDelegate {
         tabBar.items![0].imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)
         tabBar.items![0].title = ""
 
-        tabBar.items![1].titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -12)
+        let img1 = UIImage(named: "AppIcon")!.resizedImageWithinRect(rectSize: CGSize(width: ICON_W, height: ICON_H))
+        tabBar.items![1].image = img1.image(alpha: 0.8).withRenderingMode(.alwaysOriginal)
+        tabBar.items![1].selectedImage = img1.withRenderingMode(.alwaysOriginal)
+        tabBar.items![1].imageInsets = UIEdgeInsets(top: 8, left: 0, bottom: -8, right: 0)
+        tabBar.items![1].title = ""
+        //tabBar.items![1].titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -12)
         //setting font here has no effect
         //tabBar.items![1].setTitleTextAttributes([NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 18)], for: .selected)
         //tabBar.items![1].setTitleTextAttributes([NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 18)], for: .normal)

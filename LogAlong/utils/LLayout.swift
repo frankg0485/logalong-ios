@@ -79,17 +79,13 @@ class HorizontalLayout : LLayout {
                 continue
             }
             view.center.y = self.center.y - self.frame.origin.y
-            //print("view center: \(self.center.y) - \(self.frame.origin.y)")
             view.layoutSubviews()
 
             width += view.layoutMargins.left
             view.frame.origin.x = width
             width += view.frame.width + view.layoutMargins.right
         }
-        print("the view is: " + self.description)
-        print("before: \(self.frame.size.width)")
         self.frame.size.width = width.rounded()
-        print("after: \(self.frame.size.width)")
     }
 
     override func addSubview(_ view: UIView) {

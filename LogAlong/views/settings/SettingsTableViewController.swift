@@ -23,7 +23,7 @@ class SettingsTableViewController: UITableViewController {
         versionLabel.text = appVersionString
         versionLabel.sizeToFit()
 
-        tableView.tableFooterView = UIView()
+        //tableView.tableFooterView = UIView()
         // Do any additional setup after loading the view.
     }
 

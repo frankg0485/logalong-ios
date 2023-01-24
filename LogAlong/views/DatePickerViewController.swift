@@ -28,6 +28,9 @@ class DatePickerViewController: UIViewController {
         self.preferredContentSize.height = LTheme.Dimension.popover_height_small
 
         datePicker.datePickerMode = .date
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        }
         datePicker.date = Date(milliseconds: initValue)
     }
 
