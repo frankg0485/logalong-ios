@@ -41,6 +41,8 @@
 		01FDE4911F78066300A7DD78 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */; };
 		C2DC185928BC52C100309555 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; platformFilter = ios; };
 		C2DC185A28BC52C100309555 /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBC01B421FAEA3AB0092B184 /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C2EA40262990A1A1005A8F92 /* TestSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EA40252990A1A1005A8F92 /* TestSearchViewController.swift */; };
+		C2EA40302990A6AB005A8F92 /* TestSearchPopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2EA402F2990A6AB005A8F92 /* TestSearchPopupController.swift */; };
 		CB006DC7203FAAFC005059BB /* DBScheduledTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB006DC6203FAAFC005059BB /* DBScheduledTransaction.swift */; };
 		CB1073551FCE599E00390032 /* LJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1073541FCE599E00390032 /* LJournal.swift */; };
 		CB1073601FCE62D900390032 /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB10735F1FCE62D900390032 /* DBHelper.swift */; };
@@ -228,6 +230,8 @@
 		01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
 		01FBE7F91F43A00800A0B514 /* NewAdditionTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAdditionTableViewController.swift; sourceTree = "<group>"; };
 		01FDE4901F78066300A7DD78 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		C2EA40252990A1A1005A8F92 /* TestSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSearchViewController.swift; sourceTree = "<group>"; };
+		C2EA402F2990A6AB005A8F92 /* TestSearchPopupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSearchPopupController.swift; sourceTree = "<group>"; };
 		CB006DC6203FAAFC005059BB /* DBScheduledTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBScheduledTransaction.swift; sourceTree = "<group>"; };
 		CB1073541FCE599E00390032 /* LJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LJournal.swift; sourceTree = "<group>"; };
 		CB10735F1FCE62D900390032 /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
@@ -374,6 +378,8 @@
 			isa = PBXGroup;
 			children = (
 				CBC01B4A1FAEAA260092B184 /* AddTableViewController.swift */,
+				C2EA40252990A1A1005A8F92 /* TestSearchViewController.swift */,
+				C2EA402F2990A6AB005A8F92 /* TestSearchPopupController.swift */,
 				CB4764B120A927A1000B0077 /* AddViewController.swift */,
 				CB15D4EC1FC3D7E7005D8B43 /* charts */,
 				01FBE7F51F439D5A00A0B514 /* CreateViewController.swift */,
@@ -723,6 +729,7 @@
 				01FBE7FA1F43A00800A0B514 /* NewAdditionTableViewController.swift in Sources */,
 				CB1C92282047B0DA0008D1E9 /* ProfileViewController.swift in Sources */,
 				CBC01B4B1FAEAA270092B184 /* AddTableViewController.swift in Sources */,
+				C2EA40302990A6AB005A8F92 /* TestSearchPopupController.swift in Sources */,
 				019CCD251E6DAF64002EF989 /* AppDelegate.swift in Sources */,
 				CBEF97711FD4654F00D61F79 /* LExtension.swift in Sources */,
 				01FDE4911F78066300A7DD78 /* SettingsTableViewController.swift in Sources */,
@@ -748,6 +755,7 @@
 				01E13D46201945A000A9B375 /* LAccountShareRequest.swift in Sources */,
 				CB51B55C1FBBFF11002CABA1 /* LBuffer.swift in Sources */,
 				CB4118F020157AA80087E8AE /* SelectViewController.swift in Sources */,
+				C2EA40262990A1A1005A8F92 /* TestSearchViewController.swift in Sources */,
 				CB3E5FA01FEDEAD300C64CBD /* LTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
