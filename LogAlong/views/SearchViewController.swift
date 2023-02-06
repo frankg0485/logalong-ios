@@ -525,7 +525,7 @@ class SearchViewController: UIViewController, UIPopoverPresentationControllerDel
             height += allValueGroupHeight
         }
         preferredContentSize.height = height
-        scrollContentHeightConstraint.constant = height - headerHeight
+        //scrollContentHeightConstraint.constant = height - headerHeight
     }
 
     private func createHeader() {
