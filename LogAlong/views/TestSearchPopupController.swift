@@ -116,10 +116,6 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         scrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         scrollView.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
-        
-        print(headerView.frame)
-        print(self.view.frame.width)
-        print(scrollView.frame.width)
     }
     
     private func createSeparators() {
@@ -177,7 +173,10 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         scrollView.addSubview(showAllView)
         showAllView.translatesAutoresizingMaskIntoConstraints = false
         showAllView.heightAnchor.constraint(equalToConstant: sectionHeaderHeight).isActive = true
-        showAllView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        showAllView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
+        showAllView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor).isActive = true
+        showAllView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
+
         separator1.topAnchor.constraint(equalTo: showAllView.bottomAnchor).isActive = true
         
         showAllGroupView = VerticalLayout(width: scrollView.frame.width)
@@ -251,9 +250,9 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     private func setContentHeight() {
-        /*var height = contentSizeBaseHeight
+        var height = contentSizeBaseHeight
         if !showAllSwitch.isOn {
-            height += showAllGroupView.frame.height
+            height += showAllGroupHeight
         }
         /*if !timeSwitch.isOn {
             height += allTimeGroupView.frame.height
@@ -261,7 +260,7 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         if !valueSwitch.isOn {
             height += allValueGroupView.frame.height
         }*/
-        preferredContentSize.height = height*/
+        preferredContentSize.height = height
     }
     
     private func presentPopOver(_ vc: UIViewController) {
