@@ -27,7 +27,7 @@ class LPreferences {
     static let shareAccountRequest = "shareAccountRequest"
     static let lastSavedValues = "lastSavedValues"
 
-    static private func getGeneralMilliseconds(_ fromTime: Bool, millis: Int64) -> Int64 {
+    static func getGeneralMilliseconds(_ fromTime: Bool, millis: Int64) -> Int64 {
         let comp = LA.ymd(milliseconds: millis)
         let date = Date(year: comp.year, month: comp.month, day: comp.day)
 
