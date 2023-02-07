@@ -20,13 +20,14 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     private var separator1: UIView!
     private var showAllGroupView: VerticalLayout!
 
-    private var allValueView: HorizontalLayout!
-    private var separator2: UIView!
-    private var allValueGroupView: VerticalLayout!
-    
-    private var allTimeGroupView: VerticalLayout!
-    private var separator3: UIView!
+    private var allTimeViewTopAnchor: NSLayoutConstraint!
     private var allTimeView: HorizontalLayout!
+    private var separator2: UIView!
+    private var allTimeGroupView: VerticalLayout!
+    
+    private var allValueView: HorizontalLayout!
+    private var separator3: UIView!
+    private var allValueGroupView: VerticalLayout!
     
     private var showAllSwitch: UISwitch!
     private var timeSwitch: UISwitch!
@@ -43,6 +44,12 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     private var vendorsBtn: UIButton!
     private var tagsBtn: UIButton!
     private var typesBtn: UIButton!
+    
+    private var fromTimeBtn: UIButton!
+    private var toTimeBtn: UIButton!
+    private var filterByBtn: UIButton!
+    private var fromValueBtn: UIButton!
+    private var toValueBtn: UIButton!
     
     private let headerHeight: CGFloat = 45
     private let sectionHeaderHeight: CGFloat = 50
@@ -64,11 +71,14 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         createSwitches()
         createSeparators()
         createShowAllView()
-        createAllValueView()
         createAllTimeView()
+        //createAllValueView()
         
         onShowAllClick()
-        //onAllTimeClick()
+        onAllTimeClick()
+        displayValues()
+        
+        setContentHeight()
     }
     
     //MARK: Display
@@ -119,14 +129,22 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     private func createSeparators() {
-        separator1 = UIView()
-        self.view.addSubview(separator1)
+        func configureSeparator(_ separator: UIView) {
+            self.view.addSubview(separator)
 
-        separator1.translatesAutoresizingMaskIntoConstraints = false
-        separator1.backgroundColor = LTheme.Color.base_bgd_separator_color
-        separator1.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        separator1.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor).isActive = true
-        separator1.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor).isActive = true
+            separator.translatesAutoresizingMaskIntoConstraints = false
+            separator.backgroundColor = LTheme.Color.base_bgd_separator_color
+            separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+            separator.leadingAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.leadingAnchor).isActive = true
+            separator.trailingAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.trailingAnchor).isActive = true
+        }
+        
+        separator1 = UIView()
+        separator2 = UIView()
+        separator3 = UIView()
+        configureSeparator(separator1)
+        configureSeparator(separator2)
+        configureSeparator(separator3)
     }
     
     private func createShowAllEntry(_ str: String, _ allTime: Bool) -> (HorizontalLayout, UIButton, LCheckbox, UILabel) {
@@ -237,27 +255,138 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         showAllGroupView.translatesAutoresizingMaskIntoConstraints = false
         showAllGroupView.heightAnchor.constraint(equalToConstant: showAllGroupHeight).isActive = true
         showAllGroupView.topAnchor.constraint(equalTo: separator1.bottomAnchor).isActive = true
-        showAllGroupView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        showAllGroupView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-    }
-    
-    private func createAllValueView() {
-        
+        showAllGroupView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
+        showAllGroupView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor).isActive = true
     }
     
     private func createAllTimeView() {
+        allTimeView = HorizontalLayout(height: sectionHeaderHeight)
         
+        let allTimeTap = UITapGestureRecognizer(target: self, action: #selector(allTimeTapped))
+        allTimeTap.delegate = self
+        allTimeView.addGestureRecognizer(allTimeTap)
+
+        timeSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
+        timeSwitch.addTarget(self, action: #selector(onAllTimeClick), for: .valueChanged)
+        allTimeView.addSubview(timeSwitch)
+
+        scrollView.addSubview(allTimeView)
+        allTimeView.translatesAutoresizingMaskIntoConstraints = false
+        allTimeView.heightAnchor.constraint(equalToConstant: sectionHeaderHeight).isActive = true
+        allTimeViewTopAnchor = allTimeView.topAnchor.constraint(equalTo: separator1.bottomAnchor)
+        allTimeViewTopAnchor.isActive = true
+        allTimeView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor).isActive = true
+        allTimeView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
+
+        separator2.topAnchor.constraint(equalTo: allTimeView.bottomAnchor).isActive = true
+        
+        let label = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 30))
+        label.text = NSLocalizedString("All Time", comment: "")
+        allTimeView.addSubview(label)
+
+        allTimeGroupView = VerticalLayout(width: scrollView.frame.width)
+        
+        let layout = HorizontalLayout(height: entryHeight)
+        layout.layoutMargins.top = 0
+        layout.layoutMargins.bottom = entryBottomMargin
+
+        fromTimeBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        fromTimeBtn.addTarget(self, action: #selector(onClickFromTime), for: .touchUpInside)
+        fromTimeBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        fromTimeBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        fromTimeBtn.contentHorizontalAlignment = .left
+        layout.addSubview(fromTimeBtn)
+
+        let toLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 40))
+        toLabel.textColor = LTheme.Color.gray_text_color
+        toLabel.text = NSLocalizedString("to", comment: "")
+        layout.addSubview(toLabel)
+
+        toTimeBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        toTimeBtn.addTarget(self, action: #selector(onClickToTime), for: .touchUpInside)
+        toTimeBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        toTimeBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        toTimeBtn.contentHorizontalAlignment = .right
+        layout.addSubview(toTimeBtn)
+        allTimeGroupView.addSubview(layout)
+
+        let (layout2, btn, _, _) = createShowAllEntry(NSLocalizedString("Filter by", comment: ""), true)
+        filterByBtn = btn
+        filterByBtn.addTarget(self, action: #selector(onClickFilterBy), for: .touchUpInside)
+        allTimeGroupView.addSubview(layout2)
+        
+        scrollView.addSubview(allTimeGroupView)
+        allTimeGroupView.translatesAutoresizingMaskIntoConstraints = false
+        allTimeGroupView.heightAnchor.constraint(equalToConstant: allTimeGroupHeight).isActive = true
+        allTimeGroupView.topAnchor.constraint(equalTo: separator2.bottomAnchor).isActive = true
+        allTimeGroupView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
+        allTimeGroupView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor).isActive = true
+    }
+    
+    private func createAllValueView() {
+        let hlayout = HorizontalLayout(height: sectionHeaderHeight)
+        hlayout.layoutMargins.top = 0
+        hlayout.layoutMargins.bottom = 0
+        hlayout.layoutMargins.left = 0
+        hlayout.layoutMargins.right = 0
+
+        valueSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
+        //valueSwitch.addTarget(self, action: #selector(onClickValueSwitch), for: .valueChanged)
+        hlayout.addSubview(valueSwitch)
+
+        let label = UILabel(frame: CGRect(x: 1, y: 0, width: 80, height: 30))
+        label.text = NSLocalizedString("All Value", comment: "")
+        label.isUserInteractionEnabled = true
+        hlayout.addSubview(label)
+
+        //let viewTap = UITapGestureRecognizer(target: self, action: #selector(allValueViewTapped))
+        //viewTap.delegate = self
+        //allValueView.addGestureRecognizer(viewTap)
+
+        allValueView.addSubview(hlayout)
+
+        let layout = HorizontalLayout(height: entryHeight)
+        layout.layoutMargins.top = 0
+        layout.layoutMargins.bottom = entryBottomMargin
+
+        fromValueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        fromValueBtn.addTarget(self, action: #selector(onClickFromValue), for: .touchUpInside)
+        fromValueBtn.setTitle(NSLocalizedString("---", comment: ""), for: .normal)
+        fromValueBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        fromValueBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        fromValueBtn.contentHorizontalAlignment = .center
+        layout.addSubview(fromValueBtn)
+
+        let toLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 20, height: 40))
+        toLabel.textColor = LTheme.Color.gray_text_color
+        toLabel.text = NSLocalizedString("to", comment: "")
+        layout.addSubview(toLabel)
+
+        toValueBtn = UIButton(frame: CGRect(x: 1, y: 0, width: 0, height: 40))
+        toValueBtn.addTarget(self, action: #selector(onClickToValue), for: .touchUpInside)
+        toValueBtn.setTitle(NSLocalizedString("---", comment: ""), for: .normal)
+        toValueBtn.setTitleColor(LTheme.Color.base_text_color, for: .normal)
+        toValueBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        toValueBtn.contentHorizontalAlignment = .center
+        layout.addSubview(toValueBtn)
+
+        allValueGroupView.addSubview(layout)
     }
     
     private func setContentHeight() {
         var height = contentSizeBaseHeight
         if !showAllSwitch.isOn {
             height += showAllGroupHeight
+            allTimeViewTopAnchor.constant = showAllGroupHeight
+        } else {
+            allTimeViewTopAnchor.constant = 0
         }
-        /*if !timeSwitch.isOn {
+        
+        if !timeSwitch.isOn {
             height += allTimeGroupView.frame.height
         }
-        if !valueSwitch.isOn {
+        
+        /*if !valueSwitch.isOn {
             height += allValueGroupView.frame.height
         }*/
         preferredContentSize.height = height
@@ -267,7 +396,7 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         vc.modalPresentationStyle = UIModalPresentationStyle.popover
         vc.popoverPresentationController?.sourceView = self.view
         vc.popoverPresentationController?.sourceRect =
-            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY - 22, width: 0, height: 0)
+            CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
         vc.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection(rawValue:0)
         vc.popoverPresentationController!.delegate = self
 
@@ -349,6 +478,89 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         typesCheckbox.isSelected = search.searchTypes
     }
     
+    private func presentTime(_ initValue: Int64) {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DatePickerViewController")
+            as! DatePickerViewController
+
+        vc.initValue = initValue
+        vc.color = LTheme.Color.base_orange
+        vc.delegate = self
+
+        presentPopOver(vc)
+    }
+    
+    private func presentAmountPicker(_ fromValue: Bool) {
+        if !search.allValue {
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SelectAmountViewController")
+                as! SelectAmountViewController
+            if fromValue {
+                vc.oldValue = search.fromValue
+            } else {
+                vc.oldValue = search.toValue
+            }
+            vc.allowZero = true
+            vc.color = LTheme.Color.base_orange
+            vc.delegate = self
+
+            presentPopOver(vc)
+        }
+    }
+    
+    private func displayTime(ms: Int64, btn: UIButton) {
+        let date = Date(milliseconds: ms)
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateStyle = .medium
+        let dateString = dayTimePeriodFormatter.string(from: date)
+        btn.setTitle(dateString, for: .normal)
+        btn.sizeToFit()
+    }
+
+    private func displayFromTime() {
+        displayTime(ms: search.from, btn: fromTimeBtn)
+    }
+
+    private func displayToTime() {
+        displayTime(ms: search.to, btn: toTimeBtn)
+    }
+
+    private func displayFilterBy() {
+        if search.byEditTime {
+            filterByBtn.setTitle(NSLocalizedString("Edit Time", comment: ""), for: .normal)
+        } else {
+            filterByBtn.setTitle(NSLocalizedString("Record Time", comment: ""), for: .normal)
+        }
+        filterByBtn.sizeToFit()
+    }
+    
+    private func displayFromValue() {
+        if search.fromValue == 0 { fromValueBtn.setTitle("---", for: .normal) }
+        else { fromValueBtn.setTitle("\(search.fromValue)", for: .normal) }
+        fromValueBtn.sizeToFit()
+    }
+
+    private func displayToValue() {
+        if search.toValue == 0 { toValueBtn.setTitle("---", for: .normal) }
+        else { toValueBtn.setTitle("\(search.toValue)", for: .normal) }
+        toValueBtn.sizeToFit()
+    }
+    
+    private func displayValues() {
+        displayAccounts()
+        displayCategories()
+        displayVendors()
+        displayTags()
+        displayTypes()
+        displayFilterBy()
+        //displayFromValue()
+       // displayToValue()
+        displayFromTime()
+        displayToTime()
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+    
     //MARK: Actions
     
     @objc func onCancelClick() {
@@ -378,6 +590,38 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         setContentHeight()
     }
     
+    @objc func onAllTimeClick() {
+        allTimeGroupView.isHidden = timeSwitch.isOn
+        search.allTime = timeSwitch.isOn
+
+        setContentHeight()
+    }
+    
+    @objc func onClickFromTime() {
+        searchSelectType = .FROM_TIME
+        presentTime(search.from)
+    }
+
+    @objc func onClickToTime() {
+        searchSelectType = .TO_TIME
+        presentTime(search.to)
+    }
+
+    @objc func onClickFilterBy() {
+        search.byEditTime = !search.byEditTime
+        displayFilterBy()
+    }
+
+    @objc func onClickFromValue() {
+        searchSelectType = .FROM_VALUE
+        presentAmountPicker(true)
+    }
+
+    @objc func onClickToValue() {
+        searchSelectType = .TO_VALUE
+        presentAmountPicker(false)
+    }
+    
     @objc func showAllTapped() {
         showAllSwitch.isOn = !showAllSwitch.isOn
         onShowAllClick()
@@ -385,7 +629,7 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
 
     @objc func allTimeTapped() {
         timeSwitch.isOn = !timeSwitch.isOn
-        //onAllTimeClick()
+        onAllTimeClick()
     }
 
     @objc func allValueTapped() {
@@ -488,16 +732,16 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
                 displayTypes()
             case .FROM_TIME:
                 search.from = LPreferences.getGeneralMilliseconds(true, millis: type.int64)
-                //displayFromTime()
+                displayFromTime()
             case .TO_TIME:
                 search.to = LPreferences.getGeneralMilliseconds(false, millis: type.int64)
-                //displayToTime()
+                displayToTime()
             case .FROM_VALUE:
                 search.fromValue = type.double
-                //displayFromValue()
+                displayFromValue()
             case .TO_VALUE:
                 search.toValue = type.double
-                //displayToValue()
+                displayToValue()
             }
         }
     }
