@@ -15,6 +15,7 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     
     private var headerView: HorizontalLayout!
     private var scrollView: UIScrollView!
+    private var contentView: UIView!
     
     private var showAllView: HorizontalLayout!
     private var separator1: UIView!
@@ -25,6 +26,7 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     private var separator2: UIView!
     private var allTimeGroupView: VerticalLayout!
     
+    private var allValueViewTopAnchor: NSLayoutConstraint!
     private var allValueView: HorizontalLayout!
     private var separator3: UIView!
     private var allValueGroupView: VerticalLayout!
@@ -59,6 +61,7 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     private let showAllGroupHeight: CGFloat = 252 //5 * (entryHeight + entryBottomMargin) + 2
     private let allTimeGroupHeight: CGFloat = 102 //2 * (entryHeight + entryBottomMargin) + 2
     private let allValueGroupHeight: CGFloat = 52 //1 * (entryHeight + entryBottomMargin) + 2
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,15 +75,16 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         createSeparators()
         createShowAllView()
         createAllTimeView()
-        //createAllValueView()
+        createAllValueView()
         
         onShowAllClick()
         onAllTimeClick()
+        onAllValueClick()
         displayValues()
-        
+
         setContentHeight()
     }
-    
+
     //MARK: Display
     
     private func createSwitches() {
@@ -92,7 +96,6 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         showAllSwitch.isOn = search.all
         timeSwitch.isOn = search.allTime
         valueSwitch.isOn = search.allValue
-        //separator3.isHidden = valueSwitch.isOn
     }
     
     private func createHeader() {
@@ -124,8 +127,10 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         scrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        scrollView.heightAnchor.constraint(equalTo: self.view.heightAnchor).isActive = true
+        
+        scrollView.contentInsetAdjustmentBehavior = .always
     }
     
     private func createSeparators() {
@@ -269,6 +274,10 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         timeSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
         timeSwitch.addTarget(self, action: #selector(onAllTimeClick), for: .valueChanged)
         allTimeView.addSubview(timeSwitch)
+        
+        let label = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 30))
+        label.text = NSLocalizedString("All Time", comment: "")
+        allTimeView.addSubview(label)
 
         scrollView.addSubview(allTimeView)
         allTimeView.translatesAutoresizingMaskIntoConstraints = false
@@ -279,10 +288,6 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         allTimeView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
 
         separator2.topAnchor.constraint(equalTo: allTimeView.bottomAnchor).isActive = true
-        
-        let label = UILabel(frame: CGRect(x: 1, y: 0, width: 100, height: 30))
-        label.text = NSLocalizedString("All Time", comment: "")
-        allTimeView.addSubview(label)
 
         allTimeGroupView = VerticalLayout(width: scrollView.frame.width)
         
@@ -324,27 +329,33 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     private func createAllValueView() {
-        let hlayout = HorizontalLayout(height: sectionHeaderHeight)
-        hlayout.layoutMargins.top = 0
-        hlayout.layoutMargins.bottom = 0
-        hlayout.layoutMargins.left = 0
-        hlayout.layoutMargins.right = 0
+        allValueView = HorizontalLayout(height: sectionHeaderHeight)
 
         valueSwitch = UISwitch(frame: CGRect(x: 0, y: 0, width: 60, height: 30))
-        //valueSwitch.addTarget(self, action: #selector(onClickValueSwitch), for: .valueChanged)
-        hlayout.addSubview(valueSwitch)
+        valueSwitch.addTarget(self, action: #selector(onAllValueClick), for: .valueChanged)
+        allValueView.addSubview(valueSwitch)
 
         let label = UILabel(frame: CGRect(x: 1, y: 0, width: 80, height: 30))
         label.text = NSLocalizedString("All Value", comment: "")
         label.isUserInteractionEnabled = true
-        hlayout.addSubview(label)
+        allValueView.addSubview(label)
 
-        //let viewTap = UITapGestureRecognizer(target: self, action: #selector(allValueViewTapped))
-        //viewTap.delegate = self
-        //allValueView.addGestureRecognizer(viewTap)
+        let viewTap = UITapGestureRecognizer(target: self, action: #selector(allValueTapped))
+        viewTap.delegate = self
+        allValueView.addGestureRecognizer(viewTap)
 
-        allValueView.addSubview(hlayout)
+        scrollView.addSubview(allValueView)
+        allValueView.translatesAutoresizingMaskIntoConstraints = false
+        allValueView.heightAnchor.constraint(equalToConstant: sectionHeaderHeight).isActive = true
+        allValueViewTopAnchor = allValueView.topAnchor.constraint(equalTo: separator2.bottomAnchor)
+        allValueViewTopAnchor.isActive = true
+        allValueView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor).isActive = true
+        allValueView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
 
+        separator3.topAnchor.constraint(equalTo: allValueView.bottomAnchor).isActive = true
+        
+        allValueGroupView = VerticalLayout(width: scrollView.frame.width)
+        
         let layout = HorizontalLayout(height: entryHeight)
         layout.layoutMargins.top = 0
         layout.layoutMargins.bottom = entryBottomMargin
@@ -371,6 +382,13 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         layout.addSubview(toValueBtn)
 
         allValueGroupView.addSubview(layout)
+        
+        scrollView.addSubview(allValueGroupView)
+        allValueGroupView.translatesAutoresizingMaskIntoConstraints = false
+        allValueGroupView.heightAnchor.constraint(equalToConstant: allValueGroupHeight).isActive = true
+        allValueGroupView.topAnchor.constraint(equalTo: separator3.bottomAnchor).isActive = true
+        allValueGroupView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
+        allValueGroupView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor).isActive = true
     }
     
     private func setContentHeight() {
@@ -383,13 +401,21 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         }
         
         if !timeSwitch.isOn {
-            height += allTimeGroupView.frame.height
+            height += allTimeGroupHeight
+            allValueViewTopAnchor.constant = allTimeGroupHeight
+        } else {
+            allValueViewTopAnchor.constant = 0
         }
         
-        /*if !valueSwitch.isOn {
-            height += allValueGroupView.frame.height
-        }*/
-        preferredContentSize.height = height
+        if !valueSwitch.isOn {
+            height += allValueGroupHeight
+        }
+        
+        preferredContentSize.height = min(height, presentingViewController!.view.frame.height * 0.75)
+        scrollView.contentSize.height = height
+        print(preferredContentSize.height)
+        print(scrollView.contentSize.height)
+        print(scrollView.frame.height)
     }
     
     private func presentPopOver(_ vc: UIViewController) {
@@ -551,8 +577,8 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         displayTags()
         displayTypes()
         displayFilterBy()
-        //displayFromValue()
-       // displayToValue()
+        displayFromValue()
+        displayToValue()
         displayFromTime()
         displayToTime()
     }
@@ -597,6 +623,14 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         setContentHeight()
     }
     
+    @objc func onAllValueClick() {
+        allValueGroupView.isHidden = valueSwitch.isOn
+        search.allValue = valueSwitch.isOn
+        separator3.isHidden = valueSwitch.isOn
+        
+        setContentHeight()
+    }
+    
     @objc func onClickFromTime() {
         searchSelectType = .FROM_TIME
         presentTime(search.from)
@@ -634,7 +668,7 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
 
     @objc func allValueTapped() {
         valueSwitch.isOn = !valueSwitch.isOn
-        //onClickValueSwitch()
+        onAllValueClick()
     }
 
     @objc func onClickAccounts() {
