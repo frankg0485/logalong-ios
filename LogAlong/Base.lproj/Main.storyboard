@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="8ca-kn-Eid">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -930,161 +930,6 @@
             </objects>
             <point key="canvasLocation" x="2412" y="-1066"/>
         </scene>
-        <!--Search View Controller-->
-        <scene sceneID="QVR-Uv-xwP">
-            <objects>
-                <viewController storyboardIdentifier="SearchViewController" id="Z8S-uG-F3r" customClass="SearchViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="K4x-ba-1SJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="UXk-Iw-Guq"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="V2Y-IO-t7F">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C59-Og-LU5" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="45"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="KjU-Ne-551"/>
-                                </constraints>
-                            </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Vn-Rv-Av9">
-                                <rect key="frame" x="0.0" y="45" width="375" height="622"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" restorationIdentifier="ContentView" translatesAutoresizingMaskIntoConstraints="NO" id="TcE-EL-p4M">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
-                                        <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NET-bZ-mxi" userLabel="All Value Group View" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="461" width="359" height="50"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="WYB-iR-dr3" userLabel="All Value Group Height Constraint"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lux-98-aTY" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="8" width="359" height="50"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="wtF-LI-yhM"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oDd-yF-tcL">
-                                                <rect key="frame" x="8" y="58" width="359" height="1"/>
-                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="C7o-mf-bJY"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A3D-Hd-Y4b" userLabel="Separator3">
-                                                <rect key="frame" x="8" y="460" width="359" height="1"/>
-                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="tTl-40-SgK"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="roO-TN-PoH" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="59" width="359" height="200"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="200" id="qy5-g0-rF4"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O2s-cg-CRt" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="259" width="359" height="50"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="wpd-Nu-a2E"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iMb-EU-ZwS">
-                                                <rect key="frame" x="8" y="309" width="359" height="1"/>
-                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="dXJ-66-3Yc"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rpl-A7-4jb" customClass="VerticalLayout" customModule="LogAlong" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="310" width="359" height="100"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="100" id="Z6m-dp-8CN"/>
-                                                </constraints>
-                                            </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjM-Kt-WbX" userLabel="All Value View" customClass="HorizontalLayout" customModule="LogAlong" customModuleProvider="target">
-                                                <rect key="frame" x="8" y="410" width="359" height="50"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="2EC-O6-If4"/>
-                                                </constraints>
-                                            </view>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstAttribute="trailingMargin" secondItem="roO-TN-PoH" secondAttribute="trailing" id="25I-bS-2Sm"/>
-                                            <constraint firstItem="roO-TN-PoH" firstAttribute="top" secondItem="oDd-yF-tcL" secondAttribute="bottom" id="2FC-Kb-Xby"/>
-                                            <constraint firstItem="MjM-Kt-WbX" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="5EL-dY-Ecz"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="O2s-cg-CRt" secondAttribute="trailing" id="9Dm-OK-M1H"/>
-                                            <constraint firstItem="NET-bZ-mxi" firstAttribute="top" secondItem="A3D-Hd-Y4b" secondAttribute="bottom" id="9Ls-H0-Rif"/>
-                                            <constraint firstItem="Rpl-A7-4jb" firstAttribute="top" secondItem="iMb-EU-ZwS" secondAttribute="bottom" id="9d2-u4-jDQ"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="Lux-98-aTY" secondAttribute="trailing" id="9gk-V0-tQ1"/>
-                                            <constraint firstItem="O2s-cg-CRt" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="CZK-3O-rVf"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="Rpl-A7-4jb" secondAttribute="trailing" id="DyO-94-0KQ"/>
-                                            <constraint firstItem="A3D-Hd-Y4b" firstAttribute="top" secondItem="MjM-Kt-WbX" secondAttribute="bottom" id="LFZ-Zj-deU"/>
-                                            <constraint firstItem="iMb-EU-ZwS" firstAttribute="top" secondItem="O2s-cg-CRt" secondAttribute="bottom" id="MzW-RK-KBl"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="A3D-Hd-Y4b" secondAttribute="trailing" id="OXm-9d-6ic"/>
-                                            <constraint firstItem="O2s-cg-CRt" firstAttribute="top" secondItem="roO-TN-PoH" secondAttribute="bottom" id="OxY-kn-hgp"/>
-                                            <constraint firstItem="oDd-yF-tcL" firstAttribute="top" secondItem="Lux-98-aTY" secondAttribute="bottom" id="P9T-hy-B3Q"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="NET-bZ-mxi" secondAttribute="trailing" id="PYm-za-OYn"/>
-                                            <constraint firstItem="Lux-98-aTY" firstAttribute="top" secondItem="TcE-EL-p4M" secondAttribute="topMargin" id="R5z-pS-Dci"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="oDd-yF-tcL" secondAttribute="trailing" id="YUJ-5Z-2Pl"/>
-                                            <constraint firstAttribute="height" constant="300" id="ZDt-78-JE9"/>
-                                            <constraint firstItem="MjM-Kt-WbX" firstAttribute="top" secondItem="Rpl-A7-4jb" secondAttribute="bottom" id="bb2-YQ-0GE"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="iMb-EU-ZwS" secondAttribute="trailing" id="hTZ-6C-ZOG"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="MjM-Kt-WbX" secondAttribute="trailing" id="iwv-y7-tAF"/>
-                                            <constraint firstItem="NET-bZ-mxi" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="kM0-u2-f9n"/>
-                                            <constraint firstItem="roO-TN-PoH" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="lQ0-ax-BRr"/>
-                                            <constraint firstItem="Rpl-A7-4jb" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="lSd-qT-tuW"/>
-                                            <constraint firstItem="A3D-Hd-Y4b" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="mf6-FE-xUd"/>
-                                            <constraint firstItem="oDd-yF-tcL" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="rJs-o1-seJ"/>
-                                            <constraint firstItem="iMb-EU-ZwS" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="vcl-rP-Etb"/>
-                                            <constraint firstItem="Lux-98-aTY" firstAttribute="leading" secondItem="TcE-EL-p4M" secondAttribute="leadingMargin" id="weA-cZ-ZrD"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="TcE-EL-p4M" secondAttribute="bottom" id="4W2-Yt-w3k"/>
-                                    <constraint firstItem="TcE-EL-p4M" firstAttribute="top" secondItem="0Vn-Rv-Av9" secondAttribute="top" id="EeL-81-r4t"/>
-                                    <constraint firstItem="TcE-EL-p4M" firstAttribute="leading" secondItem="0Vn-Rv-Av9" secondAttribute="leading" id="N3o-Tn-2Bh"/>
-                                    <constraint firstAttribute="trailing" secondItem="TcE-EL-p4M" secondAttribute="trailing" id="Tup-e9-mMA"/>
-                                </constraints>
-                            </scrollView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="width" secondItem="TcE-EL-p4M" secondAttribute="width" id="8SB-VG-huh"/>
-                            <constraint firstItem="0Vn-Rv-Av9" firstAttribute="bottom" secondItem="V2Y-IO-t7F" secondAttribute="bottom" id="Fdy-Hq-PHK"/>
-                            <constraint firstAttribute="trailing" secondItem="0Vn-Rv-Av9" secondAttribute="trailing" id="Pog-f7-Yyr"/>
-                            <constraint firstItem="C59-Og-LU5" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leading" id="ewQ-pk-gAB"/>
-                            <constraint firstItem="0Vn-Rv-Av9" firstAttribute="leading" secondItem="V2Y-IO-t7F" secondAttribute="leading" id="k58-AZ-o20"/>
-                            <constraint firstItem="C59-Og-LU5" firstAttribute="top" secondItem="K4x-ba-1SJ" secondAttribute="bottom" id="toI-JL-TRS"/>
-                            <constraint firstAttribute="trailing" secondItem="C59-Og-LU5" secondAttribute="trailing" id="tok-R3-cmF"/>
-                            <constraint firstItem="0Vn-Rv-Av9" firstAttribute="top" secondItem="C59-Og-LU5" secondAttribute="bottom" id="y0e-Ov-ghc"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="allTimeGroupHeightConstraint" destination="Z6m-dp-8CN" id="l5D-10-RHL"/>
-                        <outlet property="allTimeGroupView" destination="Rpl-A7-4jb" id="jkE-Lp-BmL"/>
-                        <outlet property="allTimeView" destination="O2s-cg-CRt" id="mQo-wZ-Ozb"/>
-                        <outlet property="allValueGroupHeightConstraint" destination="WYB-iR-dr3" id="zjH-gD-paS"/>
-                        <outlet property="allValueGroupView" destination="NET-bZ-mxi" id="If0-gP-DJp"/>
-                        <outlet property="allValueView" destination="MjM-Kt-WbX" id="x6p-SH-WxO"/>
-                        <outlet property="contentView" destination="TcE-EL-p4M" id="g3n-Zl-1en"/>
-                        <outlet property="headerView" destination="C59-Og-LU5" id="u0s-Mq-ItM"/>
-                        <outlet property="scrollContentHeightConstraint" destination="ZDt-78-JE9" id="H2S-Ah-XKC"/>
-                        <outlet property="separator1" destination="oDd-yF-tcL" id="Fzn-sF-ZIT"/>
-                        <outlet property="separator2" destination="iMb-EU-ZwS" id="ClJ-kd-M8M"/>
-                        <outlet property="separator3" destination="A3D-Hd-Y4b" id="6ZS-8c-q1b"/>
-                        <outlet property="showAllGroupHeightConstraint" destination="qy5-g0-rF4" id="SjH-LQ-2Ip"/>
-                        <outlet property="showAllGroupView" destination="roO-TN-PoH" id="7kp-Ax-1DF"/>
-                        <outlet property="showAllView" destination="Lux-98-aTY" id="n39-jT-iO1"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tza-av-9cx" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-191.19999999999999" y="482.60869565217394"/>
-        </scene>
         <!--Charts Page View Controller-->
         <scene sceneID="Tb6-OK-EOh">
             <objects>
@@ -1161,7 +1006,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qAM-zp-jjT" customClass="PieChartView" customModule="Charts">
-                                <rect key="frame" x="-2" y="1" width="377" height="663"/>
+                                <rect key="frame" x="-3" y="1" width="377" height="662"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </view>
                         </subviews>
@@ -2641,28 +2486,11 @@
             </objects>
             <point key="canvasLocation" x="5009" y="595"/>
         </scene>
-        <!--Test Search View Controller-->
-        <scene sceneID="RBh-VK-6ST">
-            <objects>
-                <viewController storyboardIdentifier="TestSearchViewController" id="8ca-kn-Eid" customClass="TestSearchViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="v4B-Gc-DR1"/>
-                        <viewControllerLayoutGuide type="bottom" id="jQ5-d0-QSH"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Cyb-tu-ohM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Bmg-Ob-dgf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1020" y="-1066"/>
-        </scene>
-        <!--Test Search Popup Controller-->
+        <!--Search View Controller-->
         <scene sceneID="7L1-TI-Jvm">
             <objects>
-                <viewController storyboardIdentifier="TestSearchPopupController" id="wyC-AQ-GlX" customClass="TestSearchPopupController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="43v-fV-ukC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="SearchViewController" id="wyC-AQ-GlX" customClass="SearchViewController" customModule="LogAlong" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5E5-8d-8WC"/>
                         <viewControllerLayoutGuide type="bottom" id="kEH-VX-jYz"/>
@@ -2673,9 +2501,8 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="43v-fV-ukC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-338" y="-1066"/>
+            <point key="canvasLocation" x="-226" y="484"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
