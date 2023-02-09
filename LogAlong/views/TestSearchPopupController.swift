@@ -15,6 +15,7 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     
     private var headerView: HorizontalLayout!
     private var scrollView: UIScrollView!
+    private var scrollViewContentHeight: NSLayoutConstraint!
     private var contentView: UIView!
     
     private var showAllView: HorizontalLayout!
@@ -82,9 +83,19 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         onAllValueClick()
         displayValues()
 
-        setContentHeight()
+        
     }
 
+    override func viewDidLayoutSubviews() {
+        setContentHeight()
+        //print("content view width: \(contentView.frame.width)")
+        //print("content view height: \(contentView.frame.height)")
+        //print("scrollView content height: \(scrollView.contentSize.height)")
+        //print("scrollView content width: \(scrollView.frame.width)")
+        print("scrollView frame height: \(scrollView.frame.height)")
+        //print("scrollView frame width: \(scrollView.frame.width)")
+
+    }
     //MARK: Display
     
     private func createSwitches() {
@@ -124,24 +135,40 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         self.view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        scrollView.frameLayoutGuide.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
+        scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
         
+        scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
+        scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor).isActive = true
+        
+        scrollViewContentHeight = scrollView.contentLayoutGuide.heightAnchor.constraint(equalToConstant: 0)
+        scrollViewContentHeight.isActive = true
+        
+        scrollView.bounces = false
         scrollView.contentInsetAdjustmentBehavior = .always
+        
+        contentView = UIView()
+        scrollView.addSubview(contentView)
+        
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor).isActive = true
+        contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor).isActive = true
+        contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor).isActive = true
     }
     
     private func createSeparators() {
         func configureSeparator(_ separator: UIView) {
-            self.view.addSubview(separator)
+            contentView.addSubview(separator)
 
             separator.translatesAutoresizingMaskIntoConstraints = false
             separator.backgroundColor = LTheme.Color.base_bgd_separator_color
             separator.heightAnchor.constraint(equalToConstant: 1).isActive = true
-            separator.leadingAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.leadingAnchor).isActive = true
-            separator.trailingAnchor.constraint(equalTo: self.scrollView.frameLayoutGuide.trailingAnchor).isActive = true
+            separator.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+            separator.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         }
         
         separator1 = UIView()
@@ -193,16 +220,16 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         showAllLabel.text = NSLocalizedString("Show All", comment: "")
         showAllView.addSubview(showAllLabel)
 
-        scrollView.addSubview(showAllView)
+        contentView.addSubview(showAllView)
         showAllView.translatesAutoresizingMaskIntoConstraints = false
         showAllView.heightAnchor.constraint(equalToConstant: sectionHeaderHeight).isActive = true
-        showAllView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
-        showAllView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor).isActive = true
-        showAllView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
+        showAllView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        showAllView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        showAllView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
 
         separator1.topAnchor.constraint(equalTo: showAllView.bottomAnchor).isActive = true
         
-        showAllGroupView = VerticalLayout(width: scrollView.frame.width)
+        showAllGroupView = VerticalLayout(width: contentView.frame.width)
         
         var tapped = UITapGestureRecognizer(target: self, action: #selector(onClickAccountsCheckbox))
         var (layout, btn, checkbox, label) = createShowAllEntry(NSLocalizedString("Accounts", comment: ""), false)
@@ -256,12 +283,12 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         showAllGroupView.addSubview(layout)
         layout.translatesAutoresizingMaskIntoConstraints = false
         
-        scrollView.addSubview(showAllGroupView)
+        contentView.addSubview(showAllGroupView)
         showAllGroupView.translatesAutoresizingMaskIntoConstraints = false
         showAllGroupView.heightAnchor.constraint(equalToConstant: showAllGroupHeight).isActive = true
         showAllGroupView.topAnchor.constraint(equalTo: separator1.bottomAnchor).isActive = true
-        showAllGroupView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
-        showAllGroupView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor).isActive = true
+        showAllGroupView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        showAllGroupView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
     }
     
     private func createAllTimeView() {
@@ -279,17 +306,17 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         label.text = NSLocalizedString("All Time", comment: "")
         allTimeView.addSubview(label)
 
-        scrollView.addSubview(allTimeView)
+        contentView.addSubview(allTimeView)
         allTimeView.translatesAutoresizingMaskIntoConstraints = false
         allTimeView.heightAnchor.constraint(equalToConstant: sectionHeaderHeight).isActive = true
         allTimeViewTopAnchor = allTimeView.topAnchor.constraint(equalTo: separator1.bottomAnchor)
         allTimeViewTopAnchor.isActive = true
-        allTimeView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor).isActive = true
-        allTimeView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
+        allTimeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        allTimeView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
 
         separator2.topAnchor.constraint(equalTo: allTimeView.bottomAnchor).isActive = true
 
-        allTimeGroupView = VerticalLayout(width: scrollView.frame.width)
+        allTimeGroupView = VerticalLayout(width: contentView.frame.width)
         
         let layout = HorizontalLayout(height: entryHeight)
         layout.layoutMargins.top = 0
@@ -320,12 +347,12 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         filterByBtn.addTarget(self, action: #selector(onClickFilterBy), for: .touchUpInside)
         allTimeGroupView.addSubview(layout2)
         
-        scrollView.addSubview(allTimeGroupView)
+        contentView.addSubview(allTimeGroupView)
         allTimeGroupView.translatesAutoresizingMaskIntoConstraints = false
         allTimeGroupView.heightAnchor.constraint(equalToConstant: allTimeGroupHeight).isActive = true
         allTimeGroupView.topAnchor.constraint(equalTo: separator2.bottomAnchor).isActive = true
-        allTimeGroupView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
-        allTimeGroupView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor).isActive = true
+        allTimeGroupView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        allTimeGroupView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
     }
     
     private func createAllValueView() {
@@ -344,17 +371,17 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         viewTap.delegate = self
         allValueView.addGestureRecognizer(viewTap)
 
-        scrollView.addSubview(allValueView)
+        contentView.addSubview(allValueView)
         allValueView.translatesAutoresizingMaskIntoConstraints = false
         allValueView.heightAnchor.constraint(equalToConstant: sectionHeaderHeight).isActive = true
         allValueViewTopAnchor = allValueView.topAnchor.constraint(equalTo: separator2.bottomAnchor)
         allValueViewTopAnchor.isActive = true
-        allValueView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor).isActive = true
-        allValueView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
+        allValueView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        allValueView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
 
         separator3.topAnchor.constraint(equalTo: allValueView.bottomAnchor).isActive = true
         
-        allValueGroupView = VerticalLayout(width: scrollView.frame.width)
+        allValueGroupView = VerticalLayout(width: contentView.frame.width)
         
         let layout = HorizontalLayout(height: entryHeight)
         layout.layoutMargins.top = 0
@@ -383,12 +410,12 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
 
         allValueGroupView.addSubview(layout)
         
-        scrollView.addSubview(allValueGroupView)
+        contentView.addSubview(allValueGroupView)
         allValueGroupView.translatesAutoresizingMaskIntoConstraints = false
         allValueGroupView.heightAnchor.constraint(equalToConstant: allValueGroupHeight).isActive = true
         allValueGroupView.topAnchor.constraint(equalTo: separator3.bottomAnchor).isActive = true
-        allValueGroupView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
-        allValueGroupView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor).isActive = true
+        allValueGroupView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        allValueGroupView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
     }
     
     private func setContentHeight() {
@@ -412,10 +439,7 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         }
         
         preferredContentSize.height = min(height, presentingViewController!.view.frame.height * 0.75)
-        scrollView.contentSize.height = height
-        print(preferredContentSize.height)
-        print(scrollView.contentSize.height)
-        print(scrollView.frame.height)
+        scrollViewContentHeight.constant = height - headerHeight
     }
     
     private func presentPopOver(_ vc: UIViewController) {

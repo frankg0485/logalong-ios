@@ -1161,7 +1161,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qAM-zp-jjT" customClass="PieChartView" customModule="Charts">
-                                <rect key="frame" x="-1" y="1" width="376" height="664"/>
+                                <rect key="frame" x="-2" y="1" width="377" height="663"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </view>
                         </subviews>
@@ -2652,7 +2652,32 @@
                     <view key="view" contentMode="scaleToFill" id="Cyb-tu-ohM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CM7-o1-TSB">
+                                <rect key="frame" x="67" y="51" width="240" height="128"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AHe-f1-q4R">
+                                        <rect key="frame" x="-8" y="8" width="240" height="128"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="AHe-f1-q4R" firstAttribute="bottom" secondItem="vCM-bX-aIN" secondAttribute="bottom" constant="136" id="5jW-yX-JSb"/>
+                                    <constraint firstItem="OgO-uP-Blt" firstAttribute="trailing" secondItem="AHe-f1-q4R" secondAttribute="trailing" constant="8" id="Q8J-PS-ar4"/>
+                                    <constraint firstItem="OgO-uP-Blt" firstAttribute="leading" secondItem="AHe-f1-q4R" secondAttribute="leading" constant="8" id="U41-qb-gh3"/>
+                                    <constraint firstItem="AHe-f1-q4R" firstAttribute="top" secondItem="vCM-bX-aIN" secondAttribute="top" constant="8" id="Vjt-ZU-E7I"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="vCM-bX-aIN"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="OgO-uP-Blt"/>
+                            </scrollView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="CM7-o1-TSB" secondAttribute="trailing" constant="68" id="AXR-eA-iRE"/>
+                            <constraint firstItem="jQ5-d0-QSH" firstAttribute="top" secondItem="CM7-o1-TSB" secondAttribute="bottom" constant="488" id="EJ7-41-JTu"/>
+                            <constraint firstItem="CM7-o1-TSB" firstAttribute="leading" secondItem="Cyb-tu-ohM" secondAttribute="leading" constant="67" id="JS7-xr-dt7"/>
+                            <constraint firstItem="CM7-o1-TSB" firstAttribute="top" secondItem="v4B-Gc-DR1" secondAttribute="bottom" constant="51" id="xg6-Pz-tGX"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bmg-Ob-dgf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
