@@ -49,4 +49,13 @@ class TestSearchViewController: UIViewController, UIPopoverPresentationControlle
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
+
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        print(presentationController.presentedViewController is TestSearchPopupController)
+        //handle popover dismissed
+    }
+
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        //handle popover dismissed
+    }
 }

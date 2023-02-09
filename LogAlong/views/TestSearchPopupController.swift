@@ -8,13 +8,14 @@
 
 import UIKit
 
-class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, FViewControllerDelegate, UIPopoverPresentationControllerDelegate {
+class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, FViewControllerDelegate, UIPopoverPresentationControllerDelegate, UIScrollViewDelegate {
     
     private var search: LRecordSearch!
     private var searchSelectType: SearchSelectType!
     
     private var headerView: HorizontalLayout!
     private var scrollView: UIScrollView!
+    private var scrollViewContainer: UIView!
     private var scrollViewContentHeight: NSLayoutConstraint!
     private var contentView: UIView!
     
@@ -31,6 +32,7 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     private var allValueView: HorizontalLayout!
     private var separator3: UIView!
     private var allValueGroupView: VerticalLayout!
+    private var allValueGroupViewHeightAnchor: NSLayoutConstraint!
     
     private var showAllSwitch: UISwitch!
     private var timeSwitch: UISwitch!
@@ -54,11 +56,12 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     private var fromValueBtn: UIButton!
     private var toValueBtn: UIButton!
     
+    private let scrollViewPadding: CGFloat = 10
     private let headerHeight: CGFloat = 45
     private let sectionHeaderHeight: CGFloat = 50
     private let entryHeight: CGFloat = 45
     private let entryBottomMargin: CGFloat = 5
-    private let contentSizeBaseHeight: CGFloat = 210 // headerHeight + 3 * sectionHeaderHeight + overhead
+    private let contentSizeBaseHeight: CGFloat = 220 // headerHeight + 3 * sectionHeaderHeight + overhead
     private let showAllGroupHeight: CGFloat = 252 //5 * (entryHeight + entryBottomMargin) + 2
     private let allTimeGroupHeight: CGFloat = 102 //2 * (entryHeight + entryBottomMargin) + 2
     private let allValueGroupHeight: CGFloat = 52 //1 * (entryHeight + entryBottomMargin) + 2
@@ -90,10 +93,11 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         setContentHeight()
         //print("content view width: \(contentView.frame.width)")
         //print("content view height: \(contentView.frame.height)")
-        //print("scrollView content height: \(scrollView.contentSize.height)")
+        print("scrollView content height: \(scrollView.contentSize.height)")
         //print("scrollView content width: \(scrollView.frame.width)")
         print("scrollView frame height: \(scrollView.frame.height)")
         //print("scrollView frame width: \(scrollView.frame.width)")
+        //print(scrollView.hasAmbiguousLayout)
 
     }
     //MARK: Display
@@ -131,15 +135,23 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     }
     
     private func createScrollView() {
+        scrollViewContainer = UIView()
+        self.view.addSubview(scrollViewContainer)
+        
+        scrollViewContainer.translatesAutoresizingMaskIntoConstraints = false
+        scrollViewContainer.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -scrollViewPadding).isActive = true
+        scrollViewContainer.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: scrollViewPadding).isActive = true
+        scrollViewContainer.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: scrollViewPadding).isActive = true
+        scrollViewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -scrollViewPadding).isActive = true
+        
         scrollView = UIScrollView()
-        self.view.addSubview(scrollView)
+        scrollViewContainer.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        scrollView.frameLayoutGuide.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
-        scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: scrollViewContainer.trailingAnchor).isActive = true
+        scrollView.frameLayoutGuide.leadingAnchor.constraint(equalTo: scrollViewContainer.leadingAnchor).isActive = true
+        scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: scrollViewContainer.topAnchor).isActive = true
+        scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: scrollViewContainer.bottomAnchor).isActive = true
         
         scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor).isActive = true
         scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor).isActive = true
@@ -148,7 +160,8 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         scrollViewContentHeight.isActive = true
         
         scrollView.bounces = false
-        scrollView.contentInsetAdjustmentBehavior = .always
+        scrollView.delaysContentTouches = false
+        scrollView.delegate = self
         
         contentView = UIView()
         scrollView.addSubview(contentView)
@@ -412,7 +425,8 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         
         contentView.addSubview(allValueGroupView)
         allValueGroupView.translatesAutoresizingMaskIntoConstraints = false
-        allValueGroupView.heightAnchor.constraint(equalToConstant: allValueGroupHeight).isActive = true
+        allValueGroupViewHeightAnchor = allValueGroupView.heightAnchor.constraint(equalToConstant: allValueGroupHeight)
+        allValueGroupViewHeightAnchor.isActive = true
         allValueGroupView.topAnchor.constraint(equalTo: separator3.bottomAnchor).isActive = true
         allValueGroupView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         allValueGroupView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
@@ -436,10 +450,16 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         
         if !valueSwitch.isOn {
             height += allValueGroupHeight
+            allValueGroupViewHeightAnchor.constant = allValueGroupHeight
+        } else {
+            allValueGroupViewHeightAnchor.constant = 0
         }
         
         preferredContentSize.height = min(height, presentingViewController!.view.frame.height * 0.75)
-        scrollViewContentHeight.constant = height - headerHeight
+        
+        //scrollView.isScrollEnabled = preferredContentSize.height < height
+
+        scrollViewContentHeight.constant = height - headerHeight - 2 * scrollViewPadding
     }
     
     private func presentPopOver(_ vc: UIViewController) {
@@ -613,6 +633,9 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
     
     //MARK: Actions
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y)
+    }
     @objc func onCancelClick() {
         if search.searchAccounts && (!search.accounts.isEmpty) ||
            search.searchCategories && (!search.categories.isEmpty) ||
@@ -628,7 +651,13 @@ class TestSearchPopupController: UIViewController, UIGestureRecognizerDelegate, 
         }
 
         dismiss(animated: true, completion: nil)
-
+        if #available(iOS 13.0, *) {
+            presentationController!.delegate!.presentationControllerWillDismiss!(presentationController!)
+        } else {
+            // Fallback on earlier versions
+            popoverPresentationController!.delegate!.popoverPresentationControllerDidDismissPopover!(popoverPresentationController!)
+        }
+        
         LPreferences.setRecordsSearchControls(controls: search)
         LBroadcast.post(LBroadcast.ACTION_UI_DB_SEARCH_CHANGED)
     }
