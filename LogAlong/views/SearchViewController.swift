@@ -34,13 +34,13 @@ class SearchViewController: UIViewController, UIGestureRecognizerDelegate, FView
     private var showAllView: HorizontalLayout!
     private var separator1: UIView!
     private var showAllGroupView: VerticalLayout!
-
-    private var allTimeViewTopAnchor: NSLayoutConstraint!
+    private var showAllGroupViewHeightAnchor: NSLayoutConstraint!
+    
     private var allTimeView: HorizontalLayout!
     private var separator2: UIView!
     private var allTimeGroupView: VerticalLayout!
+    private var allTimeGroupViewHeightAnchor: NSLayoutConstraint!
     
-    private var allValueViewTopAnchor: NSLayoutConstraint!
     private var allValueView: HorizontalLayout!
     private var separator3: UIView!
     private var allValueGroupView: VerticalLayout!
@@ -305,7 +305,8 @@ class SearchViewController: UIViewController, UIGestureRecognizerDelegate, FView
         
         contentView.addSubview(showAllGroupView)
         showAllGroupView.translatesAutoresizingMaskIntoConstraints = false
-        showAllGroupView.heightAnchor.constraint(equalToConstant: showAllGroupHeight).isActive = true
+        showAllGroupViewHeightAnchor = showAllGroupView.heightAnchor.constraint(equalToConstant: showAllGroupHeight)
+        showAllGroupViewHeightAnchor.isActive = true
         showAllGroupView.topAnchor.constraint(equalTo: separator1.bottomAnchor).isActive = true
         showAllGroupView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         showAllGroupView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
@@ -327,8 +328,7 @@ class SearchViewController: UIViewController, UIGestureRecognizerDelegate, FView
         contentView.addSubview(allTimeView)
         allTimeView.translatesAutoresizingMaskIntoConstraints = false
         allTimeView.heightAnchor.constraint(equalToConstant: sectionHeaderHeight).isActive = true
-        allTimeViewTopAnchor = allTimeView.topAnchor.constraint(equalTo: separator1.bottomAnchor)
-        allTimeViewTopAnchor.isActive = true
+        allTimeView.topAnchor.constraint(equalTo: showAllGroupView.bottomAnchor).isActive = true
         allTimeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         allTimeView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
 
@@ -367,7 +367,8 @@ class SearchViewController: UIViewController, UIGestureRecognizerDelegate, FView
         
         contentView.addSubview(allTimeGroupView)
         allTimeGroupView.translatesAutoresizingMaskIntoConstraints = false
-        allTimeGroupView.heightAnchor.constraint(equalToConstant: allTimeGroupHeight).isActive = true
+        allTimeGroupViewHeightAnchor = allTimeGroupView.heightAnchor.constraint(equalToConstant: allTimeGroupHeight)
+        allTimeGroupViewHeightAnchor.isActive = true
         allTimeGroupView.topAnchor.constraint(equalTo: separator2.bottomAnchor).isActive = true
         allTimeGroupView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         allTimeGroupView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
@@ -390,8 +391,7 @@ class SearchViewController: UIViewController, UIGestureRecognizerDelegate, FView
         contentView.addSubview(allValueView)
         allValueView.translatesAutoresizingMaskIntoConstraints = false
         allValueView.heightAnchor.constraint(equalToConstant: sectionHeaderHeight).isActive = true
-        allValueViewTopAnchor = allValueView.topAnchor.constraint(equalTo: separator2.bottomAnchor)
-        allValueViewTopAnchor.isActive = true
+        allValueView.topAnchor.constraint(equalTo: allTimeGroupView.bottomAnchor).isActive = true
         allValueView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         allValueView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
 
@@ -439,16 +439,16 @@ class SearchViewController: UIViewController, UIGestureRecognizerDelegate, FView
         var height = contentSizeBaseHeight
         if !showAllSwitch.isOn {
             height += showAllGroupHeight
-            allTimeViewTopAnchor.constant = showAllGroupHeight
+            showAllGroupViewHeightAnchor.constant = showAllGroupHeight
         } else {
-            allTimeViewTopAnchor.constant = 0
+            showAllGroupViewHeightAnchor.constant = 0
         }
         
         if !timeSwitch.isOn {
             height += allTimeGroupHeight
-            allValueViewTopAnchor.constant = allTimeGroupHeight
+            allTimeGroupViewHeightAnchor.constant = allTimeGroupHeight
         } else {
-            allValueViewTopAnchor.constant = 0
+            allTimeGroupViewHeightAnchor.constant = 0
         }
         
         if !valueSwitch.isOn {
@@ -460,8 +460,6 @@ class SearchViewController: UIViewController, UIGestureRecognizerDelegate, FView
         
         preferredContentSize.height = min(height, presentingViewController!.view.frame.height * 0.75)
         
-        //scrollView.isScrollEnabled = preferredContentSize.height < height
-
         scrollViewContentHeight.constant = height - headerHeight - 2 * scrollViewPadding
     }
     
@@ -651,12 +649,6 @@ class SearchViewController: UIViewController, UIGestureRecognizerDelegate, FView
         }
 
         dismiss(animated: true, completion: nil)
-        /*if #available(iOS 13.0, *) {
-            presentationController!.delegate!.presentationControllerWillDismiss!(presentationController!)
-        } else {
-            // Fallback on earlier versions
-            popoverPresentationController!.delegate!.popoverPresentationControllerDidDismissPopover!(popoverPresentationController!)
-        }*/
         
         LPreferences.setRecordsSearchControls(controls: search)
         LBroadcast.post(LBroadcast.ACTION_UI_DB_SEARCH_CHANGED)
